@@ -2,14 +2,15 @@
 // 게임 실행 중 F1로 여는 런타임 디버그 콘솔 창을 그리는 메인 파일이다.
 // 멤버별 주석은 해당 변수, 메서드, 클래스가 왜 필요한지와 호출 시 어떤 역할을 하는지를 빠르게 파악하기 위해 추가하였다.
 // ------------------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Globalization;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
-using TMPro;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 런타임 디버그 콘솔의 전체 UI와 입력 처리를 담당하는 MonoBehaviour 클래스이다.
@@ -26,10 +27,10 @@ public class RuntimeDebugConsoleWindow : MonoBehaviour
         // 출처 index 상태를 저장한다. 관련 메서드에서 기준값이나 캐시로 사용한다.
         public int SourceIndex;
     }
-    // 토글 식별 키 값을 저장한다. 오브젝트나 컴포넌트를 식별하기 위한 키 값을 저장한다.
-    [SerializeField] private KeyCode _toggleKey = KeyCode.F1;
+
+    private PlayerActions _playerActions;
     // 표시 상태를 저장한다. 관련 메서드에서 기준값이나 캐시로 사용한다.
-    [SerializeField] private bool _visible = false;
+    [SerializeField] private bool _visible;
     // 창 영역 값을 저장한다. 런타임 창의 위치와 크기를 저장한다.
     [SerializeField] private Rect _windowRect = new Rect(20f, 20f, 1450f, 850f);
     // 자동 스크롤 값을 저장한다. 새 로그가 들어왔을 때 마지막 항목으로 자동 이동할지 결정한다.
@@ -65,8 +66,6 @@ public class RuntimeDebugConsoleWindow : MonoBehaviour
     private const string HierarchySearchControlName = "DebugConsole_HierarchySearch";
     // 로그 검색 control 이름 값을 저장한다. 현재 검색어 상태를 저장한다. 목록 필터링이나 표시 대상 계산의 기준으로 사용한다.
     private const string LogSearchControlName = "DebugConsole_LogSearch";
-    // 이전 IME composition mode 상태를 저장한다. 관련 메서드에서 기준값이나 캐시로 사용한다.
-    private IMECompositionMode _previousImeCompositionMode = IMECompositionMode.Auto;
     // IME composition 캡처 상태를 저장한다. 관련 메서드에서 기준값이나 캐시로 사용한다.
     private bool _imeCompositionCaptured;
     // 검색 입력 필드 focused this 프레임 값을 저장한다. 현재 포커스된 대상의 식별 정보나 이름을 저장한다. 로그와 계층 패널을 연결하는 기준으로 사용한다.
@@ -84,8 +83,6 @@ public class RuntimeDebugConsoleWindow : MonoBehaviour
         Log
     }
 
-    // active 검색 입력 필드 값을 저장한다. 현재 검색어 상태를 저장한다. 목록 필터링이나 표시 대상 계산의 기준으로 사용한다.
-    private SearchFieldFocus _activeSearchField = SearchFieldFocus.None;
     // 검색 입력 필드 content 스타일 값을 저장한다. 현재 검색어 상태를 저장한다. 목록 필터링이나 표시 대상 계산의 기준으로 사용한다.
     private GUIStyle _searchFieldContentStyle;
     // close 버튼 스타일 값을 저장한다. 이 영역을 그릴 때 사용할 GUIStyle 참조를 저장한다.
@@ -255,6 +252,11 @@ public class RuntimeDebugConsoleWindow : MonoBehaviour
     // selected 로그 index 값을 저장한다. 현재 선택된 로그 항목의 인덱스를 저장한다.
     private int _selectedLogIndex = -1;
 
+    private void Awake()
+    {
+        _playerActions = new PlayerActions();
+    }
+
     /// <summary>
     /// 객체가 활성화될 때 호출되며, 이벤트 등록과 상태 복원을 수행한다.
     /// </summary>
@@ -272,6 +274,10 @@ public class RuntimeDebugConsoleWindow : MonoBehaviour
         _pendingLogSearch = _logSearch;
         EnsureSearchOverlay();
         ApplyUiInputBlockState();
+        
+        _playerActions.Enable();
+        
+        _playerActions.Debug.Log.performed += ToggleDebugConsole;
     }
 
     /// <summary>
@@ -285,6 +291,10 @@ public class RuntimeDebugConsoleWindow : MonoBehaviour
 
         if (_searchOverlay != null)
             _searchOverlay.SetVisible(false);
+
+        _playerActions.Debug.Log.performed -= ToggleDebugConsole;
+        
+        _playerActions.Disable();
     }
 
     /// <summary>
@@ -298,7 +308,6 @@ public class RuntimeDebugConsoleWindow : MonoBehaviour
         _expandedChildren.Clear();
         _selectedLogIndex = -1;
         _hierarchyScroll = Vector2.zero;
-        _activeSearchField = SearchFieldFocus.None;
         ClearFocus();
 
         if (_searchOverlay != null)
@@ -312,10 +321,13 @@ public class RuntimeDebugConsoleWindow : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (Input.GetKeyDown(_toggleKey))
-            SetConsoleVisible(!_visible);
-
         ProcessSearchDebounce();
+    }
+
+    private void ToggleDebugConsole(InputAction.CallbackContext ctx)
+    {
+        if(ctx.performed)
+            SetConsoleVisible(!_visible);
     }
 
     /// <summary>
@@ -1216,20 +1228,7 @@ private List<float> BuildRowHeights(List<VisibleRuntimeLogEntry> entries, float 
         if (UseCompactLogRows)
         {
             heights.Add(rowHeight);
-            continue;
         }
-
-        DebugEntry entry = entries[i].Entry;
-        long sequence = entry != null ? entry.SequenceId : i;
-        string key = $"{sequence}:{Mathf.RoundToInt(width)}";
-        if (!_rowHeightCache.TryGetValue(key, out float height))
-        {
-            GUIContent content = new GUIContent(entry != null ? entry.RichText : string.Empty);
-            height = _richLabelStyle.CalcHeight(content, Mathf.Max(140f, width)) + 18f;
-            _rowHeightCache[key] = height;
-        }
-
-        heights.Add(height);
     }
 
     return heights;
@@ -1380,10 +1379,10 @@ private void ResetRuntimeLayoutToDefault()
     private void OpenEntryScript(DebugEntry entry)
     {
 #if UNITY_EDITOR
-        if (!TryGetEntryScriptLocation(entry, out UnityEditor.MonoScript script, out int lineNumber, out int columnNumber))
+        if (!TryGetEntryScriptLocation(entry, out MonoScript script, out int lineNumber, out int columnNumber))
             return;
 
-        UnityEditor.AssetDatabase.OpenAsset(script, Mathf.Max(1, lineNumber), Mathf.Max(1, columnNumber));
+        AssetDatabase.OpenAsset(script, Mathf.Max(1, lineNumber), Mathf.Max(1, columnNumber));
 #endif
     }
 
@@ -1391,7 +1390,7 @@ private void ResetRuntimeLayoutToDefault()
     /// <summary>
     /// get 엔트리 script location 처리를 시도한다. 성공 여부를 bool로 반환하고 실패 시 안전하게 빠져나간다.
     /// </summary>
-    private bool TryGetEntryScriptLocation(DebugEntry entry, out UnityEditor.MonoScript script, out int lineNumber, out int columnNumber)
+    private bool TryGetEntryScriptLocation(DebugEntry entry, out MonoScript script, out int lineNumber, out int columnNumber)
     {
         script = null;
         lineNumber = 1;
@@ -1405,7 +1404,7 @@ private void ResetRuntimeLayoutToDefault()
 
         if (TryConvertCallerPathToAssetPath(entry.CallerFilePath, out string assetPath))
         {
-            script = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.MonoScript>(assetPath);
+            script = AssetDatabase.LoadAssetAtPath<MonoScript>(assetPath);
             if (script != null)
                 return true;
         }
@@ -1452,7 +1451,7 @@ private void ResetRuntimeLayoutToDefault()
     /// <summary>
     /// find script by file 이름 처리를 시도한다. 성공 여부를 bool로 반환하고 실패 시 안전하게 빠져나간다.
     /// </summary>
-    private bool TryFindScriptByFileName(string callerFilePath, out UnityEditor.MonoScript script)
+    private bool TryFindScriptByFileName(string callerFilePath, out MonoScript script)
     {
         script = null;
 
@@ -1460,14 +1459,14 @@ private void ResetRuntimeLayoutToDefault()
         if (string.IsNullOrWhiteSpace(fileName))
             return false;
 
-        string[] guids = UnityEditor.AssetDatabase.FindAssets($"{fileName} t:MonoScript");
+        string[] guids = AssetDatabase.FindAssets($"{fileName} t:MonoScript");
         for (int i = 0; i < guids.Length; i++)
         {
-            string assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[i]);
+            string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
             if (!string.Equals(Path.GetFileNameWithoutExtension(assetPath), fileName, StringComparison.Ordinal))
                 continue;
 
-            UnityEditor.MonoScript found = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEditor.MonoScript>(assetPath);
+            MonoScript found = AssetDatabase.LoadAssetAtPath<MonoScript>(assetPath);
             if (found == null)
                 continue;
 
@@ -1528,8 +1527,8 @@ private void ResetRuntimeLayoutToDefault()
             return;
 
 #if UNITY_EDITOR
-        UnityEditor.Selection.activeGameObject = targetGameObject;
-        UnityEditor.EditorGUIUtility.PingObject(targetGameObject);
+        Selection.activeGameObject = targetGameObject;
+        EditorGUIUtility.PingObject(targetGameObject);
 #endif
     }
 
@@ -2165,7 +2164,6 @@ private void DrawToolbarInfoGroup(DebugConsoleManager manager, bool expanded)
         {
             Rect screenRect = ToScreenRect(fieldRect);
             _hierarchySearchScreenRect = screenRect;
-            _activeSearchField = SearchFieldFocus.Hierarchy;
 
             if (_searchOverlay != null)
             {
@@ -2207,7 +2205,6 @@ private void DrawToolbarInfoGroup(DebugConsoleManager manager, bool expanded)
         {
             Rect screenRect = ToScreenRect(fieldRect);
             _logSearchScreenRect = screenRect;
-            _activeSearchField = SearchFieldFocus.Log;
 
             if (_searchOverlay != null)
             {
@@ -2228,7 +2225,6 @@ private void DrawToolbarInfoGroup(DebugConsoleManager manager, bool expanded)
             _pendingLogSearch = string.Empty;
             _logSearch = string.Empty;
             _logSearchApplyTime = 0f;
-            _activeSearchField = SearchFieldFocus.None;
 
             if (_searchOverlay != null)
             {

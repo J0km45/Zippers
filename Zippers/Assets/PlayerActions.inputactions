@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "name": "Player Actions",
+    "name": "PlayerActions",
     "maps": [
         {
             "name": "PlayerControl",

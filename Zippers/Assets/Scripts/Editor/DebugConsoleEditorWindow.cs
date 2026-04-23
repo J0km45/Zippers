@@ -3499,17 +3499,6 @@ private List<float> BuildSnapshotRowHeights(List<SnapshotLogGroup> groups, float
             heights.Add(rowHeight);
             continue;
         }
-
-        SnapshotLogGroup group = groups[i];
-        string key = $"{group.LastSourceIndex}:{group.Count}:{Mathf.RoundToInt(width)}";
-        if (!_snapshotLogHeightCache.TryGetValue(key, out float height))
-        {
-            GUIContent content = BuildCollapsedLogContent(group.Entry.RichText, group.Count);
-            height = _richLabelStyle.CalcHeight(content, width) + 16f;
-            _snapshotLogHeightCache[key] = height;
-        }
-
-        heights.Add(height);
     }
 
     return heights;
@@ -3530,18 +3519,6 @@ private List<float> BuildLiveRowHeights(List<LiveLogGroup> groups, float width)
             heights.Add(rowHeight);
             continue;
         }
-
-        LiveLogGroup group = groups[i];
-        long sequence = group.Entry != null ? group.Entry.SequenceId : i;
-        string key = $"{sequence}:{group.Count}:{Mathf.RoundToInt(width)}";
-        if (!_liveLogHeightCache.TryGetValue(key, out float height))
-        {
-            GUIContent content = BuildCollapsedLogContent(group.Entry.RichText, group.Count);
-            height = _richLabelStyle.CalcHeight(content, width) + 16f;
-            _liveLogHeightCache[key] = height;
-        }
-
-        heights.Add(height);
     }
 
     return heights;
