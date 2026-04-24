@@ -11,9 +11,9 @@ public class EventController
     /// <param name="nodeEvent">전환 될 노드 이벤트</param>
     public void ChangeEvent(INodeEvent nodeEvent)
     {
-        _nodeEvent?.Exit();
+        _nodeEvent?.EventExit();
         _nodeEvent = nodeEvent;
-        _nodeEvent?.Enter();
+        _nodeEvent?.EventEnter();
     }
     
     /// <summary>
@@ -21,6 +21,6 @@ public class EventController
     /// </summary>
     public void Update()
     {
-        _nodeEvent?.Update();
+        _nodeEvent?.EventUpdate();
     }
 }

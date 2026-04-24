@@ -4,7 +4,7 @@ using UnityEngine;
 /// 노드의 Data를 저장하기 위한 SO<br/>
 /// 맵의 프리팹과 연결되어 있다.
 /// </summary>
-[CreateAssetMenu(fileName = "NodeSO", menuName = "NodeData/NodeSO")]
+[CreateAssetMenu(fileName = "NodeSO", menuName = "Node Data/Node SO")]
 public class NodeSO : ScriptableObject
 {
     /// <summary>
@@ -69,4 +69,11 @@ public class NodeSO : ScriptableObject
     /// 임의 조작 금지
     /// </summary>
     public NodeStartDir StartDir;
+
+    public NodeAction _action { get; private set; }
+
+    private void Awake()
+    {
+        
+    }
 }
