@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -7,4 +8,5 @@ public class NodeController : MonoBehaviour
 {
     // 노드 이벤트의 처리 및 노드 운영
     // 노드별로 SO식으로 할것인지 고민
+    [SerializeField] private NodeSO _nodeData;
 }
