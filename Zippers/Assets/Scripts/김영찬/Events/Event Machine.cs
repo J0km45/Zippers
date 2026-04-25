@@ -1,7 +1,7 @@
 /// <summary>
 /// State Patten 기반 노드 이벤트 컨트롤러
 /// </summary>
-public class EventController
+public class EventMachine
 {
     INodeEvent _nodeEvent;
     
@@ -19,7 +19,7 @@ public class EventController
     /// <summary>
     /// 노드이벤트의 Update 함수를 유니티 이벤트 함수와 연결
     /// </summary>
-    public void Update()
+    public void EventUpdate()
     {
         _nodeEvent?.EventUpdate();
     }

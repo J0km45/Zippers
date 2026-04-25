@@ -5,7 +5,7 @@
 /// </summary>
 public interface INodeEvent
 {
-    public void EventEnter();
-    public void EventUpdate();
-    public void EventExit();
+    void EventEnter();
+    void EventUpdate();
+    void EventExit();
 }
