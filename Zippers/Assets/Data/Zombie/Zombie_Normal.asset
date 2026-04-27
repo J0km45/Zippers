@@ -16,8 +16,10 @@ MonoBehaviour:
   MaxHp: 40
   MoveSpeed: 1
   DetectMoveSpeed: 2
-  AttackDamage: 10
-  AttackCooldown: 1
-  AttackRange: 1.2
+  MinAttackDamage: 13
+  MaxAttackDamage: 16
+  AttackCooldown: 3
+  HandRadius: 0.25
+  AttackRange: 1
   DetectRange: 12
   KillReward: 10

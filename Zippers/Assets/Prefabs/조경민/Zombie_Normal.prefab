@@ -73,6 +73,11 @@ MonoBehaviour:
   _stat: {fileID: 11400000, guid: 51f00f20eb9232243ae0a8459e1b4c28, type: 2}
   CurrentHp: 0
   Player: {fileID: 0}
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  LeftHand: {fileID: 2821342582399496668}
+  RightHand: {fileID: 2826105072778931888}
 --- !u!195 &6817347452334693514
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -151,13 +156,47 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: b141b39c830ff194fabe8e68cf3e3ce8, type: 2}
+    - target: {fileID: 95496151978713162, guid: 807784d16a875e0499c116c9506424aa, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1015224441584018, guid: 807784d16a875e0499c116c9506424aa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4222853247918796902}
   m_SourcePrefab: {fileID: 100100000, guid: 807784d16a875e0499c116c9506424aa, type: 3}
 --- !u!4 &2821055996653051180 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4379659365344250, guid: 807784d16a875e0499c116c9506424aa, type: 3}
+  m_PrefabInstance: {fileID: 2822041992686010070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2821342582399496668 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4085909743079178, guid: 807784d16a875e0499c116c9506424aa, type: 3}
+  m_PrefabInstance: {fileID: 2822041992686010070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2822195019085891396 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1015224441584018, guid: 807784d16a875e0499c116c9506424aa, type: 3}
+  m_PrefabInstance: {fileID: 2822041992686010070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4222853247918796902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2822195019085891396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a5b57d8c80279148a18cabc80a95b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieAnimationEventController
+--- !u!4 &2826105072778931888 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4995814483169382, guid: 807784d16a875e0499c116c9506424aa, type: 3}
   m_PrefabInstance: {fileID: 2822041992686010070}
   m_PrefabAsset: {fileID: 0}
