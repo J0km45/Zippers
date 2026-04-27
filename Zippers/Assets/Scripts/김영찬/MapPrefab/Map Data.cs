@@ -27,12 +27,6 @@ public class MapData : MonoBehaviour
     [field:SerializeField]public Transform[] PlayerSpawnPoint_Right {get; private set;}
     
     /// <summary>
-    /// Special Point에서 시작 될때 플레이어의 스폰 포인트
-    /// </summary>
-    [field:SerializeField]public Transform[] PlayerSpawnPoint_Sp {get; private set;}
-    
-    
-    /// <summary>
     /// Up 방향으로 연결 된 맵
     /// </summary>
     [Header("연결 된 다음 맵")]
