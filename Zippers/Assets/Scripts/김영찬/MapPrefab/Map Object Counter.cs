@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MapObjectCounter : MonoBehaviour
 {
-    [SerializeField] private Collider _countArea;
+    [SerializeField] private BoxCollider _countArea;
     [SerializeField] private MapController _controller;
     [SerializeField] LayerMask _unitLayer;
     [SerializeField] LayerMask _monsterLayer;
@@ -32,5 +32,13 @@ public class MapObjectCounter : MonoBehaviour
         {
             _controller.Data.MinusAliveMonsterCount();
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if(_countArea == null) return;
+        Gizmos.matrix = transform.localToWorldMatrix;
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(_countArea.center, _countArea.size);
     }
 }
