@@ -7,11 +7,13 @@ public class ZombieStatSO : ScriptableObject
     [Tooltip("좀비 타입")]
     public ZombieType Type;
     [Tooltip("최대 체력")]
-    public int MaxHp;
-    [Tooltip("이동 속도")]
+    public float MaxHp;
+    [Tooltip("기본 이동 속도")]
     public float MoveSpeed;
+    [Tooltip("감지 시 이동 속도")]
+    public float DetectMoveSpeed;
     [Tooltip("공격력")]
-    public int AttackDamage;
+    public float AttackDamage;
     [Tooltip("공격 간격")]
     public float AttackCooldown;
     [Tooltip("공격 범위")]
