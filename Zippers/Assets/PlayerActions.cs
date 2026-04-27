@@ -121,9 +121,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Aiming"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""418c092e-0b55-42f3-9453-3712c43ab94c"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -261,7 +261,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""89743d45-3065-4856-ae33-d81126d01249"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";KeyMouse"",
@@ -271,11 +271,11 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""91bdda5b-59d8-4542-b119-cc552fc9da95"",
+                    ""id"": ""b659409e-5d22-4bab-879f-3bbe6f0fa5c3"",
                     ""path"": ""<DualShockGamepad>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""Aiming"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
