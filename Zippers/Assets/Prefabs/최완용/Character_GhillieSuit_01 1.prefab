@@ -4324,7 +4324,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7422401630952993622}
   - component: {fileID: 1012977638733075384}
-  - component: {fileID: 5234611086915319885}
   - component: {fileID: 6670013095500101931}
   - component: {fileID: 6062392499369542082}
   - component: {fileID: 7822645731502311299}
@@ -4332,6 +4331,8 @@ GameObject:
   - component: {fileID: 1402757183560716811}
   - component: {fileID: 7851484960985756132}
   - component: {fileID: 3889233011342203823}
+  - component: {fileID: -1459793425253192222}
+  - component: {fileID: -4070551576951979769}
   m_Layer: 0
   m_Name: Character_GhillieSuit_01 1
   m_TagString: Untagged
@@ -4398,36 +4399,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5234611086915319885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9077091175809906714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
-  m_Actions: {fileID: -944628639613478452, guid: 5f37750db6fb358478302b984ab857aa, type: 3}
-  m_NotificationBehavior: 3
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: PlayerControl
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!54 &6670013095500101931
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4538,6 +4509,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimation
   _animator: {fileID: 1012977638733075384}
+--- !u!114 &-1459793425253192222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9077091175809906714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f1a35e1876c5f34993cca03facb4529, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAim
+--- !u!114 &-4070551576951979769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9077091175809906714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 042cb5b6b5eeb8f4ea5728400dc5586e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerLook
+  _mainCamera: {fileID: 0}
+  _playerAim: {fileID: -1459793425253192222}
+  _playerMovement: {fileID: 7822645731502311299}
+  _rotateSpeed: 20
 --- !u!1 &9179101222937464947
 GameObject:
   m_ObjectHideFlags: 0

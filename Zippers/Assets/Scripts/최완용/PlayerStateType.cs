@@ -4,8 +4,7 @@ public enum PlayerStateType
 {
     Idle,
     Move,
-    Shoot,
+    Attack,
     Hit,
-    Retire,
-    Reload
+    Retire
 }

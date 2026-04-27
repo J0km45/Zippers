@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d3ca2e0abfbc0e4288b4d0ae9becd25, type: 3}
+  m_Name: WeaponSFXSO
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponSFXSO
+  meleeClips:
+  - {fileID: 8300000, guid: bfb189a9933cb4b31b12f6d9d495593b, type: 3}
+  - {fileID: 8300000, guid: 32d0f2a1f36cb4425b5a32126f3ff240, type: 3}
+  - {fileID: 8300000, guid: bda2974b2cd5d4f2bb642cf8acb1fef8, type: 3}
+  - {fileID: 8300000, guid: ed910ec28c89b4ee59d399d390b6143f, type: 3}
+  - {fileID: 8300000, guid: f4a7752e82d4f4cf3b725faaab9d4d00, type: 3}
+  - {fileID: 8300000, guid: 9b2a437d2ea804cea90c3b2c1653f0e6, type: 3}
+  - {fileID: 8300000, guid: c798fe8bbfc1247fe856b149c1457659, type: 3}
+  rifleClips:
+  - {fileID: 8300000, guid: dba8e55eada6a144786568b2e61be0aa, type: 3}
+  - {fileID: 8300000, guid: 1d84c52d82239cf4898be13e6b8809a3, type: 3}
+  shotGunClips:
+  - {fileID: 8300000, guid: 113d7464f57cdac4289e550f9e4c993c, type: 3}
+  - {fileID: 8300000, guid: 428ab05a00a82954fbafa5b32085195e, type: 3}
+  - {fileID: 8300000, guid: 3d0d526126ad4d44a838d04dd2494477, type: 3}
+  pistolClips:
+  - {fileID: 8300000, guid: 31b94c7c0b75337439ee4d218880211c, type: 3}
+  - {fileID: 8300000, guid: 1bb0abfaeb689804dbba4df9cc870799, type: 3}
+  - {fileID: 8300000, guid: f506c69074c8a78419bbc34dd550175c, type: 3}
+  rifleReloadClip: {fileID: 8300000, guid: dc945ee3c22f2da4cb248135a6196d3d, type: 3}
+  shotgunReloadClip: {fileID: 8300000, guid: 270c21cf95ead9547b50cb99a03d9b44, type: 3}
+  pistolReloadClip: {fileID: 8300000, guid: 9e290ca0b24960843962c0cdcd93cadb, type: 3}
