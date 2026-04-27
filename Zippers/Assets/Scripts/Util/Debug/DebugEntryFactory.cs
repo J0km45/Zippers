@@ -97,22 +97,17 @@ public static class DebugEntryFactory
     {
         switch (type)
         {
-            case DebugType.Game: return "#c6a1fa";
-            case DebugType.Unit: return "#d9c61c";
-            case DebugType.Synergy: return "#f0847f";
-            case DebugType.Summon: return "#5eaad9";
-            case DebugType.Combine: return "#F45911";
-            case DebugType.Wave: return "#c53d34";
-            case DebugType.Board: return "#bdd3b5";
-            case DebugType.Enemy: return "#19cd48";
-            case DebugType.UI: return "#b15b8b";
-            case DebugType.Data: return "#e4ada4";
-            case DebugType.Merge: return "#0eb6a6";
-            case DebugType.Reforge: return "#A35ED3";
-            case DebugType.Catalog: return "#D6EA15";
-            case DebugType.Missing: return "#ffff00";
-            case DebugType.Default: return "#251f59";
-            default: return "#ffffff";
+            case DebugType.Game: return "#B388FF";       // 보라
+            case DebugType.Character: return "#FFD166";  // 노랑-골드
+            case DebugType.Zombie: return "#FF3B30";     // 빨강
+            case DebugType.Spawner: return "#00C2FF";    // 하늘색
+            case DebugType.Wave: return "#FF7A00";       // 주황
+            case DebugType.Node: return "#A3FF12";       // 라임
+            case DebugType.Network: return "#00E676";    // 초록
+            case DebugType.UI: return "#FF4FD8";         // 핑크
+            case DebugType.Data: return "#00D1B2";       // 청록
+            case DebugType.Missing: return "#FFFF00";    // 경고 노랑
+            default: return "#D0D0D0";    // 기본 회색
         }
     }
 }
