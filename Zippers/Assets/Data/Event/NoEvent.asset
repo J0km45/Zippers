@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 063d7dd98ccdeae48bf49d90eb5059a3, type: 3}
   m_Name: NoEvent
   m_EditorClassIdentifier: Assembly-CSharp::EventSO
+  <EventType>k__BackingField: 0
+  <EventIndex>k__BackingField: 0
+  <EventScript>k__BackingField: {fileID: 3075172542272755916, guid: 9bcbf2565e716a84f9b3a1f265269e5c, type: 3}
