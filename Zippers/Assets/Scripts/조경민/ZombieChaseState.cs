@@ -11,26 +11,43 @@ public class ZombieChaseState : IState
 
     public void Enter()
     {
+        _zombie.Agent.isStopped = false;
         _zombie.Agent.speed = _zombie.MoveSpeed;
     }
 
     public void UpdateState()
     {
-        // TODO : 플레이어 위치 받아오는거 필요함
-        //Transform player = 가장 가까운 생존 플레이어 위치
+        float distance = _zombie.GetDistanceToPlayer();
 
-        Transform player = _zombie.Player; //임시(테스트용)
-        float distanceToPlayer = Vector3.Distance(_zombie.transform.position, player.position);
+        if (distance <= _zombie.AttackRange)
+        {
+            if (_zombie.Type == ZombieType.Normal)
+            { 
+                _zombie.Agent.isStopped = false; 
+            }
+            else 
+            { 
+                _zombie.Agent.isStopped = true; 
+                _zombie.Animator.SetFloat("MoveSpeed", 0f);
+            }
 
-        _zombie.Agent.speed = distanceToPlayer <= _zombie.DetectRange ? _zombie.DetectMoveSpeed : _zombie.MoveSpeed;
+            if (_zombie.CanAttack())
+            {
+                _zombie.ChangeState(_zombie.Attack);
+            }
 
-        _zombie.Agent.SetDestination(player.position);
+            return;
+        }
+
+        _zombie.Agent.isStopped = false;
+        _zombie.Agent.speed = distance <= _zombie.DetectRange ? _zombie.DetectMoveSpeed : _zombie.MoveSpeed;
+        _zombie.Agent.SetDestination(_zombie.Player.position);
         _zombie.Animator.SetFloat("MoveSpeed", _zombie.Agent.velocity.magnitude);
         // Debug.Log($"속도: {_zombie.Agent.speed}");
     }
 
     public void Exit()
     {
-        
+
     }
 }
