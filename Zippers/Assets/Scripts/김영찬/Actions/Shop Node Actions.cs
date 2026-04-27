@@ -18,7 +18,7 @@ public class ShopNodeReadyAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.Data.OnChangeAlivePlayerCount += PlayerCheck;
     }
 
     public void RunningState()
@@ -28,7 +28,14 @@ public class ShopNodeReadyAction : INodeAction
 
     public void ExitState()
     {
-        
+        _controller.Controller.Data.OnChangeAlivePlayerCount -= PlayerCheck;
+    }
+
+    private void PlayerCheck(int count)
+    {
+        // ToDo : 차후에 살아있는 전체 플레이어의 숫자를 카운트 하는 변수가 생기면 4 대신 해당 변수에 연결 할 것
+        if(count != 4) return; 
+        _controller.Controller.Data.SetNodeState(NodeState.Clear);
     }
 }
 
@@ -82,7 +89,7 @@ public class ShopNodeClearAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.Teleporter.EnableBeaconAvailable();
     }
 
     public void RunningState()

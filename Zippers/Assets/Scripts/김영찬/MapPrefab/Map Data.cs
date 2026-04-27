@@ -52,11 +52,6 @@ public class MapData : MonoBehaviour
     /// Right 방향으로 연결 된 맵
     /// </summary>
     [field:SerializeField]public GameObject NextMap_Right {get; private set;}
-    
-    /// <summary>
-    /// Special 방향으로 연결 된 맵
-    /// </summary>
-    [field:SerializeField]public GameObject NextMap_Sp {get; private set;}
 
     /// <summary>
     /// Up 방향 노드로 넘어 갈 때 플레이어의 합류 지점
@@ -80,11 +75,6 @@ public class MapData : MonoBehaviour
     [field:SerializeField]public GameObject TeleportBeacon_Right  {get; private set;}
     
     /// <summary>
-    /// Special 방향 노드로 넘어 갈 때 플레이어의 합류 지점
-    /// </summary>
-    [field:SerializeField]public GameObject TeleportBeacon_Sp    {get; private set;}
-    
-    /// <summary>
     /// 노드의 현재 진행 상황
     /// </summary>
     [Header("For Debug")]
@@ -96,9 +86,10 @@ public class MapData : MonoBehaviour
     [field:SerializeField]public double NodeTreeIndex {get; private set;} // (MVP 후순위지만 일단 변수는 들고 있도록)
     
     /// <summary>
-    /// 이번 노드가 시작 시 어느 방향에서 시작할 지 표기
+    /// 이번 노드가 시작 시 어느 방향에서 시작할 지 표기<br/>
+    /// 0 = 왼쪽, 1 = 위쪽, 2 = 오른쪽, 3 = 아래쪽
     /// </summary>
-    [field:SerializeField]public NodeStartDir StartDir {get; private set;}
+    [field:SerializeField]public int StartDir {get; private set;}
     
     /// <summary>
     /// NodeSO에서 이 노드의 노드 타입을 불러옴
@@ -108,17 +99,17 @@ public class MapData : MonoBehaviour
     /// <summary>
     /// 맵에 생존한 플레이어 수
     /// </summary>
-    private int _alivePlayerCount = 0;
+    public int AlivePlayerCount { get; private set; }
 
     /// <summary>
     /// 맵에 생존한 몬스터 수
     /// </summary>
-    private int _aliveMonsterCount = 0;
+    private int _aliveMonsterCount;
 
     /// <summary>
     /// 맵에 남은 웨이브 횟수
     /// </summary>
-    [SerializeField] private int _remainingWaveCount;
+    private int _remainingWaveCount;
 
     #endregion
     
@@ -152,7 +143,14 @@ public class MapData : MonoBehaviour
     #endregion
 
     #region 맵 데이터 설정
-    
+
+    private void Awake()
+    {
+        AlivePlayerCount = 0;
+        _aliveMonsterCount = 0;
+        _remainingWaveCount = 0;
+    }
+
     /// <summary>
     /// 현재 맵의 Node Tree Index를 지정<br/>
     /// NodeTreeMaker.cs에서만 사용함<br/>
@@ -169,8 +167,9 @@ public class MapData : MonoBehaviour
     /// NodeTreeMaker.cs에서만 사용함<br/>
     /// 임의 변경 금지
     /// </summary>
-    /// <param name="dir">변경할 노드의 시작 지점</param>
-    public void SetNodeStartDir(NodeStartDir dir)
+    /// <param name="dir">변경할 노드의 시작 지점<br/>
+    /// 0 = 왼쪽, 1 = 위쪽, 2 = 오른쪽, 3 = 아래쪽</param>
+    public void SetNodeStartDir(int dir)
     {
         StartDir = dir;
     }
@@ -178,20 +177,19 @@ public class MapData : MonoBehaviour
     /// <summary>
     /// 연결 된 다음 맵을 지정<br/>
     /// NodeTreeMaker.cs에서만 사용함<br/>
+    /// NodeStartDir의 반대 방향으로 붙여야 됨으로 오른쪽부터 시게방향으로 지정<br/>
     /// 임의 변경 금지
     /// </summary>
-    /// <param name="UpperMap">위쪽으로 향하는 맵<br/>부재 시 null 입력</param>
-    /// <param name="LeftMap">왼쪽으로 향하는 맵<br/>부재 시 null 입력</param>
-    /// <param name="RightMap">오른쪽으로 향하는 맵<br/>부재 시 null 입력</param>
-    /// <param name="SpacialMap">특별 방향으로 향하는 맵<br/>부재 시 null 입력</param>
-    /// <param name="LowerMap">아래쪽으로 향하는 맵<br/>부재 시 null 입력</param>
-    public void SetNextMaps(GameObject UpperMap, GameObject LeftMap, GameObject RightMap, GameObject SpacialMap, GameObject LowerMap)
+    /// <param name="rightMap">오른쪽으로 향하는 맵<br/>부재 시 null 입력</param>
+    /// <param name="lowerMap">아래쪽으로 향하는 맵<br/>부재 시 null 입력</param>
+    /// <param name="leftMap">왼쪽으로 향하는 맵<br/>부재 시 null 입력</param>
+    /// <param name="upperMap">위쪽으로 향하는 맵<br/>부재 시 null 입력</param>
+    public void SetNextMaps(GameObject rightMap, GameObject lowerMap, GameObject leftMap, GameObject upperMap)
     {
-        NextMap_Up = UpperMap;
-        NextMap_Down = LowerMap;
-        NextMap_Left = LeftMap;
-        NextMap_Right = RightMap;
-        NextMap_Sp = SpacialMap;
+        NextMap_Right = rightMap;
+        NextMap_Down = lowerMap;
+        NextMap_Left = leftMap;
+        NextMap_Up = upperMap;
         OnChangeNextMaps?.Invoke();
     }
     
@@ -251,9 +249,9 @@ public class MapData : MonoBehaviour
     /// </summary>
     public void PlusAlivePlayerCount()
     {
-        if(_alivePlayerCount >= 4) return;
-        _alivePlayerCount++;
-        OnChangeAlivePlayerCount?.Invoke(_alivePlayerCount);
+        if(AlivePlayerCount >= 4) return;
+        AlivePlayerCount++;
+        OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
     }
     
     /// <summary>
@@ -261,9 +259,9 @@ public class MapData : MonoBehaviour
     /// </summary>
     public void MinusAlivePlayerCount()
     {
-        if(_alivePlayerCount <= 0) return;
-        _alivePlayerCount--;
-        OnChangeAlivePlayerCount?.Invoke(_alivePlayerCount);
+        if(AlivePlayerCount <= 0) return;
+        AlivePlayerCount--;
+        OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
     }
 
     /// <summary>

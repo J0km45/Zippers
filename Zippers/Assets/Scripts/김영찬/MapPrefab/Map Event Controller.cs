@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary>
 /// 맵에 발동되는 이벤트 제어
 /// </summary>
@@ -9,25 +11,7 @@ public class MapEventController
     public MapController Controller { get; private set; }
     private EventMachine _machine;
 
-    /// <summary>
-    /// MapEventController에서 사용하는 NoEvent 변수
-    /// </summary>
-    public INodeEvent NoEvent { get; private set; }
-    
-    /// <summary>
-    /// MapEventController에서 사용하는 MonsterSpawnEvent 변수
-    /// </summary>
-    public INodeEvent MonsterSpawnEvent { get; private set; }
-    
-    /// <summary>
-    /// MapEventController에서 사용하는 MonsterEnhanceEvent 변수
-    /// </summary>
-    public INodeEvent MonsterEnhanceEvent { get; private set; }
-    
-    /// <summary>
-    /// MapEventController에서 사용하는 SupplyItemEvent 변수
-    /// </summary>
-    public INodeEvent SupplyItemEvent { get; private set; }
+    private NodeEvent _currentEvent;
     
     public MapEventController(MapController controller)
     {
@@ -40,18 +24,9 @@ public class MapEventController
     public void InitEventController()
     {
         _machine = new EventMachine();
-        
-        NoEvent = new NoEvent(this);
-        MonsterEnhanceEvent = new MonsterEnhanceEvent(this);
-        MonsterSpawnEvent = new MonsterSpawnEvent(this);
-        SupplyItemEvent = new SupplyItemEvent(this);
     }
 
-    /// <summary>
-    /// 이벤트 변경
-    /// </summary>
-    /// <param name="nodeEvent">EventController.{eventName} 사용</param>
-    public void ChangeEvent(INodeEvent nodeEvent)
+    private void ChangeEvent(NodeEvent nodeEvent)
     {
         _machine.ChangeEvent(nodeEvent);
     }
@@ -62,5 +37,17 @@ public class MapEventController
     public void Update()
     {
         _machine.EventUpdate();
+    }
+
+    /// <summary>
+    /// 현재 구동중인 이벤트 설정
+    /// </summary>
+    /// <param name="eventType">NodeEventType enum을 지정</param>
+    /// <param name="index">1번부터 시작, No Event만 0번으로 지정</param>
+    public void SetCurrentEvent(NodeEventType eventType, int index)
+    {
+        EventSO temp = Controller.EventDictionary.CallEvent(eventType, index);
+        _currentEvent = temp.SetEventScript(this);
+        ChangeEvent(_currentEvent);
     }
 }

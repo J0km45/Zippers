@@ -131,17 +131,14 @@ MonoBehaviour:
   <NextMap_Down>k__BackingField: {fileID: 0}
   <NextMap_Left>k__BackingField: {fileID: 0}
   <NextMap_Right>k__BackingField: {fileID: 0}
-  <NextMap_Sp>k__BackingField: {fileID: 0}
   <TeleportBeacon_Up>k__BackingField: {fileID: 0}
   <TeleportBeacon_Down>k__BackingField: {fileID: 0}
   <TeleportBeacon_Left>k__BackingField: {fileID: 0}
   <TeleportBeacon_Right>k__BackingField: {fileID: 0}
-  <TeleportBeacon_Sp>k__BackingField: {fileID: 0}
   <NodeState>k__BackingField: 0
   <NodeTreeIndex>k__BackingField: 0
   <StartDir>k__BackingField: 0
   <NodeType>k__BackingField: 0
-  _remainingWaveCount: 0
 --- !u!114 &5421610212818518291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,7 +151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae5eaaa01d4e3e4d872664e76911a22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NodeController
-  <Teleporter>k__BackingField: {fileID: 3607655182570474681}
 --- !u!114 &3607655182570474681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,6 +164,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NextMapTeleporter
   _controller: {fileID: 5421610212818518291}
+  _ballotBox_UP: {fileID: 0}
+  _ballotBox_Down: {fileID: 0}
+  _ballotBox_Left: {fileID: 0}
+  _ballotBox_Right: {fileID: 0}
 --- !u!1 &7659469384643045925
 GameObject:
   m_ObjectHideFlags: 0

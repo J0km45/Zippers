@@ -3,13 +3,13 @@
 /// </summary>
 public class EventMachine
 {
-    INodeEvent _nodeEvent;
+    NodeEvent _nodeEvent;
     
     /// <summary>
     /// 노드의 이벤트 상태를 전환
     /// </summary>
     /// <param name="nodeEvent">전환 될 노드 이벤트</param>
-    public void ChangeEvent(INodeEvent nodeEvent)
+    public void ChangeEvent(NodeEvent nodeEvent)
     {
         _nodeEvent?.EventExit();
         _nodeEvent = nodeEvent;
