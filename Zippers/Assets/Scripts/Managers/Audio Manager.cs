@@ -2,109 +2,125 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 
+/// <summary>
+/// 오디오 전체 관리
+/// 오디오 믹서를 통해 볼륨 설정
+/// </summary>
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
-
-    [SerializeField] private float _masterVolume = 0.5f;  // 전체
-    [SerializeField] private float _bgmVolume = 0.5f;     // 배경음악
-    [SerializeField] private float _sfxVolume = 0.5f;   // 특수 효과음
-    [SerializeField] private float _uiVolume = 0.5f;      // UI 효과음
     
-    private AudioSource _bgmSource;
-    private AudioSource _sfxSource;
-    private AudioSource _uiSource;
+    [Space(10)][Header("오디오 믹서")]
+    [SerializeField] private AudioMixer _audioMixer;
     
-    public AudioSource BgmSource => _bgmSource;
-    public AudioSource SfxSource => _sfxSource;
-    public AudioSource UiSource => _uiSource;
-
+    [Space(10)][Header("오디오 그룹")]
+    [SerializeField] private AudioMixerGroup _masterGroup;
+    [SerializeField] private AudioMixerGroup _bgmGroup;
+    [SerializeField] private AudioMixerGroup _sfxGroup;
+    [SerializeField] private AudioMixerGroup _uiGroup;
+    public AudioMixerGroup MasterGroup => _masterGroup;
+    public AudioMixerGroup BgmGroup => _bgmGroup;
+    public AudioMixerGroup SfxGroup => _sfxGroup;
+    public AudioMixerGroup UIGroup => _uiGroup;
+    
+    /// <summary>
+    /// 믹서에서 볼륨 조절을 위한 키
+    /// </summary>
+    private const string MasterVolumeKey = "Master_Volume";
+    private const string BGMVolumeKey = "BGM_Volume";
+    private const string SfxVolumeKey = "SFX_Volume";
+    private const string UIVolumeKey = "UI_Volume";
+    
+    private const float DefaultVolume = 1.0f;
+    
+    public float MasterVolume => PlayerPrefs.GetFloat(MasterVolumeKey, DefaultVolume);
+    public float BGMVolume => PlayerPrefs.GetFloat(BGMVolumeKey, DefaultVolume);
+    public float SfxVolume => PlayerPrefs.GetFloat(SfxVolumeKey, DefaultVolume);
+    public float UIVolume => PlayerPrefs.GetFloat(UIVolumeKey, DefaultVolume);
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    public float MasterVolume
+
+    private void Start()
+        => VolumeInit();
+    
+    /// <summary>
+    /// 마스터 볼륨 조절
+    /// </summary>
+    /// <param name="value"></param>
+    /// 슬라이더 값
+    public void SetMasterVolume(float value)
     {
-        get { return _masterVolume; }
-        set
-        {
-            _masterVolume = Mathf.Clamp01(value);
-            if (_bgmSource != null)
-                _bgmSource.volume = _bgmVolume * _masterVolume;
-            if (_sfxSource != null)
-                _sfxSource.volume = _sfxVolume * _masterVolume;
-            if (_uiSource != null)
-                _uiSource.volume = _uiVolume * _masterVolume;
-        }
+        SetMixerVolume(MasterVolumeKey, value);
+        PlayerPrefs.SetFloat(MasterVolumeKey, value);
     }
 
-    public float BgmVolume
+    /// <summary>
+    /// BGM 볼륨 조절
+    /// </summary>
+    public void SetBGMVolume(float value)
     {
-        get { return _bgmVolume; }
-        set
-        {
-            _bgmVolume = Mathf.Clamp01(value);
-            if (_bgmSource != null)
-                _bgmSource.volume = _bgmVolume * _masterVolume;
-        }
+        SetMixerVolume(BGMVolumeKey, value);
+        PlayerPrefs.SetFloat(BGMVolumeKey, value);
     }
 
-    public float SfxVolume
+    /// <summary>
+    /// SFX 볼륨 조절 
+    /// </summary>
+    public void SetSFXVolume(float value)
     {
-        get { return _sfxVolume; }
-        set
-        {
-            _sfxVolume = Mathf.Clamp01(value);
-            if (_sfxSource != null)
-                _sfxSource.volume = _sfxVolume * _masterVolume;
-        }
+        SetMixerVolume(SfxVolumeKey, value);
+        PlayerPrefs.SetFloat(SfxVolumeKey, value);
     }
 
-    public float UIVolume
+    /// <summary>
+    /// UI 볼륨 조절 
+    /// </summary>
+    public void SetUIVolume(float value)
     {
-        get { return _uiVolume; }
-        set
-        {
-            _uiVolume = Mathf.Clamp01(value);
-            if (_uiSource != null)
-                _uiSource.volume = _uiVolume * _masterVolume;
-        }
+        SetMixerVolume(UIVolumeKey, value);
+        PlayerPrefs.SetFloat(UIVolumeKey, value);
     }
 
-    // BGM 재생
-    public void PlayBGM(AudioSource source, AudioClip clip)
+    /// <summary>
+    /// 볼륨 변경 메서드
+    /// </summary>
+    /// <param name="parameter"></param>
+    /// VolumeMixer의 Group별 파라미터 키
+    /// <param name="value"></param>
+    /// 볼륨 값
+    /// AudioMixer는 0.5, 0.1 같은 선형 값이 아니라 데시벨(dB) 값을 받기 때문에 변환식 필요
+    /// dB = 20Log10(x) 여기서 x 는 슬라이더 값
+    private void SetMixerVolume(string parameter, float value)
     {
-        if (source == null) return;
-        if (_bgmSource.clip == clip && _bgmSource.isPlaying) return;
-        _bgmSource = source;
-        source.volume = _bgmVolume *_masterVolume;
-        source.clip = clip;
-        source.Play();
+        float clampValue = Mathf.Clamp(value, 0.0001f, 1f);
+        float volumeDb = Mathf.Log10(clampValue) * 20f;
+        
+        bool result = _audioMixer.SetFloat(parameter, volumeDb);
+        
+        if(!result)
+            DebugTool.Log($"{parameter} Audio mixer를 찾을 수 없습니다.", DebugType.Game, this);
     }
 
-    // 전투 효과음 재생
-    public void PlaySFX(AudioSource source, AudioClip clip)
+    /// <summary>
+    /// 게임 시작시 저장된 볼륨 값 초기화
+    /// </summary>
+    private void VolumeInit()
     {
-        if (source == null) return;
-        _sfxSource = source;
-        source.volume = _sfxVolume *_masterVolume;
-        source.PlayOneShot(clip);
-    }
-
-    // UI 효과음 재생
-    public void PlayUI(AudioSource source, AudioClip clip)
-    {
-        if (source == null) return;
-        _uiSource = source;
-        source.volume = _uiVolume *_masterVolume;
-        source.PlayOneShot(clip);
+        SetMixerVolume(MasterVolumeKey, MasterVolume);
+        SetMixerVolume(BGMVolumeKey, BGMVolume);
+        SetMixerVolume(SfxVolumeKey, SfxVolume);
+        SetMixerVolume(UIVolumeKey, UIVolume);
     }
 }
