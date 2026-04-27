@@ -5,6 +5,8 @@ using UnityEngine;
 /// </summary>
 public class NodeTreeMaker : MonoBehaviour
 {
+    
+    
     // Node.NextNodes에 규칙에 따라 노드를 삽입하여 트리 구조 형성
     // Node.NodeTreeIndex를 다음 규칙에 따라 지정
     // - 진행도 3번째, 1번 트리(다른 트리가 없어도 1), 1번 분기(다른 분기가 없어도 1)면 3.11({진행도}.{트리번호}{분기번호})로 지정 
