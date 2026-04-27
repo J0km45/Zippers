@@ -50,6 +50,9 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void ChangeState(PlayerStateType stateType)
     {
+        if (_playerStateType == stateType)
+            return;
+
         _playerStateType = stateType;
         switch (stateType)
         {
