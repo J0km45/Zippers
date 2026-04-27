@@ -3,74 +3,96 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerInput _playerInput;
+    private PlayerActions _playerAction;
     private PlayerStateMachine _playerStateMachine;
-
+    private PlayerAim _playerAim;
 
     private void Awake()
     {
-        _playerInput = GetComponent<PlayerInput>();
+        _playerAction = new PlayerActions();
+        _playerAim = GetComponent<PlayerAim>();
         _playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
     private void OnEnable()
     {
-        _playerInput.onActionTriggered += HandleInput;
+        _playerAction.Enable();
+        _playerAction.PlayerControl.Move.performed += OnMove;
+        _playerAction.PlayerControl.Move.canceled += OnMove;
+
+        _playerAction.PlayerControl.Fire.performed += OnFire;
+        _playerAction.PlayerControl.Fire.canceled += OnFire;
+
+        _playerAction.PlayerControl.Aiming.performed += OnAiming;
+        _playerAction.PlayerControl.Aiming.canceled += OnAiming;
+
+        _playerAction.PlayerControl.Reload.performed += OnReload;
+        _playerAction.PlayerControl.Reload.canceled += OnReload;
     }
 
     private void OnDisable()
     {
-        _playerInput.onActionTriggered -= HandleInput;
+        _playerAction.PlayerControl.Move.performed -= OnMove;
+        _playerAction.PlayerControl.Move.canceled -= OnMove;
+
+        _playerAction.PlayerControl.Fire.performed -= OnFire;
+        _playerAction.PlayerControl.Fire.canceled -= OnFire;
+
+        _playerAction.PlayerControl.Aiming.performed -= OnAiming;
+        _playerAction.PlayerControl.Aiming.canceled -= OnAiming;
+
+        _playerAction.PlayerControl.Reload.performed -= OnReload;
+        _playerAction.PlayerControl.Reload.canceled -= OnReload;
+        _playerAction.Disable();
     }
 
-    private void HandleInput(InputAction.CallbackContext ctx)
+    private void OnMove(InputAction.CallbackContext ctx)
     {
-        switch(ctx.action.name)
+        if(ctx.performed )
         {
-            case "Move":
-                HandleMove(ctx);
-                break;
-            case "Fire":
-                HandleFire(ctx);
-                break;
-            case "Aiming":
-                HandleAiming(ctx);
-                break;
-            case "Reload":
-                HandleReload(ctx);
-                break;
+            Vector2 moveInput = ctx.ReadValue<Vector2>();
+            _playerStateMachine.SetMoveInput(moveInput);
+            // 이동 처리 로직
+            Debug.Log($"[PlayerController] 이동 입력: {moveInput}");
+        }
+        if(ctx.canceled)
+        {
+            _playerStateMachine.SetMoveInput(Vector2.zero);
+            // 이동 취소 처리 로직
+            Debug.Log("[PlayerController] 이동 입력 취소");
         }
     }
 
-    private void HandleMove(InputAction.CallbackContext ctx)
-    {
-        Vector2 moveInput = ctx.ReadValue<Vector2>();
-        _playerStateMachine.SetMoveInput(moveInput);
-        // 이동 처리 로직
-        Debug.Log($"[PlayerController] 이동 입력: {moveInput}");
-    }
-
-    private void HandleFire(InputAction.CallbackContext ctx)
+    private void OnFire(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
             // 발사 처리 로직
-            Debug.Log("Fire!");
+            Debug.Log("발싸!");
         }
         //TODO : PlayerShooter만드면 여기서 호출
     }
 
-    private void HandleAiming(InputAction.CallbackContext ctx)
+    private void OnAiming(InputAction.CallbackContext ctx)
     {
-
+        if (ctx.performed)
+        {
+            _playerAim.SetAiming(true);
+            Debug.Log("조준시작");
+        }
+        else if (ctx.canceled)
+        {
+            _playerAim.SetAiming(false);
+            Debug.Log("조준 종료");
+        }
     }
 
-    private void HandleReload(InputAction.CallbackContext ctx)
+    private void OnReload(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
             // 재장전 처리 로직
-            Debug.Log("Reload!");
+            Debug.Log("재장전!");
         }
         ////TODO : PlayerReload 여기서 호출
     }
