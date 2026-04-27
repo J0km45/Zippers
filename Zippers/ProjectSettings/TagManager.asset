@@ -15,13 +15,13 @@ TagManager:
   - 
   - 
   - 
-  - Unit
-  - Summonable Tile
-  - Unsummonable Tile
+  - Player
+  - Zombie
+  - Node
+  - Obstacle
   - Projectile
-  - Wave
-  - Monster
-  - VFX
+  - Spawner
+  - 
   - 
   - 
   - 
