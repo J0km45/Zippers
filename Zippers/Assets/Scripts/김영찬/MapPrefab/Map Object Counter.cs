@@ -38,7 +38,7 @@ public class MapObjectCounter : MonoBehaviour
     {
         if(_countArea == null) return;
         Gizmos.matrix = transform.localToWorldMatrix;
-        Gizmos.color = Color.green;
+        Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(_countArea.center, _countArea.size);
     }
 }

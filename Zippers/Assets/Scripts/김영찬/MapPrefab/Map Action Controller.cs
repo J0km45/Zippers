@@ -57,6 +57,12 @@ public class MapActionController
                 _battleAction = new StartNodeBattleAction(this);
                 _clearAction = new StartNodeClearAction(this);
                 break;
+            case NodeType.Test:
+                _readyAction = new TestNodeReadyAction(this);
+                _battleAction = new TestNodeBattleAction(this);
+                _clearAction = new TestNodeClearAction(this);
+                break;
+
         }
     }
     
