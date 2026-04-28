@@ -18,4 +18,9 @@ public class ZombieAnimationEventController : MonoBehaviour
     {
         _zombie.OnAttackEnd();
     }
+
+    public void OnFootStep()
+    {
+        _zombie.OnFootStep();
+    }
 }

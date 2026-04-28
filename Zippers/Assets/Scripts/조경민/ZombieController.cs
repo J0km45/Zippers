@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using Unity.Netcode;
+using Audio;
 
 public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 {
@@ -13,6 +14,7 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     private StateMachine _stateMachine;
     private NavMeshAgent _agent;
     private Animator _animator;
+    private ZombieSfxController _sfx;
     private bool _isDead;
 
     public ZombieChaseState Chase { get; private set; }
@@ -21,6 +23,7 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     public ZombieDieState Die { get; private set; }
     public NavMeshAgent Agent => _agent;
     public Animator Animator => _animator;
+    public ZombieSfxController Sfx => _sfx;
     public float StunDuration => _stunDuration;
 
     //public NetworkVariable<int> CurrentHp = new NetworkVariable<float>();
@@ -53,6 +56,7 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponentInChildren<Animator>();
+        _sfx = GetComponent<ZombieSfxController>();
         _agent.stoppingDistance = AttackRange;
         CurrentHp = MaxHp; // 임시(테스트용)
     }
@@ -109,6 +113,11 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     public void OnAttackEnd()
     {
         Attack.OnAttackEnd();
+    }
+
+    public void OnFootStep()
+    {
+        Chase.OnFootStep();
     }
 
     // TODO : NGO 적용되면 수정
