@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class ZombieChaseState : IState
 {
     private ZombieController _zombie;

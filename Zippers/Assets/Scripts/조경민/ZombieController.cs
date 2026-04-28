@@ -5,15 +5,20 @@ using Unity.Netcode;
 public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 {
     [SerializeField] private ZombieStatSO _stat;
+    [Tooltip("피격 시 경직 시간")]
     [SerializeField] private float _stunDuration = 0.2f;
+    [Tooltip("재화 프리팹")]
+    [SerializeField] private GameObject _rewardPrefab;
 
     private StateMachine _stateMachine;
     private NavMeshAgent _agent;
     private Animator _animator;
-    
+    private bool _isDead;
+
     public ZombieChaseState Chase { get; private set; }
     public ZombieAttackState Attack { get; private set; }
     public ZombieHitState Hit { get; private set; }
+    public ZombieDieState Die { get; private set; }
     public NavMeshAgent Agent => _agent;
     public Animator Animator => _animator;
     public float StunDuration => _stunDuration;
@@ -44,6 +49,7 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
         Chase = new ZombieChaseState(this);
         Attack = new ZombieAttackState(this);
         Hit = new ZombieHitState(this);
+        Die = new ZombieDieState(this);
 
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponentInChildren<Animator>();
@@ -108,14 +114,24 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     // TODO : NGO 적용되면 수정
     public void TakeDamage(float damage)
     {
+        if (_isDead) return;
+
         CurrentHp -= damage;
-        //Debug.Log($"좀비가 {damage}만큼의 피해를 입었습니다. 현재 체력: {CurrentHp}");
-        //if (CurrentHp <= 0)
-        //{
-        //    ChangeState(Die);
-        //    return;
-        //}
+
+        if (CurrentHp <= 0)
+        {
+            _isDead = true;
+            ChangeState(Die);
+            return;
+        }
+
         ChangeState(Hit);
+    }
+
+    public void SpawnReward()
+    {
+        // TODO : 수정해야됨
+        //Instantiate(_rewardPrefab, transform.position, Quaternion.identity);
     }
 
     void OnDrawGizmos()
