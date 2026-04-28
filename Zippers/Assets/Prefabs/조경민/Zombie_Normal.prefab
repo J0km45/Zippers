@@ -71,6 +71,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieController
   _stat: {fileID: 11400000, guid: 51f00f20eb9232243ae0a8459e1b4c28, type: 2}
+  _stunDuration: 0.2
+  _rewardPrefab: {fileID: 0}
   CurrentHp: 0
   Player: {fileID: 0}
   PlayerLayer:
