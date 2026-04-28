@@ -57,8 +57,6 @@ public class PlayerLook : MonoBehaviour
         lookDirection.y = 0f;
 
         Rotate(lookDirection);
-
-        Debug.Log($"[PlayerLook] 조준 회전 / MouseWorld: {mouseWorldPosition}, Direction: {lookDirection}");
     }
 
     // 우클릭 안 누름: 이동 방향 바라보기

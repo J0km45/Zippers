@@ -4,24 +4,29 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     private PlayerActions _playerAction;
+
     private PlayerStateMachine _playerStateMachine;
-    private PlayerAim _playerAim;
+    private PlayerCombatStateMachine _combatStateMachine;
+    private PlayerCombat _playerCombat;
 
     private void Awake()
     {
         _playerAction = new PlayerActions();
-        _playerAim = GetComponent<PlayerAim>();
+
         _playerStateMachine = GetComponent<PlayerStateMachine>();
+        _combatStateMachine = GetComponent<PlayerCombatStateMachine>();
+        _playerCombat = GetComponent<PlayerCombat>();
     }
 
     private void OnEnable()
     {
         _playerAction.Enable();
+
         _playerAction.PlayerControl.Move.performed += OnMove;
         _playerAction.PlayerControl.Move.canceled += OnMove;
 
-        _playerAction.PlayerControl.Fire.performed += OnFire;
-        _playerAction.PlayerControl.Fire.canceled += OnFire;
+        _playerAction.PlayerControl.Fire.performed += OnAttack;
+        _playerAction.PlayerControl.Fire.canceled += OnAttack;
 
         _playerAction.PlayerControl.Aiming.performed += OnAiming;
         _playerAction.PlayerControl.Aiming.canceled += OnAiming;
@@ -35,65 +40,83 @@ public class PlayerController : MonoBehaviour
         _playerAction.PlayerControl.Move.performed -= OnMove;
         _playerAction.PlayerControl.Move.canceled -= OnMove;
 
-        _playerAction.PlayerControl.Fire.performed -= OnFire;
-        _playerAction.PlayerControl.Fire.canceled -= OnFire;
+        _playerAction.PlayerControl.Fire.performed -= OnAttack;
+        _playerAction.PlayerControl.Fire.canceled -= OnAttack;
 
         _playerAction.PlayerControl.Aiming.performed -= OnAiming;
         _playerAction.PlayerControl.Aiming.canceled -= OnAiming;
 
         _playerAction.PlayerControl.Reload.performed -= OnReload;
         _playerAction.PlayerControl.Reload.canceled -= OnReload;
+
         _playerAction.Disable();
     }
 
     private void OnMove(InputAction.CallbackContext ctx)
     {
-        if(ctx.performed )
+        if (ctx.performed)
         {
             Vector2 moveInput = ctx.ReadValue<Vector2>();
             _playerStateMachine.SetMoveInput(moveInput);
-            // 이동 처리 로직
+
             Debug.Log($"[PlayerController] 이동 입력: {moveInput}");
         }
-        if(ctx.canceled)
+
+        if (ctx.canceled)
         {
             _playerStateMachine.SetMoveInput(Vector2.zero);
-            // 이동 취소 처리 로직
+
             Debug.Log("[PlayerController] 이동 입력 취소");
         }
     }
 
-    private void OnFire(InputAction.CallbackContext ctx)
+    private void OnAttack(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (!ctx.performed)
+            return;
+
+        if (_playerCombat == null)
         {
-            // 발사 처리 로직
-            Debug.Log("발싸!");
+            Debug.LogWarning("[PlayerController] PlayerCombat이 없습니다.");
+            return;
         }
-        //TODO : PlayerShooter만드면 여기서 호출
+
+        Debug.Log("[PlayerController] 공격 입력");
+        _playerCombat.TryAttack();
     }
 
     private void OnAiming(InputAction.CallbackContext ctx)
     {
+        if (_combatStateMachine == null)
+        {
+            Debug.LogWarning("[PlayerController] PlayerCombatStateMachine이 없습니다.");
+            return;
+        }
+
         if (ctx.performed)
         {
-            _playerAim.SetAiming(true);
-            Debug.Log("조준시작");
+            Debug.Log("[PlayerController] 조준 시작");
+            _combatStateMachine.SetAiming(true);
         }
         else if (ctx.canceled)
         {
-            _playerAim.SetAiming(false);
-            Debug.Log("조준 종료");
+            Debug.Log("[PlayerController] 조준 종료");
+            _combatStateMachine.SetAiming(false);
         }
     }
 
     private void OnReload(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (!ctx.performed)
+            return;
+
+        if (_combatStateMachine == null)
         {
-            // 재장전 처리 로직
-            Debug.Log("재장전!");
+            Debug.LogWarning("[PlayerController] PlayerCombatStateMachine이 없습니다.");
+            return;
         }
-        ////TODO : PlayerReload 여기서 호출
+
+        Debug.Log("[PlayerController] 재장전 입력");
+        _combatStateMachine.RequestReload();
     }
 }

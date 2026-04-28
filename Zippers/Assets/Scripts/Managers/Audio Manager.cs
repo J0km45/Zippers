@@ -32,8 +32,11 @@ public class AudioManager : MonoBehaviour
     private const string BGMVolumeKey = "BGM_Volume";
     private const string SfxVolumeKey = "SFX_Volume";
     private const string UIVolumeKey = "UI_Volume";
-    
-    private const float DefaultVolume = 1.0f;
+
+    [Space(5)][Header("슬라이더 최대 값")]
+    [SerializeField][Range(1f, 1.5f)] private float _maxSliderValue = 1.2f;
+    private float _minSliderValue = 0.0001f;
+    private const float DefaultVolume = 1f;
     
     public float MasterVolume => PlayerPrefs.GetFloat(MasterVolumeKey, DefaultVolume);
     public float BGMVolume => PlayerPrefs.GetFloat(BGMVolumeKey, DefaultVolume);
@@ -104,7 +107,7 @@ public class AudioManager : MonoBehaviour
     /// dB = 20Log10(x) 여기서 x 는 슬라이더 값
     private void SetMixerVolume(string parameter, float value)
     {
-        float clampValue = Mathf.Clamp(value, 0.0001f, 1f);
+        float clampValue = Mathf.Clamp(value, _minSliderValue, _maxSliderValue);
         float volumeDb = Mathf.Log10(clampValue) * 20f;
         
         bool result = _audioMixer.SetFloat(parameter, volumeDb);

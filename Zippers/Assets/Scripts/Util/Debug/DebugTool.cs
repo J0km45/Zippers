@@ -1,25 +1,18 @@
-// ------------------------------------------------------------------------------
-// 게임 코드에서 직접 호출하는 디버그 로그 진입점이며, 로그를 구조화해 매니저로 넘기는 공용 유틸 파일이다.
-// 멤버별 주석은 해당 변수, 메서드, 클래스가 왜 필요한지와 호출 시 어떤 역할을 하는지를 빠르게 파악하기 위해 추가하였다.
-// ------------------------------------------------------------------------------
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 /// <summary>
-/// 디버그 타입에 따라 로그를 필터링하고 별도 런타임 디버그 콘솔로 전달하는 공용 유틸 클래스이다.
+/// 게임 코드에서 호출하는 디버그 로그 진입점이다.
+/// 필터를 통과한 로그만 Unity Console에 출력한다.
 /// </summary>
 public static class DebugTool
 {
-    // sequence 상태를 저장한다. 관련 메서드에서 기준값이나 캐시로 사용한다.
-    private static long _sequence;
-
-    /// <summary>
-    /// 로그 처리 흐름을 수행한다. 관련 상태를 읽거나 갱신해 디버그 콘솔 동작을 이어간다.
-    /// </summary>
+    [Conditional("UNITY_EDITOR")]
     public static void Log(
         string text,
         DebugType type,
@@ -31,9 +24,7 @@ public static class DebugTool
         Write(DebugLogLevel.Log, text, type, context, memberName, filePath, lineNumber);
     }
 
-    /// <summary>
-    /// 경고 처리 흐름을 수행한다. 관련 상태를 읽거나 갱신해 디버그 콘솔 동작을 이어간다.
-    /// </summary>
+    [Conditional("UNITY_EDITOR")]
     public static void Warning(
         string text,
         DebugType type,
@@ -45,7 +36,10 @@ public static class DebugTool
         Write(DebugLogLevel.Warning, text, type, context, memberName, filePath, lineNumber);
     }
 
-    // 기존 오타 함수명 호환
+    /// <summary>
+    /// 기존 코드의 오타 호출을 깨지 않기 위한 호환용 메서드이다.
+    /// </summary>
+    [Conditional("UNITY_EDITOR")]
     public static void Warnning(
         string text,
         DebugType type,
@@ -54,12 +48,10 @@ public static class DebugTool
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0)
     {
-        Write(DebugLogLevel.Warning, text, type, context, memberName, filePath, lineNumber);
+        Warning(text, type, context, memberName, filePath, lineNumber);
     }
 
-    /// <summary>
-    /// 오류 처리 흐름을 수행한다. 관련 상태를 읽거나 갱신해 디버그 콘솔 동작을 이어간다.
-    /// </summary>
+    [Conditional("UNITY_EDITOR")]
     public static void Error(
         string text,
         DebugType type,
@@ -71,9 +63,7 @@ public static class DebugTool
         Write(DebugLogLevel.Error, text, type, context, memberName, filePath, lineNumber);
     }
 
-    /// <summary>
-    /// missing 컴포넌트 처리 흐름을 수행한다. 관련 상태를 읽거나 갱신해 디버그 콘솔 동작을 이어간다.
-    /// </summary>
+    [Conditional("UNITY_EDITOR")]
     public static void MissingComponent(
         string text = null,
         Object context = null,
@@ -81,38 +71,23 @@ public static class DebugTool
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0)
     {
-        string message = string.IsNullOrEmpty(text)
+        string message = string.IsNullOrWhiteSpace(text)
             ? "컴포넌트를 찾을 수 없습니다."
             : $"{text}을(를) 찾을 수 없습니다.";
 
         Write(DebugLogLevel.Warning, message, DebugType.Missing, context, memberName, filePath, lineNumber);
     }
 
-    /// <summary>
-    /// debug print all 처리 흐름을 수행한다. 관련 상태를 읽거나 갱신해 디버그 콘솔 동작을 이어간다.
-    /// </summary>
     public static void DebugPrintAll(bool value)
     {
-        if (DebugConsoleManager.Instance == null)
-            return;
-
-        DebugConsoleManager.Instance.GlobalEnabled = value;
+        DebugConsoleManager.SetGlobalEnabled(value);
     }
 
-    /// <summary>
-    /// debug select 처리 흐름을 수행한다. 관련 상태를 읽거나 갱신해 디버그 콘솔 동작을 이어간다.
-    /// </summary>
     public static void DebugSelect(DebugType type, bool value)
     {
-        if (DebugConsoleManager.Instance == null)
-            return;
-
-        DebugConsoleManager.Instance.SetTypeEnabled(type, value);
+        DebugConsoleManager.SetTypeEnabledStatic(type, value);
     }
 
-    /// <summary>
-    /// 관련 작업를 기록한다.
-    /// </summary>
     private static void Write(
         DebugLogLevel level,
         string text,
@@ -122,236 +97,86 @@ public static class DebugTool
         string filePath,
         int lineNumber)
     {
-        GetTargetIds(context, out int gameObjectId, out int componentId);
-
-        DebugConsoleManager manager = DebugConsoleManager.Instance;
-        if (manager != null && !manager.IsAllowed(type, context))
+        if (!DebugConsoleManager.GetLevelEnabledStatic(level))
             return;
 
-        ResolveTargetMetadata(
-            context,
-            out string sceneKey,
-            out string hierarchyPath,
-            out string gameObjectKey,
-            out string componentKey,
-            out string gameObjectName,
-            out string componentName,
-            out string componentTypeName);
+        if (!DebugConsoleManager.IsAllowedStatic(type, context))
+            return;
 
-        string color = GetColor(type);
-        string fileName = Path.GetFileNameWithoutExtension(filePath);
-        string sourceName = GetSourceName(context, fileName);
+        string message = BuildMessage(level, text, type, context, memberName, filePath, lineNumber);
 
-        if (memberName == ".ctor")
-            memberName = "생성자";
-
-        DebugEntry entry = new DebugEntry
+        switch (level)
         {
-            Time = DateTime.Now.ToString("HH:mm:ss.fff"),
-            Message = text,
-            SourceName = sourceName,
-            MemberName = memberName,
-            LineNumber = lineNumber,
-            Type = type,
-            Level = level,
-            Context = context,
-            GameObjectId = gameObjectId,
-            ComponentId = componentId,
-            ColorHex = color,
-            CallerFilePath = filePath,
-            CallerColumn = 1,
-            StackTrace = BuildStackTrace(filePath, lineNumber, memberName),
-            SequenceId = ++_sequence,
-            FrameCount = UnityEngine.Time.frameCount,
-            CapturedAtIsoUtc = DateTime.UtcNow.ToString("O"),
-            SceneKey = sceneKey,
-            HierarchyPath = hierarchyPath,
-            GameObjectKey = gameObjectKey,
-            ComponentKey = componentKey,
-            GameObjectName = gameObjectName,
-            ComponentName = componentName,
-            ComponentTypeName = componentTypeName
-        };
+            case DebugLogLevel.Warning:
+                Debug.LogWarning(message, context);
+                break;
 
-        entry.RefreshDerivedFields();
+            case DebugLogLevel.Error:
+                Debug.LogError(message, context);
+                break;
 
-        if (manager != null)
-        {
-            manager.AddEntry(entry);
-
-            if (manager.MirrorToUnityConsole)
-                PrintToUnityConsole(entry);
-        }
-        else
-        {
-            PrintToUnityConsole(entry);
+            default:
+                Debug.Log(message, context);
+                break;
         }
     }
 
-    /// <summary>
-    /// resolve 대상 metadata 처리 흐름을 수행한다. 관련 상태를 읽거나 갱신해 디버그 콘솔 동작을 이어간다.
-    /// </summary>
-    private static void ResolveTargetMetadata(
+    private static string BuildMessage(
+        DebugLogLevel level,
+        string text,
+        DebugType type,
         Object context,
-        out string sceneKey,
-        out string hierarchyPath,
-        out string gameObjectKey,
-        out string componentKey,
-        out string gameObjectName,
-        out string componentName,
-        out string componentTypeName)
+        string memberName,
+        string filePath,
+        int lineNumber)
     {
-        sceneKey = string.Empty;
-        hierarchyPath = string.Empty;
-        gameObjectKey = string.Empty;
-        componentKey = string.Empty;
-        gameObjectName = string.Empty;
-        componentName = string.Empty;
-        componentTypeName = string.Empty;
+        string color = GetColor(type);
+        string sourceName = GetSourceName(context, filePath);
+        string safeMemberName = memberName == ".ctor" ? "생성자" : memberName;
+        string source = $"{sourceName}.{safeMemberName} : {Mathf.Max(1, lineNumber)}";
+        string levelText = level == DebugLogLevel.Log ? string.Empty : $"/{level}";
 
-        if (context is GameObject go)
-        {
-            sceneKey = DebugConsoleFilterKeyUtility.GetSceneKey(go);
-            hierarchyPath = DebugConsoleFilterKeyUtility.GetHierarchyPath(go.transform);
-            gameObjectKey = DebugConsoleFilterKeyUtility.GetGameObjectKey(go);
-            gameObjectName = go.name;
-            return;
-        }
-
-        if (context is Component component)
-        {
-            sceneKey = DebugConsoleFilterKeyUtility.GetSceneKey(component.gameObject);
-            hierarchyPath = DebugConsoleFilterKeyUtility.GetHierarchyPath(component.transform);
-            gameObjectKey = DebugConsoleFilterKeyUtility.GetGameObjectKey(component.gameObject);
-            componentKey = DebugConsoleFilterKeyUtility.GetComponentKey(component);
-            gameObjectName = component.gameObject.name;
-            componentName = component.GetType().Name;
-            componentTypeName = component.GetType().FullName;
-        }
+        return $"<color={color}>[{type}{levelText}] {text}</color>\n" +
+               $"<color=#DAA520>출처 : [{source}]</color>";
     }
 
-    /// <summary>
-    /// 대상 ids 값을 계산해 반환한다. 조회용 메서드이므로 호출자는 반환값을 기준으로 다음 동작을 결정한다.
-    /// </summary>
-    private static void GetTargetIds(Object context, out int gameObjectId, out int componentId)
+    private static string GetSourceName(Object context, string filePath)
     {
-        gameObjectId = 0;
-        componentId = 0;
-
-        if (context is GameObject go)
-        {
-            gameObjectId = go.GetInstanceID();
-            return;
-        }
-
-        if (context is Component component)
-        {
-            gameObjectId = component.gameObject.GetInstanceID();
-            componentId = component.GetInstanceID();
-        }
-    }
-
-    /// <summary>
-    /// 출처 이름 값을 계산해 반환한다. 조회용 메서드이므로 호출자는 반환값을 기준으로 다음 동작을 결정한다.
-    /// </summary>
-    private static string GetSourceName(Object context, string fallbackFileName)
-    {
-        if (context == null)
-            return fallbackFileName;
-
         if (context is Component component)
             return $"{component.gameObject.name}/{component.GetType().Name}";
 
         if (context is GameObject go)
             return go.name;
 
-        return context.name;
+        if (context != null)
+            return context.name;
+
+        string fileName = Path.GetFileNameWithoutExtension(filePath);
+        return string.IsNullOrWhiteSpace(fileName) ? "Unknown" : fileName;
     }
 
-    /// <summary>
-    /// print to 유니티 console 처리 흐름을 수행한다. 관련 상태를 읽거나 갱신해 디버그 콘솔 동작을 이어간다.
-    /// </summary>
-    private static void PrintToUnityConsole(DebugEntry entry)
+    private static string GetColor(DebugType type)
     {
-        switch (entry.Level)
+        return type switch
         {
-            case DebugLogLevel.Warning:
-                Debug.LogWarning(entry.RichText, entry.Context);
-                break;
-
-            case DebugLogLevel.Error:
-                Debug.LogError(entry.RichText, entry.Context);
-                break;
-
-            default:
-                Debug.Log(entry.RichText, entry.Context);
-                break;
-        }
-    }
-
-
-/// <summary>
-/// 스택 트레이스 데이터를 조합해 새 문자열이나 키를 만든다. 동일한 규칙으로 값을 만들기 위해 사용한다.
-/// </summary>
-private static string BuildStackTrace(string filePath, int lineNumber, string memberName)
-{
-    try
-    {
-        var trace = new System.Diagnostics.StackTrace(2, true);
-        string raw = trace.ToString();
-
-        StringBuilder builder = new StringBuilder();
-        if (!string.IsNullOrWhiteSpace(raw))
-            builder.Append(raw.Trim());
-
-        if (!string.IsNullOrWhiteSpace(filePath))
-        {
-            if (builder.Length > 0)
-                builder.AppendLine();
-
-            builder.Append("Caller : ");
-            builder.Append(Path.GetFileName(filePath));
-            builder.Append(" / ");
-            builder.Append(string.IsNullOrWhiteSpace(memberName) ? "-" : memberName);
-            builder.Append(" / line ");
-            builder.Append(Mathf.Max(1, lineNumber));
-        }
-
-        return builder.ToString();
-    }
-    catch
-    {
-        if (string.IsNullOrWhiteSpace(filePath))
-            return string.Empty;
-
-        return $"Caller : {Path.GetFileName(filePath)} / {memberName} / line {Mathf.Max(1, lineNumber)}";
+            DebugType.Game => "#B388FF",
+            DebugType.Character => "#FFD166",
+            DebugType.Zombie => "#FF3B30",
+            DebugType.Spawner => "#00C2FF",
+            DebugType.Wave => "#FF7A00",
+            DebugType.Node => "#A3FF12",
+            DebugType.Network => "#00E676",
+            DebugType.UI => "#FF4FD8",
+            DebugType.Data => "#00D1B2",
+            DebugType.Audio => "#4F6BFF",
+            DebugType.Missing => "#FFFF00",
+            _ => "#D0D0D0"
+        };
     }
 }
 
 /// <summary>
-/// 색상 값을 계산해 반환한다. 조회용 메서드이므로 호출자는 반환값을 기준으로 다음 동작을 결정한다.
-/// </summary>
-private static string GetColor(DebugType type)
-{
-        switch (type)
-        {
-            case DebugType.Game: return "#B388FF";       // 보라
-            case DebugType.Character: return "#FFD166";  // 노랑-골드
-            case DebugType.Zombie: return "#FF3B30";     // 빨강
-            case DebugType.Spawner: return "#00C2FF";    // 하늘색
-            case DebugType.Wave: return "#FF7A00";       // 주황
-            case DebugType.Node: return "#A3FF12";       // 라임
-            case DebugType.Network: return "#00E676";    // 초록
-            case DebugType.UI: return "#FF4FD8";         // 핑크
-            case DebugType.Data: return "#00D1B2";       // 청록
-            case DebugType.Missing: return "#FFFF00";    // 경고 노랑
-            default: return "#D0D0D0";    // 기본 회색
-        }
-    }
-}
-
-/// <summary>
-/// DebugType 값을 구분하기 위한 열거형이다.
+/// 로그의 기능 영역을 구분하기 위한 타입이다.
 /// </summary>
 public enum DebugType
 {
@@ -364,6 +189,7 @@ public enum DebugType
     Spawner,
     Node,
     UI,
+    Audio,
     Missing,
     Default
 }
