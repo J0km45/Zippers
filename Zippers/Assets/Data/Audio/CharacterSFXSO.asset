@@ -66,17 +66,47 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8af18556bd884b546b0b69d2f1cc911f, type: 3}
   - {fileID: 8300000, guid: 51b281cbc0d2522498cb7b1827a723d7, type: 3}
   - {fileID: 8300000, guid: 70baa24f0584b8041b4291265baf4316, type: 3}
-  hitSfx:
-  - {fileID: 8300000, guid: b3ff18e4d5caab64fb2c583c405afdaf, type: 3}
-  - {fileID: 8300000, guid: 615c863d520f6c44cb2dc037f46d02c0, type: 3}
-  - {fileID: 8300000, guid: 8359bd7f9b4a0ea48814650f468559cd, type: 3}
-  deathSfx: []
-  scrapSFX:
-  - {fileID: 8300000, guid: 2c1e977b24bcc42a9a9409807a048d1f, type: 3}
-  - {fileID: 8300000, guid: c6638a2df2a3943358821b67ee8cda64, type: 3}
-  - {fileID: 8300000, guid: c64f422aa13134d2ab14ec974354f14a, type: 3}
-  - {fileID: 8300000, guid: 7244a4aa003694794aa265deaa1afc70, type: 3}
-  - {fileID: 8300000, guid: 9a1bcbe84d5d845659507878121590e8, type: 3}
-  - {fileID: 8300000, guid: 509f7765cf6004d6f89e4bd4d9078ba7, type: 3}
-  supplySFX: []
-  sampleSFX: []
+  maleHitSfx:
+  - {fileID: 8300000, guid: 35d2a090569a3124f8b6fec5050fba4d, type: 3}
+  - {fileID: 8300000, guid: 1a8a4fbac6bd0c240a1d7491d0f5ba26, type: 3}
+  - {fileID: 8300000, guid: 0fe22592c58b663419723fc798df90d9, type: 3}
+  - {fileID: 8300000, guid: 1ba225074474cdc4aa9cc1dd63c82969, type: 3}
+  - {fileID: 8300000, guid: 5d22c87645e20f04f9ba6c364f375cc0, type: 3}
+  - {fileID: 8300000, guid: daeb2b8dd04ba8b4fbeb708c2b05acc3, type: 3}
+  femaleHit:
+  - {fileID: 8300000, guid: bec4b5c27f39702489b61a3f64b956c8, type: 3}
+  - {fileID: 8300000, guid: 2f6fc55c1c120c64fa7036128c494240, type: 3}
+  - {fileID: 8300000, guid: e605df15604045d4cac05de7d571a412, type: 3}
+  - {fileID: 8300000, guid: eba88f5ce8d1c5f4b873c690b0fb3d88, type: 3}
+  - {fileID: 8300000, guid: 7e1d82a2a77e6c444acfb7b87e519660, type: 3}
+  - {fileID: 8300000, guid: d675c735b7b72cb4ababcdfafbd0a59e, type: 3}
+  maleDeathSfx:
+  - {fileID: 8300000, guid: 7cfc92ae6df19ac43ac46e6250aa3d51, type: 3}
+  - {fileID: 8300000, guid: 947cf37489086284ba3919d06078807b, type: 3}
+  - {fileID: 8300000, guid: fbd190c0e5369b04989cba45f372d8fa, type: 3}
+  - {fileID: 8300000, guid: 047a732b674f8e44990e670d8990f584, type: 3}
+  femaleDeathSfx:
+  - {fileID: 8300000, guid: db560d088cef28b4389fcaf03fd9f006, type: 3}
+  - {fileID: 8300000, guid: eaf106308b717f6408ae81e83f9dedfe, type: 3}
+  - {fileID: 8300000, guid: 970ee20f99224a0429a9807052b00434, type: 3}
+  - {fileID: 8300000, guid: 3691f8a7247650045b0861ded18d2ef1, type: 3}
+  - {fileID: 8300000, guid: 02b815f130b61ea49a6fce1687393a6f, type: 3}
+  - {fileID: 8300000, guid: d3d3b6db428a3834781da9819da04ab0, type: 3}
+  scrapSfx:
+  - {fileID: 8300000, guid: 329db8016853d804cbacda8db5f9ba28, type: 3}
+  - {fileID: 8300000, guid: 1e67a5caef180044ea0ba18d04caed20, type: 3}
+  - {fileID: 8300000, guid: 307f8ce202e79134dbc34aa5281b9c58, type: 3}
+  - {fileID: 8300000, guid: ff6f86e285831a4498ee25273f322a56, type: 3}
+  supplySfx:
+  - {fileID: 8300000, guid: e9e9875577809af47a16cb94801f953a, type: 3}
+  - {fileID: 8300000, guid: 4aa053533f7ce944997ba9e4ac0b62e0, type: 3}
+  - {fileID: 8300000, guid: 3f6bcef0e9fa76142a046db6c393c421, type: 3}
+  - {fileID: 8300000, guid: 47d2e94a0825afe4392622b16c22ce38, type: 3}
+  - {fileID: 8300000, guid: 7580d5c651427e1439e6a51f357c2631, type: 3}
+  - {fileID: 8300000, guid: bd062ded34722134595a04bd62e19a49, type: 3}
+  - {fileID: 8300000, guid: 1f02b17865b2a3241ba3b490ca605d60, type: 3}
+  sampleSfx:
+  - {fileID: 8300000, guid: 85bdf16bd56af1f4a9ed2b482be1466d, type: 3}
+  - {fileID: 8300000, guid: 2b583854570fbae4abdae29fbed219e4, type: 3}
+  - {fileID: 8300000, guid: e68faeae1732d944d95c13cf11f89ce4, type: 3}
+  - {fileID: 8300000, guid: 98f9cec6c5766d5419ab0a02319a85e0, type: 3}

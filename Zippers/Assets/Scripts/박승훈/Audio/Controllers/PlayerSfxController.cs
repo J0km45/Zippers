@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Audio
 {
-    public class CharacterSfxController : AudioController
+    public class PlayerSfxController : AudioController
     {
         [Header("캐릭터 오디오 소스 컴포넌트")]
         [SerializeField] private AudioSource _audioSource;
@@ -54,7 +54,7 @@ namespace Audio
             DebugTool.Log("플레이어 죽음 SFX 재생", DebugType.Audio, this);
         }
 
-        public void PlayDeathSfx()
+        public void PlayFemaleDeathSfx()
         {
             List<AudioClip> clips = _characterSfxso.FemaleDeathSfx;
             PlaySFX(_audioSource, clips);
