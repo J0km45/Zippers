@@ -3,9 +3,16 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 5f;
+    private PlayerStats _playerStats;
+
+    //[SerializeField] private float _moveSpeed = 5f;
+
     public Vector3 MoveDir{ get; private set; }
 
+    public void Awake()
+    {
+        _playerStats = GetComponent<PlayerStats>();
+    }
     // 입력 처리(대각선이동도 속도 같음)
     public void SetMoveInput(Vector2 input)
     {
@@ -16,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     // 이동 처리
     public void Move()
     {
-        transform.Translate(MoveDir * _moveSpeed * Time.deltaTime, Space.World);
+        transform.Translate(MoveDir * _playerStats.MoveSpeed * Time.deltaTime, Space.World);
     }
 
 }
