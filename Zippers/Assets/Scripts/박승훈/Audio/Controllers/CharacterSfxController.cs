@@ -33,21 +33,35 @@ namespace Audio
             DebugTool.Log("플레이어 달리기 SFX 재생", DebugType.Audio, this);
         }
 
-        public void PlayHitSfx()
+        public void PlayMaleHitSfx()
         {
-            List<AudioClip> clips = _characterSfxso.HitSfx;
+            List<AudioClip> clips = _characterSfxso.MaleHitSfx;
             PlaySFX(_audioSource, clips);
             DebugTool.Log("플레이어 피격 SFX 재생", DebugType.Audio, this);
         }
 
-        public void PlayDeathSfx()
+        public void PlayFemaleHitSfx()
         {
-            List<AudioClip> clips = _characterSfxso.DeathSfx;
+            List<AudioClip> clips = _characterSfxso.FemaleDeathSfx;
+            PlaySFX(_audioSource, clips);
+            DebugTool.Log("플레이어 피격 SFX 재생", DebugType.Audio, this);
+        }
+
+        public void PlayMaleDeathSfx()
+        {
+            List<AudioClip> clips = _characterSfxso.MaleDeathSfx;
             PlaySFX(_audioSource, clips);
             DebugTool.Log("플레이어 죽음 SFX 재생", DebugType.Audio, this);
         }
 
-        public void PlayGrabSFX(ResourcesType type)
+        public void PlayDeathSfx()
+        {
+            List<AudioClip> clips = _characterSfxso.FemaleDeathSfx;
+            PlaySFX(_audioSource, clips);
+            DebugTool.Log("플레이어 죽음 SFX 재생", DebugType.Audio, this);
+        }
+
+        public void PlayGrabSfx(ResourcesType type)
         {
             List<AudioClip> clips = _characterSfxso.ResourcesSFXDict[type];
             PlaySFX(_audioSource, clips);

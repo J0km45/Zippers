@@ -14,6 +14,14 @@ public class ZombieSFXSO : ScriptableObject
     [SerializeField] private List<AudioClip> bossMoveSfx = new List<AudioClip>();
     public List<AudioClip> BossMoveSfx => bossMoveSfx;
     
+    [Space(5)][Header("Normal Groan SFX")][Tooltip("Normal Groan Clip 필요")]
+    [SerializeField] private List<AudioClip> groanSfx = new List<AudioClip>();
+    public List<AudioClip> GroanSfx => groanSfx;
+    
+    [Space(5)][Header("Boss Groan SFX")][Tooltip("Boss Groan Clip 필요")]
+    [SerializeField] private List<AudioClip> bossGroanSfx = new List<AudioClip>();
+    public List<AudioClip> BossGroanSfx => bossGroanSfx;
+    
     [Space(5)][Header("Normal Attack SFX")][Tooltip("Attack Clip 필요")]
     [SerializeField] private List<AudioClip> normalSfx = new List<AudioClip>();
     public List<AudioClip> NormalSfx => normalSfx;
@@ -38,11 +46,11 @@ public class ZombieSFXSO : ScriptableObject
     [SerializeField] private List<AudioClip> scrapSfx = new List<AudioClip>();
     public List<AudioClip> ScrapSfx => scrapSfx;
     
-    [Space(5)][Header("Drop Scrap SFX")][Tooltip("Drop Scrap Clip 필요")]
+    [Space(5)][Header("Drop Supplies SFX")][Tooltip("Drop Scrap Clip 필요")]
     [SerializeField] private List<AudioClip> supplySfx = new List<AudioClip>();
     public List<AudioClip> SupplySfx => supplySfx;
     
-    [Space(5)][Header("Drop Scrap SFX")][Tooltip("Drop Scrap Clip 필요")]
+    [Space(5)][Header("Drop Samples SFX")][Tooltip("Drop Scrap Clip 필요")]
     [SerializeField] private List<AudioClip> sampleSfx = new List<AudioClip>();
     public List<AudioClip> SampleSfx => sampleSfx;
     
