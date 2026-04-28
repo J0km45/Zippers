@@ -1,6 +1,8 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Zippers/Player Class Data")]
+
+
+[CreateAssetMenu(fileName = "PlayerClassDataSO", menuName = "ScriptableObjects/PlayerClassDataSO", order = 1)]
 public class PlayerClassDataSO : ScriptableObject
 {
     [Header("기본 정보")]
@@ -28,4 +30,29 @@ public class PlayerClassDataSO : ScriptableObject
     [Tooltip("달리기 속도")] public float SprintSpeed;
     [Tooltip("시야 범위")] public float SightRange;
     [Tooltip("아이템 수집 범위")] public float CollectRange;
+
+    public void SetData(string[] datas)
+    {
+        ClassId = int.Parse(datas[0]);
+        WeaponType = (WeaponType)System.Enum.Parse(typeof(WeaponType), datas[1]);
+        ClassName = datas[2];
+        MaxHealth = float.Parse(datas[3]);
+        Stamina = float.Parse(datas[4]);
+        StaminaDelay = float.Parse(datas[5]);
+        StaminaPeriod = float.Parse(datas[6]);
+        StaminaRegen = float.Parse(datas[7]);
+        WeaponDamage = float.Parse(datas[8]);
+        AttackSpeed = float.Parse(datas[9]);
+        MagazineCapacity = float.Parse(datas[10]);
+        ReloadTime = float.Parse(datas[11]);
+        BulletSpeed = float.Parse(datas[12]);
+        BulletDistance = float.Parse(datas[13]);
+        MoveSpeed = float.Parse(datas[14]);
+        SprintSpeed = float.Parse(datas[15]);
+        SightRange = float.Parse(datas[16]);
+        CollectRange = float.Parse(datas[17]);
+
+
+
+    }
 }
