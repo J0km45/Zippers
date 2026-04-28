@@ -31,6 +31,18 @@ namespace Audio
             DebugTool.Log("좀비 이동 SFX 재생", DebugType.Audio, this);
         }
 
+        public void PlayGroanSfx()
+        {
+            List<AudioClip> clips = _zombieSFXSO.GroanSfx;
+            PlaySFX(_audioSource,clips);
+        }
+
+        public void PlayBossGroanSfx()
+        {
+            List<AudioClip> clips = _zombieSFXSO.BossGroanSfx;
+            PlaySFX(_audioSource,clips);
+        }
+
         public void PlayAttackSfx(ZombieType type)
         {
             List<AudioClip> clips = _zombieSFXSO.AttackSfxDict[type];
