@@ -105,20 +105,13 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
         LastAttackTime = Time.time;
     }
 
-    public void OnAttackHit()
-    {
-        Attack.OnAttackHit();
-    }
+    public void OnAttackHit() => Attack.OnAttackHit();
 
-    public void OnAttackEnd()
-    {
-        Attack.OnAttackEnd();
-    }
+    public void OnAttackEnd() => Attack.OnAttackEnd();
 
-    public void OnFootStep()
-    {
-        Chase.OnFootStep();
-    }
+    public void OnFootStep() => Chase.OnFootStep();
+
+    public void OnAttackSfx() => Attack.OnAttackSfx();
 
     // TODO : NGO 적용되면 수정
     public void TakeDamage(float damage)

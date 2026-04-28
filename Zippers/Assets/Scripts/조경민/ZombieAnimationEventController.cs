@@ -9,18 +9,11 @@ public class ZombieAnimationEventController : MonoBehaviour
         _zombie = GetComponentInParent<ZombieController>();
     }
 
-    public void OnAttackHit()
-    {
-        _zombie.OnAttackHit();
-    }
+    public void OnAttackHit() => _zombie.OnAttackHit();
 
-    public void OnAttackEnd()
-    {
-        _zombie.OnAttackEnd();
-    }
+    public void OnAttackEnd() => _zombie.OnAttackEnd();
+    
+    public void OnFootStep() => _zombie.OnFootStep();
 
-    public void OnFootStep()
-    {
-        _zombie.OnFootStep();
-    }
+    public void OnAttackSfx() => _zombie.OnAttackSfx();
 }
