@@ -27,9 +27,3 @@ public class ZombieStatSO : ScriptableObject
     [Tooltip("처치 재화")]
     public float KillReward;
 }
-
-public enum ZombieType
-{
-    Normal,
-    Tank,
-}

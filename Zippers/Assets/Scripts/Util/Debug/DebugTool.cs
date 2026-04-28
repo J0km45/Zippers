@@ -168,6 +168,7 @@ public static class DebugTool
             DebugType.Network => "#00E676",
             DebugType.UI => "#FF4FD8",
             DebugType.Data => "#00D1B2",
+            DebugType.Audio => "#4F6BFF",
             DebugType.Missing => "#FFFF00",
             _ => "#D0D0D0"
         };
@@ -188,6 +189,7 @@ public enum DebugType
     Spawner,
     Node,
     UI,
+    Audio,
     Missing,
     Default
 }
