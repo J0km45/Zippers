@@ -3,12 +3,14 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "PlayerClassDataSO", menuName = "ScriptableObjects/PlayerClassDataSO", order = 1)]
-public class PlayerClassDataSO : ScriptableObject
+public class PlayerClassDataSO : ScriptableObject, ISheetParsable
 {
     [Header("기본 정보")]
     [Tooltip("클래스 아이디")] public int ClassId;
     [Tooltip("클래스 타입")] public WeaponType WeaponType;
     [Tooltip("클래스 이름")] public string ClassName;
+
+    public int Id => ClassId;
 
     [Header("클래스 스텟")]
     [Tooltip("클래스 체력")] public float MaxHealth;

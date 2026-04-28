@@ -38,7 +38,7 @@ public struct SheetData
 
             if (uwr.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"Failed to load sheet data from {exportURL} : {uwr.error}");
+                DebugTool.Error($"Failed to load sheet data from {exportURL} : {uwr.error}", DebugType.Data);
 
                 yield break;
             }
@@ -50,7 +50,7 @@ public struct SheetData
 
 
             SuccessCallback?.Invoke(SplitSymbol, lines);
-            Debug.Log($"Successfully loaded sheet data from {exportURL}");
+            DebugTool.Log($"Successfully loaded sheet data from {exportURL}", DebugType.Data);
         }
     }
 

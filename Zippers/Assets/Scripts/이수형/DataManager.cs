@@ -1,67 +1,105 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
+
 
 public class DataManager : MonoBehaviour
 {
+
+    [Header("Player Class")]
     public SheetData _classSheet;
     [SerializeField] private List<PlayerClassDataSO> _classDataList;
-    private Dictionary<string, PlayerClassDataSO> _classDataDictionary = new();//string은 파일 이름 기준
+    private Dictionary<int, PlayerClassDataSO> _classDataDictionary = new();
 
-    private void Awake() => InitClassDataDictionary();
+    [Header("Zombie Stat")]
+    public SheetData _zombieStatSheet;
+    [SerializeField] private List<ZombieStatSO> _zombieStatDataList;
+    private Dictionary<int, ZombieStatSO> _zombieStatDataDictionary = new();
 
-
-    private void Start() => StartCoroutine(_classSheet.Load(SetClassDatas));
-    
-
-    public void SetClassDatas(char splitSymbol, string[] lines)
+    private void Awake()
     {
-        if(lines == null)
-        {
-            Debug.LogError("Failed to load class data from sheet.");
-            return;
-        }
-
-        for (int i = 1; i < lines.Length; i++)
-        {
-            // 나누는 문자열 기준(TSV인지? CSV인지?) 다시 문자열 배열로 쪼개서
-            string[] cols = lines[i].Split(splitSymbol);
-
-            PlayerClassDataSO classData;
-
-            if (_classDataDictionary.ContainsKey(cols[1]))
-            {
-                // 딕셔너리에 SO가 이미 추가되어있는 경우엔 가져다 씀
-                classData = _classDataDictionary[cols[1]];
-
-            }
-            else
-            {
-                classData = ScriptableObject.CreateInstance<PlayerClassDataSO>();
-                classData.name = cols[1];
-                _classDataDictionary.Add(cols[1], classData);
-                Debug.LogWarning($"Class data for {cols[1]} not found in dictionary. Created new SO instance and added to dictionary.");
-                // 임시로 만들어서 추가
-                _classDataList.Add(classData);
-            }
-
-            classData.SetData(cols);
-        }
-        // 모든 몬스터에 대해 수행해줘야 함
-
-        // 몬스터 데이터에 담아주기
-        
+        _classDataDictionary = InitDict(_classDataList);
+        _zombieStatDataDictionary = InitDict(_zombieStatDataList);
     }
-    private void InitClassDataDictionary()
+
+    private void Start()
     {
-        if (_classDataList == null || _classDataList.Count == 0)
+        LoadSheetData(_classSheet, _classDataList, _classDataDictionary);
+        LoadSheetData(_zombieStatSheet, _zombieStatDataList, _zombieStatDataDictionary);
+    }
+
+
+    private Dictionary<int, T> InitDict<T>(List<T> list)
+        where T : ScriptableObject, ISheetParsable
+    {
+        if (list == null || list.Count == 0)
         {
-            Debug.LogError("Class data list is null or empty. Cannot initialize class data dictionary.");
-            return;
+            DebugTool.Warning(
+                $"[{typeof(T).Name}] 리스트 비어있음 - 빈 사전 반환",
+                DebugType.Data, this);
+            return new Dictionary<int, T>();
         }
-        _classDataDictionary = _classDataList.ToDictionary(data => data.WeaponType.ToString());
-        //_classDataList.Clear();
-        //_classDataList = null;
+
+        return list.ToDictionary(x => x.Id);
+    }
+
+
+    private void LoadSheetData<T>(
+        SheetData sheet,
+        List<T> list,
+        Dictionary<int, T> dict,
+        int headerRowCount = 1
+    ) where T : ScriptableObject, ISheetParsable
+    {
+        StartCoroutine(sheet.Load((split, lines) =>
+        {
+            if (lines == null)
+            {
+                DebugTool.Error(
+                    $"[{typeof(T).Name}] 시트 로드 실패 - lines가 null",
+                    DebugType.Data, this);
+                return;
+            }
+
+            for (int i = headerRowCount; i < lines.Length; i++)
+            {
+                string line = lines[i].Trim();
+                if (string.IsNullOrEmpty(line)) continue;
+
+                string[] cols = line.Split(split);
+
+                if (cols.Length == 0 || !int.TryParse(cols[0], out int id))
+                {
+                    DebugTool.Error(
+                        $"[{typeof(T).Name}] {i}번째 줄 ID 파싱 실패: '{(cols.Length > 0 ? cols[0] : "(empty)")}'",
+                        DebugType.Data, this);
+                    continue;
+                }
+
+                T data;
+                if (dict.TryGetValue(id, out var existing))
+                {
+                    // 사전에 이미 있는 경우엔 기존 SO를 갱신
+                    data = existing;
+                }
+                else
+                {
+                    // 사전에 없으면 임시 인스턴스 생성하여 추가
+                    data = ScriptableObject.CreateInstance<T>();
+                    data.name = $"{typeof(T).Name}_{id}";
+                    dict.Add(id, data);
+                    list.Add(data);
+                    DebugTool.Warning(
+                        $"[{typeof(T).Name}] ID {id} 사전에 없어서 새 인스턴스 생성",
+                        DebugType.Data, this);
+                }
+
+                data.SetData(cols);
+            }
+
+            DebugTool.Log(
+                $"[{typeof(T).Name}] 시트 로드 완료 (총 {dict.Count}건)",
+                DebugType.Data, this);
+        }));
     }
 }
