@@ -31,5 +31,4 @@ public class ZombieStatSO : ScriptableObject
 public enum ZombieType
 {
     Normal,
-    Tank,
 }

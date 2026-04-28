@@ -1,12 +1,11 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.PlayerSettings;
-//using Unity.Netcode;
+using Unity.Netcode;
 
-public class ZombieController : MonoBehaviour//NetworkBehaviour
+public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 {
     [SerializeField] private ZombieStatSO _stat;
+    [SerializeField] private float _stunDuration = 0.2f;
 
     private StateMachine _stateMachine;
     private NavMeshAgent _agent;
@@ -14,8 +13,10 @@ public class ZombieController : MonoBehaviour//NetworkBehaviour
     
     public ZombieChaseState Chase { get; private set; }
     public ZombieAttackState Attack { get; private set; }
+    public ZombieHitState Hit { get; private set; }
     public NavMeshAgent Agent => _agent;
     public Animator Animator => _animator;
+    public float StunDuration => _stunDuration;
 
     //public NetworkVariable<int> CurrentHp = new NetworkVariable<float>();
     public float CurrentHp; //임시(테스트용)
@@ -42,6 +43,7 @@ public class ZombieController : MonoBehaviour//NetworkBehaviour
         _stateMachine = new StateMachine();
         Chase = new ZombieChaseState(this);
         Attack = new ZombieAttackState(this);
+        Hit = new ZombieHitState(this);
 
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponentInChildren<Animator>();
@@ -101,6 +103,19 @@ public class ZombieController : MonoBehaviour//NetworkBehaviour
     public void OnAttackEnd()
     {
         Attack.OnAttackEnd();
+    }
+
+    // TODO : NGO 적용되면 수정
+    public void TakeDamage(float damage)
+    {
+        CurrentHp -= damage;
+        //Debug.Log($"좀비가 {damage}만큼의 피해를 입었습니다. 현재 체력: {CurrentHp}");
+        //if (CurrentHp <= 0)
+        //{
+        //    ChangeState(Die);
+        //    return;
+        //}
+        ChangeState(Hit);
     }
 
     void OnDrawGizmos()
