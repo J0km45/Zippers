@@ -5,15 +5,16 @@ public class PlayerStateMachine : MonoBehaviour
     private StateMachine _stateMachine;
 
     private PlayerMovement _playerMovement;
-    private PlayerStateType _playerStateType;
     private PlayerAnimation _playerAnimation;
 
     private PlayerIdleState _idleState;
     private PlayerMoveState _moveState;
 
+    private PlayerStateType _playerStateType;
     private Vector2 _moveInput;
 
     public Vector2 MoveInput => _moveInput;
+    public PlayerStateType PlayerStateType => _playerStateType;
 
     private void Awake()
     {
@@ -61,6 +62,10 @@ public class PlayerStateMachine : MonoBehaviour
                 break;
             case PlayerStateType.Move:
                 _stateMachine.ChangeState(_moveState);
+                break;
+            case PlayerStateType.Hit:
+                break;
+            case PlayerStateType.Retire:
                 break;
         }
     }

@@ -5,6 +5,8 @@ public class PlayerAnimation : MonoBehaviour
     private static readonly int MoveX = Animator.StringToHash("MoveX");
     private static readonly int MoveY = Animator.StringToHash("MoveY");
     private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int Attack = Animator.StringToHash("Attack");
+    private static readonly int Reload = Animator.StringToHash("Reload");
 
     [SerializeField] private Animator _animator;
 
@@ -16,6 +18,7 @@ public class PlayerAnimation : MonoBehaviour
     public void SetMoveDirection(Vector2 moveInput)
     {
         Vector2 normalizedInput = moveInput.normalized;
+
         _animator.SetFloat(MoveX, normalizedInput.x);
         _animator.SetFloat(MoveY, normalizedInput.y);
         _animator.SetFloat(Speed, normalizedInput.sqrMagnitude);
@@ -26,5 +29,17 @@ public class PlayerAnimation : MonoBehaviour
         _animator.SetFloat(MoveX, 0f);
         _animator.SetFloat(MoveY, 0f);
         _animator.SetFloat(Speed, 0f);
+    }
+
+    public void PlayAttack()
+    {
+        _animator.SetTrigger(Attack);
+        Debug.Log("[PlayerAnimation] Attack 애니메이션 실행");
+    }
+
+    public void PlayReload()
+    {
+        _animator.SetTrigger(Reload);
+        Debug.Log("[PlayerAnimation] Reload 애니메이션 실행");
     }
 }

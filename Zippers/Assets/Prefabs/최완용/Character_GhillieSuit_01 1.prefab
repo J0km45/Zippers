@@ -4333,6 +4333,8 @@ GameObject:
   - component: {fileID: 3889233011342203823}
   - component: {fileID: -1459793425253192222}
   - component: {fileID: -4070551576951979769}
+  - component: {fileID: 710524978563770137}
+  - component: {fileID: 8482934889066729102}
   m_Layer: 0
   m_Name: Character_GhillieSuit_01 1
   m_TagString: Untagged
@@ -4537,6 +4539,30 @@ MonoBehaviour:
   _playerAim: {fileID: -1459793425253192222}
   _playerMovement: {fileID: 7822645731502311299}
   _rotateSpeed: 20
+--- !u!114 &710524978563770137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9077091175809906714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1210971edf591254e909e6597ac79f57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+--- !u!114 &8482934889066729102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9077091175809906714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0058ea6d404f53546ae909a075d89565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerReload
 --- !u!1 &9179101222937464947
 GameObject:
   m_ObjectHideFlags: 0
