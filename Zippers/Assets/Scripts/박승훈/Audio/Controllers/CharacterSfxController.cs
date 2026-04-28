@@ -13,6 +13,7 @@ namespace Audio
         private void Awake()
         {
             _audioSource = GetComponent<AudioSource>();
+            _characterSfxso.ResourcesSFXInit();
         }
         
         private void Start()
@@ -22,24 +23,35 @@ namespace Audio
         {
             List<AudioClip> clips = _characterSfxso.WalkingSfx;
             PlaySFX(_audioSource, clips);
+            DebugTool.Log("플레이어 걷기 SFX 재생", DebugType.Audio, this);
         }
 
         public void PlaySprintSfx()
         {
             List<AudioClip> clips = _characterSfxso.RunningSfx;
             PlaySFX(_audioSource, clips);
+            DebugTool.Log("플레이어 달리기 SFX 재생", DebugType.Audio, this);
         }
 
         public void PlayHitSfx()
         {
             List<AudioClip> clips = _characterSfxso.HitSfx;
             PlaySFX(_audioSource, clips);
+            DebugTool.Log("플레이어 피격 SFX 재생", DebugType.Audio, this);
         }
 
         public void PlayDeathSfx()
         {
             List<AudioClip> clips = _characterSfxso.DeathSfx;
             PlaySFX(_audioSource, clips);
+            DebugTool.Log("플레이어 죽음 SFX 재생", DebugType.Audio, this);
+        }
+
+        public void PlayGrabSFX(ResourcesType type)
+        {
+            List<AudioClip> clips = _characterSfxso.ResourcesSFXDict[type];
+            PlaySFX(_audioSource, clips);
+            DebugTool.Log($"플레이어 {type.ToString()} 줍기 SFX 재생", DebugType.Audio, this);
         }
     }
 }

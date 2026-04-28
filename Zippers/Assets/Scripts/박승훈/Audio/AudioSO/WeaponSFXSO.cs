@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WeaponSFXSO", menuName = "Data/Audio/WeaponSFXSO", order = 1)]
+[CreateAssetMenu(fileName = "WeaponSFXSO", menuName = "Zippers/SO/Audio/WeaponSFXSO", order = 1)]
 public class WeaponSFXSO : ScriptableObject
 {
     [Header("무기 SFX 목록")]
