@@ -1,5 +1,3 @@
-using UnityEngine;
-
 /// <summary>
 /// 맵에 발동되는 이벤트 제어
 /// </summary>
@@ -24,6 +22,7 @@ public class MapEventController
     public void InitEventController()
     {
         _machine = new EventMachine();
+        DebugTool.Log($"{Controller.Data.NodeTreeIndex}Map <color.yellow>Event Controller Ready</color>", DebugType.Node);
     }
 
     private void ChangeEvent(NodeEvent nodeEvent)
@@ -43,11 +42,13 @@ public class MapEventController
     /// 현재 구동중인 이벤트 설정
     /// </summary>
     /// <param name="eventType">NodeEventType enum을 지정</param>
-    /// <param name="index">1번부터 시작, No Event만 0번으로 지정</param>
+    /// <param name="index">이벤트 타입별 인덱스</param>
     public void SetCurrentEvent(NodeEventType eventType, int index)
     {
-        EventSO temp = Controller.EventDictionary.CallEvent(eventType, index);
-        _currentEvent = temp.SetEventScript(this);
+        EventSO temp = EventDictionary.Instance.CallEvent(eventType, index);
+        _currentEvent = temp.GetEventScript(this);
+        if(_currentEvent == null) return;
         ChangeEvent(_currentEvent);
+        DebugTool.Log($"{Controller.Data.NodeTreeIndex}Map <color.yellow>Event Set</color> : {eventType}, {index}", DebugType.Node);
     }
 }

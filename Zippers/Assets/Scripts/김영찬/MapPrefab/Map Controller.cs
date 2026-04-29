@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -22,19 +22,16 @@ public class MapController : MonoBehaviour
     public MapEventController EventController { get; private set; }
     
     /// <summary>
-    /// MapController에서 사용하는 EventDictionary 변수
-    /// </summary>
-    public EventDictionary EventDictionary { get; private set; }
-    
-    /// <summary>
     /// MapController에서 사용하는 NextMapTeleporter 변수
     /// </summary>
     public NextMapTeleporter Teleporter { get; private set; }
     
     /// <summary>
-    /// MapController에서 사용하는 MapMaker 변수
+    /// MapController에서 사용하는 NodeManager 변수
     /// </summary>
-    public MapMaker MapMaker { get; private set; }
+    public NodeManager Manager { get; private set; }
+    
+    private WaitForEndOfFrame _wait = new WaitForEndOfFrame();
 
     private void Awake()
     {
@@ -55,7 +52,7 @@ public class MapController : MonoBehaviour
     {
         InitController();
         Data.SetNodeState(NodeState.Ready);
-        EventController.SetCurrentEvent(NodeEventType.NoEvent, 0);
+        StartCoroutine(WaitDictionaryReady());
         Teleporter.DisableBeaconAll();
     }
 
@@ -68,10 +65,10 @@ public class MapController : MonoBehaviour
     {
         Data = GetComponent<MapData>();
         Teleporter = GetComponent<NextMapTeleporter>();
-        MapMaker = FindFirstObjectByType<MapMaker>();
-        EventDictionary = FindFirstObjectByType<EventDictionary>();
+        Manager = FindFirstObjectByType<NodeManager>();
         ActionController = new MapActionController(this);
         EventController = new MapEventController(this);
+        DebugTool.Log($"{Data.NodeTreeIndex}Map <color.yellow>Main Controller Ready</color>", DebugType.Node, this);
     }
 
     private void InitController()
@@ -96,5 +93,18 @@ public class MapController : MonoBehaviour
         Data.OnChangeState -= ActionController.ChangeState;
     }
 
-    
+    private IEnumerator WaitDictionaryReady()
+    {
+        while (EventDictionary.Instance == null)
+        {
+            yield return _wait;
+        }
+
+        while (!EventDictionary.Instance.IsDictionaryReady)
+        {
+            yield return _wait;
+        }
+        
+        EventController.SetCurrentEvent(NodeEventType.NoEvent, 0);
+    }
 }
