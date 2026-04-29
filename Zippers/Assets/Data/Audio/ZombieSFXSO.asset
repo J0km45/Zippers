@@ -12,8 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa3d6f4e94d25c4590abd3b57178b6d, type: 3}
   m_Name: ZombieSFXSO
   m_EditorClassIdentifier: Assembly-CSharp::ZombieSFXSO
-  moveSfx: []
-  bossMoveSfx: []
+  moveSfx:
+  - {fileID: 8300000, guid: 33a74de2905f0e641900f5ed98e63793, type: 3}
+  - {fileID: 8300000, guid: 61b224e1dbcd7f2439fbf9fa29c61238, type: 3}
+  - {fileID: 8300000, guid: dcc851dc43579244ba348e0fb1421bdc, type: 3}
+  - {fileID: 8300000, guid: 622f5d09b6a58cb4597d31645ca4f0a9, type: 3}
+  - {fileID: 8300000, guid: bc3c753bbb4a7fb4ca15ed6bd1ef9cf1, type: 3}
+  - {fileID: 8300000, guid: fe74c859c7771b24484ea1cd4f5aa963, type: 3}
+  - {fileID: 8300000, guid: 8b8001fd49746bf448ac0e4c94e88c1b, type: 3}
+  - {fileID: 8300000, guid: 12413f0d4da90f14e934efb344e059f3, type: 3}
+  - {fileID: 8300000, guid: 73b4d4f02afe8564f91e1be4c8ba08e2, type: 3}
+  - {fileID: 8300000, guid: 1b60202010920774986bd39d27b544ee, type: 3}
+  bossMoveSfx:
+  - {fileID: 8300000, guid: 1d6237a9798b2c943a3ae2a90ec8ec94, type: 3}
+  - {fileID: 8300000, guid: 8f2cd72caafbba54cbc48de52eecf188, type: 3}
+  - {fileID: 8300000, guid: e00a50868ecbe3841a8ed55e8309359e, type: 3}
+  - {fileID: 8300000, guid: e6e0ba100234e354eb13d64042617059, type: 3}
+  - {fileID: 8300000, guid: 1ecb1309b7f51da4d9973ade1e4254ec, type: 3}
+  - {fileID: 8300000, guid: 89d9a5ab47f2a324d95e52e2003e19e5, type: 3}
+  - {fileID: 8300000, guid: cf255f0589ad0934cbc5ed0eb33f5b9a, type: 3}
+  - {fileID: 8300000, guid: 665bdd19696d4e445a0710146fafedb1, type: 3}
+  - {fileID: 8300000, guid: d77a14c0c17b5ed4c9e5ce5c5fc03e65, type: 3}
+  - {fileID: 8300000, guid: 80cd4c26f03e06b48bf4a0afc7b51476, type: 3}
   groanSfx:
   - {fileID: 8300000, guid: e91206746e8582b4cbabaaf7ae038037, type: 3}
   - {fileID: 8300000, guid: cd7a148f309e077408d3b82af0cfb545, type: 3}
@@ -48,7 +68,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d027dc10a2207994c979610e9361b45e, type: 3}
   - {fileID: 8300000, guid: b3e6cb483e62dbf4ba83a44d658fc2c3, type: 3}
   - {fileID: 8300000, guid: 53bf13168f3916243b853c8d6a84d048, type: 3}
-  hitSfx: []
+  hitSfx:
+  - {fileID: 8300000, guid: 250f9a848c9c69746bf8952c34e8407c, type: 3}
+  - {fileID: 8300000, guid: 7e912830d71415448a9ab0c541601882, type: 3}
+  - {fileID: 8300000, guid: d98db2fdd4f0ad74289e653934c1878c, type: 3}
+  - {fileID: 8300000, guid: 9c74c29c2483cf54c8e7a1079c49bd1d, type: 3}
+  - {fileID: 8300000, guid: 970f898dd50d24b40ab5a1cfa6beedf1, type: 3}
   deathSFX:
   - {fileID: 8300000, guid: dc73aad37f348454c87f80e3d1f90094, type: 3}
   - {fileID: 8300000, guid: fd43ba24241f1c941aaa70bb4aa0f86f, type: 3}
@@ -70,4 +95,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: dc0522acd2b675f48921a653e9813232, type: 3}
   - {fileID: 8300000, guid: 32beaeca7d08aea488d05814245427b7, type: 3}
   - {fileID: 8300000, guid: 3ba2a3aa0e3bd8948b0b38db081230ae, type: 3}
-  sampleSfx: []
+  sampleSfx:
+  - {fileID: 8300000, guid: 318eb0117508bbc459a359a0e5920cab, type: 3}
+  - {fileID: 8300000, guid: b7650e29e8a4fb44fac1042f85c8c72b, type: 3}
+  - {fileID: 8300000, guid: 3435aac3d74e9f6418a017850ca172f1, type: 3}
