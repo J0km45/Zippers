@@ -18,7 +18,7 @@ public class StartNodeReadyAction : INodeAction
     
     public void EnterState()
     {
-        _controller.Controller.MapMaker.OnMapSettingComplete += MapSettingComplete;
+        _controller.Controller.Manager.MapMaker.OnMapSettingComplete += MapSettingComplete;
     }
 
     public void RunningState()
@@ -28,7 +28,7 @@ public class StartNodeReadyAction : INodeAction
 
     public void ExitState()
     {
-        _controller.Controller.MapMaker.OnMapSettingComplete -= MapSettingComplete;
+        _controller.Controller.Manager.MapMaker.OnMapSettingComplete -= MapSettingComplete;
     }
 
     private void MapSettingComplete()

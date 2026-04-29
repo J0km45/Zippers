@@ -44,6 +44,20 @@ public class ZombieChaseState : IState
         // Debug.Log($"속도: {_zombie.Agent.speed}");
     }
 
+    public void OnFootStep()
+    {
+        //if (_zombie.Agent.velocity.magnitude < 0.1f) return;
+
+        if(_zombie.Type == ZombieType.Boss)
+        {
+            _zombie.Sfx.PlayBossMoveSfx();
+        }
+        else
+        {
+            _zombie.Sfx.PlayMoveSfx();
+        }
+    }
+
     public void Exit()
     {
 

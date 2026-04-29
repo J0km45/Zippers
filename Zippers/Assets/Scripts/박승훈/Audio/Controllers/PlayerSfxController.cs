@@ -42,7 +42,7 @@ namespace Audio
 
         public void PlayFemaleHitSfx()
         {
-            List<AudioClip> clips = _characterSfxso.FemaleDeathSfx;
+            List<AudioClip> clips = _characterSfxso.FemaleHitSfx;
             PlaySFX(_audioSource, clips);
             DebugTool.Log("플레이어 피격 SFX 재생", DebugType.Audio, this);
         }

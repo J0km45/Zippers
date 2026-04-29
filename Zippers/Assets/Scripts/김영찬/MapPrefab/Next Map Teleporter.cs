@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
 /// <summary>
@@ -31,12 +32,12 @@ public class NextMapTeleporter : MonoBehaviour
 
     private void OnEnable()
     {
-        EnableVoteEvent();
+        EnableEvent();
     }
 
     private void OnDisable()
     {
-        DisableVoteEvent();
+        DisableEvent();
     }
 
     private void Init()
@@ -47,8 +48,9 @@ public class NextMapTeleporter : MonoBehaviour
         _voteRight = 0;
     }
     
-    private void EnableVoteEvent()
+    private void EnableEvent()
     {
+        _controller.Data.OnChangeNextMaps += SetBeaconLocation;
         _ballotBox_UP.OnVoteChange += CountVoteUp;
         _ballotBox_Down.OnVoteChange += CountVoteDown;
         _ballotBox_Left.OnVoteChange += CountVoteLeft;
@@ -56,8 +58,9 @@ public class NextMapTeleporter : MonoBehaviour
         OnVoteChange += CulVoteResult;
     }
 
-    private void DisableVoteEvent()
+    private void DisableEvent()
     {
+        _controller.Data.OnChangeNextMaps -= SetBeaconLocation;
         _ballotBox_UP.OnVoteChange -= CountVoteUp;
         _ballotBox_Down.OnVoteChange -= CountVoteDown;
         _ballotBox_Left.OnVoteChange -= CountVoteLeft;
@@ -68,7 +71,7 @@ public class NextMapTeleporter : MonoBehaviour
     /// <summary>
     /// 연결된 다음 맵의 정보를 받아 비콘 사용 가능 여부 체크
     /// </summary>
-    public void SetBeaconLocation()
+    private void SetBeaconLocation()
     {
         _nextMapAvailable_UP = _controller.Data.NextMap_Up != null;
         _nextMapAvailable_Down = _controller.Data.NextMap_Down != null;
@@ -85,6 +88,7 @@ public class NextMapTeleporter : MonoBehaviour
         if(_nextMapAvailable_Down) _controller.Data.SetBeaconEnable(_controller.Data.TeleportBeacon_Down);
         if(_nextMapAvailable_Left) _controller.Data.SetBeaconEnable(_controller.Data.TeleportBeacon_Left);
         if(_nextMapAvailable_Right) _controller.Data.SetBeaconEnable(_controller.Data.TeleportBeacon_Right);
+        DebugTool.Log($"Enable Beacon", DebugType.Node, this);
     }
     
     /// <summary>
@@ -96,6 +100,7 @@ public class NextMapTeleporter : MonoBehaviour
         _controller.Data.SetBeaconDisable(_controller.Data.TeleportBeacon_Down);
         _controller.Data.SetBeaconDisable(_controller.Data.TeleportBeacon_Left);
         _controller.Data.SetBeaconDisable(_controller.Data.TeleportBeacon_Right);
+        DebugTool.Log($"Disable Beacon", DebugType.Node, this);
     }
 
     private void CountVoteUp(int count)
@@ -124,32 +129,61 @@ public class NextMapTeleporter : MonoBehaviour
     
     private void CulVoteResult()
     {
+        DebugTool.Log($"Current Vote Result\n" +
+                      $"Up : {_voteUp}, Down : {_voteDown}, Left : {_voteLeft}, Right : {_voteRight}", DebugType.Node, this);
+        
         float minVoteWin = _controller.Data.AlivePlayerCount / 2f;
+        
+        if (_voteUp > minVoteWin)
+        {
+            //Teleport(NodeStartDir.Up);
+            DebugTool.Log($"Teleport To Upper Map", DebugType.Node, this);
+            return;
+        }
+        
+        if (_voteRight > minVoteWin)
+        {
+            //Teleport(NodeStartDir.Right);
+            DebugTool.Log($"Teleport To Right Map", DebugType.Node, this);
+            return;
+        }
         
         if (_voteLeft > minVoteWin)
         {
-            Teleport();
+            //Teleport(NodeStartDir.Left);
+            DebugTool.Log($"Teleport To Left Map", DebugType.Node, this);
             return;
         }
-        if (_voteUp > minVoteWin)
-        {
-            Teleport();
-            return;
-        }
-        if (_voteRight > minVoteWin)
-        {
-            Teleport();
-            return;
-        }
+        
         if (_voteDown > minVoteWin)
         {
-            Teleport();
+            //Teleport(NodeStartDir.Down);
+            DebugTool.Log($"Teleport To Lower Map", DebugType.Node, this);
+            return;
         }
+        
+        
     }
 
-    private void Teleport()
+    private void Teleport(NodeStartDir dir)
     {
-        // 텔레포트 로직
-        // 모든 플레이어 이동
+        switch (dir)
+        {
+            case NodeStartDir.Up:
+                GameObject nextMap = _controller.Data.NextMap_Up;
+                MapData nextMapData = nextMap.GetComponent<MapData>();
+                Transform[] nextMapPlayerSpawnPoint = nextMapData.PlayerSpawnPoint_Down;
+                int playerIndex = 0;
+                foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+                {
+                    Transform sp = nextMapPlayerSpawnPoint[playerIndex % nextMapPlayerSpawnPoint.Length];
+
+                    // ToDo : 네트워크 파트와 협의 후 코드 작성
+                    
+                    playerIndex++;
+                }
+                
+                break;
+        }
     }
 }

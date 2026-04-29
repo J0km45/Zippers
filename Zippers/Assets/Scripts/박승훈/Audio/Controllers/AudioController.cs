@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Audio
@@ -23,7 +23,7 @@ namespace Audio
         
         private AudioClip RandomPlay(List<AudioClip> clips)
         {
-            int random = Random.Range(0, clips.Count - 1);
+            int random = Random.Range(0, clips.Count);
             return clips[random];
         }
 

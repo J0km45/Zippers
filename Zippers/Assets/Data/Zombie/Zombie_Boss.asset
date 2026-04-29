@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27bb70ee936adcd4ba3e625dd0e93359, type: 3}
+  m_Name: Zombie_Boss
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieStatSO
+  ZombieId: 20005
+  Type: 4
+  MaxHp: 40
+  HealthRegen: 0
+  HealthPeriod: 0
+  MinAttackDamage: 13
+  MaxAttackDamage: 16
+  AttackCooldown: 3
+  AttackRange: 1
+  MoveSpeed: 1
+  DetectMoveSpeed: 2
+  DetectRange: 12
+  MinScrap: 0
+  MaxScrap: 0
+  ScrapDropChance: 0
+  MinSupplies: 0
+  MaxSupplies: 0
+  SuppliesDropChance: 0
+  InfectionSample: 0
+  HandRadius: 0.25
+  KillReward: 10

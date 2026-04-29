@@ -80,15 +80,20 @@ public class MapData : MonoBehaviour
     [field:SerializeField]public double NodeTreeIndex {get; private set;} // (MVP 후순위지만 일단 변수는 들고 있도록)
     
     /// <summary>
-    /// 이번 노드가 시작 시 어느 방향에서 시작할 지 표기<br/>
-    /// 0 = 왼쪽, 1 = 위쪽, 2 = 오른쪽, 3 = 아래쪽
+    /// 이번 노드가 시작 시 어느 방향에서 시작할 지 표기
     /// </summary>
-    [field:SerializeField]public int StartDir {get; private set;}
+    [field:SerializeField]public NodeStartDir StartDir {get; private set;}
     
     /// <summary>
     /// NodeSO에서 이 노드의 노드 타입을 불러옴
     /// </summary>
     [field:SerializeField]public NodeType NodeType {get; private set;}
+    
+    /// <summary>
+    /// 몬스터의 스폰 포인트<br/>
+    /// 0번 인덱스 = 플레이어 진입 방향의 왼쪽, 시계 방향으로 구성
+    /// </summary>
+    public Transform[] MonsterSpawnPoints { get; private set;}
 
     /// <summary>
     /// 맵에 생존한 플레이어 수
@@ -143,48 +148,56 @@ public class MapData : MonoBehaviour
         AlivePlayerCount = 0;
         _aliveMonsterCount = 0;
         _remainingWaveCount = 0;
+        DebugTool.Log("Map Data Awake", DebugType.Node, this);
     }
 
     /// <summary>
     /// 현재 맵의 Node Tree Index를 지정<br/>
-    /// NodeTreeMaker.cs에서만 사용함<br/>
     /// 임의 변경 금지
     /// </summary>
     /// <param name="nodeTreeIndex">규칙에 따라 지정되는 Index<br/>자세한 내용은 NodeTreeMaker.cs 참조</param>
     public void SetNodeTreeIndex(double nodeTreeIndex)
     {
         NodeTreeIndex = nodeTreeIndex;
+        DebugTool.Log($"Map Node Tree Index Set", DebugType.Node, this);
     }
 
     /// <summary>
     /// 현재 맵의 시작 지점을 지정<br/>
-    /// NodeTreeMaker.cs에서만 사용함<br/>
     /// 임의 변경 금지
     /// </summary>
-    /// <param name="dir">변경할 노드의 시작 지점<br/>
-    /// 0 = 왼쪽, 1 = 위쪽, 2 = 오른쪽, 3 = 아래쪽</param>
-    public void SetNodeStartDir(int dir)
+    /// <param name="dir">변경할 노드의 시작 지점</param>
+    public void SetNodeStartDir(NodeStartDir dir)
     {
         StartDir = dir;
+        SetSpawnPoint(dir);
+        DebugTool.Log($"Map Node Start Dir Set {StartDir}", DebugType.Node, this);
     }
     
     /// <summary>
-    /// 연결 된 다음 맵을 지정<br/>
-    /// NodeTreeMaker.cs에서만 사용함<br/>
-    /// NodeStartDir의 반대 방향으로 붙여야 됨으로 오른쪽부터 시게방향으로 지정<br/>
-    /// 임의 변경 금지
+    /// 다음 연결 될 맵을 지정
     /// </summary>
-    /// <param name="rightMap">오른쪽으로 향하는 맵<br/>부재 시 null 입력</param>
-    /// <param name="lowerMap">아래쪽으로 향하는 맵<br/>부재 시 null 입력</param>
-    /// <param name="leftMap">왼쪽으로 향하는 맵<br/>부재 시 null 입력</param>
-    /// <param name="upperMap">위쪽으로 향하는 맵<br/>부재 시 null 입력</param>
-    public void SetNextMaps(GameObject rightMap, GameObject lowerMap, GameObject leftMap, GameObject upperMap)
+    /// <param name="dir">연결 될 방향</param>
+    /// <param name="nextMap">다음 맵 프리팹</param>
+    public void SetNextMap(NodeStartDir dir, GameObject nextMap)
     {
-        NextMap_Right = rightMap;
-        NextMap_Down = lowerMap;
-        NextMap_Left = leftMap;
-        NextMap_Up = upperMap;
+        switch (dir)
+        {
+            case NodeStartDir.Up:
+                NextMap_Up = nextMap;
+                break;
+            case NodeStartDir.Down:
+                NextMap_Down = nextMap;
+                break;
+            case NodeStartDir.Left:
+                NextMap_Left = nextMap;
+                break;
+            case NodeStartDir.Right:
+                NextMap_Right = nextMap;
+                break;
+        }
         OnChangeNextMaps?.Invoke();
+        DebugTool.Log($"Map Next Map Set\n dir : {dir}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -197,6 +210,7 @@ public class MapData : MonoBehaviour
     {
         _remainingWaveCount = count;
         OnChangeRemainingWaveCount?.Invoke(count);
+        DebugTool.Log($"Map Wave Count Set : {count}", DebugType.Node, this);
     }
 
     /// <summary>
@@ -236,6 +250,7 @@ public class MapData : MonoBehaviour
     {
         NodeState = state;
         OnChangeState?.Invoke(state);
+        DebugTool.Log($"Map Node State Change : {NodeState}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -246,6 +261,7 @@ public class MapData : MonoBehaviour
         if(AlivePlayerCount >= 4) return;
         AlivePlayerCount++;
         OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
+        DebugTool.Log($"Player Income, Current Player : {AlivePlayerCount}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -256,6 +272,7 @@ public class MapData : MonoBehaviour
         if(AlivePlayerCount <= 0) return;
         AlivePlayerCount--;
         OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
+        DebugTool.Log($"Player Out, Current Player : {AlivePlayerCount}", DebugType.Node, this);
     }
 
     /// <summary>
@@ -265,6 +282,7 @@ public class MapData : MonoBehaviour
     {
         _aliveMonsterCount++;
         OnChangeAliveMonsterCount?.Invoke(_aliveMonsterCount);
+        DebugTool.Log($"Monster Income, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -275,6 +293,7 @@ public class MapData : MonoBehaviour
         if(_aliveMonsterCount <= 0) return;
         _aliveMonsterCount--;
         OnChangeAliveMonsterCount?.Invoke(_aliveMonsterCount);
+        DebugTool.Log($"Monster Out, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
     }
 
     /// <summary>
@@ -285,7 +304,48 @@ public class MapData : MonoBehaviour
         if(_remainingWaveCount <= 0) return;
         _remainingWaveCount--;
         OnChangeRemainingWaveCount?.Invoke(_remainingWaveCount);
+        DebugTool.Log($">Wave Clear, Remain Wave : {_remainingWaveCount}", DebugType.Node, this);
     }
-
+    
+    /// <summary>
+    /// 시작 위치에 따른 스폰 포인트 지정
+    /// </summary>
+    /// <param name="dir">플레이어 입장 위치(노드 시작 지점)</param>
+    private void SetSpawnPoint(NodeStartDir dir)
+    {
+        MonsterSpawnPoint tempUp = TeleportBeacon_Up.GetComponent<MonsterSpawnPoint>();
+        MonsterSpawnPoint tempDown = TeleportBeacon_Down.GetComponent<MonsterSpawnPoint>();
+        MonsterSpawnPoint tempLeft = TeleportBeacon_Left.GetComponent<MonsterSpawnPoint>();
+        MonsterSpawnPoint tempRight = TeleportBeacon_Right.GetComponent<MonsterSpawnPoint>();
+        
+        switch (dir)
+        {
+            case NodeStartDir.Down:
+                MonsterSpawnPoints[0] = tempLeft.SpawnPoint;
+                MonsterSpawnPoints[1] = tempUp.SpawnPoint;
+                MonsterSpawnPoints[2] = tempRight.SpawnPoint;
+                MonsterSpawnPoints[3] = tempDown.SpawnPoint;
+                break;
+            case NodeStartDir.Left:
+                MonsterSpawnPoints[0] = tempUp.SpawnPoint;
+                MonsterSpawnPoints[1] = tempRight.SpawnPoint;
+                MonsterSpawnPoints[2] = tempDown.SpawnPoint;
+                MonsterSpawnPoints[3] = tempLeft.SpawnPoint;
+                break;
+            case NodeStartDir.Up:
+                MonsterSpawnPoints[0] = tempRight.SpawnPoint;
+                MonsterSpawnPoints[1] = tempDown.SpawnPoint;
+                MonsterSpawnPoints[2] = tempLeft.SpawnPoint;
+                MonsterSpawnPoints[3] = tempUp.SpawnPoint;
+                break;
+            case NodeStartDir.Right:
+                MonsterSpawnPoints[0] = tempDown.SpawnPoint;
+                MonsterSpawnPoints[1] = tempLeft.SpawnPoint;
+                MonsterSpawnPoints[2] = tempUp.SpawnPoint;
+                MonsterSpawnPoints[3] = tempRight.SpawnPoint;
+                break;
+        }
+    }
+    
     #endregion
 }

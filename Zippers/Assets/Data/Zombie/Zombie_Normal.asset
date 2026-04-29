@@ -12,14 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27bb70ee936adcd4ba3e625dd0e93359, type: 3}
   m_Name: Zombie_Normal
   m_EditorClassIdentifier: Assembly-CSharp::ZombieStatSO
+  ZombieId: 20001
   Type: 0
   MaxHp: 40
-  MoveSpeed: 1
-  DetectMoveSpeed: 2
+  HealthRegen: 0
+  HealthPeriod: 0
   MinAttackDamage: 13
   MaxAttackDamage: 16
   AttackCooldown: 3
-  HandRadius: 0.25
   AttackRange: 1
+  MoveSpeed: 1
+  DetectMoveSpeed: 2
   DetectRange: 12
+  MinScrap: 0
+  MaxScrap: 0
+  ScrapDropChance: 0
+  MinSupplies: 0
+  MaxSupplies: 0
+  SuppliesDropChance: 0
+  InfectionSample: 0
+  HandRadius: 0.25
   KillReward: 10

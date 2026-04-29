@@ -62,8 +62,8 @@ public class MapActionController
                 _battleAction = new TestNodeBattleAction(this);
                 _clearAction = new TestNodeClearAction(this);
                 break;
-
         }
+        DebugTool.Log($"Action Controller Ready", DebugType.Node);
     }
     
     /// <summary>
@@ -86,6 +86,7 @@ public class MapActionController
                 _machine.ChangeState(_clearAction);
                 break;
         }
+        DebugTool.Log($"Node Action Change : {newState}", DebugType.Node);
     }
 
     /// <summary>
