@@ -18,7 +18,7 @@ public class StartNodeReadyAction : INodeAction
     
     public void EnterState()
     {
-        _controller.Controller.Manager.MapMaker.OnMapSettingComplete += MapSettingComplete;
+        
     }
 
     public void RunningState()
@@ -28,12 +28,7 @@ public class StartNodeReadyAction : INodeAction
 
     public void ExitState()
     {
-        _controller.Controller.Manager.MapMaker.OnMapSettingComplete -= MapSettingComplete;
-    }
-
-    private void MapSettingComplete()
-    {
-        _controller.Controller.Data.SetNodeState(NodeState.Clear);
+        
     }
 }
 
@@ -87,7 +82,7 @@ public class StartNodeClearAction : INodeAction
     
     public void EnterState()
     {
-        _controller.Controller.Teleporter.EnableBeaconAvailable();
+        _controller.Controller.TeleportSupporter.EnableBeaconAvailable();
     }
 
     public void RunningState()

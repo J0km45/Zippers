@@ -22,7 +22,7 @@ public class MapEventController
     public void InitEventController()
     {
         _machine = new EventMachine();
-        DebugTool.Log($"Event Controller Ready", DebugType.Node);
+        DebugTool.Log($"{Controller.Data.NodeType}_{Controller.Data.NodeIndex} Event Controller Ready", DebugType.Node);
     }
 
     private void ChangeEvent(NodeEvent nodeEvent)
@@ -45,10 +45,11 @@ public class MapEventController
     /// <param name="index">이벤트 타입별 인덱스</param>
     public void SetCurrentEvent(NodeEventType eventType, int index)
     {
-        EventSO temp = EventDictionary.Instance.CallEvent(eventType, index);
-        _currentEvent = temp.GetEventScript(this);
+        EventSO temp = NodeManager.Instance.DataContainer.GetEventData(eventType);
+        if (temp == null) return;
+        _currentEvent = temp.GetEventScript(index,this);
         if(_currentEvent == null) return;
         ChangeEvent(_currentEvent);
-        DebugTool.Log($"Event Set : {eventType}, {index}", DebugType.Node);
+        DebugTool.Log($"{Controller.Data.NodeType}_{Controller.Data.NodeIndex} Event Set : {eventType}, {index}", DebugType.Node);
     }
 }

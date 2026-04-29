@@ -22,16 +22,9 @@ public class MapController : MonoBehaviour
     public MapEventController EventController { get; private set; }
     
     /// <summary>
-    /// MapController에서 사용하는 NextMapTeleporter 변수
+    /// MapController에서 사용하는 TeleportSupporter 변수
     /// </summary>
-    public NextMapTeleporter Teleporter { get; private set; }
-    
-    /// <summary>
-    /// MapController에서 사용하는 NodeManager 변수
-    /// </summary>
-    public NodeManager Manager { get; private set; }
-    
-    private WaitForEndOfFrame _wait = new WaitForEndOfFrame();
+    public TeleportSupporter TeleportSupporter { get; private set; }
 
     private void Awake()
     {
@@ -52,8 +45,8 @@ public class MapController : MonoBehaviour
     {
         InitController();
         Data.SetNodeState(NodeState.Ready);
-        StartCoroutine(WaitDictionaryReady());
-        Teleporter.DisableBeaconAll();
+        EventController.SetCurrentEvent(NodeEventType.NoEvent,0);
+        TeleportSupporter.DisableBeaconAll();
     }
 
     private void Update()
@@ -64,11 +57,10 @@ public class MapController : MonoBehaviour
     private void Init()
     {
         Data = GetComponent<MapData>();
-        Teleporter = GetComponent<NextMapTeleporter>();
-        Manager = FindFirstObjectByType<NodeManager>();
+        TeleportSupporter = GetComponent<TeleportSupporter>();
         ActionController = new MapActionController(this);
         EventController = new MapEventController(this);
-        DebugTool.Log($"Main Controller Ready", DebugType.Node, this);
+        DebugTool.Log($"{Data.NodeType}_{Data.NodeIndex} Map Controller Ready", DebugType.Node, this);
     }
 
     private void InitController()
@@ -91,20 +83,5 @@ public class MapController : MonoBehaviour
     private void EventDisable()
     {
         Data.OnChangeState -= ActionController.ChangeState;
-    }
-
-    private IEnumerator WaitDictionaryReady()
-    {
-        while (EventDictionary.Instance == null)
-        {
-            yield return _wait;
-        }
-
-        while (!EventDictionary.Instance.IsDictionaryReady)
-        {
-            yield return _wait;
-        }
-        
-        EventController.SetCurrentEvent(NodeEventType.NoEvent, 0);
     }
 }
