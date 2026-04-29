@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b46998c2fce3b8847a15b6ef0f75612c, type: 3}
+  m_Name: Shotgun SO
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerClassData
+  ClassId: 10002
+  WeaponType: 2
+  ClassName: "\uC18C\uCD1D"
+  MaxHealth: 40
+  Stamina: 40
+  StaminaDelay: 1
+  StaminaPeriod: 0.1
+  StaminaRegen: 10
+  WeaponDamage: 15
+  AttackSpeed: 0.5
+  MagazineCapacity: 30
+  ReloadTime: 2.5
+  BulletSpeed: 18
+  BulletDistance: 12
+  MoveSpeed: 4.5
+  SightRange: 12
+  CollectRange: 2

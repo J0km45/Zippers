@@ -42,6 +42,8 @@ public class ZombieAttackState : IState
         }
     }
 
+    public void OnAttackSfx() => _zombie.Sfx.PlayAttackSfx(_zombie.Type);
+
     private void NormalAttack()
     {
         Vector3 center = (_zombie.LeftHand.position + _zombie.RightHand.position) * 0.5f;

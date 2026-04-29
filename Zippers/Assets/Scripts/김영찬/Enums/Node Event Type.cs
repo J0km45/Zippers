@@ -3,5 +3,8 @@
 /// </summary>
 public enum NodeEventType
 {
-    NoEvent
+    NoEvent,
+    MonsterSpawn,
+    MonsterEnhance,
+    SupplyItem
 }

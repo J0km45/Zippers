@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class ZombieChaseState : IState
 {
     private ZombieController _zombie;
@@ -44,6 +42,20 @@ public class ZombieChaseState : IState
         _zombie.Agent.SetDestination(_zombie.Player.position);
         _zombie.Animator.SetFloat("MoveSpeed", _zombie.Agent.velocity.magnitude);
         // Debug.Log($"속도: {_zombie.Agent.speed}");
+    }
+
+    public void OnFootStep()
+    {
+        //if (_zombie.Agent.velocity.magnitude < 0.1f) return;
+
+        if(_zombie.Type == ZombieType.Boss)
+        {
+            _zombie.Sfx.PlayBossMoveSfx();
+        }
+        else
+        {
+            _zombie.Sfx.PlayMoveSfx();
+        }
     }
 
     public void Exit()

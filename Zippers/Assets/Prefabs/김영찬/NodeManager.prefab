@@ -10,9 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6946132602813173926}
   - component: {fileID: 66709159234456182}
-  - component: {fileID: 4012751426225093401}
-  - component: {fileID: 243293078266158884}
-  - component: {fileID: 3754328797433144783}
   m_Layer: 12
   m_Name: NodeManager
   m_TagString: Untagged
@@ -29,12 +26,11 @@ Transform:
   m_GameObject: {fileID: 759833800515812742}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1000, y: 0, z: 1000}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4581402252742496845}
-  - {fileID: 4032607481005080146}
+  - {fileID: 7735856336072416632}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &66709159234456182
@@ -49,45 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a65a15b3d29754bb73872eb9a48bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NodeManager
---- !u!114 &4012751426225093401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759833800515812742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce1ca93856b86e48a770cc5d6f0fdb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NodeTreeMaker
---- !u!114 &243293078266158884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759833800515812742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b953f8061261d2d429a30413b4680332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapMaker
---- !u!114 &3754328797433144783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 759833800515812742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1847f8d4b9e1b324b977a99aed67ffdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EventDictionary
-  _events:
-  - {fileID: 11400000, guid: 31556aa75c8be8847acdc39eb130506d, type: 2}
---- !u!1 &1490737230382372779
+  <NodeGrid>k__BackingField: {fileID: 6259496979923784968}
+  _curDifficulty: 0
+--- !u!1 &1699577019059861717
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,22 +55,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4032607481005080146}
-  - component: {fileID: 8217600353293393758}
-  m_Layer: 12
-  m_Name: NodeTreeMaker
+  - component: {fileID: 7735856336072416632}
+  - component: {fileID: 6259496979923784968}
+  m_Layer: 0
+  m_Name: NodeGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4032607481005080146
+--- !u!4 &7735856336072416632
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1490737230382372779}
+  m_GameObject: {fileID: 1699577019059861717}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -119,59 +79,147 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6946132602813173926}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8217600353293393758
+--- !u!114 &6259496979923784968
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1490737230382372779}
+  m_GameObject: {fileID: 1699577019059861717}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce1ca93856b86e48a770cc5d6f0fdb3, type: 3}
+  m_Script: {fileID: 11500000, guid: f9f31d6c62334a94f99335a621061fac, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NodeTreeMaker
---- !u!1 &6200254120764286321
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4581402252742496845}
-  - component: {fileID: 6644590001690972348}
-  m_Layer: 12
-  m_Name: MapMaker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4581402252742496845
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6200254120764286321}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6946132602813173926}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6644590001690972348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6200254120764286321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b953f8061261d2d429a30413b4680332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapMaker
+  m_EditorClassIdentifier: Assembly-CSharp::NodeGrid
+  line_0:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 200}
+  - {x: 0, y: 0, z: 400}
+  - {x: 0, y: 0, z: 600}
+  - {x: 0, y: 0, z: 800}
+  - {x: 0, y: 0, z: 1000}
+  - {x: 0, y: 0, z: 1200}
+  - {x: 0, y: 0, z: 1400}
+  - {x: 0, y: 0, z: 1600}
+  - {x: 0, y: 0, z: 1800}
+  - {x: 0, y: 0, z: 2000}
+  line_1:
+  - {x: 200, y: 0, z: 0}
+  - {x: 200, y: 0, z: 200}
+  - {x: 200, y: 0, z: 400}
+  - {x: 200, y: 0, z: 600}
+  - {x: 200, y: 0, z: 800}
+  - {x: 200, y: 0, z: 1000}
+  - {x: 200, y: 0, z: 1200}
+  - {x: 200, y: 0, z: 1400}
+  - {x: 200, y: 0, z: 1600}
+  - {x: 200, y: 0, z: 1800}
+  - {x: 200, y: 0, z: 2000}
+  line_2:
+  - {x: 400, y: 0, z: 0}
+  - {x: 400, y: 0, z: 200}
+  - {x: 400, y: 0, z: 400}
+  - {x: 400, y: 0, z: 600}
+  - {x: 400, y: 0, z: 800}
+  - {x: 400, y: 0, z: 1000}
+  - {x: 400, y: 0, z: 1200}
+  - {x: 400, y: 0, z: 1400}
+  - {x: 400, y: 0, z: 1600}
+  - {x: 400, y: 0, z: 1800}
+  - {x: 400, y: 0, z: 2000}
+  line_3:
+  - {x: 600, y: 0, z: 0}
+  - {x: 600, y: 0, z: 200}
+  - {x: 600, y: 0, z: 400}
+  - {x: 600, y: 0, z: 600}
+  - {x: 600, y: 0, z: 800}
+  - {x: 600, y: 0, z: 1000}
+  - {x: 600, y: 0, z: 1200}
+  - {x: 600, y: 0, z: 1400}
+  - {x: 600, y: 0, z: 1600}
+  - {x: 600, y: 0, z: 1800}
+  - {x: 600, y: 0, z: 2000}
+  line_4:
+  - {x: 800, y: 0, z: 0}
+  - {x: 800, y: 0, z: 200}
+  - {x: 800, y: 0, z: 400}
+  - {x: 800, y: 0, z: 600}
+  - {x: 800, y: 0, z: 800}
+  - {x: 800, y: 0, z: 1000}
+  - {x: 800, y: 0, z: 1200}
+  - {x: 800, y: 0, z: 1400}
+  - {x: 800, y: 0, z: 1600}
+  - {x: 800, y: 0, z: 1800}
+  - {x: 800, y: 0, z: 2000}
+  line_5:
+  - {x: 1000, y: 0, z: 0}
+  - {x: 1000, y: 0, z: 200}
+  - {x: 1000, y: 0, z: 400}
+  - {x: 1000, y: 0, z: 600}
+  - {x: 1000, y: 0, z: 800}
+  - {x: 1000, y: 0, z: 1000}
+  - {x: 1000, y: 0, z: 1200}
+  - {x: 1000, y: 0, z: 1400}
+  - {x: 1000, y: 0, z: 1600}
+  - {x: 1000, y: 0, z: 1800}
+  - {x: 1000, y: 0, z: 2000}
+  line_6:
+  - {x: 1200, y: 0, z: 0}
+  - {x: 1200, y: 0, z: 200}
+  - {x: 1200, y: 0, z: 400}
+  - {x: 1200, y: 0, z: 600}
+  - {x: 1200, y: 0, z: 800}
+  - {x: 1200, y: 0, z: 1000}
+  - {x: 1200, y: 0, z: 1200}
+  - {x: 1200, y: 0, z: 1400}
+  - {x: 1200, y: 0, z: 1600}
+  - {x: 1200, y: 0, z: 1800}
+  - {x: 1200, y: 0, z: 2000}
+  line_7:
+  - {x: 1400, y: 0, z: 0}
+  - {x: 1400, y: 0, z: 200}
+  - {x: 1400, y: 0, z: 400}
+  - {x: 1400, y: 0, z: 600}
+  - {x: 1400, y: 0, z: 800}
+  - {x: 1400, y: 0, z: 1000}
+  - {x: 1400, y: 0, z: 1200}
+  - {x: 1400, y: 0, z: 1400}
+  - {x: 1400, y: 0, z: 1600}
+  - {x: 1400, y: 0, z: 1800}
+  - {x: 1400, y: 0, z: 2000}
+  line_8:
+  - {x: 1600, y: 0, z: 0}
+  - {x: 1600, y: 0, z: 200}
+  - {x: 1600, y: 0, z: 400}
+  - {x: 1600, y: 0, z: 600}
+  - {x: 1600, y: 0, z: 800}
+  - {x: 1600, y: 0, z: 1000}
+  - {x: 1600, y: 0, z: 1200}
+  - {x: 1600, y: 0, z: 1400}
+  - {x: 1600, y: 0, z: 1600}
+  - {x: 1600, y: 0, z: 1800}
+  - {x: 1600, y: 0, z: 2000}
+  line_9:
+  - {x: 1800, y: 0, z: 0}
+  - {x: 1800, y: 0, z: 200}
+  - {x: 1800, y: 0, z: 400}
+  - {x: 1800, y: 0, z: 600}
+  - {x: 1800, y: 0, z: 800}
+  - {x: 1800, y: 0, z: 1000}
+  - {x: 1800, y: 0, z: 1200}
+  - {x: 1800, y: 0, z: 1400}
+  - {x: 1800, y: 0, z: 1600}
+  - {x: 1800, y: 0, z: 1800}
+  - {x: 1800, y: 0, z: 2000}
+  line_10:
+  - {x: 2000, y: 0, z: 0}
+  - {x: 2000, y: 0, z: 200}
+  - {x: 2000, y: 0, z: 400}
+  - {x: 2000, y: 0, z: 600}
+  - {x: 2000, y: 0, z: 800}
+  - {x: 2000, y: 0, z: 1000}
+  - {x: 2000, y: 0, z: 1200}
+  - {x: 2000, y: 0, z: 1400}
+  - {x: 2000, y: 0, z: 1600}
+  - {x: 2000, y: 0, z: 1800}
+  - {x: 2000, y: 0, z: 2000}

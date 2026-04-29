@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -6,7 +6,84 @@ using UnityEngine;
 /// </summary>
 public class NodeManager : MonoBehaviour
 {
+    /// <summary>
+    /// NodeManager에서 NodeGrid를 호출하는 변수
+    /// </summary>
+    [field:SerializeField] public NodeGrid NodeGrid { get; private set; }
     
-    // Awake때 NodeSO를 종류 별로 NetworkList<Node>에 분할해서 리스트화
-    // NodeTreeMaker에서 노드 트리 생성 시 리스트에 있는 노드를 "복제"하여 전달
+    /// <summary>
+    /// NodeManager에서 NodeTreeMaker를 호출하는 변수
+    /// </summary>
+    public NodeTreeMaker TreeMaker { get; private set; }
+    
+    /// <summary>
+    /// NodeManager에서 MapMaker를 호출하는 변수
+    /// </summary>
+    public MapMaker MapMaker { get; private set; }
+
+    // ToDo : 차후에 난이도 조절 가능하게 되면 그쪽으로 난이도 설정 넘김
+    [SerializeField] NodeDifficulty _curDifficulty;
+    
+    private WaitForEndOfFrame _wait = new();
+
+    private void Awake()
+    {
+        Init();
+    }
+
+    private void OnEnable()
+    {
+        EnableEvents();
+    }
+
+    private void OnDisable()
+    {
+        DisableEvents();
+    }
+
+    private void Start()
+    {
+        StartCoroutine(WaitDictionary());
+    }
+
+    private void Init()
+    {
+        TreeMaker = new NodeTreeMaker(this);
+        MapMaker = new MapMaker(this);
+    }
+
+    private void EnableEvents()
+    {
+        TreeMaker.OnTreeMakingComplete += MapMaker.SetMap;
+    }
+
+    private void DisableEvents()
+    {
+        TreeMaker.OnTreeMakingComplete -= MapMaker.SetMap;
+    }
+
+    private IEnumerator WaitDictionary()
+    {
+        while (NodeDictionary.Instance == null)
+        {
+            yield return _wait;
+        }
+
+        while (TreeDictionary.Instance == null)
+        {
+            yield return _wait;
+        }
+        
+        while (!NodeDictionary.Instance.IsDictionaryReady)
+        {
+            yield return _wait;
+        }
+        
+        while (!TreeDictionary.Instance.IsDictionaryReady)
+        {
+            yield return _wait;
+        }
+        
+        TreeMaker.SetNodeTree(_curDifficulty);
+    }
 }
