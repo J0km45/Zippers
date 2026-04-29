@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b46998c2fce3b8847a15b6ef0f75612c, type: 3}
   m_Name: Util SO
   m_EditorClassIdentifier: Assembly-CSharp::PlayerClassData
-  ClassId: 10002
+  ClassId: 10004
   WeaponType: 3
   ClassName: "\uC18C\uCD1D"
   MaxHealth: 40
@@ -20,12 +20,14 @@ MonoBehaviour:
   StaminaDelay: 1
   StaminaPeriod: 0.1
   StaminaRegen: 10
-  WeaponDamage: 15
+  MinDamage: 0
+  MaxDamage: 0
   AttackSpeed: 0.5
   MagazineCapacity: 30
   ReloadTime: 2.5
   BulletSpeed: 18
   BulletDistance: 12
   MoveSpeed: 4.5
+  SprintSpeed: 0
   SightRange: 12
   CollectRange: 2
