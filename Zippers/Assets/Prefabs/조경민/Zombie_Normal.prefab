@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4436914725140295145}
   - component: {fileID: 6311034559897494574}
   - component: {fileID: 6817347452334693514}
+  - component: {fileID: 3063241153452655220}
   - component: {fileID: 1648946743487187907}
   - component: {fileID: 5883751422301487828}
-  - component: {fileID: 3063241153452655220}
   m_Layer: 0
   m_Name: Zombie_Normal
   m_TagString: Untagged
@@ -82,42 +82,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1648946743487187907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6240132892969800838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6e3545f7affdc241b6d14efbb086180, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieController
-  _stat: {fileID: 11400000, guid: 51f00f20eb9232243ae0a8459e1b4c28, type: 2}
-  _stunDuration: 0.2
-  _rewardPrefab: {fileID: 0}
-  CurrentHp: 0
-  Player: {fileID: 0}
-  PlayerLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  LeftHand: {fileID: 2821342582399496668}
-  RightHand: {fileID: 2826105072778931888}
---- !u!114 &5883751422301487828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6240132892969800838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e75c86bf5d2a40738cccc1e06922c240, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Audio.ZombieSfxController
-  _audioSource: {fileID: 3063241153452655220}
-  _zombieSFXSO: {fileID: 11400000, guid: 616d8d66e78135246abcb305e10004df, type: 2}
 --- !u!82 &3063241153452655220
 AudioSource:
   m_ObjectHideFlags: 0
@@ -215,6 +179,42 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1648946743487187907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6240132892969800838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6e3545f7affdc241b6d14efbb086180, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieController
+  _stat: {fileID: 11400000, guid: 51f00f20eb9232243ae0a8459e1b4c28, type: 2}
+  _stunDuration: 0.2
+  _rewardPrefab: {fileID: 0}
+  CurrentHp: 0
+  Player: {fileID: 0}
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  LeftHand: {fileID: 2821342582399496668}
+  RightHand: {fileID: 2826105072778931888}
+--- !u!114 &5883751422301487828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6240132892969800838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75c86bf5d2a40738cccc1e06922c240, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio.ZombieSfxController
+  _audioSource: {fileID: 3063241153452655220}
+  _zombieSFXSO: {fileID: 11400000, guid: 616d8d66e78135246abcb305e10004df, type: 2}
 --- !u!1001 &2822041992686010070
 PrefabInstance:
   m_ObjectHideFlags: 0

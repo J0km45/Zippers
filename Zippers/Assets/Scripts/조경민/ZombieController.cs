@@ -16,6 +16,7 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     private Animator _animator;
     private ZombieSfxController _sfx;
     private bool _isDead;
+    private bool _hasSpawnedReward;
 
     public ZombieChaseState Chase { get; private set; }
     public ZombieAttackState Attack { get; private set; }
@@ -118,11 +119,13 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     {
         if (_isDead) return;
 
+        _sfx.PlayHitSfx();
         CurrentHp -= damage;
 
         if (CurrentHp <= 0)
         {
             _isDead = true;
+            _sfx.PlayDeathSfx();
             ChangeState(Die);
             return;
         }
@@ -132,7 +135,11 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 
     public void SpawnReward()
     {
+        if (_hasSpawnedReward) return;
+        
+        _hasSpawnedReward = true;
         // TODO : 수정해야됨
+        //_sfx.PlayDropResourcesSfx(ResourcesType.Scrap);
         //Instantiate(_rewardPrefab, transform.position, Quaternion.identity);
     }
 
