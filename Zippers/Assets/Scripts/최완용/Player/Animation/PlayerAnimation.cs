@@ -5,8 +5,12 @@ public class PlayerAnimation : MonoBehaviour
     private static readonly int MoveX = Animator.StringToHash("MoveX");
     private static readonly int MoveY = Animator.StringToHash("MoveY");
     private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int IsSprint = Animator.StringToHash("IsSprint");
+
     private static readonly int Attack = Animator.StringToHash("Attack");
     private static readonly int Reload = Animator.StringToHash("Reload");
+    private static readonly int Hit = Animator.StringToHash("Hit");
+    private static readonly int Die = Animator.StringToHash("Die");
 
     [SerializeField] private Animator _animator;
 
@@ -24,22 +28,38 @@ public class PlayerAnimation : MonoBehaviour
         _animator.SetFloat(Speed, normalizedInput.sqrMagnitude);
     }
 
+    public void SetSprint(bool isSprinting)
+    {
+        _animator.SetBool(IsSprint, isSprinting);
+    }
+
     public void SetIdle()
     {
         _animator.SetFloat(MoveX, 0f);
         _animator.SetFloat(MoveY, 0f);
         _animator.SetFloat(Speed, 0f);
+        _animator.SetBool(IsSprint, false);
     }
 
     public void PlayAttack()
     {
         _animator.SetTrigger(Attack);
-        Debug.Log("[PlayerAnimation] Attack 애니메이션 실행");
+        DebugTool.Log("Attack 애니메이션 실행", DebugType.Character, this);
     }
 
     public void PlayReload()
     {
         _animator.SetTrigger(Reload);
-        Debug.Log("[PlayerAnimation] Reload 애니메이션 실행");
+        DebugTool.Log("Reload 애니메이션 실행", DebugType.Character, this);
+    }
+    public void PlayDie()
+    {
+        _animator.SetTrigger(Die);
+        DebugTool.Log("Die 애니메이션 실행", DebugType.Character, this);
+    }
+    public void PlayerHit()
+    {
+        _animator.SetTrigger(Hit);
+        DebugTool.Log("Hit 애니메이션 실행", DebugType.Character, this);
     }
 }

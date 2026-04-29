@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     private PlayerStats _playerStats;
+    public bool IsSprinting { get; private set; }
 
     //[SerializeField] private float _moveSpeed = 5f;
 
@@ -19,11 +20,23 @@ public class PlayerMovement : MonoBehaviour
         Vector2 normalizedInput = input.normalized;
         MoveDir = new Vector3(normalizedInput.x, 0f, normalizedInput.y);
     }
+    public void SetSprint(bool isSprinting)
+    {
+        IsSprinting = isSprinting;
+    }
 
     // 이동 처리
     public void Move()
     {
-        transform.Translate(MoveDir * _playerStats.MoveSpeed * Time.deltaTime, Space.World);
+        transform.Translate(MoveDir * CalMoveSpeed() * Time.deltaTime, Space.World);
+    }
+    public float CalMoveSpeed()
+    {
+        if(!IsSprinting)
+        {
+            return _playerStats.MoveSpeed;
+        }
+        return _playerStats.MoveSpeed + _playerStats.SprintSpeed;
     }
 
 }
