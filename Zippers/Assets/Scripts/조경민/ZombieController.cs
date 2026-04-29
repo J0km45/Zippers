@@ -7,6 +7,12 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 {
     [SerializeField] private ZombieStatSO _stat;
 
+    [Tooltip("플레이어 레이어")]
+    [SerializeField] private LayerMask _playerLayer;
+    [Tooltip("왼손 위치")]
+    [SerializeField] private Transform _leftHand;
+    [Tooltip("오른손 위치")]
+    [SerializeField] private Transform _rightHand;
     [Tooltip("Groan Sfx 재생 주기")]
     [SerializeField] private float _groanSfxInterval = 3f;
     [Tooltip("Groan Sfx 재생 확률")]
@@ -17,29 +23,28 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     [SerializeField] private GameObject _rewardPrefab;
 
     private StateMachine _stateMachine;
-    private NavMeshAgent _agent;
-    private Animator _animator;
-    private ZombieSfxController _sfx;
-    private bool _isDead;
-    private bool _hasSpawnedReward;
-    private float _timer;
+    private bool _isDead; // 죽음 상태 여부
+    private bool _hasSpawnedReward; // 보상 생성 여부
+    private float _timer; // Groan Sfx 재생용 타이머
+    private float _lastAttackTime = 0f; // 공격 쿨타임 관리용 시간
 
     public ZombieChaseState Chase { get; private set; }
     public ZombieAttackState Attack { get; private set; }
     public ZombieHitState Hit { get; private set; }
     public ZombieDieState Die { get; private set; }
-    public NavMeshAgent Agent => _agent;
-    public Animator Animator => _animator;
-    public ZombieSfxController Sfx => _sfx;
+
+    public NavMeshAgent Agent { get; private set; }
+    public Animator Animator { get; private set; }
+    public ZombieSfxController Sfx { get; private set; }
+    public IZombieAttack ZombieAttack { get; private set; }
+    public LayerMask PlayerLayer => _playerLayer;
+    public Transform LeftHand => _leftHand;
+    public Transform RightHand => _rightHand;
     public float StunDuration => _stunDuration;
 
     //public NetworkVariable<int> CurrentHp = new NetworkVariable<float>();
     public float CurrentHp; //임시(테스트용)
     public Transform Player; //임시(테스트용)
-    public LayerMask PlayerLayer;
-    public Transform LeftHand;
-    public Transform RightHand;
-    public float LastAttackTime { get; private set; } = 0f;
 
     public ZombieType Type => _stat.Type;
     public float MaxHp => _stat.MaxHp;
@@ -60,10 +65,11 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
         Hit = new ZombieHitState(this);
         Die = new ZombieDieState(this);
 
-        _agent = GetComponent<NavMeshAgent>();
-        _animator = GetComponentInChildren<Animator>();
-        _sfx = GetComponent<ZombieSfxController>();
-        _agent.stoppingDistance = AttackRange;
+        Agent = GetComponent<NavMeshAgent>();
+        Animator = GetComponentInChildren<Animator>();
+        Sfx = GetComponent<ZombieSfxController>();
+        ZombieAttack = GetComponent<IZombieAttack>();
+        Agent.stoppingDistance = AttackRange;
         CurrentHp = MaxHp; // 임시(테스트용)
     }
     // TODO : NGO 적용되면 수정
@@ -101,11 +107,11 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
             {
                 if (Type == ZombieType.Boss)
                 {
-                    _sfx.PlayBossGroanSfx();
+                    Sfx.PlayBossGroanSfx();
                 }
                 else
                 {
-                    _sfx.PlayGroanSfx();
+                    Sfx.PlayGroanSfx();
                 }
             }
         }
@@ -125,14 +131,14 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     {
         // if (!IsServer) return false;
         // TODO : 서버시간으로 변경 필요
-        return Time.time >= LastAttackTime + AttackCooldown;
+        return Time.time >= _lastAttackTime + AttackCooldown;
     }
 
     public void SetAttackCooldown()
     {
         // if (!IsServer) return;
         // TODO : 서버시간으로 변경 필요
-        LastAttackTime = Time.time;
+        _lastAttackTime = Time.time;
     }
 
     public void OnAttackHit() => Attack.OnAttackHit();
@@ -148,13 +154,13 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     {
         if (_isDead) return;
 
-        _sfx.PlayHitSfx();
+        Sfx.PlayHitSfx();
         CurrentHp -= damage;
 
         if (CurrentHp <= 0)
         {
             _isDead = true;
-            _sfx.PlayDeathSfx();
+            Sfx.PlayDeathSfx();
             ChangeState(Die);
             return;
         }
