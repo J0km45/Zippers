@@ -22,8 +22,8 @@ public class CharacterSFXSO : ScriptableObject
     public List<AudioClip> MaleHitSfx => maleHitSfx;
     
     [Space(5)][Header("Female Hit")][Tooltip("Female Hit Clip 필요")]
-    [SerializeField] private List<AudioClip> femaleHit = new List<AudioClip>();
-    public List<AudioClip> FemaleHit => femaleHit;
+    [SerializeField] private List<AudioClip> femaleHitSfx = new List<AudioClip>();
+    public List<AudioClip> FemaleHitSfx => femaleHitSfx;
     
     [Space(5)][Header("Male Death")][Tooltip("Male Death Clip 필요")]
     [SerializeField] private List<AudioClip> maleDeathSfx = new List<AudioClip>();
