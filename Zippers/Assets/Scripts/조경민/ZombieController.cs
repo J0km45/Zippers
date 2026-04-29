@@ -1,10 +1,16 @@
 using UnityEngine;
 using UnityEngine.AI;
 using Unity.Netcode;
+using Audio;
 
 public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 {
     [SerializeField] private ZombieStatSO _stat;
+
+    [Tooltip("Groan Sfx 재생 주기")]
+    [SerializeField] private float _groanSfxInterval = 3f;
+    [Tooltip("Groan Sfx 재생 확률")]
+    [SerializeField] private float _groanSfxChance = 0.3f;
     [Tooltip("피격 시 경직 시간")]
     [SerializeField] private float _stunDuration = 0.2f;
     [Tooltip("재화 프리팹")]
@@ -13,7 +19,10 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     private StateMachine _stateMachine;
     private NavMeshAgent _agent;
     private Animator _animator;
+    private ZombieSfxController _sfx;
     private bool _isDead;
+    private bool _hasSpawnedReward;
+    private float _timer;
 
     public ZombieChaseState Chase { get; private set; }
     public ZombieAttackState Attack { get; private set; }
@@ -21,6 +30,7 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     public ZombieDieState Die { get; private set; }
     public NavMeshAgent Agent => _agent;
     public Animator Animator => _animator;
+    public ZombieSfxController Sfx => _sfx;
     public float StunDuration => _stunDuration;
 
     //public NetworkVariable<int> CurrentHp = new NetworkVariable<float>();
@@ -41,7 +51,6 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     public float HandRadius => _stat.HandRadius;
     public float AttackRange => _stat.AttackRange;
     public float DetectRange => _stat.DetectRange;
-    public float KillReward => _stat.KillReward;
 
     private void Awake()
     {
@@ -53,6 +62,7 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponentInChildren<Animator>();
+        _sfx = GetComponent<ZombieSfxController>();
         _agent.stoppingDistance = AttackRange;
         CurrentHp = MaxHp; // 임시(테스트용)
     }
@@ -72,9 +82,33 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 
     private void Update()
     {
+        PlayGroanSfx();
         // TODO : 플레이어 위치 받아오는거 필요함
         //Player = 가장 가까운 생존 플레이어
         _stateMachine.Update();
+    }
+
+    private void PlayGroanSfx()
+    {
+        if (_isDead) return;
+        // TODO : NGO 적용되면 서버에서 타이머 관리하도록 변경
+        _timer += Time.deltaTime;
+
+        if(_timer >= _groanSfxInterval)
+        {
+            _timer = 0f;
+            if (Random.value < _groanSfxChance)
+            {
+                if (Type == ZombieType.Boss)
+                {
+                    _sfx.PlayBossGroanSfx();
+                }
+                else
+                {
+                    _sfx.PlayGroanSfx();
+                }
+            }
+        }
     }
 
     public void ChangeState(IState state)
@@ -101,26 +135,26 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
         LastAttackTime = Time.time;
     }
 
-    public void OnAttackHit()
-    {
-        Attack.OnAttackHit();
-    }
+    public void OnAttackHit() => Attack.OnAttackHit();
 
-    public void OnAttackEnd()
-    {
-        Attack.OnAttackEnd();
-    }
+    public void OnAttackEnd() => Attack.OnAttackEnd();
+
+    public void OnFootStep() => Chase.OnFootStep();
+
+    public void OnAttackSfx() => Attack.OnAttackSfx();
 
     // TODO : NGO 적용되면 수정
     public void TakeDamage(float damage)
     {
         if (_isDead) return;
 
+        _sfx.PlayHitSfx();
         CurrentHp -= damage;
 
         if (CurrentHp <= 0)
         {
             _isDead = true;
+            _sfx.PlayDeathSfx();
             ChangeState(Die);
             return;
         }
@@ -130,7 +164,11 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 
     public void SpawnReward()
     {
+        if (_hasSpawnedReward) return;
+        
+        _hasSpawnedReward = true;
         // TODO : 수정해야됨
+        //_sfx.PlayDropResourcesSfx(ResourcesType.Scrap);
         //Instantiate(_rewardPrefab, transform.position, Quaternion.identity);
     }
 
