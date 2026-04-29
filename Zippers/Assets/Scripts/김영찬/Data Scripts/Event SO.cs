@@ -29,6 +29,11 @@ public class EventSO : ScriptableObject
     /// <returns>Node Event 추상 클래스를 가지는 자식 클래스 반환</returns>
     public NodeEvent GetEventScript(MapEventController controller)
     {
+        if (EventScript == null)
+        {
+            DebugTool.Warning($"Not SerializeField EventScript : {EventType}_{EventIndex}", DebugType.Node, this);
+            return null;
+        }
         NodeEvent temp = EventScript;
         temp.SetController(controller);
         return temp;

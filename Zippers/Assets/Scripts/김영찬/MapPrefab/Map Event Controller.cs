@@ -22,7 +22,7 @@ public class MapEventController
     public void InitEventController()
     {
         _machine = new EventMachine();
-        DebugTool.Log($"{Controller.Data.NodeTreeIndex}Map <color.yellow>Event Controller Ready</color>", DebugType.Node);
+        DebugTool.Log($"Event Controller Ready", DebugType.Node);
     }
 
     private void ChangeEvent(NodeEvent nodeEvent)
@@ -49,6 +49,6 @@ public class MapEventController
         _currentEvent = temp.GetEventScript(this);
         if(_currentEvent == null) return;
         ChangeEvent(_currentEvent);
-        DebugTool.Log($"{Controller.Data.NodeTreeIndex}Map <color.yellow>Event Set</color> : {eventType}, {index}", DebugType.Node);
+        DebugTool.Log($"Event Set : {eventType}, {index}", DebugType.Node);
     }
 }

@@ -11,22 +11,17 @@ public class NodeDictionary : MonoBehaviour
     /// SingleTon Instance
     /// </summary>
     public static NodeDictionary Instance { get; private set; }
-
-    [Header("테스트 노드 데이터")]
-    [SerializeField] private NodeSO _testNode;
     
-    [Header("테스트 노드 제외한 나머지 노드 데이터들")]
     [SerializeField] private NodeSO[] _nodes;
+
+    private Dictionary<(NodeType ,int), NodeSO> _dict;
     
-    private Dictionary<int, NodeSO> _dict_Start;
-    private Dictionary<int, NodeSO> _dict_Battle;
-    private Dictionary<int, NodeSO> _dict_Boss;
-    private Dictionary<int, NodeSO> _dict_Shop;
-    private Dictionary<int, NodeSO> _dict_Escape;
-    
+    private int _countBattleNodes;
+    private int _countBossNodes;
+    private int _countShopNodes;
+    private int _countEscapeNodes;
+    private int _countStartNodes;
     private int _postBattleIndex;
-    private int _postBossIndex;
-    private int _postShopIndex;
 
     public bool IsDictionaryReady { get; private set; }
 
@@ -53,44 +48,46 @@ public class NodeDictionary : MonoBehaviour
 
     private void InitDict()
     {
-        _dict_Battle = new Dictionary<int, NodeSO>();
-        _dict_Boss = new Dictionary<int, NodeSO>();
-        _dict_Shop = new Dictionary<int, NodeSO>();
-        _dict_Escape = new Dictionary<int, NodeSO>();
-        _dict_Start = new Dictionary<int, NodeSO>();
+        _dict = new Dictionary<(NodeType ,int), NodeSO>();
 
+        _countBattleNodes = 0;
+        _countBossNodes = 0;
+        _countEscapeNodes = 0;
+        _countShopNodes = 0;
+        _countStartNodes = 0;
         _postBattleIndex = -1;
         
         foreach (NodeSO node in _nodes)
         {
-            switch (node.NodeType)
+            bool verification = _dict.TryAdd((node.NodeType, node.NodeIndex), node);
+            if(!verification) DebugTool.Error($"Node Dictionary Duplication Error : {node.NodeType}_{node.NodeIndex}", DebugType.Node, this);
+            else
             {
-                case NodeType.Battle:
-                    bool tempBattle = _dict_Battle.TryAdd(node.NodeIndex, node);
-                    if (!tempBattle) DebugTool.Error($"NodeSO Index Duplicate : {node.NodeType}_{node.NodeIndex}", DebugType.Node, this);
-                    break;
-                case NodeType.Boss:
-                    bool tempBoss = _dict_Boss.TryAdd(node.NodeIndex, node);
-                    if (!tempBoss) DebugTool.Error($"NodeSO Index Duplicate : {node.NodeType}_{node.NodeIndex}", DebugType.Node, this);
-                    break;
-                case NodeType.Shop:
-                    bool tempShop = _dict_Shop.TryAdd(node.NodeIndex, node);
-                    if (!tempShop) DebugTool.Error($"NodeSO Index Duplicate : {node.NodeType}_{node.NodeIndex}", DebugType.Node, this);
-                    break;
-                case NodeType.Escape:
-                    bool tempEscape = _dict_Escape.TryAdd(node.NodeIndex, node);
-                    if (!tempEscape) DebugTool.Error($"NodeSO Index Duplicate : {node.NodeType}_{node.NodeIndex}", DebugType.Node, this);
-                    break;
-                case NodeType.Start:
-                    bool tempStart = _dict_Start.TryAdd(node.NodeIndex, node);
-                    if (!tempStart) DebugTool.Error($"NodeSO Index Duplicate : {node.NodeType}_{node.NodeIndex}", DebugType.Node, this);
-                    break;
-                default:
-                    break;
+                switch (node.NodeType)
+                {
+                    case NodeType.Battle:
+                        _countBattleNodes++;
+                        break;
+                    case NodeType.Boss:
+                        _countBossNodes++;
+                        break;
+                    case NodeType.Shop:
+                        _countShopNodes++;
+                        break;
+                    case NodeType.Escape:
+                        _countEscapeNodes++;
+                        break;
+                    case NodeType.Start:
+                        _countStartNodes++;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         
         IsDictionaryReady = true;
+        
         DebugTool.Log("Node Dictionary Ready", DebugType.Node, this);
     }
     
@@ -106,40 +103,12 @@ public class NodeDictionary : MonoBehaviour
             DebugTool.Error("Node Dictionary Not Ready", DebugType.Node, this);
             return null;
         }
-
-        NodeSO result;
         
-        switch (nodeType)
-        {
-            case NodeType.Test:
-                result = _testNode;
-                break;
-            case NodeType.Battle:
-                result = _dict_Battle.GetValueOrDefault(GetIndexNumber(nodeType));
-                if (result == null) DebugTool.Error($"NodeSO Not Found : {nodeType}_{GetIndexNumber(nodeType)}", DebugType.Node, this);
-                break;
-            case NodeType.Boss:
-                result = _dict_Boss.GetValueOrDefault(GetIndexNumber(nodeType));
-                if (result == null) DebugTool.Error($"NodeSO Not Found : {nodeType}_{GetIndexNumber(nodeType)}", DebugType.Node, this);
-                break;
-            case NodeType.Shop:
-                result = _dict_Shop.GetValueOrDefault(GetIndexNumber(nodeType));
-                if (result == null) DebugTool.Error($"NodeSO Not Found : {nodeType}_{GetIndexNumber(nodeType)}", DebugType.Node, this);
-                break;
-            case NodeType.Escape:
-                result = _dict_Escape.GetValueOrDefault(GetIndexNumber(nodeType));
-                if (result == null) DebugTool.Error($"NodeSO Not Found : {nodeType}_{GetIndexNumber(nodeType)}", DebugType.Node, this);
-                break;
-            case NodeType.Start:
-                result = _dict_Start.GetValueOrDefault(GetIndexNumber(nodeType));
-                if (result == null) DebugTool.Error($"NodeSO Not Found : {nodeType}_{GetIndexNumber(nodeType)}", DebugType.Node, this);
-                break;
-            case NodeType.Empty:
-                return null;
-            default:
-                DebugTool.Error($"NodeSO Not Found : {nodeType}_{GetIndexNumber(nodeType)}", DebugType.Node, this);
-                return null;
-        }
+        int index = GetIndexNumber(nodeType);
+
+        NodeSO result = _dict.GetValueOrDefault((nodeType, index));
+        
+        if (result == null) DebugTool.Error($"Node Not Found : {nodeType}_{index}", DebugType.Node, this);
         
         return result;
     }
@@ -149,21 +118,26 @@ public class NodeDictionary : MonoBehaviour
         switch (nodeType)
         {
             case NodeType.Battle:
-                int temp = Random.Range(0, _dict_Battle.Count - 1);
+                if (_countBattleNodes <= 1) return 0;
+                int temp = Random.Range(0, _countBattleNodes);
                 while (temp == _postBattleIndex)
                 {
-                    temp = Random.Range(0, _dict_Battle.Count - 1);
+                    temp = Random.Range(0, _countBattleNodes);
                 }
                 _postBattleIndex = temp;
                 return temp;
             case NodeType.Boss:
-                return Random.Range(0, _dict_Boss.Count - 1);
+                if (_countBossNodes <= 1) return 0;
+                return Random.Range(0, _countBossNodes);
             case NodeType.Shop:
-                return Random.Range(0, _dict_Shop.Count - 1);
+                if (_countShopNodes <= 1) return 0;
+                return Random.Range(0, _countShopNodes);
             case NodeType.Escape:
-                return Random.Range(0, _dict_Escape.Count - 1);
+                if (_countEscapeNodes <= 1) return 0;
+                return Random.Range(0, _countEscapeNodes);
             case NodeType.Start:
-                return Random.Range(0, _dict_Start.Count - 1);
+                if (_countStartNodes <= 1) return 0;
+                return Random.Range(0, _countStartNodes);
             default:
                 return 0;
         }

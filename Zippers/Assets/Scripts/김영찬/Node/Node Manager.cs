@@ -50,6 +50,7 @@ public class NodeManager : MonoBehaviour
     {
         TreeMaker = new NodeTreeMaker(this);
         MapMaker = new MapMaker(this);
+        DebugTool.Log("Node Manager Initialized", DebugType.Node, this);
     }
 
     private void EnableEvents()
