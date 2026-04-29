@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
 /// <summary>
@@ -87,7 +88,7 @@ public class NextMapTeleporter : MonoBehaviour
         if(_nextMapAvailable_Down) _controller.Data.SetBeaconEnable(_controller.Data.TeleportBeacon_Down);
         if(_nextMapAvailable_Left) _controller.Data.SetBeaconEnable(_controller.Data.TeleportBeacon_Left);
         if(_nextMapAvailable_Right) _controller.Data.SetBeaconEnable(_controller.Data.TeleportBeacon_Right);
-        DebugTool.Log($"{_controller.Data.NodeTreeIndex}Map <color.yellow>Enable Beacon</color>", DebugType.Node, this);
+        DebugTool.Log($"Enable Beacon", DebugType.Node, this);
     }
     
     /// <summary>
@@ -99,7 +100,7 @@ public class NextMapTeleporter : MonoBehaviour
         _controller.Data.SetBeaconDisable(_controller.Data.TeleportBeacon_Down);
         _controller.Data.SetBeaconDisable(_controller.Data.TeleportBeacon_Left);
         _controller.Data.SetBeaconDisable(_controller.Data.TeleportBeacon_Right);
-        DebugTool.Log($"{_controller.Data.NodeTreeIndex}Map <color.yellow>Disable Beacon</color>", DebugType.Node, this);
+        DebugTool.Log($"Disable Beacon", DebugType.Node, this);
     }
 
     private void CountVoteUp(int count)
@@ -128,40 +129,61 @@ public class NextMapTeleporter : MonoBehaviour
     
     private void CulVoteResult()
     {
-        DebugTool.Log($"{_controller.Data.NodeTreeIndex}Map <color.yellow>Current Vote Result</color>\n" +
+        DebugTool.Log($"Current Vote Result\n" +
                       $"Up : {_voteUp}, Down : {_voteDown}, Left : {_voteLeft}, Right : {_voteRight}", DebugType.Node, this);
         
         float minVoteWin = _controller.Data.AlivePlayerCount / 2f;
         
-        if (_voteRight > minVoteWin)
-        {
-            Teleport();
-            DebugTool.Log($"{_controller.Data.NodeTreeIndex}Map <color.yellow>Teleport To Right Map</color>\n", DebugType.Node, this);
-            return;
-        }
-        if (_voteDown > minVoteWin)
-        {
-            Teleport();
-            DebugTool.Log($"{_controller.Data.NodeTreeIndex}Map <color.yellow>Teleport To Lower Map</color>\n", DebugType.Node, this);
-            return;
-        }
-        if (_voteLeft > minVoteWin)
-        {
-            Teleport();
-            DebugTool.Log($"{_controller.Data.NodeTreeIndex}Map <color.yellow>Teleport To Left Map</color>\n", DebugType.Node, this);
-            return;
-        }
         if (_voteUp > minVoteWin)
         {
-            Teleport();
-            DebugTool.Log($"{_controller.Data.NodeTreeIndex}Map <color.yellow>Teleport To Upper Map</color>\n", DebugType.Node, this);
+            //Teleport(NodeStartDir.Up);
+            DebugTool.Log($"Teleport To Upper Map", DebugType.Node, this);
             return;
         }
+        
+        if (_voteRight > minVoteWin)
+        {
+            //Teleport(NodeStartDir.Right);
+            DebugTool.Log($"Teleport To Right Map", DebugType.Node, this);
+            return;
+        }
+        
+        if (_voteLeft > minVoteWin)
+        {
+            //Teleport(NodeStartDir.Left);
+            DebugTool.Log($"Teleport To Left Map", DebugType.Node, this);
+            return;
+        }
+        
+        if (_voteDown > minVoteWin)
+        {
+            //Teleport(NodeStartDir.Down);
+            DebugTool.Log($"Teleport To Lower Map", DebugType.Node, this);
+            return;
+        }
+        
+        
     }
 
-    private void Teleport()
+    private void Teleport(NodeStartDir dir)
     {
-        // 텔레포트 로직
-        // 모든 플레이어 이동
+        switch (dir)
+        {
+            case NodeStartDir.Up:
+                GameObject nextMap = _controller.Data.NextMap_Up;
+                MapData nextMapData = nextMap.GetComponent<MapData>();
+                Transform[] nextMapPlayerSpawnPoint = nextMapData.PlayerSpawnPoint_Down;
+                int playerIndex = 0;
+                foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+                {
+                    Transform sp = nextMapPlayerSpawnPoint[playerIndex % nextMapPlayerSpawnPoint.Length];
+
+                    // ToDo : 네트워크 파트와 협의 후 코드 작성
+                    
+                    playerIndex++;
+                }
+                
+                break;
+        }
     }
 }

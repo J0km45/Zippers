@@ -10,18 +10,17 @@ public class TreeDictionary : MonoBehaviour
     /// SingleTon Instance
     /// </summary>
     public static TreeDictionary Instance { get; private set; }
-
-    [SerializeField] private TreeSO _testTree;
     
-    [Header("테스트 트리 데이터 제외한 나머지 데이터들")]
     [SerializeField] private TreeSO[] _trees;
     
-    private Dictionary<int, TreeSO> _dict_Lv1;
-    private Dictionary<int, TreeSO> _dict_Lv2;
-    private Dictionary<int, TreeSO> _dict_Lv3;
-    private Dictionary<int, TreeSO> _dict_Lv4;
-    private Dictionary<int, TreeSO> _dict_Lv5;
+    private Dictionary<(NodeDifficulty , int), TreeSO> _dict;
 
+    private int _countLv1Tree;
+    private int _countLv2Tree;
+    private int _countLv3Tree;
+    private int _countLv4Tree;
+    private int _countLv5Tree;
+    
     public bool IsDictionaryReady { get; private set; }
 
     private void Awake()
@@ -47,43 +46,43 @@ public class TreeDictionary : MonoBehaviour
 
     private void InitDict()
     {
-        _dict_Lv1 = new Dictionary<int, TreeSO>();
-        _dict_Lv2 = new Dictionary<int, TreeSO>();
-        _dict_Lv3 = new Dictionary<int, TreeSO>();
-        _dict_Lv4 = new Dictionary<int, TreeSO>();
-        _dict_Lv5 = new Dictionary<int, TreeSO>();
+        _dict = new Dictionary<(NodeDifficulty, int), TreeSO>();
+
+        _countLv1Tree = 0;
+        _countLv2Tree = 0;
+        _countLv3Tree = 0;
+        _countLv4Tree = 0;
+        _countLv5Tree = 0;
         
         foreach (TreeSO tree in _trees)
         {
-            switch (tree.Difficulty)
+            bool verification = _dict.TryAdd((tree.Difficulty, tree.TreeIndex), tree);
+            if(!verification) DebugTool.Error($"Tree Dictionary Duplication Error : {tree.Difficulty}_{tree.TreeIndex}", DebugType.Node, this);
+            else
             {
-                case NodeDifficulty.Level1:
-                    bool tempLv1 = _dict_Lv1.TryAdd(tree.TreeIndex, tree);
-                    if (!tempLv1) DebugTool.Error($"TreeSO Index Duplicate : {tree.Difficulty}_{tree.TreeIndex}", DebugType.Node, this);
-                    break;
-                case NodeDifficulty.Level2:
-                    bool tempLv2 = _dict_Lv2.TryAdd(tree.TreeIndex, tree);
-                    if (!tempLv2) DebugTool.Error($"TreeSO Index Duplicate : {tree.Difficulty}_{tree.TreeIndex}", DebugType.Node, this);
-                    break;
-                case NodeDifficulty.Level3:
-                    bool tempLv3 = _dict_Lv3.TryAdd(tree.TreeIndex, tree);
-                    if (!tempLv3) DebugTool.Error($"TreeSO Index Duplicate : {tree.Difficulty}_{tree.TreeIndex}", DebugType.Node, this);
-                    break;
-                case NodeDifficulty.Level4:
-                    bool tempLv4 = _dict_Lv4.TryAdd(tree.TreeIndex, tree);
-                    if (!tempLv4) DebugTool.Error($"TreeSO Index Duplicate : {tree.Difficulty}_{tree.TreeIndex}", DebugType.Node, this);
-                    break;
-                case NodeDifficulty.Level5:
-                    bool tempLv5 = _dict_Lv5.TryAdd(tree.TreeIndex, tree);
-                    if (!tempLv5) DebugTool.Error($"TreeSO Index Duplicate : {tree.Difficulty}_{tree.TreeIndex}", DebugType.Node, this);
-                    break;
-                default:
-                    break;
+                switch (tree.Difficulty)
+                {
+                    case NodeDifficulty.Level1:
+                        _countLv1Tree++;
+                        break;
+                    case NodeDifficulty.Level2:
+                        _countLv2Tree++;
+                        break;
+                    case NodeDifficulty.Level3:
+                        _countLv3Tree++;
+                        break;
+                    case NodeDifficulty.Level4:
+                        _countLv4Tree++;
+                        break;
+                    case NodeDifficulty.Level5:
+                        _countLv5Tree++;
+                        break;
+                }
             }
         }
         
         IsDictionaryReady = true;
-        DebugTool.Log("Node Dictionary Ready", DebugType.Node, this);
+        DebugTool.Log("Tree Dictionary Ready", DebugType.Node, this);
     }
 
     /// <summary>
@@ -108,178 +107,104 @@ public class TreeDictionary : MonoBehaviour
         bool isSetThird = false;
         bool isSetFourth = false;
         bool isSetFifth = false;
+
+        int count = 0;
         
         switch (difficulty)
         {
             case NodeDifficulty.Test:
-                first = _testTree;
-                break;
-            
+                first = _dict.GetValueOrDefault((difficulty, 0));
+                return;
             case NodeDifficulty.Level1:
-                if(_dict_Lv1 == null) break;
-                for (int i = 0; i < _dict_Lv1.Count; i++)
-                {
-                    int temp = Random.Range(0, _dict_Lv1.Count - 1);
-                    if (!isSetFirst)
-                    {
-                        first = _dict_Lv1[temp];
-                        isSetFirst = true;
-                    }
-                    else if (!isSetSecond) 
-                    {
-                        second = _dict_Lv1[temp];
-                        isSetSecond = true;
-                    }
-                    else if (!isSetThird) 
-                    {
-                        third = _dict_Lv1[temp];
-                        isSetThird = true;
-                    }
-                    else if (!isSetFourth) 
-                    {
-                        fourth = _dict_Lv1[temp];
-                        isSetFourth = true;
-                    }
-                    else if (!isSetFifth) 
-                    {
-                        fifth = _dict_Lv1[temp];
-                        isSetFifth = true;
-                    }
-                    else break;
-                }
+                count = _countLv1Tree;
                 break;
             case NodeDifficulty.Level2:
-                if(_dict_Lv2 == null) break;
-                for (int i = 0; i < _dict_Lv2.Count; i++)
-                {
-                    int temp = Random.Range(0, _dict_Lv2.Count - 1);
-                    if (!isSetFirst)
-                    {
-                        first = _dict_Lv2[temp];
-                        isSetFirst = true;
-                    }
-                    else if (!isSetSecond) 
-                    {
-                        second = _dict_Lv2[temp];
-                        isSetSecond = true;
-                    }
-                    else if (!isSetThird) 
-                    {
-                        third = _dict_Lv2[temp];
-                        isSetThird = true;
-                    }
-                    else if (!isSetFourth) 
-                    {
-                        fourth = _dict_Lv2[temp];
-                        isSetFourth = true;
-                    }
-                    else if (!isSetFifth) 
-                    {
-                        fifth = _dict_Lv2[temp];
-                        isSetFifth = true;
-                    }
-                    else break;
-                }
+                count = _countLv2Tree;
                 break;
             case NodeDifficulty.Level3:
-                if(_dict_Lv3 == null) break;
-                for (int i = 0; i < _dict_Lv3.Count; i++)
-                {
-                    int temp = Random.Range(0, _dict_Lv3.Count - 1);
-                    if (!isSetFirst)
-                    {
-                        first = _dict_Lv3[temp];
-                        isSetFirst = true;
-                    }
-                    else if (!isSetSecond) 
-                    {
-                        second = _dict_Lv3[temp];
-                        isSetSecond = true;
-                    }
-                    else if (!isSetThird) 
-                    {
-                        third = _dict_Lv3[temp];
-                        isSetThird = true;
-                    }
-                    else if (!isSetFourth) 
-                    {
-                        fourth = _dict_Lv3[temp];
-                        isSetFourth = true;
-                    }
-                    else if (!isSetFifth) 
-                    {
-                        fifth = _dict_Lv3[temp];
-                        isSetFifth = true;
-                    }
-                    else break;
-                }
+                count = _countLv3Tree;
                 break;
             case NodeDifficulty.Level4:
-                if(_dict_Lv4 == null) break;
-                for (int i = 0; i < _dict_Lv4.Count; i++)
-                {
-                    int temp = Random.Range(0, _dict_Lv4.Count - 1);
-                    if (!isSetFirst)
-                    {
-                        first = _dict_Lv4[temp];
-                        isSetFirst = true;
-                    }
-                    else if (!isSetSecond) 
-                    {
-                        second = _dict_Lv4[temp];
-                        isSetSecond = true;
-                    }
-                    else if (!isSetThird) 
-                    {
-                        third = _dict_Lv4[temp];
-                        isSetThird = true;
-                    }
-                    else if (!isSetFourth) 
-                    {
-                        fourth = _dict_Lv4[temp];
-                        isSetFourth = true;
-                    }
-                    else if (!isSetFifth) 
-                    {
-                        fifth = _dict_Lv4[temp];
-                        isSetFifth = true;
-                    }
-                    else break;
-                }
+                count = _countLv4Tree;
                 break;
             case NodeDifficulty.Level5:
-                if(_dict_Lv5 == null) break;
-                for (int i = 0; i < _dict_Lv5.Count; i++)
-                {
-                    int temp = Random.Range(0, _dict_Lv5.Count - 1);
-                    if (!isSetFirst)
-                    {
-                        first = _dict_Lv5[temp];
-                        isSetFirst = true;
-                    }
-                    else if (!isSetSecond) 
-                    {
-                        second = _dict_Lv5[temp];
-                        isSetSecond = true;
-                    }
-                    else if (!isSetThird) 
-                    {
-                        third = _dict_Lv5[temp];
-                        isSetThird = true;
-                    }
-                    else if (!isSetFourth) 
-                    {
-                        fourth = _dict_Lv5[temp];
-                        isSetFourth = true;
-                    }
-                    else if (!isSetFifth) 
-                    {
-                        fifth = _dict_Lv5[temp];
-                        isSetFifth = true;
-                    }
-                    else break;
-                }
+                count = _countLv5Tree;
                 break;
         }
+
+        if (count <= 0)
+        {
+            DebugTool.Warning($"Not Found Current Difficulty Tree Data : {difficulty}", DebugType.Node, this);
+            return;
+        }
+        
+        if(count == 1)
+        {
+            first = _dict.GetValueOrDefault((difficulty, 0));
+            if(first == null) DebugTool.Warning($"Not Found Current Difficulty Tree Data : {difficulty}", DebugType.Node, this);
+            return;
+        }
+        
+        for (int i = 0; i < count; i++)
+        {
+            HashSet<(NodeDifficulty difficulty,int index)> usedTree = new HashSet<(NodeDifficulty,int)>();
+            int index = Random.Range(0, count - 1);
+            if (!isSetFirst)
+            {
+                first = _dict.GetValueOrDefault((difficulty, 0));
+                isSetFirst = true;
+                usedTree.Add((difficulty, index));
+            }
+            else if (!isSetSecond) 
+            {
+                while (usedTree.Contains((difficulty, index)))
+                {
+                    index = Random.Range(0, count - 1);
+                }
+                
+                second = _dict.GetValueOrDefault((difficulty, 0));
+                isSetSecond = true;
+                usedTree.Add((difficulty, index));
+            }
+            else if (!isSetThird) 
+            {
+                if(count <= 2) return;
+                
+                while (usedTree.Contains((difficulty, index)))
+                {
+                    index = Random.Range(0, count - 1);
+                }
+                third = _dict.GetValueOrDefault((difficulty, 0));
+                isSetThird = true;
+                usedTree.Add((difficulty, index));
+            }
+            else if (!isSetFourth) 
+            {
+                if(count <= 3) return;
+                
+                while (usedTree.Contains((difficulty, index)))
+                {
+                    index = Random.Range(0, count - 1);
+                }
+                
+                fourth = _dict.GetValueOrDefault((difficulty, 0));
+                isSetFourth = true;
+                usedTree.Add((difficulty, index));
+            }
+            else if (!isSetFifth) 
+            {
+                if(count <= 4) return;
+                
+                while (usedTree.Contains((difficulty, index)))
+                {
+                    index = Random.Range(0, count - 1);
+                }
+                
+                fifth = _dict.GetValueOrDefault((difficulty, 0));
+                isSetFifth = true;
+            }
+            else return;
+        }
+        
     }
 }

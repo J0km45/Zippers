@@ -68,7 +68,7 @@ public class MapController : MonoBehaviour
         Manager = FindFirstObjectByType<NodeManager>();
         ActionController = new MapActionController(this);
         EventController = new MapEventController(this);
-        DebugTool.Log($"{Data.NodeTreeIndex}Map <color.yellow>Main Controller Ready</color>", DebugType.Node, this);
+        DebugTool.Log($"Main Controller Ready", DebugType.Node, this);
     }
 
     private void InitController()
