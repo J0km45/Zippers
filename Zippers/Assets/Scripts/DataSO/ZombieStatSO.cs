@@ -56,8 +56,7 @@ public class ZombieStatSO : ScriptableObject, ISheetParsable
     [Header("(시트에 없음 / SetData 미설정)")]
     [Tooltip("손 범위 - 시트에 없는 상수값")]
     public float HandRadius;
-    [Tooltip("처치 재화 - 사용처 정리 후 제거 예정 (MinScrap/MaxScrap으로 대체)")]
-    public float KillReward;
+
 
     public void SetData(string[] cols)
     {

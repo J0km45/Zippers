@@ -20,7 +20,9 @@ public class PlayerClassDataSO : ScriptableObject, ISheetParsable
     [Tooltip("스테미나 회복량")] public float StaminaRegen;
 
     [Header("전투 스텟")]
-    [Tooltip("무기 피해량")] public float WeaponDamage;
+    [Tooltip("무기 최소 피해량")] public float MinDamage;
+    [Tooltip("무기 최대 피해량")] public float MaxDamage;
+
     [Tooltip("공격 속도")] public float AttackSpeed;
     [Tooltip("탄창 용량")] public float MagazineCapacity;
     [Tooltip("재장전 시간")] public float ReloadTime;
@@ -43,16 +45,17 @@ public class PlayerClassDataSO : ScriptableObject, ISheetParsable
         StaminaDelay = float.Parse(datas[5]);
         StaminaPeriod = float.Parse(datas[6]);
         StaminaRegen = float.Parse(datas[7]);
-        WeaponDamage = float.Parse(datas[8]);
-        AttackSpeed = float.Parse(datas[9]);
-        MagazineCapacity = float.Parse(datas[10]);
-        ReloadTime = float.Parse(datas[11]);
-        BulletSpeed = float.Parse(datas[12]);
-        BulletDistance = float.Parse(datas[13]);
-        MoveSpeed = float.Parse(datas[14]);
-        SprintSpeed = float.Parse(datas[15]);
-        SightRange = float.Parse(datas[16]);
-        CollectRange = float.Parse(datas[17]);
+        MinDamage = float.Parse(datas[8]);
+        MaxDamage = float.Parse(datas[9]);
+        AttackSpeed = float.Parse(datas[10]);
+        MagazineCapacity = float.Parse(datas[11]);
+        ReloadTime = float.Parse(datas[12]);
+        BulletSpeed = float.Parse(datas[13]);
+        BulletDistance = float.Parse(datas[14]);
+        MoveSpeed = float.Parse(datas[15]);
+        SprintSpeed = float.Parse(datas[16]);
+        SightRange = float.Parse(datas[17]);
+        CollectRange = float.Parse(datas[18]);
 
 
 
