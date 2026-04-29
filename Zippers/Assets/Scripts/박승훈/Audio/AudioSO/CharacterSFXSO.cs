@@ -5,7 +5,7 @@ using UnityEngine;
 /// 캐릭터 관련 SFX를 관리하기 위한 SO
 /// </summary>
 [CreateAssetMenu(fileName = "CharacterSFXSO", menuName = "Zippers/SO/Audio/CharacterSFXSO", order = 0)]
-public class CharacterSFXSO : ScriptableObject
+public class CharacterSFXSO : ZippersSO
 {
     [Header("캐릭터 SFX 목록")]
     
@@ -48,7 +48,7 @@ public class CharacterSFXSO : ScriptableObject
     private Dictionary<ResourcesType, List<AudioClip>> resourcesSFXDict = new Dictionary<ResourcesType, List<AudioClip>>();
     public Dictionary<ResourcesType, List<AudioClip>> ResourcesSFXDict => resourcesSFXDict;
 
-    public void ResourcesSFXInit()
+    public override void DictionaryInit()
     {
         resourcesSFXDict.Clear();
         

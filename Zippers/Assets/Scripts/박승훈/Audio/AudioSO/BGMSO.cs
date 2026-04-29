@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BGMSO", menuName = "Zippers/SO/Audio/BGMSO", order = 4)]
-public class BGMSO : ScriptableObject
+public class BGMSO : ZippersSO
 {
     [Header("BGM 목록")]
     
@@ -38,7 +38,7 @@ public class BGMSO : ScriptableObject
     private Dictionary<BGMType, List<AudioClip>> _BGMDict = new Dictionary<BGMType, List<AudioClip>>();
     public Dictionary<BGMType, List<AudioClip>> BGMDict => _BGMDict;
 
-    public void BGMInit()
+    public override void DictionaryInit()
     {
         _BGMDict.Clear();
         

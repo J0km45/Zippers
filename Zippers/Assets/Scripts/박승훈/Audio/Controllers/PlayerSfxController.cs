@@ -13,7 +13,7 @@ namespace Audio
         private void Awake()
         {
             _audioSource = GetComponent<AudioSource>();
-            _characterSfxso.ResourcesSFXInit();
+            _characterSfxso.DictionaryInit();
         }
         
         private void Start()

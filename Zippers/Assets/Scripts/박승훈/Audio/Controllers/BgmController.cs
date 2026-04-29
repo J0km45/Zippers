@@ -14,8 +14,6 @@ public class BgmController : AudioController
     {
         _audioSource = GetComponent<AudioSource>();
         
-        _bgmSo.BGMInit();
-        
         BgmSourceInit(_audioSource);
     }
 
