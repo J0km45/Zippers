@@ -49,5 +49,7 @@ public class BGMSO : ZippersSO
         _BGMDict.Add(BGMType.Shop, _shop);
         _BGMDict.Add(BGMType.Clear, _clear);
         _BGMDict.Add(BGMType.Fail, _fail);
+        
+        DebugTool.Log("BGM 딕셔너리 초기화 완료", DebugType.Zombie);
     }
 }
