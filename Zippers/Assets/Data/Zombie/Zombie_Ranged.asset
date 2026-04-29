@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27bb70ee936adcd4ba3e625dd0e93359, type: 3}
-  m_Name: Zombie_Normal
+  m_Name: Zombie_Ranged
   m_EditorClassIdentifier: Assembly-CSharp::ZombieStatSO
-  ZombieId: 20001
-  Type: 0
+  ZombieId: 20003
+  Type: 2
   MaxHp: 40
   HealthRegen: 0
   HealthPeriod: 0
