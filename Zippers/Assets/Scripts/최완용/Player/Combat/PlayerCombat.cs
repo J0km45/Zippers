@@ -9,7 +9,7 @@ public class PlayerCombat : MonoBehaviour
     private PlayerReload _playerReload;
     private PlayerCombatStateMachine _combatStateMachine;
 
-    private float _lastAttackTime = -999f;
+    private float _lastAttackTime = 0f;
 
     private void Awake()
     {
@@ -23,18 +23,6 @@ public class PlayerCombat : MonoBehaviour
         if (_playerStats == null)
         {
             Debug.LogError("[PlayerCombat] PlayerStats가 없습니다.");
-            return;
-        }
-
-        if (_playerReload == null)
-        {
-            Debug.LogError("[PlayerCombat] PlayerReload가 없습니다.");
-            return;
-        }
-
-        if (_combatStateMachine == null)
-        {
-            Debug.LogError("[PlayerCombat] PlayerCombatStateMachine이 없습니다.");
             return;
         }
 
@@ -56,11 +44,12 @@ public class PlayerCombat : MonoBehaviour
         }
 
         _lastAttackTime = Time.time;
+        float damage = _playerStats.GetRandomDamage();
 
         OnAttackPerformed?.Invoke();
         _combatStateMachine.RequestAttack();
 
-        Debug.Log($"[PlayerCombat] 공격 성공 / Damage: {_playerStats.WeaponDamage}");
+        Debug.Log($"[PlayerCombat] 공격 성공 / Damage: {damage}");
 
         // TODO: 이후 실제 공격 판정 추가
         // 원거리: Raycast 또는 Projectile

@@ -8,11 +8,12 @@ public class PlayerController : MonoBehaviour
     private PlayerStateMachine _playerStateMachine;
     private PlayerCombatStateMachine _combatStateMachine;
     private PlayerCombat _playerCombat;
+    private PlayerMovement _playerMovement;
 
     private void Awake()
     {
         _playerAction = new PlayerActions();
-
+        _playerMovement = GetComponent<PlayerMovement>();
         _playerStateMachine = GetComponent<PlayerStateMachine>();
         _combatStateMachine = GetComponent<PlayerCombatStateMachine>();
         _playerCombat = GetComponent<PlayerCombat>();
@@ -33,6 +34,9 @@ public class PlayerController : MonoBehaviour
 
         _playerAction.PlayerControl.Reload.performed += OnReload;
         _playerAction.PlayerControl.Reload.canceled += OnReload;
+
+        _playerAction.PlayerControl.Sprint.performed += OnSprint;
+        _playerAction.PlayerControl.Sprint.canceled += OnSprint;
     }
 
     private void OnDisable()
@@ -48,6 +52,9 @@ public class PlayerController : MonoBehaviour
 
         _playerAction.PlayerControl.Reload.performed -= OnReload;
         _playerAction.PlayerControl.Reload.canceled -= OnReload;
+
+        _playerAction.PlayerControl.Sprint.performed -= OnSprint;
+        _playerAction.PlayerControl.Sprint.canceled -= OnSprint;
 
         _playerAction.Disable();
     }
@@ -72,6 +79,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext ctx)
     {
+        if (IsInputBlocked())
+        {
+            return;
+        }
+
         if (!ctx.performed)
             return;
 
@@ -87,6 +99,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnAiming(InputAction.CallbackContext ctx)
     {
+        if (IsInputBlocked())
+        {
+            return;
+        }
         if (_combatStateMachine == null)
         {
             Debug.LogWarning("[PlayerController] PlayerCombatStateMachine이 없습니다.");
@@ -110,6 +126,11 @@ public class PlayerController : MonoBehaviour
         if (!ctx.performed)
             return;
 
+        if(IsInputBlocked())
+        {
+            return;
+        }
+
         if (_combatStateMachine == null)
         {
             Debug.LogWarning("[PlayerController] PlayerCombatStateMachine이 없습니다.");
@@ -118,5 +139,37 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log("[PlayerController] 재장전 입력");
         _combatStateMachine.RequestReload();
+    }
+    private void OnSprint(InputAction.CallbackContext ctx)
+    {
+        if (IsInputBlocked())
+        {
+            _playerMovement.SetSprint(false);
+            return;
+        }
+        if (ctx.performed)
+        {
+            _playerMovement.SetSprint(true);
+        }
+        else if (ctx.canceled)
+        {
+            _playerMovement.SetSprint(false);
+        }
+    }
+    private bool IsInputBlocked()
+    {
+        if (_playerStateMachine == null)
+        {
+            DebugTool.MissingComponent(nameof(PlayerStateMachine), this);
+            return true;
+        }
+
+        if (_playerStateMachine.IsRetired)
+        {
+            DebugTool.Log("리타이어 상태라 입력을 무시합니다.", DebugType.Character, this);
+            return true;
+        }
+
+        return false;
     }
 }

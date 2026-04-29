@@ -27,6 +27,7 @@ public class PlayerMoveState : IState
         _playerMovement.SetMoveInput(moveInput);
         _playerMovement.Move();
         _playerAnimation.SetMoveDirection(moveInput);
+        _playerAnimation.SetSprint(_playerMovement.IsSprinting);
         //Debug.Log("[PlayerMoveState] Move 상태 업데이트");
     }
 }
