@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WeaponSFXSO", menuName = "Zippers/SO/Audio/WeaponSFXSO", order = 1)]
-public class WeaponSFXSO : ScriptableObject
+public class WeaponSFXSO : ZippersSO
 {
     [Header("무기 SFX 목록")]
     
@@ -41,20 +41,15 @@ public class WeaponSFXSO : ScriptableObject
     private Dictionary<WeaponType, AudioClip> _reloadSfxDict = new Dictionary<WeaponType, AudioClip>();
     public Dictionary<WeaponType, AudioClip> ReloadSfxDict => _reloadSfxDict;
 
-    public void WeaponSfxInit()
+    public override void DictionaryInit()
     {
         _weaponSfxDict.Clear();
-        
         _weaponSfxDict.Add(WeaponType.Melee, meleeClips);
         _weaponSfxDict.Add(WeaponType.Rifle, rifleClips);
         _weaponSfxDict.Add(WeaponType.Shotgun, ShotgunClips);
         _weaponSfxDict.Add(WeaponType.Util, pistolClips);
-    }
 
-    public void ReloadSfxInit()
-    {
         _reloadSfxDict.Clear();
-        
         _reloadSfxDict.Add(WeaponType.Rifle, rifleReloadClip);
         _reloadSfxDict.Add(WeaponType.Shotgun, shotgunReloadClip);
         _reloadSfxDict.Add(WeaponType.Util, pistolReloadClip);

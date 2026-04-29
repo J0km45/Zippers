@@ -9,14 +9,14 @@ public class BgmController : AudioController
 
     [Header("BGM SO")]
     [SerializeField] private BGMSO _bgmSo;
-
+    
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         
-        _bgmSo.BGMInit();
-        
         BgmSourceInit(_audioSource);
+        
+        _bgmSo.DictionaryInit();
     }
 
     public void PlayBGM(BGMType type)
@@ -24,6 +24,7 @@ public class BgmController : AudioController
         List<AudioClip> clips = _bgmSo.BGMDict[type];
         PlayBGM(_audioSource, clips);
     }
+    
     public void PlayBGM(int type)
     {
         List<AudioClip> clips = _bgmSo.BGMDict[(BGMType)type];
