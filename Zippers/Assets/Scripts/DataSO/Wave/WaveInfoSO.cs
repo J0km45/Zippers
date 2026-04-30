@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Create -> 메뉴: Assets > Create > Zippers > Wave Info Data
+
 [CreateAssetMenu(menuName = "Zippers/Wave Info Data")]
 public class WaveInfoSO : ScriptableObject, ISheetParsable
 {
@@ -8,7 +8,7 @@ public class WaveInfoSO : ScriptableObject, ISheetParsable
     [Tooltip("웨이브 ID (시트 첫 컬럼)")]
     public int WaveId;
 
-    /// <summary>ISheetParsable 구현. WaveId를 사전 키로 사용한다.</summary>
+
     public int Id => WaveId;
 
     [Header("위치 / 순서")]
