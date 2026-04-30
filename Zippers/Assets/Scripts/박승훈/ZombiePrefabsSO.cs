@@ -50,20 +50,11 @@ public class ZombiePrefabsSO : ZippersSO
 
     public IReadOnlyDictionary<ZombieType, List<GameObject>> ZombieDict => zombieDict;
 
-    private bool _dictInit = false;
-
     /// <summary>
     /// 지정한 좀비 타입에 등록된 프리팹 중 하나를 랜덤으로 반환한다.
     /// </summary>
     public GameObject GetZombiePrefab(ZombieType zombieType)
     {
-        if (!_dictInit || zombieDict == null)
-        {
-            DebugTool.Warning("좀비 프리팹 딕셔너리 초기화가 필요합니다." +
-                              "가급적 Awake() 단계에서 DictionaryInit() 메서드를 호출해주세요.", DebugType.Zombie);
-            DictionaryInit();
-        }
-
         if (!zombieDict.TryGetValue(zombieType, out List<GameObject> zombieList))
         {
             DebugTool.Log($"해당 타입의 좀비 프리팹 리스트가 등록되지 않았습니다. Type: {zombieType}", DebugType.Zombie);
@@ -88,7 +79,7 @@ public class ZombiePrefabsSO : ZippersSO
         return prefab;
     }
 
-    public override void DictionaryInit()
+    protected override void DictionaryInit()
     {
         zombieDict.Clear();
 
@@ -97,8 +88,6 @@ public class ZombiePrefabsSO : ZippersSO
         zombieDict.Add(ZombieType.Ranged, rangedZombies);
         zombieDict.Add(ZombieType.Elite, eliteZombies);
         zombieDict.Add(ZombieType.Boss, bossZombies);
-
-        _dictInit = true;
 
         DebugTool.Log("좀비 프리팹 딕셔너리 초기화 완료", DebugType.Zombie);
     }
