@@ -1,46 +1,22 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /// <summary>
-/// 노드의 이벤트를 저장하기 위한 SO
+/// 노드에 플레이어가 진입 하면 발동되는 상황 개별 단위를 Event로 칭함<br/>
+/// Event는 상태 패턴으로 구현<br/>
+/// Event 상태 패턴 구현을 위한 추상클래스<br/>
+/// 확장 및 수정 용이를 위해 SO로 관리
 /// </summary>
-[CreateAssetMenu(fileName = "Event SO", menuName = "Node Data/Event SO")]
-public class EventSO : ScriptableObject
+// ToDO : 자식 클래스에 [CreateAssetMenu(fileName = "** Event SO", menuName = "Node Data/Event Data/** Event SO")] 삽입 할 것
+public abstract class EventSO : ScriptableObject
 {
-    [Header("이벤트 타입")]
-    [field:SerializeField] public NodeEventType EventType { get; private set; }
-    
-    [Header("이 이벤트 타입에 해당하는 스크립트 ")]
-    [SerializeField] private NodeEvent[] _eventScripts;
-    
-    /// <summary>
-    /// 인덱스에 해당되는 이벤트 스크립트 호출
-    /// </summary>
-    /// <param name="index">호출할 이벤트의 인덱스</param>
-    /// <param name="controller">이벤트가 실행되어야 되는 MapEventController</param>
-    /// <returns>NodeEvent 추상 클래스의 자식 스크립트 반환</returns>
-    public NodeEvent GetEventScript(int index, MapEventController controller)
+    protected MapEventController _controller;
+
+    public abstract void EventEnter();
+    public abstract void EventUpdate();
+    public abstract void EventExit();
+
+    public void SetController(MapEventController controller)
     {
-        if (_eventScripts == null)
-        {
-            DebugTool.Warning($"Not SerializeField EventScript : {EventType}_{index}", DebugType.Node, this);
-            return null;
-        }
-        
-        if (index < 0)
-        {
-            DebugTool.Error($"Index Wrong range : {index}", DebugType.Node, this);
-            return null;
-        }
-        
-        if (index > _eventScripts.Length - 1)
-        {
-            DebugTool.Error($"Index out of range : {EventType}_{index}", DebugType.Node, this);
-            return null;
-        }
-        
-        NodeEvent temp = _eventScripts[index];
-        temp.SetController(controller);
-        return temp;
+        _controller = controller;
     }
 }

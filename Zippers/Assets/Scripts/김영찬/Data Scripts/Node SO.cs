@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 /// <summary>
 /// 노드의 Data를 저장하기 위한 SO<br/>
@@ -8,80 +9,21 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(fileName = "Node SO", menuName = "Node Data/Node SO")]
 public class NodeSO : ScriptableObject
 {
-    [Tooltip("노드 타입")]
-    [field:SerializeField] public NodeType NodeType {get; private set;}
-    
-    [FormerlySerializedAs("Maps")]
-    [Tooltip("이 노드에 해당 되는 Map 프리팹")] 
-    [SerializeField] private GameObject[] _maps;
+    [Header("노드 타입")] 
+    [SerializeField] private NodeType _nodeType;
 
-    private void Awake()
-    {
-        SetNodeInfo();
-    }
-
-    private void SetNodeInfo()
-    {
-        if(NodeType == NodeType.Empty) return;
-        
-        if(_maps == null || _maps.Length == 0)
-        {
-            DebugTool.Warning($"Not SerializeField Map : {NodeType}", DebugType.Node, this);
-            return;
-        }
-
-        for (int i = 0; i < _maps.Length; i++)
-        {
-            bool verification = _maps[i].TryGetComponent(out MapData data);
-            if (verification) data.SetNodeInfo(NodeType, i);
-        }
-    }
+    [Header("UI")]
+    [SerializeField] private Image _nodeImage;
     
     /// <summary>
-    /// 인덱스에 해당되는 맵 데이터 호출
+    /// 노드 타입
     /// </summary>
-    /// <param name="index">호출할 맵의 인덱스</param>
-    /// <returns>MapData 컴포넌트</returns>
-    public MapData GetNodeMapData(int index)
-    {
-        if(NodeType == NodeType.Empty) return null;
-        
-        if(_maps == null)
-        {
-            DebugTool.Warning($"Not SerializeField Map : {NodeType}", DebugType.Node, this);
-            return null;
-        }
-        
-        if (index < 0)
-        {
-            DebugTool.Error($"Index Wrong range : {index}", DebugType.Node, this);
-            return null;
-        }
-        
-        if (index > _maps.Length - 1)
-        {
-            DebugTool.Error($"Index out of range : {NodeType}_{index}", DebugType.Node, this);
-            return null;
-        }
-        
-        return _maps[index].GetComponent<MapData>();
-    }
-
+    public NodeType NodeType => _nodeType;
+    
     /// <summary>
-    /// Index에 해당 되는 Map을 활성화
+    /// 맵UI에서 보여지는 노드의 Icon Image
     /// </summary>
-    /// <param name="index"></param>
-    public void MapEnable(int index)
-    {
-        _maps[index].SetActive(true);
-    }
+    public Image NodeImage => _nodeImage;
 
-    /// <summary>
-    /// Index에 해당 되는 Map을 비활성화
-    /// </summary>
-    /// <param name="index"></param>
-    public void MapDisable(int index)
-    {
-        _maps[index].SetActive(false);
-    }
+    // TODO : 이 이하는 노드 맵 UI 작업하실 때 필요한 부분 수정해 주세요
 }

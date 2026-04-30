@@ -82,7 +82,7 @@ public class StartNodeClearAction : INodeAction
     
     public void EnterState()
     {
-        _controller.Controller.TeleportSupporter.EnableBeaconAvailable();
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.VoteSetting,0);
     }
 
     public void RunningState()

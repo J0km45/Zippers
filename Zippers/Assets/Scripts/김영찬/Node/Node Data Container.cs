@@ -1,18 +1,22 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class NodeDataContainer : MonoBehaviour
 {
     [SerializeField] private NodeSO[] _nodeData;
-    [SerializeField] private EventSO[] _eventData;
-    [SerializeField] private TreeSO[] _treeData;
+    [SerializeField] private EventContainerSO[] _eventDataContainers;
+    [SerializeField] private DifficultyDataSO[] _difficultyData;
+    
+    private Dictionary<NodeType, List<MapController>> _nodeDict = new();
+    private Dictionary<NodeEventType, EventContainerSO> _eventDict = new();
+    private Dictionary<NodeDifficulty, List<DifficultyDataSO>> _difficultyDict = new();
+    
+    int _postBattleNodeIndex;
 
-    private Dictionary<NodeType, NodeSO> _node_dict;
-    private Dictionary<NodeEventType, EventSO> _event_dict;
-    private Dictionary<NodeDifficulty, TreeSO> _tree_dict;
-
-    private bool _isReady;
+    private bool _isDictReady;
     
     private void Awake()
     {
@@ -22,61 +26,99 @@ public class NodeDataContainer : MonoBehaviour
     
     private void InitDict()
     {
-        _isReady = false;
-        _node_dict = new Dictionary<NodeType, NodeSO>();
-        _event_dict = new Dictionary<NodeEventType, EventSO>();
-        _tree_dict = new Dictionary<NodeDifficulty, TreeSO>();
+        _isDictReady = false;
+        
+        _postBattleNodeIndex = -1;
     }
 
     private void SetDict()
     {
-        foreach (NodeSO node in _nodeData)
+        foreach (EventContainerSO data in _eventDataContainers)
         {
-            bool temp = _node_dict.TryAdd(node.NodeType, node);
-            if (!temp) DebugTool.Error($"Node Data Duplicated: {node.NodeType}", DebugType.Node, this);
-        }
-
-        foreach (EventSO @event in _eventData)
-        {
-            bool temp = _event_dict.TryAdd(@event.EventType, @event);
-            if (!temp) DebugTool.Error($"Event Data Duplicated: {@event.EventType}", DebugType.Node, this);
-        }
-
-        foreach (TreeSO tree in _treeData)
-        {
-            bool temp = _tree_dict.TryAdd(tree.Difficulty, tree);
-            if (!temp) DebugTool.Error($"Tree Data Duplicated: {tree.Difficulty}", DebugType.Node, this);
+            bool verification = _eventDict.TryAdd(data.EventType, data);
+            if (!verification) DebugTool.Error($"Event Data Duplicated: {data.EventType}", DebugType.Node, this);
         }
         
-        _isReady = true;
+        foreach (DifficultyDataSO data in _difficultyData)
+        {
+            if (!_difficultyDict.ContainsKey(data.Difficulty))
+            {
+                _difficultyDict.Add(data.Difficulty, new List<DifficultyDataSO>());
+            }
+        
+            _difficultyDict[data.Difficulty].Add(data);
+        }
+        
+        _isDictReady = true;
     }
 
-    public NodeSO GetNodeData(NodeType type)
+    public void RegisterMap(MapController map)
     {
-        if (!_isReady)
+        NodeType type = map.NodeType;
+
+        if (!_nodeDict.ContainsKey(type))
         {
-            DebugTool.Error("Data Container Not Ready", DebugType.Node, this);
-            return null;
+            _nodeDict.Add(type, new List<MapController>());
         }
         
-        bool verification = _node_dict.TryGetValue(type, out NodeSO data);
-        if (!verification)
+        _nodeDict[type].Add(map);
+        DebugTool.Log($"{map.gameObject.name} Nodes Registered", DebugType.Node, this);
+    }
+
+    /// <summary>
+    /// 지정 타입의 랜덤 맵 반환
+    /// </summary>
+    /// <param name="type">Node Type 지정</param>
+    /// <returns>선택 된 맵의 MapController</returns>
+    public MapController GetRandomMap(NodeType type)
+    {
+        if (_nodeDict.ContainsKey(type) && _nodeDict[type].Count > 0)
         {
-            DebugTool.Error($"Node Data Not Found: {type}", DebugType.Node, this);
-            return null;
+            MapController map;
+            
+            if (type == NodeType.Battle)
+            {
+                map = _nodeDict[type][GetIndexBattleNode(_nodeDict[type].Count)];
+            }
+            else
+            {
+                map = _nodeDict[type][GetIndex(_nodeDict[type].Count)];
+            }
+
+            if (map != null) return map;
         }
-        return data;
+        
+        DebugTool.Error($"Map Data Not Found: {type}", DebugType.Node, this);
+        return null;
+    }
+
+    public DifficultyDataSO GetDifficultyData(NodeDifficulty difficulty)
+    {
+        if (_difficultyDict.ContainsKey(difficulty) && _difficultyDict[difficulty].Count > 0)
+        {
+            DifficultyDataSO data = _difficultyDict[difficulty][GetIndex(_difficultyDict[difficulty].Count)];
+            
+            if (data != null) return data;
+        }
+        
+        DebugTool.Error($"Difficulty Data Not Found: {difficulty}", DebugType.Node, this);
+        return null;
     }
     
-    public EventSO GetEventData(NodeEventType type)
+    /// <summary>
+    /// Event SO를 반환
+    /// </summary>
+    /// <param name="type">불러올 이벤트 타입</param>
+    /// <returns>해당 타입에 대응하는 Event SO</returns>
+    public EventContainerSO GetEventData(NodeEventType type)
     {
-        if (!_isReady)
+        if (!_isDictReady)
         {
             DebugTool.Error("Data Container Not Ready", DebugType.Node, this);
             return null;
         }
         
-        bool verification = _event_dict.TryGetValue(type, out EventSO data);
+        bool verification = _eventDict.TryGetValue(type, out EventContainerSO data);
         if (!verification)
         {
             DebugTool.Error($"Event Data Not Found: {type}", DebugType.Node, this);
@@ -84,21 +126,32 @@ public class NodeDataContainer : MonoBehaviour
         }
         return data;
     }
-    
-    public TreeSO GetTreeData(NodeDifficulty difficulty)
+
+    private int GetIndex(int count)
     {
-        if (!_isReady)
+        if (count <= 0) return 0;
+        
+        return Random.Range(0, count);;
+    }
+
+    private int GetIndexBattleNode(int count)
+    {
+        if (count <= 0) return 0;
+        if (count == 1)
         {
-            DebugTool.Error("Data Container Not Ready", DebugType.Node, this);
-            return null;
+            _postBattleNodeIndex = 0;
+            return 0;
         }
         
-        bool verification = _tree_dict.TryGetValue(difficulty, out TreeSO data);
-        if (!verification)
+        int temp = GetIndex(count);
+        
+        while (temp == _postBattleNodeIndex)
         {
-            DebugTool.Error($"Node Data Not Found: {difficulty}", DebugType.Node, this);
-            return null;
+            GetIndex(count);
         }
-        return data;
+        
+        _postBattleNodeIndex = temp;
+        
+        return _postBattleNodeIndex;
     }
 }

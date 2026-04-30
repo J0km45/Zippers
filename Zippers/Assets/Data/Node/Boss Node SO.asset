@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcf364b06b5cc045ab130e6cbb63b3d, type: 3}
   m_Name: Boss Node SO
   m_EditorClassIdentifier: Assembly-CSharp::NodeSO
-  <NodeType>k__BackingField: 3
-  _maps:
-  - {fileID: 4728121328699623930, guid: 18cf5d69d6f81f045a51e97547b9f09f, type: 3}
+  _nodeType: 999
+  _nodeImage: {fileID: 0}

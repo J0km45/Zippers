@@ -30,11 +30,6 @@ public class TeleportSupporter : MonoBehaviour
         Init();
     }
 
-    private void OnEnable()
-    {
-        EnableEvent();
-    }
-
     private void OnDisable()
     {
         DisableEvent();
@@ -48,7 +43,10 @@ public class TeleportSupporter : MonoBehaviour
         _voteRight = 0;
     }
     
-    private void EnableEvent()
+    /// <summary>
+    /// MapController에서 이벤트 일괄 활성화 하기 위함
+    /// </summary>
+    public void EnableEvent()
     {
         _controller.Data.OnChangeNextMaps += SetBeaconLocation;
         _ballotBox_UP.OnVoteChange += CountVoteUp;
@@ -88,7 +86,7 @@ public class TeleportSupporter : MonoBehaviour
         if(_nextMapAvailable_Down) _controller.Data.SetBeaconEnable(_controller.Data.TeleportBeacon_Down);
         if(_nextMapAvailable_Left) _controller.Data.SetBeaconEnable(_controller.Data.TeleportBeacon_Left);
         if(_nextMapAvailable_Right) _controller.Data.SetBeaconEnable(_controller.Data.TeleportBeacon_Right);
-        DebugTool.Log($"{_controller.Data.NodeType}_{_controller.Data.NodeIndex} Enable Beacon", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Enable Beacon", DebugType.Node, this);
     }
     
     /// <summary>
@@ -100,7 +98,7 @@ public class TeleportSupporter : MonoBehaviour
         _controller.Data.SetBeaconDisable(_controller.Data.TeleportBeacon_Down);
         _controller.Data.SetBeaconDisable(_controller.Data.TeleportBeacon_Left);
         _controller.Data.SetBeaconDisable(_controller.Data.TeleportBeacon_Right);
-        DebugTool.Log($"{_controller.Data.NodeType}_{_controller.Data.NodeIndex} Disable Beacon", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Disable Beacon", DebugType.Node, this);
     }
 
     private void CountVoteUp(int count)
@@ -129,7 +127,7 @@ public class TeleportSupporter : MonoBehaviour
     
     private void CulVoteResult()
     {
-        DebugTool.Log($"{_controller.Data.NodeType}_{_controller.Data.NodeIndex} Current Vote Result\n" +
+        DebugTool.Log($"{_controller.gameObject.name} Current Vote Result\n" +
                       $"Up : {_voteUp}, Down : {_voteDown}, Left : {_voteLeft}, Right : {_voteRight}", DebugType.Node, this);
         
         float minVoteWin = _controller.Data.AlivePlayerCount / 2f;
@@ -137,28 +135,28 @@ public class TeleportSupporter : MonoBehaviour
         if (_voteUp > minVoteWin)
         {
             //Teleport(NodeStartDir.Up);
-            DebugTool.Log($"{_controller.Data.NodeType}_{_controller.Data.NodeIndex} Teleport To Upper Map", DebugType.Node, this);
+            DebugTool.Log($"{_controller.gameObject.name} Teleport To Upper Map", DebugType.Node, this);
             return;
         }
         
         if (_voteRight > minVoteWin)
         {
             //Teleport(NodeStartDir.Right);
-            DebugTool.Log($"{_controller.Data.NodeType}_{_controller.Data.NodeIndex} Teleport To Right Map", DebugType.Node, this);
+            DebugTool.Log($"{_controller.gameObject.name} Teleport To Right Map", DebugType.Node, this);
             return;
         }
         
         if (_voteLeft > minVoteWin)
         {
             //Teleport(NodeStartDir.Left);
-            DebugTool.Log($"{_controller.Data.NodeType}_{_controller.Data.NodeIndex} Teleport To Left Map", DebugType.Node, this);
+            DebugTool.Log($"{_controller.gameObject.name} Teleport To Left Map", DebugType.Node, this);
             return;
         }
         
         if (_voteDown > minVoteWin)
         {
             //Teleport(NodeStartDir.Down);
-            DebugTool.Log($"{_controller.Data.NodeType}_{_controller.Data.NodeIndex} Teleport To Lower Map", DebugType.Node, this);
+            DebugTool.Log($"{_controller.gameObject.name} Teleport To Lower Map", DebugType.Node, this);
             return;
         }
         

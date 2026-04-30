@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class MapData : MonoBehaviour
 {
+    [SerializeField] MapController _controller;
+    
     #region 맵 데이터 변수
 
     /// <summary>
@@ -30,22 +32,22 @@ public class MapData : MonoBehaviour
     /// Up 방향으로 연결 된 맵
     /// </summary>
     [Header("연결 된 다음 맵")]
-    [field:SerializeField]public GameObject NextMap_Up {get; private set;}
+    [field:SerializeField]public MapController NextMap_Up {get; private set;}
     
     /// <summary>
     /// Down 방향으로 연결 된 맵
     /// </summary>
-    [field:SerializeField]public GameObject NextMap_Down {get; private set;}
+    [field:SerializeField]public MapController NextMap_Down {get; private set;}
     
     /// <summary>
     /// Left 방향으로 연결 된 맵
     /// </summary>
-    [field:SerializeField]public GameObject NextMap_Left {get; private set;}
+    [field:SerializeField]public MapController NextMap_Left {get; private set;}
     
     /// <summary>
     /// Right 방향으로 연결 된 맵
     /// </summary>
-    [field:SerializeField]public GameObject NextMap_Right {get; private set;}
+    [field:SerializeField]public MapController NextMap_Right {get; private set;}
 
     /// <summary>
     /// Up 방향 노드로 넘어 갈 때 플레이어의 합류 지점
@@ -78,17 +80,6 @@ public class MapData : MonoBehaviour
     /// 이번 노드가 시작 시 어느 방향에서 시작할 지 표기
     /// </summary>
     [field:SerializeField]public NodeStartDir StartDir {get; private set;}
-    
-    /// <summary>
-    /// NodeSO에서 이 맵의 노드 타입을 불러옴
-    /// </summary>
-    [field:SerializeField]public NodeType NodeType {get; private set;}
-    
-    /// <summary>
-    /// NodeSO에서 이 맵의 노드 인덱스를 불러옴<br/>
-    /// Debug 용
-    /// </summary>
-    [field:SerializeField]public int NodeIndex {get; private set;}
     
     /// <summary>
     /// 몬스터의 스폰 포인트<br/>
@@ -149,7 +140,7 @@ public class MapData : MonoBehaviour
         AlivePlayerCount = 0;
         _aliveMonsterCount = 0;
         _remainingWaveCount = 0;
-        DebugTool.Log($"{NodeType}_{NodeIndex} Map Data Awake", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Map Data Awake", DebugType.Node, this);
     }
 
     /// <summary>
@@ -161,7 +152,7 @@ public class MapData : MonoBehaviour
     {
         StartDir = dir;
         SetSpawnPoint(dir);
-        DebugTool.Log($"{NodeType}_{NodeIndex} Map Node Start Dir Set {StartDir}", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Map Node Start Dir Set {StartDir}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -169,7 +160,7 @@ public class MapData : MonoBehaviour
     /// </summary>
     /// <param name="dir">연결 될 방향</param>
     /// <param name="nextMap">다음 맵 프리팹</param>
-    public void SetNextMap(NodeStartDir dir, GameObject nextMap)
+    public void SetNextMap(NodeStartDir dir, MapController nextMap)
     {
         switch (dir)
         {
@@ -187,7 +178,7 @@ public class MapData : MonoBehaviour
                 break;
         }
         OnChangeNextMaps?.Invoke();
-        DebugTool.Log($"{NodeType}_{NodeIndex} Map Next Map Set\n dir : {dir}", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Map Next Map Set\n dir : {dir}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -200,18 +191,7 @@ public class MapData : MonoBehaviour
     {
         _remainingWaveCount = count;
         OnChangeRemainingWaveCount?.Invoke(count);
-        DebugTool.Log($"{NodeType}_{NodeIndex} Map Wave Count Set : {count}", DebugType.Node, this);
-    }
-
-    /// <summary>
-    /// 현재 맵의 Node 정보를 지정
-    /// </summary>
-    /// <param name="nodeType">노드 타입</param>
-    /// <param name="index">맵의 인덱스</param>
-    public void SetNodeInfo(NodeType nodeType, int index)
-    {
-        NodeType = nodeType;
-        NodeIndex = index;
+        DebugTool.Log($"{_controller.gameObject.name} Map Wave Count Set : {count}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -240,7 +220,7 @@ public class MapData : MonoBehaviour
     {
         NodeState = state;
         OnChangeState?.Invoke(state);
-        DebugTool.Log($"{NodeType}_{NodeIndex} Map Node State Change : {NodeState}", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Map Node State Change : {NodeState}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -251,7 +231,7 @@ public class MapData : MonoBehaviour
         if(AlivePlayerCount >= 4) return;
         AlivePlayerCount++;
         OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
-        DebugTool.Log($"{NodeType}_{NodeIndex} Player Income, Current Player : {AlivePlayerCount}", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Player Income, Current Player : {AlivePlayerCount}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -262,7 +242,7 @@ public class MapData : MonoBehaviour
         if(AlivePlayerCount <= 0) return;
         AlivePlayerCount--;
         OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
-        DebugTool.Log($"{NodeType}_{NodeIndex} Player Out, Current Player : {AlivePlayerCount}", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Player Out, Current Player : {AlivePlayerCount}", DebugType.Node, this);
     }
 
     /// <summary>
@@ -272,7 +252,7 @@ public class MapData : MonoBehaviour
     {
         _aliveMonsterCount++;
         OnChangeAliveMonsterCount?.Invoke(_aliveMonsterCount);
-        DebugTool.Log($"{NodeType}_{NodeIndex} Monster Income, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Monster Income, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -283,7 +263,7 @@ public class MapData : MonoBehaviour
         if(_aliveMonsterCount <= 0) return;
         _aliveMonsterCount--;
         OnChangeAliveMonsterCount?.Invoke(_aliveMonsterCount);
-        DebugTool.Log($"{NodeType}_{NodeIndex} Monster Out, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Monster Out, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
     }
 
     /// <summary>
@@ -294,7 +274,7 @@ public class MapData : MonoBehaviour
         if(_remainingWaveCount <= 0) return;
         _remainingWaveCount--;
         OnChangeRemainingWaveCount?.Invoke(_remainingWaveCount);
-        DebugTool.Log($"{NodeType}_{NodeIndex} Wave Clear, Remain Wave : {_remainingWaveCount}", DebugType.Node, this);
+        DebugTool.Log($"{_controller.gameObject.name} Wave Clear, Remain Wave : {_remainingWaveCount}", DebugType.Node, this);
     }
     
     /// <summary>
