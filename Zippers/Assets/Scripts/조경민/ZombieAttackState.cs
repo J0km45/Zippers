@@ -34,32 +34,10 @@ public class ZombieAttackState : IState
         if (_hasAttacked) return;
         _hasAttacked = true;
 
-        switch (_zombie.Type)
-        {
-            case ZombieType.Normal:
-                NormalAttack();
-                break;
-        }
+        _zombie.ZombieAttack.Attack(_zombie);
     }
 
     public void OnAttackSfx() => _zombie.Sfx.PlayAttackSfx(_zombie.Type);
-
-    private void NormalAttack()
-    {
-        Vector3 center = (_zombie.LeftHand.position + _zombie.RightHand.position) * 0.5f;
-        Collider[] hits = Physics.OverlapSphere(center, _zombie.HandRadius, _zombie.PlayerLayer);
-
-        foreach (Collider hit in hits)
-        {
-            if (hit.TryGetComponent(out IDamagable player))
-            {
-                float damage = Random.Range(_zombie.MinAttackDamage, _zombie.MaxAttackDamage);
-                damage = Mathf.Round(damage * 10f) * 0.1f;
-                player.TakeDamage(damage);
-                break;
-            }
-        }
-    }
 
     public void OnAttackEnd()
     {
