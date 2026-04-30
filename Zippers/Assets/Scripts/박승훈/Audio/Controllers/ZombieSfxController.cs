@@ -14,7 +14,7 @@ namespace Audio
         {
             _audioSource = GetComponent<AudioSource>();
             
-            _zombieSFXSO.ZombieSfxDictInit();
+            _zombieSFXSO.DictionaryInit();
         }
 
         public void PlayMoveSfx()

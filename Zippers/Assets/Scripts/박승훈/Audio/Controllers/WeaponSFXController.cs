@@ -13,8 +13,7 @@ namespace Audio
 
         private void Start()
         {
-            _weaponSfxso.WeaponSfxInit();
-            _weaponSfxso.ReloadSfxInit();
+            _weaponSfxso.DictionaryInit();
             
             SfxSourceInit(_audioSource);
         }

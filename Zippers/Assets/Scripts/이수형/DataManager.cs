@@ -16,16 +16,31 @@ public class DataManager : MonoBehaviour
     [SerializeField] private List<ZombieStatSO> _zombieStatDataList;
     private Dictionary<int, ZombieStatSO> _zombieStatDataDictionary = new();
 
+    [Header("Wave Info")]
+    public SheetData _waveInfoSheet;
+    [SerializeField] private List<WaveInfoSO> _waveInfoDataList;
+    private Dictionary<int, WaveInfoSO> _waveInfoDataDictionary = new();
+
+
+    [Header("Wave Spawn (임시)")]
+    public SheetData _waveSpawnSheet;
+    [SerializeField] private List<WaveSpawnSO> _waveSpawnDataList;
+    private Dictionary<int, WaveSpawnSO> _waveSpawnDataDictionary = new();
+
     private void Awake()
     {
         _classDataDictionary = InitDict(_classDataList);
         _zombieStatDataDictionary = InitDict(_zombieStatDataList);
+        _waveInfoDataDictionary = InitDict(_waveInfoDataList);
+        _waveSpawnDataDictionary = InitDict(_waveSpawnDataList);
     }
 
     private void Start()
     {
         LoadSheetData(_classSheet, _classDataList, _classDataDictionary);
         LoadSheetData(_zombieStatSheet, _zombieStatDataList, _zombieStatDataDictionary);
+        LoadSheetData(_waveInfoSheet, _waveInfoDataList, _waveInfoDataDictionary);
+        LoadSheetData(_waveSpawnSheet, _waveSpawnDataList, _waveSpawnDataDictionary);
     }
 
 

@@ -148,7 +148,7 @@ public class MapData : MonoBehaviour
         AlivePlayerCount = 0;
         _aliveMonsterCount = 0;
         _remainingWaveCount = 0;
-        DebugTool.Log($"<color.yellow>Map Data Awake</color>", DebugType.Node, this);
+        DebugTool.Log("Map Data Awake", DebugType.Node, this);
     }
 
     /// <summary>
@@ -159,7 +159,7 @@ public class MapData : MonoBehaviour
     public void SetNodeTreeIndex(double nodeTreeIndex)
     {
         NodeTreeIndex = nodeTreeIndex;
-        DebugTool.Log($"{NodeTreeIndex}Map <color.yellow>Node Tree Index Set</color>", DebugType.Node, this);
+        DebugTool.Log($"Map Node Tree Index Set", DebugType.Node, this);
     }
 
     /// <summary>
@@ -171,7 +171,7 @@ public class MapData : MonoBehaviour
     {
         StartDir = dir;
         SetSpawnPoint(dir);
-        DebugTool.Log($"{NodeTreeIndex}Map <color.yellow>Node Start Dir Set</color> {StartDir}", DebugType.Node, this);
+        DebugTool.Log($"Map Node Start Dir Set {StartDir}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -197,7 +197,7 @@ public class MapData : MonoBehaviour
                 break;
         }
         OnChangeNextMaps?.Invoke();
-        DebugTool.Log($"{NodeTreeIndex}Map <color.yellow>Next Map Set</color>\n dir : {dir}", DebugType.Node, this);
+        DebugTool.Log($"Map Next Map Set\n dir : {dir}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -210,7 +210,7 @@ public class MapData : MonoBehaviour
     {
         _remainingWaveCount = count;
         OnChangeRemainingWaveCount?.Invoke(count);
-        DebugTool.Log($"{NodeTreeIndex}Map <color.yellow>Wave Count Set</color> : {count}", DebugType.Node, this);
+        DebugTool.Log($"Map Wave Count Set : {count}", DebugType.Node, this);
     }
 
     /// <summary>
@@ -250,7 +250,7 @@ public class MapData : MonoBehaviour
     {
         NodeState = state;
         OnChangeState?.Invoke(state);
-        DebugTool.Log($"{NodeTreeIndex}Map <color.yellow>Node State Change</color> : {NodeState}", DebugType.Node, this);
+        DebugTool.Log($"Map Node State Change : {NodeState}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -261,7 +261,7 @@ public class MapData : MonoBehaviour
         if(AlivePlayerCount >= 4) return;
         AlivePlayerCount++;
         OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
-        DebugTool.Log($"{NodeTreeIndex}Map <color.yellow>Player Income</color>, Current Player : {AlivePlayerCount}", DebugType.Node, this);
+        DebugTool.Log($"Player Income, Current Player : {AlivePlayerCount}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -272,7 +272,7 @@ public class MapData : MonoBehaviour
         if(AlivePlayerCount <= 0) return;
         AlivePlayerCount--;
         OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
-        DebugTool.Log($"{NodeTreeIndex}Map <color.yellow>Player Out</color>, Current Player : {AlivePlayerCount}", DebugType.Node, this);
+        DebugTool.Log($"Player Out, Current Player : {AlivePlayerCount}", DebugType.Node, this);
     }
 
     /// <summary>
@@ -282,7 +282,7 @@ public class MapData : MonoBehaviour
     {
         _aliveMonsterCount++;
         OnChangeAliveMonsterCount?.Invoke(_aliveMonsterCount);
-        DebugTool.Log($"{NodeTreeIndex}Map <color.yellow>Monster Income</color>, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
+        DebugTool.Log($"Monster Income, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -293,7 +293,7 @@ public class MapData : MonoBehaviour
         if(_aliveMonsterCount <= 0) return;
         _aliveMonsterCount--;
         OnChangeAliveMonsterCount?.Invoke(_aliveMonsterCount);
-        DebugTool.Log($"{NodeTreeIndex}Map <color.yellow>Monster Out</color>, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
+        DebugTool.Log($"Monster Out, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
     }
 
     /// <summary>
@@ -304,7 +304,7 @@ public class MapData : MonoBehaviour
         if(_remainingWaveCount <= 0) return;
         _remainingWaveCount--;
         OnChangeRemainingWaveCount?.Invoke(_remainingWaveCount);
-        DebugTool.Log($"{NodeTreeIndex}Map <color.yellow>Wave Clear</color>, Remain Wave : {_remainingWaveCount}", DebugType.Node, this);
+        DebugTool.Log($">Wave Clear, Remain Wave : {_remainingWaveCount}", DebugType.Node, this);
     }
     
     /// <summary>

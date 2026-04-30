@@ -24,6 +24,8 @@ public class MapMaker
     /// <param name="treeData"></param>
     public void SetMap(Dictionary<(int,int), NodeSO> treeData)
     {
+        _gridMapData = new Dictionary<(int, int), GameObject>();
+        
         for (int i = 0; i < 11; i++)
         {
             for (int j = 0; j < 11; j++)
@@ -37,8 +39,8 @@ public class MapMaker
             }
         }
         MakePath();
-        OnMapSettingComplete?.Invoke();
         DebugTool.Log("Map Making Complete",DebugType.Node);
+        OnMapSettingComplete?.Invoke();
     }
 
     private void MakePath()

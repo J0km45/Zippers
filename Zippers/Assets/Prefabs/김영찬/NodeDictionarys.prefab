@@ -46,8 +46,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de814f6142fd84caeea703ddbe8964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NodeDictionary
-  _testNode: {fileID: 11400000, guid: 6e1cbefbfcd485f4184ce4cf465def67, type: 2}
-  _nodes: []
+  _nodes:
+  - {fileID: 11400000, guid: a2580c3d4706ff94da8c38aa5abb3830, type: 2}
+  - {fileID: 11400000, guid: 6e1cbefbfcd485f4184ce4cf465def67, type: 2}
+  - {fileID: 11400000, guid: 8c7f7805cc22c3c41b506219c866abfa, type: 2}
+  - {fileID: 11400000, guid: 89f232c1d25941149b84fdd74eb138f2, type: 2}
+  - {fileID: 11400000, guid: 89dd577c574b23e43b1d3cdf5701f1fb, type: 2}
+  - {fileID: 11400000, guid: f0431538e9244e64199a9f4625a90cba, type: 2}
+  - {fileID: 11400000, guid: 3a18f97339fbbdc458f2d68f3722c567, type: 2}
+  - {fileID: 11400000, guid: 3eb45efe04ad0d94db5dccebe6d5db4d, type: 2}
 --- !u!114 &6243536728368248852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,8 +67,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1847f8d4b9e1b324b977a99aed67ffdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventDictionary
-  _noEvent: {fileID: 11400000, guid: 31556aa75c8be8847acdc39eb130506d, type: 2}
-  _events: []
+  _events:
+  - {fileID: 11400000, guid: 31556aa75c8be8847acdc39eb130506d, type: 2}
 --- !u!114 &5872442968425049448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,5 +81,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0bb961299739e4d90ac329112545e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TreeDictionary
-  _testTree: {fileID: 11400000, guid: 9d36805bcc2f36c48816a21aa88ccfbc, type: 2}
-  _trees: []
+  _trees:
+  - {fileID: 11400000, guid: 9d36805bcc2f36c48816a21aa88ccfbc, type: 2}

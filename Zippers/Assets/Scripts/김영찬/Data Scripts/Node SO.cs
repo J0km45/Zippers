@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 /// <summary>
@@ -38,6 +37,13 @@ public class NodeSO : ScriptableObject
 
     private void SetNodeType()
     {
+        if(NodeType == NodeType.Empty) return;
+        
+        if(Map == null)
+        {
+            DebugTool.Warning("Not SerializeField Map", DebugType.Node, this);
+            return;
+        }
         MapData data = Map.GetComponent<MapData>();
         if (data != null) data.SetNodeType(NodeType);
     }
@@ -47,6 +53,13 @@ public class NodeSO : ScriptableObject
     /// </summary>
     public GameObject GetNodeMap(Vector3 position)
     {
+        if(NodeType == NodeType.Empty) return null;
+        
+        if(Map == null)
+        {
+            DebugTool.Warning($"Not SerializeField Map : {NodeType}_{NodeIndex}", DebugType.Node, this);
+            return null;
+        }
         return Instantiate(Map, position, Quaternion.identity);
     }
 }

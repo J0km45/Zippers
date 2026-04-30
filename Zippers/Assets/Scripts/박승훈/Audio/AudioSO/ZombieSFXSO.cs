@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ZombieSFXSO", menuName = "Zippers/SO/Audio/ZombieSFXSO", order = 2)]
-public class ZombieSFXSO : ScriptableObject
+public class ZombieSFXSO : ZippersSO
 {
     [Header("좀비 SFX 목록")]
     
@@ -60,7 +60,7 @@ public class ZombieSFXSO : ScriptableObject
     private readonly Dictionary<ZombieType, List<AudioClip>> _attackSfxDict = new Dictionary<ZombieType, List<AudioClip>>();
     public Dictionary<ZombieType, List<AudioClip>> AttackSfxDict => _attackSfxDict;
 
-    public void ZombieSfxDictInit()
+    public override void DictionaryInit()
     {
         _resourcesSfxDict.Clear();
         _attackSfxDict.Clear();

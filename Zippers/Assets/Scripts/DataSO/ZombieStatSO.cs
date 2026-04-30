@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Create -> 메뉴: Assets > Create > Zippers > Zombie Stat Data
-[CreateAssetMenu(menuName = "Zippers/Zombie Stat Data")]
+[CreateAssetMenu(fileName = "ZombieStatSO", menuName = "Zippers/Zombie/Stat Data")]
 public class ZombieStatSO : ScriptableObject, ISheetParsable
 {
     [Header("기본 정보")]
