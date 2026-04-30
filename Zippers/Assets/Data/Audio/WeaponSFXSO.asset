@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: WeaponSFXSO
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSFXSO
   meleeClips:
-  - {fileID: 8300000, guid: bfb189a9933cb4b31b12f6d9d495593b, type: 3}
-  - {fileID: 8300000, guid: 32d0f2a1f36cb4425b5a32126f3ff240, type: 3}
-  - {fileID: 8300000, guid: bda2974b2cd5d4f2bb642cf8acb1fef8, type: 3}
-  - {fileID: 8300000, guid: ed910ec28c89b4ee59d399d390b6143f, type: 3}
-  - {fileID: 8300000, guid: f4a7752e82d4f4cf3b725faaab9d4d00, type: 3}
-  - {fileID: 8300000, guid: 9b2a437d2ea804cea90c3b2c1653f0e6, type: 3}
-  - {fileID: 8300000, guid: c798fe8bbfc1247fe856b149c1457659, type: 3}
+  - {fileID: 8300000, guid: 4e8dc436792ae0343bee26b96200f844, type: 3}
+  - {fileID: 8300000, guid: 044653219d9522d47a420a3ec2eabfc6, type: 3}
+  - {fileID: 8300000, guid: 3b7fc5134874e274cae07af2d31ec56e, type: 3}
+  - {fileID: 8300000, guid: 9040657382c256e43932261aa07c2e8b, type: 3}
+  - {fileID: 8300000, guid: 790246c034d191c40bb83c0ca89ea415, type: 3}
+  - {fileID: 8300000, guid: de7f87ab3647e90498b995e449e8baab, type: 3}
+  - {fileID: 8300000, guid: e7f3e3cdca778b54d9375543a8c0400d, type: 3}
   rifleClips:
-  - {fileID: 8300000, guid: dba8e55eada6a144786568b2e61be0aa, type: 3}
-  - {fileID: 8300000, guid: 1d84c52d82239cf4898be13e6b8809a3, type: 3}
+  - {fileID: 8300000, guid: d44acbd34540ed348b7391d060cb54a7, type: 3}
+  - {fileID: 8300000, guid: 1065dfb13ade3794da85ca57478e3e07, type: 3}
   shotGunClips:
-  - {fileID: 8300000, guid: 113d7464f57cdac4289e550f9e4c993c, type: 3}
-  - {fileID: 8300000, guid: 428ab05a00a82954fbafa5b32085195e, type: 3}
-  - {fileID: 8300000, guid: 3d0d526126ad4d44a838d04dd2494477, type: 3}
+  - {fileID: 8300000, guid: ac64a86a2264f074e8eb1dea56b4fe62, type: 3}
+  - {fileID: 8300000, guid: 329ad62f05c33cf40ad8c07be17d8604, type: 3}
+  - {fileID: 8300000, guid: 43212f8989417e441bd6602a7a4940a6, type: 3}
   pistolClips:
-  - {fileID: 8300000, guid: 31b94c7c0b75337439ee4d218880211c, type: 3}
-  - {fileID: 8300000, guid: 1bb0abfaeb689804dbba4df9cc870799, type: 3}
-  - {fileID: 8300000, guid: f506c69074c8a78419bbc34dd550175c, type: 3}
-  rifleReloadClip: {fileID: 8300000, guid: dc945ee3c22f2da4cb248135a6196d3d, type: 3}
-  shotgunReloadClip: {fileID: 8300000, guid: 270c21cf95ead9547b50cb99a03d9b44, type: 3}
-  pistolReloadClip: {fileID: 8300000, guid: 9e290ca0b24960843962c0cdcd93cadb, type: 3}
+  - {fileID: 8300000, guid: f3be404eb0c4d6249ae809bba155bea9, type: 3}
+  - {fileID: 8300000, guid: ba142faa713b8ee43a39942f82c70429, type: 3}
+  - {fileID: 8300000, guid: 5e5451afa9ef0fd4b90c7d0d426f8ac3, type: 3}
+  rifleReloadClip: {fileID: 8300000, guid: 7da3344062d24984a9c08e8836b58a15, type: 3}
+  shotgunReloadClip: {fileID: 8300000, guid: 8d85b18a46ec8c244a4b549f12938fff, type: 3}
+  pistolReloadClip: {fileID: 8300000, guid: b408f789ac2608a439bc552b16f68369, type: 3}

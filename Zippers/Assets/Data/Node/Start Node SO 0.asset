@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfcf364b06b5cc045ab130e6cbb63b3d, type: 3}
-  m_Name: TestNode
+  m_Name: Start Node SO 0
   m_EditorClassIdentifier: Assembly-CSharp::NodeSO
-  <NodeType>k__BackingField: 6
-  <NodeID>k__BackingField: 0
-  <Map>k__BackingField: {fileID: 4728121328699623930, guid: 4455d265172a3da4db2c88d6255ab6b8, type: 3}
+  <NodeType>k__BackingField: 1
+  <NodeIndex>k__BackingField: 0
+  <Map>k__BackingField: {fileID: 4728121328699623930, guid: 153b0b0be53a1384ab6cdd3a72177f8c, type: 3}

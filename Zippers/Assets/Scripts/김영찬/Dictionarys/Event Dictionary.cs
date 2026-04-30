@@ -10,16 +10,10 @@ public class EventDictionary : MonoBehaviour
     /// SingleTon Instance
     /// </summary>
     public static EventDictionary Instance { get; private set; }
-
-    [Header("No Event 데이터")]
-    [SerializeField] private EventSO _noEvent;
     
-    [Header("No Event 제외한 나머지 데이터들")]
     [SerializeField] private EventSO[] _events;
-    
-    private Dictionary<int, EventSO> _dict_MonsterSpawn;
-    private Dictionary<int, EventSO> _dict_MonsterEnhance;
-    private Dictionary<int, EventSO> _dict_SupplyItem;
+
+    private Dictionary<(NodeEventType, int), EventSO> _dict;
     
     public bool IsDictionaryReady { get; private set; }
 
@@ -46,28 +40,14 @@ public class EventDictionary : MonoBehaviour
     
     private void InitDict()
     {
-        _dict_MonsterEnhance = new Dictionary<int, EventSO>();
-        _dict_MonsterSpawn = new Dictionary<int, EventSO>();
-        _dict_SupplyItem = new Dictionary<int, EventSO>();
+        _dict = new Dictionary<(NodeEventType, int), EventSO>();
         
         foreach (EventSO @event in _events)
         {
-            switch (@event.EventType)
-            {
-                case NodeEventType.MonsterSpawn:
-                    bool tempMS = _dict_MonsterSpawn.TryAdd(@event.EventIndex, @event);
-                    if(!tempMS) DebugTool.Error($"EventSO Index Duplicate : {@event.EventType}_{@event.EventIndex}", DebugType.Node, this);
-                    break;
-                case NodeEventType.MonsterEnhance:
-                    bool tempME = _dict_MonsterEnhance.TryAdd(@event.EventIndex, @event);
-                    if(!tempME) DebugTool.Error($"EventSO Index Duplicate : {@event.EventType}_{@event.EventIndex}", DebugType.Node, this);
-                    break;
-                case NodeEventType.SupplyItem:
-                    bool tempSI = _dict_SupplyItem.TryAdd(@event.EventIndex, @event);
-                    if(!tempSI) DebugTool.Error($"EventSO Index Duplicate : {@event.EventType}_{@event.EventIndex}", DebugType.Node, this);
-                    break;
-            }
+            bool verification = _dict.TryAdd((@event.EventType, @event.EventIndex), @event);
+            if(!verification) DebugTool.Error($"Event Dictionary Duplication Error : {@event.EventType}_{@event.EventIndex}", DebugType.Node, this);
         }
+        
         IsDictionaryReady = true;
         
         DebugTool.Log("Event Dictionary Ready", DebugType.Node, this);
@@ -87,29 +67,9 @@ public class EventDictionary : MonoBehaviour
             return null;
         }
         
-        EventSO result;
-
-        switch (eventType)
-        {
-            case NodeEventType.NoEvent:
-                result = _noEvent;
-                break;
-            case NodeEventType.MonsterSpawn:
-                result = _dict_MonsterSpawn.GetValueOrDefault(index);
-                if (result == null) DebugTool.Error($"Event Not Found : {eventType}_{index}", DebugType.Node, this); 
-                break;
-            case NodeEventType.MonsterEnhance:
-                result = _dict_MonsterEnhance.GetValueOrDefault(index);
-                if (result == null) DebugTool.Error($"Event Not Found : {eventType}_{index}", DebugType.Node, this); 
-                break;
-            case NodeEventType.SupplyItem:
-                result = _dict_SupplyItem.GetValueOrDefault(index);
-                if (result == null) DebugTool.Error($"Event Not Found : {eventType}_{index}", DebugType.Node, this); 
-                break;
-            default:
-                DebugTool.Error($"Event Not Found : {eventType}_{index}", DebugType.Node, this); 
-                return null;
-        }
+        EventSO result = _dict.GetValueOrDefault((eventType, index));
+        
+        if (result == null) DebugTool.Error($"Event Not Found : {eventType}_{index}", DebugType.Node, this);
         
         return result;
     }

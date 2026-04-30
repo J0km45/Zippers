@@ -13,27 +13,27 @@ MonoBehaviour:
   m_Name: ZombieSFXSO
   m_EditorClassIdentifier: Assembly-CSharp::ZombieSFXSO
   moveSfx:
-  - {fileID: 8300000, guid: b904fd4697052574db026e32feab4b7f, type: 3}
-  - {fileID: 8300000, guid: 0cd320741de322249b699890f045daa6, type: 3}
-  - {fileID: 8300000, guid: 74cd38003a0da4c4cb260ed0e9c2c8f6, type: 3}
-  - {fileID: 8300000, guid: a75591fc6d7526b418d2c2e43dd6e4b2, type: 3}
-  - {fileID: 8300000, guid: 9d9bfb2dc21a8f14ab4e6b646cabce63, type: 3}
-  - {fileID: 8300000, guid: e89e5b271f48786448fcdcf8bdc9c4e3, type: 3}
-  - {fileID: 8300000, guid: d5e212053476d2241848e3fe5197ddd4, type: 3}
-  - {fileID: 8300000, guid: 732a0ca179a15074a97d99868112e590, type: 3}
-  - {fileID: 8300000, guid: 263bac2639bda05489becf410eb73968, type: 3}
-  - {fileID: 8300000, guid: e9e54bb31d7c506408a9b5d22270f837, type: 3}
+  - {fileID: 8300000, guid: 33a74de2905f0e641900f5ed98e63793, type: 3}
+  - {fileID: 8300000, guid: 61b224e1dbcd7f2439fbf9fa29c61238, type: 3}
+  - {fileID: 8300000, guid: dcc851dc43579244ba348e0fb1421bdc, type: 3}
+  - {fileID: 8300000, guid: 622f5d09b6a58cb4597d31645ca4f0a9, type: 3}
+  - {fileID: 8300000, guid: bc3c753bbb4a7fb4ca15ed6bd1ef9cf1, type: 3}
+  - {fileID: 8300000, guid: fe74c859c7771b24484ea1cd4f5aa963, type: 3}
+  - {fileID: 8300000, guid: 8b8001fd49746bf448ac0e4c94e88c1b, type: 3}
+  - {fileID: 8300000, guid: 12413f0d4da90f14e934efb344e059f3, type: 3}
+  - {fileID: 8300000, guid: 73b4d4f02afe8564f91e1be4c8ba08e2, type: 3}
+  - {fileID: 8300000, guid: 1b60202010920774986bd39d27b544ee, type: 3}
   bossMoveSfx:
-  - {fileID: 8300000, guid: 04a3e8ec1e46b3441b4915d8d5c03530, type: 3}
-  - {fileID: 8300000, guid: 304cfc9bd60ae364992a1c524ca132b9, type: 3}
-  - {fileID: 8300000, guid: 33aa782a7ac69fc47b21091cdac19be6, type: 3}
-  - {fileID: 8300000, guid: f61c79defe190d64ebf1325bac672e12, type: 3}
-  - {fileID: 8300000, guid: 829a8708b75bf974aa4da090eeeb0c1f, type: 3}
-  - {fileID: 8300000, guid: fb58ea6440b4978419ef9b04f51f8eb3, type: 3}
-  - {fileID: 8300000, guid: 28fae719c29aa784791700b8a37d5ece, type: 3}
-  - {fileID: 8300000, guid: 614fa0066cd46f045b21eecd80dee97e, type: 3}
-  - {fileID: 8300000, guid: 5dd464109a21fc84193f0f1d4113e148, type: 3}
-  - {fileID: 8300000, guid: 47cfffd5c88bf124dae40063d3ad5b78, type: 3}
+  - {fileID: 8300000, guid: 1d6237a9798b2c943a3ae2a90ec8ec94, type: 3}
+  - {fileID: 8300000, guid: 8f2cd72caafbba54cbc48de52eecf188, type: 3}
+  - {fileID: 8300000, guid: e00a50868ecbe3841a8ed55e8309359e, type: 3}
+  - {fileID: 8300000, guid: e6e0ba100234e354eb13d64042617059, type: 3}
+  - {fileID: 8300000, guid: 1ecb1309b7f51da4d9973ade1e4254ec, type: 3}
+  - {fileID: 8300000, guid: 89d9a5ab47f2a324d95e52e2003e19e5, type: 3}
+  - {fileID: 8300000, guid: cf255f0589ad0934cbc5ed0eb33f5b9a, type: 3}
+  - {fileID: 8300000, guid: 665bdd19696d4e445a0710146fafedb1, type: 3}
+  - {fileID: 8300000, guid: d77a14c0c17b5ed4c9e5ce5c5fc03e65, type: 3}
+  - {fileID: 8300000, guid: 80cd4c26f03e06b48bf4a0afc7b51476, type: 3}
   groanSfx:
   - {fileID: 8300000, guid: e91206746e8582b4cbabaaf7ae038037, type: 3}
   - {fileID: 8300000, guid: cd7a148f309e077408d3b82af0cfb545, type: 3}
@@ -69,11 +69,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b3e6cb483e62dbf4ba83a44d658fc2c3, type: 3}
   - {fileID: 8300000, guid: 53bf13168f3916243b853c8d6a84d048, type: 3}
   hitSfx:
-  - {fileID: 8300000, guid: 74cdc2db7d1b34927bbfa5dd240bd57d, type: 3}
-  - {fileID: 8300000, guid: a7a4f05432231480c9f4a27dfd1211b4, type: 3}
-  - {fileID: 8300000, guid: 61ebd089863b1434095075a700729c08, type: 3}
-  - {fileID: 8300000, guid: 93161ee90dfb84784b517bce811b9035, type: 3}
-  - {fileID: 8300000, guid: 2c36b53af2d6a43428702b29981044c1, type: 3}
+  - {fileID: 8300000, guid: 250f9a848c9c69746bf8952c34e8407c, type: 3}
+  - {fileID: 8300000, guid: 7e912830d71415448a9ab0c541601882, type: 3}
+  - {fileID: 8300000, guid: d98db2fdd4f0ad74289e653934c1878c, type: 3}
+  - {fileID: 8300000, guid: 9c74c29c2483cf54c8e7a1079c49bd1d, type: 3}
+  - {fileID: 8300000, guid: 970f898dd50d24b40ab5a1cfa6beedf1, type: 3}
   deathSFX:
   - {fileID: 8300000, guid: dc73aad37f348454c87f80e3d1f90094, type: 3}
   - {fileID: 8300000, guid: fd43ba24241f1c941aaa70bb4aa0f86f, type: 3}
@@ -96,6 +96,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 32beaeca7d08aea488d05814245427b7, type: 3}
   - {fileID: 8300000, guid: 3ba2a3aa0e3bd8948b0b38db081230ae, type: 3}
   sampleSfx:
-  - {fileID: 8300000, guid: 767e5aa0dd643490c91b34a5d7ed9aa2, type: 3}
-  - {fileID: 8300000, guid: c0b1965513222437b8cc24cd3155d296, type: 3}
-  - {fileID: 8300000, guid: 4f4ad1624b072402e8a99746cb7c7439, type: 3}
+  - {fileID: 8300000, guid: 318eb0117508bbc459a359a0e5920cab, type: 3}
+  - {fileID: 8300000, guid: b7650e29e8a4fb44fac1042f85c8c72b, type: 3}
+  - {fileID: 8300000, guid: 3435aac3d74e9f6418a017850ca172f1, type: 3}

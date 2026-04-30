@@ -63,7 +63,7 @@ public class MapActionController
                 _clearAction = new TestNodeClearAction(this);
                 break;
         }
-        DebugTool.Log($"{Controller.Data.NodeTreeIndex}Map <color.yellow>Action Controller Ready</color>", DebugType.Node);
+        DebugTool.Log($"Action Controller Ready", DebugType.Node);
     }
     
     /// <summary>
@@ -86,7 +86,7 @@ public class MapActionController
                 _machine.ChangeState(_clearAction);
                 break;
         }
-        DebugTool.Log($"{Controller.Data.NodeTreeIndex}Map <color.yellow>Node Action Change</color> : {newState}", DebugType.Node);
+        DebugTool.Log($"Node Action Change : {newState}", DebugType.Node);
     }
 
     /// <summary>

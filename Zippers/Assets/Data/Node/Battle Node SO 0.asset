@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfcf364b06b5cc045ab130e6cbb63b3d, type: 3}
+  m_Name: Battle Node SO 0
+  m_EditorClassIdentifier: Assembly-CSharp::NodeSO
+  <NodeType>k__BackingField: 2
+  <NodeIndex>k__BackingField: 0
+  <Map>k__BackingField: {fileID: 4728121328699623930, guid: 187dee7f0bb3c62498c15f8c17ab6c31, type: 3}
