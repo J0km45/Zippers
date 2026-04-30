@@ -20,12 +20,14 @@ MonoBehaviour:
   StaminaDelay: 1
   StaminaPeriod: 0.1
   StaminaRegen: 10
-  WeaponDamage: 15
+  MinDamage: 10
+  MaxDamage: 15
   AttackSpeed: 0.5
   MagazineCapacity: 30
   ReloadTime: 2.5
   BulletSpeed: 18
   BulletDistance: 12
   MoveSpeed: 4.5
+  SprintSpeed: 0
   SightRange: 12
   CollectRange: 2

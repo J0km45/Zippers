@@ -1,19 +1,19 @@
+using Audio;
 using UnityEngine;
 
 public class PlayerCombatReloadState : IState
 {
-    private readonly PlayerCombatStateMachine _combatStateMachine;
-    private readonly PlayerAnimation _playerAnimation;
-    private readonly PlayerReload _playerReload;
+    private PlayerCombatStateMachine _combatStateMachine;
+    private PlayerAnimation _playerAnimation;
+    private PlayerReload _playerReload;
+    private WeaponSFXController _weaponSFXController;
 
-    public PlayerCombatReloadState(
-        PlayerCombatStateMachine combatStateMachine,
-        PlayerAnimation playerAnimation,
-        PlayerReload playerReload)
+    public PlayerCombatReloadState(PlayerCombatStateMachine combatStateMachine,PlayerAnimation playerAnimation,PlayerReload playerReload, WeaponSFXController weaponSFXController)
     {
         _combatStateMachine = combatStateMachine;
         _playerAnimation = playerAnimation;
         _playerReload = playerReload;
+        _weaponSFXController = weaponSFXController;
     }
 
     public void Enter()
@@ -37,6 +37,7 @@ public class PlayerCombatReloadState : IState
         {
             _playerAnimation.PlayReload();
         }
+        _weaponSFXController.PlayReloadSfx(WeaponType.Rifle);
 
         Debug.Log("[PlayerCombatReloadState] Reload 상태 진입");
     }

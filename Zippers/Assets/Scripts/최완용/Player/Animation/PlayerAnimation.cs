@@ -9,6 +9,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private static readonly int Attack = Animator.StringToHash("Attack");
     private static readonly int Reload = Animator.StringToHash("Reload");
+
     private static readonly int Hit = Animator.StringToHash("Hit");
     private static readonly int Die = Animator.StringToHash("Die");
 
@@ -26,6 +27,7 @@ public class PlayerAnimation : MonoBehaviour
         _animator.SetFloat(MoveX, normalizedInput.x);
         _animator.SetFloat(MoveY, normalizedInput.y);
         _animator.SetFloat(Speed, normalizedInput.sqrMagnitude);
+        DebugTool.Log($"{normalizedInput}", DebugType.Character, this);
     }
 
     public void SetSprint(bool isSprinting)
