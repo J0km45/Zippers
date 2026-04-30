@@ -65,9 +65,8 @@ public abstract class MapController : MonoBehaviour
     protected virtual void Start()
     {
         InitController();
-        Data.SetNodeState(NodeState.Ready);
-        EventController.SetDefaultEvent();
-        TeleportSupporter.DisableBeaconAll();
+        ReadyForUse();
+        AutoDeactivate();
     }
 
     protected virtual void Update()
@@ -89,6 +88,20 @@ public abstract class MapController : MonoBehaviour
     {
         ActionController.InitActionController();
         EventController.InitEventController();
+    }
+
+    private void ReadyForUse()
+    {
+        Data.SetNodeState(NodeState.Ready);
+        EventController.SetDefaultEvent();
+        TeleportSupporter.DisableBeaconAll();
+    }
+
+    private void AutoDeactivate()
+    {
+        if(NodeType == NodeType.Start) return;
+        DebugTool.Log($"{gameObject.name} Map Auto Deactivate", DebugType.Node, this);
+        gameObject.SetActive(false);
     }
 
     private void UpdateController()
