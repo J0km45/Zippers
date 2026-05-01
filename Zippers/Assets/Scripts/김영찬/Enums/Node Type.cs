@@ -4,11 +4,11 @@
 /// </summary>
 public enum NodeType
 {
-    Empty,  // 빈 노드(더미노드)
-    Start,  // 시작 노드
-    Battle, // 전투 노드
-    Boss,   // 보스전투 노드
-    Shop,   // 상점 노드
-    Escape, // 탈출 노드(멀티 플레이 루프 종료 지점)
-    Test    // 테스트 노드
+    Empty = -2 ,    // 빈 노드(더미노드)
+    Test = -1,      // 테스트 노드
+    Start = 0,      // 시작 노드
+    Battle,         // 전투 노드
+    Shop,           // 상점 노드
+    Boss,           // 보스전투 노드
+    Escape          // 탈출 노드(멀티 플레이 루프 종료 지점)
 }

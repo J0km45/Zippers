@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 /// <summary>
 /// 노드의 Data를 저장하기 위한 SO<br/>
@@ -7,59 +9,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Node SO", menuName = "Node Data/Node SO")]
 public class NodeSO : ScriptableObject
 {
-    #region 노드 설정 변수
+    [Header("노드 타입")] 
+    [SerializeField] private NodeType _nodeType;
 
+    [Header("UI")]
+    [SerializeField] private Image _nodeImage;
+    
     /// <summary>
     /// 노드 타입
     /// </summary>
-    [Tooltip("노드 타입")]
-    [field:SerializeField] public NodeType NodeType {get; private set;}
+    public NodeType NodeType => _nodeType;
     
     /// <summary>
-    /// 노드 인덱스<br/>
-    /// 노드 타입 별로 0부터 시작
+    /// 맵UI에서 보여지는 노드의 Icon Image
     /// </summary>
-    [Tooltip("노드의 식별 번호")]
-    [field:SerializeField] public int NodeIndex {get; private set;}
-    
-    /// <summary>
-    /// 이 노드에 해당 되는 Map 프리팹
-    /// </summary>
-    [Tooltip("이 노드에 해당 되는 Map 프리팹")]
-    [field:SerializeField] public GameObject Map {get; private set;}
+    public Image NodeImage => _nodeImage;
 
-    #endregion
-
-    private void Awake()
-    {
-        SetNodeType();
-    }
-
-    private void SetNodeType()
-    {
-        if(NodeType == NodeType.Empty) return;
-        
-        if(Map == null)
-        {
-            DebugTool.Warning("Not SerializeField Map", DebugType.Node, this);
-            return;
-        }
-        MapData data = Map.GetComponent<MapData>();
-        if (data != null) data.SetNodeType(NodeType);
-    }
-    
-    /// <summary>
-    /// 노드 맵 데이터를 복제하여 반환
-    /// </summary>
-    public GameObject GetNodeMap(Vector3 position)
-    {
-        if(NodeType == NodeType.Empty) return null;
-        
-        if(Map == null)
-        {
-            DebugTool.Warning($"Not SerializeField Map : {NodeType}_{NodeIndex}", DebugType.Node, this);
-            return null;
-        }
-        return Instantiate(Map, position, Quaternion.identity);
-    }
+    // TODO : 이 이하는 노드 맵 UI 작업하실 때 필요한 부분 수정해 주세요
 }

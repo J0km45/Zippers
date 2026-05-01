@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapObjectCounter
   _countArea: {fileID: 1576657447354357640}
-  _controller: {fileID: 5421610212818518291}
+  _controller: {fileID: 0}
   _unitLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -61,9 +61,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4686758864085443572}
-  - component: {fileID: 6143721633565751309}
-  - component: {fileID: 5421610212818518291}
-  - component: {fileID: 3607655182570474681}
+  - component: {fileID: 8305963476500703442}
+  - component: {fileID: 8137467193740531021}
+  - component: {fileID: 4825050594778193418}
   m_Layer: 12
   m_Name: Escape Map 0
   m_TagString: Untagged
@@ -90,7 +90,19 @@ Transform:
   - {fileID: 4355051246051576808}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6143721633565751309
+--- !u!114 &8305963476500703442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4728121328699623930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c30c28ff4cea3d46b70e39d2d71b341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EscapeTypeMapController
+--- !u!114 &8137467193740531021
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65b470f510156d047a74e9d025aa48ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapData
+  _controller: {fileID: 8305963476500703442}
   <PlayerSpawnPoint_Up>k__BackingField:
   - {fileID: 7325472973145010532}
   - {fileID: 2014605562828311899}
@@ -131,22 +144,8 @@ MonoBehaviour:
   <TeleportBeacon_Left>k__BackingField: {fileID: 7027334774733609389}
   <TeleportBeacon_Right>k__BackingField: {fileID: 1526224001961701071}
   <NodeState>k__BackingField: 0
-  <NodeTreeIndex>k__BackingField: 0
   <StartDir>k__BackingField: 0
-  <NodeType>k__BackingField: 0
---- !u!114 &5421610212818518291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4728121328699623930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ae5eaaa01d4e3e4d872664e76911a22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NodeController
---- !u!114 &3607655182570474681
+--- !u!114 &4825050594778193418
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,8 +156,8 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02782c63188236349abab83d1938ab6b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NextMapTeleporter
-  _controller: {fileID: 5421610212818518291}
+  m_EditorClassIdentifier: Assembly-CSharp::TeleportSupporter
+  _controller: {fileID: 8305963476500703442}
   _ballotBox_UP: {fileID: 3041005014947893569}
   _ballotBox_Down: {fileID: 4978806586004008400}
   _ballotBox_Left: {fileID: 1664500099286877823}

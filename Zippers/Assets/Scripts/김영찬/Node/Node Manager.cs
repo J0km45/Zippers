@@ -1,30 +1,26 @@
-using System.Collections;
+using System;
 using UnityEngine;
 
 /// <summary>
-/// 노드 현황을 관리 하고, Node Tree Maker와 Map Maker의 동작을 제어
+/// 노드 현황을 관리 및 제어
 /// </summary>
 public class NodeManager : MonoBehaviour
 {
-    /// <summary>
-    /// NodeManager에서 NodeGrid를 호출하는 변수
-    /// </summary>
-    [field:SerializeField] public NodeGrid NodeGrid { get; private set; }
+    [SerializeField] NodeDifficulty _currentDifficulty;
+    
+    [SerializeField] private NodeDataContainer _dataContainer;
     
     /// <summary>
-    /// NodeManager에서 NodeTreeMaker를 호출하는 변수
+    /// NodeManager에서 사용하는 NodeDataContainer변수
     /// </summary>
-    public NodeTreeMaker TreeMaker { get; private set; }
-    
-    /// <summary>
-    /// NodeManager에서 MapMaker를 호출하는 변수
-    /// </summary>
-    public MapMaker MapMaker { get; private set; }
+    public NodeDataContainer DataContainer  => _dataContainer;
 
-    // ToDo : 차후에 난이도 조절 가능하게 되면 그쪽으로 난이도 설정 넘김
-    [SerializeField] NodeDifficulty _curDifficulty;
+    /// <summary>
+    /// NodeManager에서 사용하는 NodePathMaker변수
+    /// </summary>
+    public NodePathMaker NodePathMaker { get; private set; }
     
-    private WaitForEndOfFrame _wait = new();
+    public event Action<NodeDifficulty> OnDifficultyChanged;
 
     private void Awake()
     {
@@ -33,58 +29,42 @@ public class NodeManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EnableEvents();
+        EventEnable();
     }
 
     private void OnDisable()
     {
-        DisableEvents();
+        EventDisable();
     }
 
     private void Start()
     {
-        StartCoroutine(WaitDictionary());
+        // ToDo : 테스트 코드임으로 나중에 GameManager 등에서 다음 코드를 실행 하도록 할 것
+        SetDifficulty(NodeDifficulty.Test);
     }
 
     private void Init()
     {
-        TreeMaker = new NodeTreeMaker(this);
-        MapMaker = new MapMaker(this);
-        DebugTool.Log("Node Manager Initialized", DebugType.Node, this);
+        NodePathMaker = new NodePathMaker(this);
+    }
+    
+    private void EventEnable()
+    {
+        OnDifficultyChanged += NodePathMaker.MakePath;
+    }
+    private void EventDisable()
+    {
+        OnDifficultyChanged -= NodePathMaker.MakePath;
     }
 
-    private void EnableEvents()
+    /// <summary>
+    /// 난이도 변경
+    /// </summary>
+    /// <param name="difficulty">게임 난이도</param>
+    public void SetDifficulty(NodeDifficulty difficulty)
     {
-        TreeMaker.OnTreeMakingComplete += MapMaker.SetMap;
-    }
-
-    private void DisableEvents()
-    {
-        TreeMaker.OnTreeMakingComplete -= MapMaker.SetMap;
-    }
-
-    private IEnumerator WaitDictionary()
-    {
-        while (NodeDictionary.Instance == null)
-        {
-            yield return _wait;
-        }
-
-        while (TreeDictionary.Instance == null)
-        {
-            yield return _wait;
-        }
-        
-        while (!NodeDictionary.Instance.IsDictionaryReady)
-        {
-            yield return _wait;
-        }
-        
-        while (!TreeDictionary.Instance.IsDictionaryReady)
-        {
-            yield return _wait;
-        }
-        
-        TreeMaker.SetNodeTree(_curDifficulty);
+        _currentDifficulty = difficulty;
+        DebugTool.Log("ChangeDifficulty: " + difficulty, DebugType.Node, this);
+        OnDifficultyChanged?.Invoke(difficulty);
     }
 }
