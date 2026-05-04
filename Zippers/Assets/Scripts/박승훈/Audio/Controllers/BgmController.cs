@@ -15,8 +15,6 @@ public class BgmController : AudioController
         _audioSource = GetComponent<AudioSource>();
         
         BgmSourceInit(_audioSource);
-        
-        _bgmSo.DictionaryInit();
     }
 
     public void PlayBGM(BGMType type)

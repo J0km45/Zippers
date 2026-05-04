@@ -41,14 +41,13 @@ public class WeaponSFXSO : ZippersSO
     private Dictionary<WeaponType, AudioClip> _reloadSfxDict = new Dictionary<WeaponType, AudioClip>();
     public Dictionary<WeaponType, AudioClip> ReloadSfxDict => _reloadSfxDict;
 
-    public override void DictionaryInit()
+    protected override void DictionaryInit()
     {
         _weaponSfxDict.Clear();
         _weaponSfxDict.Add(WeaponType.Melee, meleeClips);
         _weaponSfxDict.Add(WeaponType.Rifle, rifleClips);
         _weaponSfxDict.Add(WeaponType.Shotgun, ShotgunClips);
-        _weaponSfxDict.Add(WeaponType.Pistol, pistolClips);
-    
+        _weaponSfxDict.Add(WeaponType.Pistol, pistolClips);    
 
         _reloadSfxDict.Clear();
         _reloadSfxDict.Add(WeaponType.Rifle, rifleReloadClip);
