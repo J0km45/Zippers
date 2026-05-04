@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
   m_IgnoreLayout: 0
   m_MinWidth: 92
@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -110,8 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &254655860780976328
 GameObject:
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.16, g: 0.48, b: 0.72, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &375166016647630036
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -514,7 +514,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -677,7 +677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -706,7 +706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &446898356035828071
@@ -785,7 +785,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -942,7 +942,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1091,7 +1091,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.075, g: 0.09, b: 0.11, a: 0.92}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1120,8 +1120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &7614399995395746105
 MonoBehaviour:
@@ -1144,11 +1144,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.95, g: 0.97, b: 1, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.12, g: 0.22, b: 0.28, a: 1}
+    m_HighlightedColor: {r: 0.18, g: 0.42, b: 0.58, a: 1}
+    m_PressedColor: {r: 0.08, g: 0.3, b: 0.42, a: 1}
+    m_SelectedColor: {r: 0.16, g: 0.48, b: 0.72, a: 1}
+    m_DisabledColor: {r: 0.08, g: 0.09, b: 0.1, a: 0.45}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1364,7 +1364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1393,7 +1393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &652003281098002998
@@ -1472,7 +1472,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1629,7 +1629,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1767,7 +1767,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1925,7 +1925,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2083,7 +2083,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2241,7 +2241,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2398,7 +2398,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2536,7 +2536,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2694,7 +2694,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2851,7 +2851,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2989,7 +2989,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3102,6 +3102,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 9200000000000000002}
   - {fileID: 8709655203817556742}
   - {fileID: 5453076933739765463}
   - {fileID: 7589421135553613804}
@@ -3134,7 +3135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.028, g: 0.034, b: 0.046, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3163,8 +3164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &1149716731219117881
 GameObject:
@@ -3241,7 +3242,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3468,7 +3469,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3625,7 +3626,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3763,7 +3764,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3920,7 +3921,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4014,8 +4015,8 @@ RectTransform:
   - {fileID: 6073531127143907290}
   m_Father: {fileID: 9070459668475365698}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.535, y: 0.075}
+  m_AnchorMax: {x: 0.94, y: 0.82}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4094,7 +4095,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4232,7 +4233,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4389,7 +4390,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4532,7 +4533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.16, g: 0.48, b: 0.72, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4561,7 +4562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &1772039515619070195
@@ -4640,7 +4641,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4803,7 +4804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4832,8 +4833,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &1791059697265848127
 GameObject:
@@ -4910,7 +4911,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5056,7 +5057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.06, g: 0.075, b: 0.09, a: 0.86}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5085,7 +5086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &3054090892886655439
@@ -5190,7 +5191,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5353,7 +5354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5382,8 +5383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &1897191611077382851
 GameObject:
@@ -5461,7 +5462,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5624,7 +5625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.96, g: 0.96, b: 0.96, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5653,8 +5654,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &1908846729612507377
 GameObject:
@@ -5732,7 +5733,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5872,7 +5873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5971,7 +5972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6000,8 +6001,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &7907380993862992848
 MonoBehaviour:
@@ -6024,11 +6025,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.12, g: 0.22, b: 0.28, a: 1}
+    m_HighlightedColor: {r: 0.18, g: 0.42, b: 0.58, a: 1}
+    m_PressedColor: {r: 0.08, g: 0.3, b: 0.42, a: 1}
+    m_SelectedColor: {r: 0.16, g: 0.48, b: 0.72, a: 1}
+    m_DisabledColor: {r: 0.08, g: 0.09, b: 0.1, a: 0.45}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -6126,7 +6127,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6264,7 +6265,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6511,7 +6512,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6669,7 +6670,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6827,7 +6828,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7079,7 +7080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7108,8 +7109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &2306767621479032697
 GameObject:
@@ -7187,7 +7188,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7350,7 +7351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.16, g: 0.48, b: 0.72, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7379,7 +7380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &2419398500772936598
@@ -7463,7 +7464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.16, g: 0.48, b: 0.72, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7492,7 +7493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &2498613142557812404
@@ -7571,7 +7572,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7729,7 +7730,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7887,7 +7888,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8044,7 +8045,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8181,7 +8182,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8318,7 +8319,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8456,7 +8457,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8622,7 +8623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8651,8 +8652,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &5084975865619565802
 MonoBehaviour:
@@ -8761,7 +8762,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8790,8 +8791,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &2723222199378803685
 GameObject:
@@ -8957,7 +8958,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9101,7 +9102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9130,7 +9131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &2813918496558070758
@@ -9208,7 +9209,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9352,7 +9353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.96, g: 0.96, b: 0.96, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9381,8 +9382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &2844945813599981547
 GameObject:
@@ -9548,7 +9549,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9691,7 +9692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9720,8 +9721,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &2873163005282170677
 GameObject:
@@ -9799,7 +9800,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9957,7 +9958,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10120,7 +10121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10149,7 +10150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &3028514285555427064
@@ -10228,7 +10229,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10386,7 +10387,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10544,7 +10545,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10711,7 +10712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10740,8 +10741,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &4150157952453773464
 MonoBehaviour:
@@ -10845,7 +10846,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11066,7 +11067,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11203,7 +11204,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11341,7 +11342,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11498,7 +11499,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11636,7 +11637,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11794,7 +11795,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11952,7 +11953,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12110,7 +12111,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12268,7 +12269,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12431,7 +12432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12460,7 +12461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &3522932993061148297
@@ -12632,7 +12633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12661,8 +12662,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &4597126564497568940
 MonoBehaviour:
@@ -12855,7 +12856,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -13013,7 +13014,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -13171,7 +13172,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -13329,7 +13330,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -13487,7 +13488,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -13645,7 +13646,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -13809,7 +13810,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13838,8 +13839,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &3748434104548727817
 GameObject:
@@ -13922,7 +13923,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13951,7 +13952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &3801455265655583431
@@ -14030,7 +14031,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -14193,7 +14194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.16, g: 0.48, b: 0.72, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14222,7 +14223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &3839574802708303837
@@ -14301,7 +14302,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -14459,7 +14460,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -14575,8 +14576,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -69, y: 15}
-  m_SizeDelta: {x: 126, y: 24}
+  m_AnchoredPosition: {x: -74, y: 24}
+  m_SizeDelta: {x: 150, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &509910991290678127
 CanvasRenderer:
@@ -14616,7 +14617,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -14759,7 +14760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14788,7 +14789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &4011843672764643947
@@ -14872,7 +14873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14901,8 +14902,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &4059299218540734198
 GameObject:
@@ -14993,7 +14994,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -15022,8 +15023,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &5766263175558073273
 MonoBehaviour:
@@ -15127,7 +15128,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -15296,7 +15297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.075, g: 0.09, b: 0.11, a: 0.92}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -15325,8 +15326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &3469224303698884542
 MonoBehaviour:
@@ -15349,11 +15350,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.95, g: 0.97, b: 1, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.12, g: 0.22, b: 0.28, a: 1}
+    m_HighlightedColor: {r: 0.18, g: 0.42, b: 0.58, a: 1}
+    m_PressedColor: {r: 0.08, g: 0.3, b: 0.42, a: 1}
+    m_SelectedColor: {r: 0.16, g: 0.48, b: 0.72, a: 1}
+    m_DisabledColor: {r: 0.08, g: 0.09, b: 0.1, a: 0.45}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -15473,7 +15474,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -15617,7 +15618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -15646,8 +15647,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &4140560112779819439
 GameObject:
@@ -15734,7 +15735,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -15763,8 +15764,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &2171377911943683735
 MonoBehaviour:
@@ -15868,7 +15869,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -16025,7 +16026,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -16174,7 +16175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.075, g: 0.09, b: 0.11, a: 0.92}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -16203,8 +16204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &2243311897479043730
 MonoBehaviour:
@@ -16227,11 +16228,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.95, g: 0.97, b: 1, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.12, g: 0.22, b: 0.28, a: 1}
+    m_HighlightedColor: {r: 0.18, g: 0.42, b: 0.58, a: 1}
+    m_PressedColor: {r: 0.08, g: 0.3, b: 0.42, a: 1}
+    m_SelectedColor: {r: 0.16, g: 0.48, b: 0.72, a: 1}
+    m_DisabledColor: {r: 0.08, g: 0.09, b: 0.1, a: 0.45}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -16448,7 +16449,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -16695,7 +16696,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -16853,7 +16854,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -17010,7 +17011,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -17156,7 +17157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.06, g: 0.075, b: 0.09, a: 0.86}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17185,7 +17186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &2356437838777771694
@@ -17290,7 +17291,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -17447,7 +17448,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -17536,7 +17537,7 @@ RectTransform:
   m_GameObject: {fileID: 4573970499725975028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9070459668475365698}
@@ -17568,7 +17569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.028, g: 0.034, b: 0.046, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17822,7 +17823,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -17985,7 +17986,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.16, g: 0.48, b: 0.72, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -18014,7 +18015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &4672076261513652198
@@ -18093,7 +18094,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -18251,7 +18252,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -18409,7 +18410,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -18572,7 +18573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.16, g: 0.48, b: 0.72, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -18601,7 +18602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &4744357930128235036
@@ -18680,7 +18681,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -18927,7 +18928,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -19084,7 +19085,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -19211,7 +19212,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5427a82e6c71cea429089cf09f90a676, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a7f9165d7118a7d43825f9e604d1f3b2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -19297,7 +19298,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -19456,7 +19457,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -19614,7 +19615,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -19861,7 +19862,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -20018,7 +20019,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -20155,7 +20156,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -20293,7 +20294,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -20539,7 +20540,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -20683,7 +20684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -20712,8 +20713,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &5318204400149537935
 GameObject:
@@ -20791,7 +20792,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -20949,7 +20950,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -21201,7 +21202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -21230,8 +21231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &5385136463001150305
 GameObject:
@@ -21315,7 +21316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -21344,7 +21345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &5443300789793411950
@@ -21423,7 +21424,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -21581,7 +21582,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -21739,7 +21740,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -21897,7 +21898,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -22060,7 +22061,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -22089,8 +22090,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &5599297322412613062
 GameObject:
@@ -22167,7 +22168,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -22305,7 +22306,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -22463,7 +22464,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -22621,7 +22622,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -22779,7 +22780,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -22936,7 +22937,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -23074,7 +23075,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -23237,7 +23238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.16, g: 0.48, b: 0.72, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -23266,7 +23267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &6052798214980957495
@@ -23345,7 +23346,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -23503,7 +23504,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -23661,7 +23662,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -23818,7 +23819,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -23967,7 +23968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.075, g: 0.09, b: 0.11, a: 0.92}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -23996,8 +23997,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &2331500302639299573
 MonoBehaviour:
@@ -24020,11 +24021,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.95, g: 0.97, b: 1, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.12, g: 0.22, b: 0.28, a: 1}
+    m_HighlightedColor: {r: 0.18, g: 0.42, b: 0.58, a: 1}
+    m_PressedColor: {r: 0.08, g: 0.3, b: 0.42, a: 1}
+    m_SelectedColor: {r: 0.16, g: 0.48, b: 0.72, a: 1}
+    m_DisabledColor: {r: 0.08, g: 0.09, b: 0.1, a: 0.45}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -24101,7 +24102,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7929473014226727722}
   - {fileID: 3339447755932731817}
   m_Father: {fileID: 8740817106719856800}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -24151,7 +24151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -24180,8 +24180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &6215447563645400884
 GameObject:
@@ -24348,7 +24348,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -24511,7 +24511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -24540,8 +24540,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &6365089957989804754
 GameObject:
@@ -24619,7 +24619,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -24777,7 +24777,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -24935,7 +24935,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -25093,7 +25093,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -25251,7 +25251,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -25409,7 +25409,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -25566,7 +25566,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -25704,7 +25704,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -25862,7 +25862,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -26025,7 +26025,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -26054,8 +26054,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &6706470281629420884
 GameObject:
@@ -26133,7 +26133,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -26291,7 +26291,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -26449,7 +26449,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -26691,7 +26691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -26720,8 +26720,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &4668789834905909758
 MonoBehaviour:
@@ -26825,7 +26825,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -27072,7 +27072,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -27315,7 +27315,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -27516,7 +27516,7 @@ RectTransform:
   m_Father: {fileID: 7118190021574429122}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.26, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -27558,7 +27558,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -27696,7 +27696,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -27854,7 +27854,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -28012,7 +28012,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -28175,7 +28175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -28204,8 +28204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &7282425005606965132
 GameObject:
@@ -28283,7 +28283,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -28529,7 +28529,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -28676,7 +28676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -28705,7 +28705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &6822044584313196487
@@ -28897,7 +28897,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -29060,7 +29060,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.96, g: 0.96, b: 0.96, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -29089,8 +29089,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &7798071822974503540
 GameObject:
@@ -29167,7 +29167,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -29306,7 +29306,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -29533,7 +29533,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -29696,7 +29696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -29725,8 +29725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &7856463832029607463
 GameObject:
@@ -29803,7 +29803,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -30030,7 +30030,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -30193,7 +30193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -30222,8 +30222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &8059627787779979633
 GameObject:
@@ -30301,7 +30301,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -30464,7 +30464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -30493,7 +30493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &8192942941531324566
@@ -30572,7 +30572,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -30729,7 +30729,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -30867,7 +30867,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -31033,7 +31033,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -31062,8 +31062,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &420191632663006729
 MonoBehaviour:
@@ -31168,7 +31168,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -31315,7 +31315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -31344,8 +31344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &4873463682595635985
 MonoBehaviour:
@@ -31450,7 +31450,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -31607,7 +31607,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -31745,7 +31745,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -31903,7 +31903,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -32061,7 +32061,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -32219,7 +32219,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -32377,7 +32377,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -32535,7 +32535,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -32692,7 +32692,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -32914,7 +32914,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -33052,7 +33052,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -33296,7 +33296,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4284572001
-  m_fontColor: {r: 0.38, g: 0.38, b: 0.38, a: 1}
+  m_fontColor: {r: 0.56, g: 0.65, b: 0.7, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -33454,7 +33454,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -33620,7 +33620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.06, g: 0.075, b: 0.09, a: 0.86}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -33649,7 +33649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &6956322963593710939
@@ -33760,7 +33760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -33789,7 +33789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &8633708360930129417
@@ -33868,7 +33868,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -34026,7 +34026,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -34278,7 +34278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -34307,8 +34307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &8701431810440100227
 GameObject:
@@ -34391,7 +34391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.96, g: 0.96, b: 0.96, a: 1}
+  m_Color: {r: 0.095, g: 0.11, b: 0.13, a: 0.9}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -34420,8 +34420,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &8713348999689923887
 GameObject:
@@ -34498,7 +34498,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -34636,7 +34636,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -34799,7 +34799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -34828,7 +34828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &8779435533143097741
@@ -34892,7 +34892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -34921,8 +34921,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!114 &3423019530745057397
 MonoBehaviour:
@@ -34945,11 +34945,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 0.12, g: 0.22, b: 0.28, a: 1}
+    m_HighlightedColor: {r: 0.18, g: 0.42, b: 0.58, a: 1}
+    m_PressedColor: {r: 0.08, g: 0.3, b: 0.42, a: 1}
+    m_SelectedColor: {r: 0.16, g: 0.48, b: 0.72, a: 1}
+    m_DisabledColor: {r: 0.08, g: 0.09, b: 0.1, a: 0.45}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -35044,7 +35044,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -35202,7 +35202,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -35360,7 +35360,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -35475,7 +35475,7 @@ RectTransform:
   m_Father: {fileID: 4901193354015303245}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.26, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -35517,7 +35517,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -35534,8 +35534,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -35544,7 +35544,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 10
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -35654,144 +35654,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &8881623585343362337
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7929473014226727722}
-  - component: {fileID: 5214908950910269048}
-  - component: {fileID: 1482644170728085087}
-  m_Layer: 0
-  m_Name: Label
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &7929473014226727722
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8881623585343362337}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3957917738687827711}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &5214908950910269048
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8881623585343362337}
-  m_CullTransparentMesh: 1
---- !u!114 &1482644170728085087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8881623585343362337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "\uADFC\uC811 \uD074\uB798\uC2A4\n\uC544\uC774\uCF58"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6c329ce62c7343d45b295df4e866deb2, type: 2}
-  m_sharedMaterial: {fileID: -5674310011409328741, guid: 6c329ce62c7343d45b295df4e866deb2, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -35889,8 +35752,8 @@ RectTransform:
   - {fileID: 1984947521112352240}
   m_Father: {fileID: 9070459668475365698}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0.055, y: 0.075}
+  m_AnchorMax: {x: 0.48, y: 0.82}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -35996,7 +35859,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -36154,7 +36017,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -36312,7 +36175,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4290953922
-  m_fontColor: {r: 0.76, g: 0.76, b: 0.76, a: 1}
+  m_fontColor: {r: 0.25, g: 0.34, b: 0.4, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -36559,7 +36422,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279098367
-  m_fontColor: {r: 1, g: 0.86, b: 0.05, a: 1}
+  m_fontColor: {r: 0.2, g: 0.62, b: 0.9, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -36716,7 +36579,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -36854,7 +36717,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -37017,7 +36880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.16, g: 0.48, b: 0.72, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -37046,7 +36909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
-  m_EffectColor: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_EffectColor: {r: 0.12, g: 0.22, b: 0.28, a: 0}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
 --- !u!1 &9120721267600982683
@@ -37170,8 +37033,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 9070459668475365698}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0.505, y: 0.075}
+  m_AnchorMax: {x: 0.505, y: 0.82}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 2, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -37196,7 +37059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.18, g: 0.18, b: 0.18, a: 1}
+  m_Color: {r: 0.045, g: 0.055, b: 0.072, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -37288,7 +37151,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279505940
-  m_fontColor: {r: 0.08, g: 0.08, b: 0.08, a: 1}
+  m_fontColor: {r: 0.86, g: 0.9, b: 0.92, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -37316,6 +37179,144 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+
+--- !u!1 &9200000000000000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9200000000000000002}
+  - component: {fileID: 9200000000000000003}
+  - component: {fileID: 9200000000000000004}
+  m_Layer: 0
+  m_Name: SinglePlayerTitle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9200000000000000002
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9200000000000000001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9070459668475365698}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 64, y: -42}
+  m_SizeDelta: {x: 520, y: 70}
+  m_Pivot: {x: 0, y: 1}
+--- !u!222 &9200000000000000003
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9200000000000000001}
+  m_CullTransparentMesh: 1
+--- !u!114 &9200000000000000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9200000000000000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "\uC2F1\uAE00 \uD50C\uB808\uC774"
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 6c329ce62c7343d45b295df4e866deb2, type: 2}
+  m_sharedMaterial: {fileID: -5674310011409328741, guid: 6c329ce62c7343d45b295df4e866deb2, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4279505940
+  m_fontColor: {r: 0.92, g: 0.94, b: 0.96, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 42
+  m_fontSizeBase: 42
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 12
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0

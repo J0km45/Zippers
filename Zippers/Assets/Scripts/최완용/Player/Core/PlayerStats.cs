@@ -10,7 +10,7 @@ public class PlayerStats : MonoBehaviour
     public WeaponType WeaponType => _playerClassData.WeaponType;
     public string ClassName => _playerClassData.ClassName;
     public float MaxHealth => _playerClassData.MaxHealth;
-    public float Stamina => _playerClassData.Stamina;
+    public float Stamina => _playerClassData.MaxStamina;
     public float StaminaDelay => _playerClassData.StaminaDelay;
     public float StaminaPeriod => _playerClassData.StaminaPeriod;
     public float StaminaRegen => _playerClassData.StaminaRegen;

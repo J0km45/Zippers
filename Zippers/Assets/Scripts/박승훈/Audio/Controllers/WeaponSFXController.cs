@@ -13,8 +13,6 @@ namespace Audio
 
         private void Start()
         {
-            _weaponSfxso.DictionaryInit();
-            
             SfxSourceInit(_audioSource);
         }
 
@@ -27,7 +25,12 @@ namespace Audio
 
         public void PlayReloadSfx(WeaponType type)
         {
-            AudioClip clip = _weaponSfxso.ReloadSfxDict[type];
+            if (!_weaponSfxso.ReloadSfxDict.TryGetValue(type, out AudioClip clip))
+            {
+                DebugTool.Log($"{type} 재장전 SFX가 없습니다.", DebugType.Audio, this);
+                return;
+            }
+            
             PlaySFX(_audioSource, clip);
             DebugTool.Log($"플레이어 {type.ToString()} 재장전 SFX 재생", DebugType.Audio, this);
         }

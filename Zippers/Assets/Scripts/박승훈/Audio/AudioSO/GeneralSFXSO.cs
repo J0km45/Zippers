@@ -9,7 +9,8 @@ public class GeneralSFXSO : ZippersSO
     [Space(5)][Header("Drop Scrap")][Tooltip("Walking Clip 필요")]
     [SerializeField] private List<AudioClip> walkingSfx = new List<AudioClip>();
     public List<AudioClip> WalkingSfx => walkingSfx;
-    public override void DictionaryInit()
+
+    protected override void DictionaryInit()
     {
     }
 }
