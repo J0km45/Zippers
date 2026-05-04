@@ -1,21 +1,23 @@
+using Audio;
 using UnityEngine;
 
 public class PlayerCombatAttackState : IState
 {
-    private readonly PlayerCombatStateMachine _combatStateMachine;
-    private readonly PlayerAnimation _playerAnimation;
-    private readonly float _attackStateTime;
+    private PlayerCombatStateMachine _combatStateMachine;
+    private PlayerAnimation _playerAnimation;
+    private WeaponSFXController _weaponSFXController;
+    private PlayerStats _playerStats;
+    private float _attackStateTime;
 
     private float _elapsedTime;
 
-    public PlayerCombatAttackState(
-        PlayerCombatStateMachine combatStateMachine,
-        PlayerAnimation playerAnimation,
-        float attackStateTime)
+    public PlayerCombatAttackState(PlayerCombatStateMachine combatStateMachine, PlayerAnimation playerAnimation, float attackStateTime, WeaponSFXController weaponSFXController, PlayerStats playerStats)
     {
         _combatStateMachine = combatStateMachine;
         _playerAnimation = playerAnimation;
         _attackStateTime = attackStateTime;
+        _weaponSFXController = weaponSFXController;
+        _playerStats = playerStats;
     }
 
     public void Enter()
@@ -25,9 +27,28 @@ public class PlayerCombatAttackState : IState
         if (_playerAnimation != null)
         {
             _playerAnimation.PlayAttack();
-        }
 
-        Debug.Log("[PlayerCombatAttackState] Attack 상태 진입");
+            PlayAttackSfx();
+
+            //if (_playerStats.WeaponType == WeaponType.Rifle)
+            //{
+            //    _weaponSFXController.PlayWeaponSfx(WeaponType.Rifle);
+            //}
+            //else if (_playerStats.WeaponType == WeaponType.Melee)
+            //{
+            //    _weaponSFXController.PlayWeaponSfx(WeaponType.Melee);   
+            //}
+            //else if( _playerStats.WeaponType == WeaponType.Pistol)
+            //{
+            //    _weaponSFXController.PlayWeaponSfx(WeaponType.Pistol);
+            //}
+            //else
+            //{
+            //    _weaponSFXController.PlayWeaponSfx(WeaponType.Shotgun);
+            //}
+
+            Debug.Log("[PlayerCombatAttackState] Attack 상태 진입");
+        }
     }
 
     public void Exit()
@@ -43,5 +64,21 @@ public class PlayerCombatAttackState : IState
             return;
 
         _combatStateMachine.ReturnCombatState();
+    }
+    private void PlayAttackSfx()
+    {
+        if (_weaponSFXController == null)
+        {
+            Debug.LogWarning("[PlayerCombatAttackState] WeaponSFXController가 없습니다.");
+            return;
+        }
+
+        if (_playerStats == null)
+        {
+            Debug.LogWarning("[PlayerCombatAttackState] PlayerStats가 없습니다.");
+            return;
+        }
+
+        _weaponSFXController.PlayWeaponSfx(_playerStats.WeaponType);
     }
 }

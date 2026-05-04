@@ -38,7 +38,7 @@ public class BGMSO : ZippersSO
     private Dictionary<BGMType, List<AudioClip>> _BGMDict = new Dictionary<BGMType, List<AudioClip>>();
     public Dictionary<BGMType, List<AudioClip>> BGMDict => _BGMDict;
 
-    public override void DictionaryInit()
+    protected override void DictionaryInit()
     {
         _BGMDict.Clear();
         

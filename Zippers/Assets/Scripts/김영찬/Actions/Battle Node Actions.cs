@@ -82,7 +82,7 @@ public class BattleNodeClearAction : INodeAction
     
     public void EnterState()
     {
-        _controller.Controller.Teleporter.EnableBeaconAvailable();
+        _controller.Controller.TeleportSupporter.EnableBeaconAvailable();
     }
 
     public void RunningState()

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e843cd436022934b9c520ebf0a84507, type: 3}
+  m_Name: 31002
+  m_EditorClassIdentifier: Assembly-CSharp::WaveSpawnSO
+  SpawnId: 31002
+  WaveId: 0
+  ZombieId: 0
+  GroupIndex: 0
+  PositionIndex: 0
+  Count: 0
+  StartDelay: 0
+  Interval: 0
+  BatchCount: 0
+  SpawnRadius: 0

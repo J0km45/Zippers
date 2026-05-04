@@ -6,7 +6,7 @@ public class MapActionController
     /// <summary>
     /// MapActionController에서 사용하는 MapController 변수
     /// </summary>
-    public MapController Controller { get; private set; }
+    public MapController Controller { get; }
     private ActionMachine _machine;
     
     private INodeAction _readyAction;
@@ -25,7 +25,7 @@ public class MapActionController
     {
         _machine = new ActionMachine();
 
-        switch (Controller.Data.NodeType)
+        switch (Controller.NodeType)
         {
             case NodeType.Empty:
                 _readyAction = new EmptyNodeReadyAction(this);
@@ -63,7 +63,7 @@ public class MapActionController
                 _clearAction = new TestNodeClearAction(this);
                 break;
         }
-        DebugTool.Log($"Action Controller Ready", DebugType.Node);
+        DebugTool.Log($"{Controller.gameObject.name} Action Controller Ready", DebugType.Node);
     }
     
     /// <summary>
@@ -86,7 +86,7 @@ public class MapActionController
                 _machine.ChangeState(_clearAction);
                 break;
         }
-        DebugTool.Log($"Node Action Change : {newState}", DebugType.Node);
+        DebugTool.Log($"{Controller.gameObject.name} Node Action Change : {newState}", DebugType.Node);
     }
 
     /// <summary>

@@ -6,10 +6,14 @@ public class MapEventController
     /// <summary>
     /// MapEventController에서 사용하는 MapController 변수
     /// </summary>
-    public MapController Controller { get; private set; }
-    private EventMachine _machine;
+    public MapController Controller { get; }
 
-    private NodeEvent _currentEvent;
+    /// <summary>
+    /// MapEventController에서 사용하는 EventMachine 변수
+    /// </summary>
+    public EventMachine Machine { get; private set; }
+
+    private EventSO _currentEvent;
     
     public MapEventController(MapController controller)
     {
@@ -21,21 +25,21 @@ public class MapEventController
     /// </summary>
     public void InitEventController()
     {
-        _machine = new EventMachine();
-        DebugTool.Log($"Event Controller Ready", DebugType.Node);
+        Machine = new EventMachine();
+        DebugTool.Log($"{Controller.gameObject.name} Event Controller Ready", DebugType.Node);
     }
 
-    private void ChangeEvent(NodeEvent nodeEvent)
+    private void ChangeEvent(EventSO nodeEvent)
     {
-        _machine.ChangeEvent(nodeEvent);
+        Machine.ChangeEvent(nodeEvent);
     }
-
+    
     /// <summary>
     /// EventMachine의 EventUpdate를 유니티 Update에 올리기 위함
     /// </summary>
     public void Update()
     {
-        _machine.EventUpdate();
+        Machine.EventUpdate();
     }
 
     /// <summary>
@@ -45,10 +49,19 @@ public class MapEventController
     /// <param name="index">이벤트 타입별 인덱스</param>
     public void SetCurrentEvent(NodeEventType eventType, int index)
     {
-        EventSO temp = EventDictionary.Instance.CallEvent(eventType, index);
-        _currentEvent = temp.GetEventScript(this);
+        EventContainerSO temp = Controller.Manager.DataContainer.GetEventData(eventType);
+        if (temp == null) return;
+        _currentEvent = temp.GetEventData(index,this);
         if(_currentEvent == null) return;
         ChangeEvent(_currentEvent);
-        DebugTool.Log($"Event Set : {eventType}, {index}", DebugType.Node);
+        DebugTool.Log($"{Controller.gameObject.name} Event Set : {eventType}, {index}", DebugType.Node);
+    }
+
+    /// <summary>
+    /// 기본 이벤트 상태(No Event)로 회귀
+    /// </summary>
+    public void SetDefaultEvent()
+    {
+        SetCurrentEvent(NodeEventType.NoEvent, 0);
     }
 }
