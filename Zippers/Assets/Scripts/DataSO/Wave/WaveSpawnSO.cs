@@ -40,12 +40,11 @@ public class WaveSpawnSO : ScriptableObject, ISheetParsable
         SpawnId = int.Parse(cols[0]);
         WaveId = int.Parse(cols[1]);
         GroupIndex = int.Parse(cols[2]);
-        PositionIndex = int.Parse(cols[3]);
-        ZombieId = int.Parse(cols[4]);
-        Count = int.Parse(cols[5]);
-        StartDelay = float.Parse(cols[6]);
-        Interval = float.Parse(cols[7]);
-        BatchCount = int.Parse(cols[8]);
-        SpawnRadius = float.Parse(cols[9]);
+        ZombieId = int.Parse(cols[3]);
+        Count = int.Parse(cols[4]);
+        StartDelay = float.Parse(cols[5]);
+        Interval = float.Parse(cols[6]);
+        BatchCount = int.Parse(cols[7]);
+        SpawnRadius = float.Parse(cols[8]);
     }
 }
