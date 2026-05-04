@@ -40,7 +40,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
         _noneState = new PlayerCombatNoneState(this);
         _aimState = new PlayerCombatAimState(this);
         _attackState = new PlayerCombatAttackState(this, _playerAnimation, _attackStateTime, _weaponSfxController, _playerStats);
-        _reloadState = new PlayerCombatReloadState(this, _playerAnimation, _playerReload, _weaponSfxController);
+        _reloadState = new PlayerCombatReloadState(this, _playerAnimation, _playerReload, _weaponSfxController,_playerStats);
     }
 
     private void OnEnable()

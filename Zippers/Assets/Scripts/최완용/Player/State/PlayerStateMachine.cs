@@ -1,6 +1,5 @@
 using Audio;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -30,7 +29,7 @@ public class PlayerStateMachine : MonoBehaviour
     private void Awake()
     {
         _stateMachine = new StateMachine();
-        _combatStateMachine = new PlayerCombatStateMachine();
+        _combatStateMachine = GetComponent<PlayerCombatStateMachine>();
 
         _playerMovement = GetComponent<PlayerMovement>();
         _playerAnimation = GetComponent<PlayerAnimation>();

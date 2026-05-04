@@ -26,7 +26,6 @@ public class PlayerMoveState : IState
     }
     public void Exit()
     {
-        _playerMovement.SetMoveInput(Vector2.zero);
         _playerAnimation.SetIdle();
         _sfxTimer = 0f;
         //Debug.Log("[PlayerMoveState] Move 상태 퇴장");
@@ -35,7 +34,7 @@ public class PlayerMoveState : IState
     {
         Vector2 moveInput = _stateMachine.MoveInput;
         _playerMovement.SetMoveInput(moveInput);
-        _playerMovement.Move();
+        //_playerMovement.Move();
         //_playerAnimation.SetMoveDirection(moveInput);
 
         ///

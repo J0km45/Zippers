@@ -8,7 +8,7 @@ public class PlayerHitScan : MonoBehaviour
 
     [Header("샷건 설정")]
     [SerializeField] private Transform _shotgunFirePoint;
-    [SerializeField] private float _shotgunRadius = 1.5f;
+    [SerializeField] private float _shotgunAngle = 45f;
 
     [Header("근접 설정")]
     [SerializeField] private Transform _meleePoint;
@@ -20,21 +20,22 @@ public class PlayerHitScan : MonoBehaviour
     public void ShotGunHitScan(float damage, float shotgunDistance)
     {
         _hitTarget.Clear();
+
         Vector3 origin = _shotgunFirePoint.position;
         Vector3 direction = GetAttackDirection();
 
-        RaycastHit[] hits = Physics.SphereCastAll
-            (
-                origin,
-                _shotgunRadius,
-                direction, 
-                shotgunDistance,
-                _targetLayer
-            );
+        Collider[] hits = Physics.OverlapSphere(
+            origin,
+            shotgunDistance,
+            _targetLayer
+        );
 
-        foreach(RaycastHit hit in hits)
+        foreach (Collider hit in hits)
         {
-            ApplyDamage(hit.collider, damage);
+            if (!IsInsideShotgunCone(origin, direction, hit.transform.position))
+                continue;
+
+            ApplyDamage(hit, damage);
         }
     }
     public void MeleeHitScan(float damage)
@@ -60,11 +61,28 @@ public class PlayerHitScan : MonoBehaviour
 
         Debug.Log($"[PlayerHitScan] 근접 판정 완료 / Radius: {_meleeRadius}, HitCount: {hits.Length}");
     }
+    private bool IsInsideShotgunCone(Vector3 origin, Vector3 attackDirection, Vector3 targetPosition)
+    {
+        Vector3 directionToTarget = targetPosition - origin;
+        directionToTarget.y = 0f;
+
+        if (directionToTarget.sqrMagnitude < 0.001f)
+            return true;
+
+        float halfAngle = _shotgunAngle * 0.5f;
+        float targetAngle = Vector3.Angle(attackDirection, directionToTarget.normalized);
+
+        return targetAngle <= halfAngle;
+    }
 
     private void ApplyDamage(Collider targetCollider, float damage)
     {
         IDamagable damagable = targetCollider.GetComponentInParent<IDamagable>();
 
+        if(_hitTarget.Contains(damagable))
+        {
+            return;
+        }
         _hitTarget.Add(damagable);
         damagable.TakeDamage(damage);
     }
@@ -76,7 +94,7 @@ public class PlayerHitScan : MonoBehaviour
 
         return direction.normalized;
     }
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         DrawShotgunGizmo();
         DrawMeleeGizmo();
@@ -96,8 +114,20 @@ public class PlayerHitScan : MonoBehaviour
 
         direction.Normalize();
 
-        Gizmos.DrawWireSphere(_shotgunFirePoint.position, _shotgunRadius);
-        Gizmos.DrawLine(_shotgunFirePoint.position, _shotgunFirePoint.position + direction * 3f);
+        float gizmoDistance = 3f;
+        float halfAngle = _shotgunAngle * 0.5f;
+
+        Vector3 leftDirection = Quaternion.AngleAxis(-halfAngle, Vector3.up) * direction;
+        Vector3 rightDirection = Quaternion.AngleAxis(halfAngle, Vector3.up) * direction;
+
+        // 샷건 원뿔 기즈모 색상
+        Gizmos.color = Color.blue;
+
+        Vector3 origin = _shotgunFirePoint.position;
+
+        Gizmos.DrawLine(origin, origin + direction * gizmoDistance);
+        Gizmos.DrawLine(origin, origin + leftDirection * gizmoDistance);
+        Gizmos.DrawLine(origin, origin + rightDirection * gizmoDistance);
     }
 
     /// <summary>

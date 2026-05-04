@@ -72,7 +72,7 @@ public class PlayerCombat : MonoBehaviour
         {
             case WeaponType.Rifle:
             case WeaponType.Pistol:
-                projectile(damage);
+                Projectile(damage);
                 break;
             case WeaponType.Melee:
                 MeleeHitScan(damage);
@@ -82,7 +82,7 @@ public class PlayerCombat : MonoBehaviour
                 break;
         }
     }
-    private void projectile(float damage)
+    private void Projectile(float damage)
     {
         bool canPirece = _playerStats.WeaponType == WeaponType.Pistol || _playerStats.WeaponType == WeaponType.Rifle;
 

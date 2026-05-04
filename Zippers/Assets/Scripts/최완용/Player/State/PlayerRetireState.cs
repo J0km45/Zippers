@@ -21,7 +21,7 @@ public class PlayerRetireState : IState
     {
         if(_playerMovement != null)
         {
-            _playerMovement.SetMoveInput(Vector2.zero);
+            _playerMovement.StopMove();
         }
         if(_playerAnimation != null)
         {
