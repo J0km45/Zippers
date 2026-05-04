@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
         {
             return _playerStats.MoveSpeed;
         }
-        return _playerStats.MoveSpeed + _playerStats.SprintSpeed;
+        return _playerStats.MoveSpeed * _playerStats.SprintSpeed;
     }
     public void StopMove()
     {
