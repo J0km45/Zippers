@@ -25,10 +25,15 @@ public class VolumeSetting : MonoBehaviour
 
     private void VolumeInit()
     {
-        _masterVolumeSlider.value = AudioManager.Instance.MasterVolume;
-        _bgmVolumeSlider.value = AudioManager.Instance.BGMVolume;
-        _sfxVolumeSlider.value = AudioManager.Instance.SfxVolume;
-        _uiVolumeSlider.value = AudioManager.Instance.UIVolume;
+        _masterVolumeSlider.SetValueWithoutNotify(AudioManager.Instance.MasterVolume);
+        _bgmVolumeSlider.SetValueWithoutNotify(AudioManager.Instance.BGMVolume);
+        _sfxVolumeSlider.SetValueWithoutNotify(AudioManager.Instance.SfxVolume);
+        _uiVolumeSlider.SetValueWithoutNotify(AudioManager.Instance.UIVolume);
+
+        SetText(masterText, _masterVolumeSlider);
+        SetText(bgmText, _bgmVolumeSlider);
+        SetText(sfxText, _sfxVolumeSlider);
+        SetText(uiText, _uiVolumeSlider);
     }
 
     private void SliderInit()
@@ -74,5 +79,5 @@ public class VolumeSetting : MonoBehaviour
     }
 
     private void SetText(TMP_Text tmp, Slider slider)
-        => tmp.text = ((int)(slider.value * 100)).ToString();
+        => tmp.text = $"{((int)(slider.value * 100)).ToString()}";
 }

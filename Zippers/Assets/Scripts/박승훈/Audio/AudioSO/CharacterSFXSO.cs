@@ -48,7 +48,7 @@ public class CharacterSFXSO : ZippersSO
     private Dictionary<ResourcesType, List<AudioClip>> resourcesSFXDict = new Dictionary<ResourcesType, List<AudioClip>>();
     public Dictionary<ResourcesType, List<AudioClip>> ResourcesSFXDict => resourcesSFXDict;
 
-    public override void DictionaryInit()
+    protected override void DictionaryInit()
     {
         resourcesSFXDict.Clear();
         

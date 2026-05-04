@@ -60,7 +60,7 @@ public class ZombieSFXSO : ZippersSO
     private readonly Dictionary<ZombieType, List<AudioClip>> _attackSfxDict = new Dictionary<ZombieType, List<AudioClip>>();
     public Dictionary<ZombieType, List<AudioClip>> AttackSfxDict => _attackSfxDict;
 
-    public override void DictionaryInit()
+    protected override void DictionaryInit()
     {
         _resourcesSfxDict.Clear();
         _attackSfxDict.Clear();
