@@ -10,7 +10,6 @@ public class MapData : MonoBehaviour
     /// <summary>
     /// UP에서 시작 될때 플레이어의 스폰 포인트
     /// </summary>
-    [Header("시작 지점")]
     [field:SerializeField]public Transform[] PlayerSpawnPoint_Up    {get; private set;}
     
     /// <summary>
@@ -31,28 +30,26 @@ public class MapData : MonoBehaviour
     /// <summary>
     /// Up 방향으로 연결 된 맵
     /// </summary>
-    [Header("연결 된 다음 맵")]
-    [field:SerializeField]public MapController NextMap_Up {get; private set;}
+    public MapController NextMap_Up {get; private set;}
     
     /// <summary>
     /// Down 방향으로 연결 된 맵
     /// </summary>
-    [field:SerializeField]public MapController NextMap_Down {get; private set;}
+    public MapController NextMap_Down {get; private set;}
     
     /// <summary>
     /// Left 방향으로 연결 된 맵
     /// </summary>
-    [field:SerializeField]public MapController NextMap_Left {get; private set;}
+    public MapController NextMap_Left {get; private set;}
     
     /// <summary>
     /// Right 방향으로 연결 된 맵
     /// </summary>
-    [field:SerializeField]public MapController NextMap_Right {get; private set;}
+    public MapController NextMap_Right {get; private set;}
 
     /// <summary>
     /// Up 방향 노드로 넘어 갈 때 플레이어의 합류 지점
     /// </summary>
-    [Header("다음 맵으로 넘어가는 지점")]
     [field:SerializeField]public GameObject TeleportBeacon_Up    {get; private set;}
     
     /// <summary>
@@ -73,7 +70,6 @@ public class MapData : MonoBehaviour
     /// <summary>
     /// 노드의 현재 진행 상황
     /// </summary>
-    [Header("For Debug")]
     [field:SerializeField]public NodeState NodeState {get; private set;}
     
     /// <summary>
@@ -85,7 +81,7 @@ public class MapData : MonoBehaviour
     /// 몬스터의 스폰 포인트<br/>
     /// 0번 인덱스 = 플레이어 진입 방향의 왼쪽, 시계 방향으로 구성
     /// </summary>
-    public Transform[] MonsterSpawnPoints { get; private set;}
+    [field:SerializeField]public Transform[] MonsterSpawnPoints { get; private set;}
 
     /// <summary>
     /// 맵에 생존한 플레이어 수
@@ -151,7 +147,7 @@ public class MapData : MonoBehaviour
     public void SetNodeStartDir(NodeStartDir dir)
     {
         StartDir = dir;
-        SetSpawnPoint(dir);
+        // SetSpawnPoint(dir);
         DebugTool.Log($"{_controller.gameObject.name} Map Node Start Dir Set {StartDir}", DebugType.Node, this);
     }
     
@@ -277,45 +273,45 @@ public class MapData : MonoBehaviour
         DebugTool.Log($"{_controller.gameObject.name} Wave Clear, Remain Wave : {_remainingWaveCount}", DebugType.Node, this);
     }
     
-    /// <summary>
-    /// 시작 위치에 따른 스폰 포인트 지정
-    /// </summary>
-    /// <param name="dir">플레이어 입장 위치(노드 시작 지점)</param>
-    private void SetSpawnPoint(NodeStartDir dir)
-    {
-        MonsterSpawnPoint tempUp = TeleportBeacon_Up.GetComponent<MonsterSpawnPoint>();
-        MonsterSpawnPoint tempDown = TeleportBeacon_Down.GetComponent<MonsterSpawnPoint>();
-        MonsterSpawnPoint tempLeft = TeleportBeacon_Left.GetComponent<MonsterSpawnPoint>();
-        MonsterSpawnPoint tempRight = TeleportBeacon_Right.GetComponent<MonsterSpawnPoint>();
-        
-        switch (dir)
-        {
-            case NodeStartDir.Down:
-                MonsterSpawnPoints[0] = tempLeft.SpawnPoint;
-                MonsterSpawnPoints[1] = tempUp.SpawnPoint;
-                MonsterSpawnPoints[2] = tempRight.SpawnPoint;
-                MonsterSpawnPoints[3] = tempDown.SpawnPoint;
-                break;
-            case NodeStartDir.Left:
-                MonsterSpawnPoints[0] = tempUp.SpawnPoint;
-                MonsterSpawnPoints[1] = tempRight.SpawnPoint;
-                MonsterSpawnPoints[2] = tempDown.SpawnPoint;
-                MonsterSpawnPoints[3] = tempLeft.SpawnPoint;
-                break;
-            case NodeStartDir.Up:
-                MonsterSpawnPoints[0] = tempRight.SpawnPoint;
-                MonsterSpawnPoints[1] = tempDown.SpawnPoint;
-                MonsterSpawnPoints[2] = tempLeft.SpawnPoint;
-                MonsterSpawnPoints[3] = tempUp.SpawnPoint;
-                break;
-            case NodeStartDir.Right:
-                MonsterSpawnPoints[0] = tempDown.SpawnPoint;
-                MonsterSpawnPoints[1] = tempLeft.SpawnPoint;
-                MonsterSpawnPoints[2] = tempUp.SpawnPoint;
-                MonsterSpawnPoints[3] = tempRight.SpawnPoint;
-                break;
-        }
-    }
+    // /// <summary>
+    // /// 시작 위치에 따른 스폰 포인트 지정
+    // /// </summary>
+    // /// <param name="dir">플레이어 입장 위치(노드 시작 지점)</param>
+    // private void SetSpawnPoint(NodeStartDir dir)
+    // {
+    //     MonsterSpawnPoint tempUp = TeleportBeacon_Up.GetComponent<MonsterSpawnPoint>();
+    //     MonsterSpawnPoint tempDown = TeleportBeacon_Down.GetComponent<MonsterSpawnPoint>();
+    //     MonsterSpawnPoint tempLeft = TeleportBeacon_Left.GetComponent<MonsterSpawnPoint>();
+    //     MonsterSpawnPoint tempRight = TeleportBeacon_Right.GetComponent<MonsterSpawnPoint>();
+    //     
+    //     switch (dir)
+    //     {
+    //         case NodeStartDir.Down:
+    //             MonsterSpawnPoints[0] = tempLeft.SpawnPoint;
+    //             MonsterSpawnPoints[1] = tempUp.SpawnPoint;
+    //             MonsterSpawnPoints[2] = tempRight.SpawnPoint;
+    //             MonsterSpawnPoints[3] = tempDown.SpawnPoint;
+    //             break;
+    //         case NodeStartDir.Left:
+    //             MonsterSpawnPoints[0] = tempUp.SpawnPoint;
+    //             MonsterSpawnPoints[1] = tempRight.SpawnPoint;
+    //             MonsterSpawnPoints[2] = tempDown.SpawnPoint;
+    //             MonsterSpawnPoints[3] = tempLeft.SpawnPoint;
+    //             break;
+    //         case NodeStartDir.Up:
+    //             MonsterSpawnPoints[0] = tempRight.SpawnPoint;
+    //             MonsterSpawnPoints[1] = tempDown.SpawnPoint;
+    //             MonsterSpawnPoints[2] = tempLeft.SpawnPoint;
+    //             MonsterSpawnPoints[3] = tempUp.SpawnPoint;
+    //             break;
+    //         case NodeStartDir.Right:
+    //             MonsterSpawnPoints[0] = tempDown.SpawnPoint;
+    //             MonsterSpawnPoints[1] = tempLeft.SpawnPoint;
+    //             MonsterSpawnPoints[2] = tempUp.SpawnPoint;
+    //             MonsterSpawnPoints[3] = tempRight.SpawnPoint;
+    //             break;
+    //     }
+    // }
     
     #endregion
 }
