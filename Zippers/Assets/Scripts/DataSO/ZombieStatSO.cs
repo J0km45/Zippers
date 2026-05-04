@@ -39,19 +39,21 @@ public class ZombieStatSO : ScriptableObject, ISheetParsable
 
     [Header("드롭")]
     [Tooltip("최소 스크랩")]
-    public float MinScrap;
+    public int MinScrap;
     [Tooltip("최대 스크랩")]
-    public float MaxScrap;
+    public int MaxScrap;
     [Tooltip("스크랩 드롭 확률 (0~100)")]
     public float ScrapDropChance;
     [Tooltip("최소 보급품")]
-    public float MinSupplies;
+    public int MinSupplies;
     [Tooltip("최대 보급품")]
-    public float MaxSupplies;
+    public int MaxSupplies;
     [Tooltip("보급품 드롭 확률 (0~100)")]
     public float SuppliesDropChance;
     [Tooltip("감염 샘플")]
-    public float InfectionSample;
+    public int InfectionSample;
+    [Tooltip("드랍 찬스")]
+    public float DropChance;
 
     [Header("(시트에 없음 / SetData 미설정)")]
     [Tooltip("손 범위 - 시트에 없는 상수값")]
@@ -72,13 +74,14 @@ public class ZombieStatSO : ScriptableObject, ISheetParsable
         MoveSpeed = float.Parse(cols[9]);
         DetectMoveSpeed = float.Parse(cols[10]);
         DetectRange = float.Parse(cols[11]);
-        MinScrap = float.Parse(cols[12]);
-        MaxScrap = float.Parse(cols[13]);
+        MinScrap = int.Parse(cols[12]);
+        MaxScrap = int.Parse(cols[13]);
         ScrapDropChance = float.Parse(cols[14]);
-        MinSupplies = float.Parse(cols[15]);
-        MaxSupplies = float.Parse(cols[16]);
+        MinSupplies = int.Parse(cols[15]);
+        MaxSupplies = int.Parse(cols[16]);
         SuppliesDropChance = float.Parse(cols[17]);
-        InfectionSample = float.Parse(cols[18]);
+        InfectionSample = int.Parse(cols[18]);
+        DropChance = float.Parse(cols[19]);
 
 
     }
