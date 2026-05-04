@@ -46,16 +46,16 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     public float CurrentHp; //임시(테스트용)
     public Transform Player; //임시(테스트용)
 
-    public ZombieType Type => _stat.Type;
-    public float MaxHp => _stat.MaxHp;
-    public float MoveSpeed => _stat.MoveSpeed;
-    public float DetectMoveSpeed => _stat.DetectMoveSpeed;
-    public float MinAttackDamage => _stat.MinAttackDamage;
-    public float MaxAttackDamage => _stat.MaxAttackDamage;
-    public float AttackCooldown => _stat.AttackCooldown;
+    public ZombieType Type => _stat.ZombieType;
+    public float MaxHp => _stat.MaxHealth;
+    public float MoveSpeed => _stat.BaseMoveSpeed;
+    public float DetectMoveSpeed => _stat.ChasingMoveSpeed;
+    public float MinAttackDamage => _stat.MinDamage;
+    public float MaxAttackDamage => _stat.MaxDamage;
+    public float AttackCooldown => _stat.AttackSpeed;
     public float HandRadius => _stat.HandRadius;
     public float AttackRange => _stat.AttackRange;
-    public float DetectRange => _stat.DetectRange;
+    public float DetectRange => _stat.DetectionRange;
 
     private void Awake()
     {

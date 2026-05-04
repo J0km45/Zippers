@@ -84,13 +84,4 @@ MonoBehaviour:
   _waveSpawnSheet:
     <URL>k__BackingField: https://docs.google.com/spreadsheets/d/1H4POPGGxh0x_jcwinL-_VVhK1FWRPD0jASYWtFIzxrQ/edit?gid=1931696212#gid=1931696212
     <Type>k__BackingField: 2
-  _waveSpawnDataList:
-  - {fileID: 11400000, guid: b74fb18dcec549c49ab0f03885e8a6b3, type: 2}
-  - {fileID: 11400000, guid: 2ad8f518bad0a1e4783c6c004f993644, type: 2}
-  - {fileID: 11400000, guid: 551d215ef0e4aff48a139599b6f22f7f, type: 2}
-  - {fileID: 11400000, guid: 94889963212e0b346b192a1cbf40c369, type: 2}
-  - {fileID: 11400000, guid: af219200f411a6244876ea1c88aa0726, type: 2}
-  - {fileID: 11400000, guid: a2032b08731c0da46a5d0f20242c0bcf, type: 2}
-  - {fileID: 11400000, guid: 5ea8764d5d4fb7740a2a7301e3711a24, type: 2}
-  - {fileID: 11400000, guid: 7c055a074e042ff44ba6683b21347c80, type: 2}
-  - {fileID: 11400000, guid: be9204c6441787c439a8b6d067d2ce23, type: 2}
+  _waveSpawnTable: {fileID: 11400000, guid: adf3f548ee4b70f4080cb01a490a0e51, type: 2}
