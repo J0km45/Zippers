@@ -3,10 +3,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerLook : MonoBehaviour
 {
-    [Header("참조")]
-    [SerializeField] private Camera _mainCamera;
+
     [SerializeField] private PlayerAim _playerAim;
     [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private PlayerAimCal _playerAimCal;
 
     [Header("회전 설정")]
     [SerializeField] private float _rotateSpeed = 20f;
@@ -15,11 +15,7 @@ public class PlayerLook : MonoBehaviour
     {
         _playerAim = GetComponent<PlayerAim>();
         _playerMovement = GetComponent<PlayerMovement>();
-
-        if (_mainCamera == null)
-        {
-            _mainCamera = Camera.main;
-        }
+        _playerAimCal = GetComponent<PlayerAimCal>();
     }
 
     private void Update()
@@ -37,27 +33,18 @@ public class PlayerLook : MonoBehaviour
     // 우클릭 조준 중: 마우스 방향 바라보기
     private void LookAtMouse()
     {
-        if (_mainCamera == null)
+        if (_playerAimCal == null)
             return;
 
-        if (Mouse.current == null)
+        if (!_playerAimCal.TryGetAimPoint(out Vector3 aimPoint))
             return;
 
-        Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
-        Ray ray = _mainCamera.ScreenPointToRay(mouseScreenPosition);
-
-        Plane groundPlane = new Plane(Vector3.up, transform.position);
-
-        if (!groundPlane.Raycast(ray, out float distance))
-            return;
-
-        Vector3 mouseWorldPosition = ray.GetPoint(distance);
-
-        Vector3 lookDirection = mouseWorldPosition - transform.position;
+        Vector3 lookDirection = aimPoint - transform.position;
         lookDirection.y = 0f;
 
         Rotate(lookDirection);
     }
+
 
     // 우클릭 안 누름: 이동 방향 바라보기
     private void LookAtMoveDirection()

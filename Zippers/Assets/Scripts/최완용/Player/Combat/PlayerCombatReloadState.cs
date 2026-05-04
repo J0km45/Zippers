@@ -7,13 +7,16 @@ public class PlayerCombatReloadState : IState
     private PlayerAnimation _playerAnimation;
     private PlayerReload _playerReload;
     private WeaponSFXController _weaponSFXController;
+    private PlayerStats _playerStats;
 
-    public PlayerCombatReloadState(PlayerCombatStateMachine combatStateMachine,PlayerAnimation playerAnimation,PlayerReload playerReload, WeaponSFXController weaponSFXController)
+    public PlayerCombatReloadState(PlayerCombatStateMachine combatStateMachine,PlayerAnimation playerAnimation,PlayerReload playerReload, WeaponSFXController weaponSFXController, PlayerStats playerStats)
     {
         _combatStateMachine = combatStateMachine;
         _playerAnimation = playerAnimation;
         _playerReload = playerReload;
         _weaponSFXController = weaponSFXController;
+        _playerStats = playerStats;
+
     }
 
     public void Enter()
@@ -37,7 +40,7 @@ public class PlayerCombatReloadState : IState
         {
             _playerAnimation.PlayReload();
         }
-        _weaponSFXController.PlayReloadSfx(WeaponType.Rifle);
+        _weaponSFXController.PlayReloadSfx(_playerStats.WeaponType);
 
         Debug.Log("[PlayerCombatReloadState] Reload 상태 진입");
     }

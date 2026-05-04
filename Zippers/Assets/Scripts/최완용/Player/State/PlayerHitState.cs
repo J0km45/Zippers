@@ -34,10 +34,10 @@ public class PlayerHitState : IState
     public void UpdateState()
     {
         _elapsedTime += Time.deltaTime;
-        Vector2 moveInput = _stateMachine.MoveInput;
-        _movement.Move();
+        //Vector2 moveInput = _stateMachine.MoveInput;
+        _movement.SetMoveInput(_stateMachine.MoveInput);
 
-        if(_elapsedTime < _hitDuration)
+        if (_elapsedTime < _hitDuration)
         {
             return;
         }
