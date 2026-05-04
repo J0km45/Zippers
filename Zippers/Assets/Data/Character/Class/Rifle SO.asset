@@ -20,8 +20,8 @@ MonoBehaviour:
   StaminaDelay: 1
   StaminaPeriod: 0.1
   StaminaRegen: 10
-  BaseMinDamage: 10
-  BaseMaxDamage: 15
+  MinDamage: 23
+  MaxDamage: 26
   AttackSpeed: 0.5
   MagazineCapacity: 30
   ReloadTime: 2.5

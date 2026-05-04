@@ -1,3 +1,4 @@
+using Audio;
 using UnityEngine;
 
 public class PlayerCombatStateMachine : MonoBehaviour
@@ -7,6 +8,9 @@ public class PlayerCombatStateMachine : MonoBehaviour
 
     private StateMachine _stateMachine;
 
+    private WeaponSFXController _weaponSfxController;
+    private PlayerStats _playerStats;
+
     private PlayerAim _playerAim;
     private PlayerAnimation _playerAnimation;
     private PlayerReload _playerReload;
@@ -15,6 +19,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
     private PlayerCombatAimState _aimState;
     private PlayerCombatAttackState _attackState;
     private PlayerCombatReloadState _reloadState;
+    
 
     private PlayerCombatStateType _currentStateType;
 
@@ -29,11 +34,13 @@ public class PlayerCombatStateMachine : MonoBehaviour
         _playerAim = GetComponent<PlayerAim>();
         _playerAnimation = GetComponent<PlayerAnimation>();
         _playerReload = GetComponent<PlayerReload>();
+        _weaponSfxController = GetComponentInChildren<WeaponSFXController>();
+        _playerStats = GetComponent<PlayerStats>();
 
         _noneState = new PlayerCombatNoneState(this);
         _aimState = new PlayerCombatAimState(this);
-        _attackState = new PlayerCombatAttackState(this, _playerAnimation, _attackStateTime);
-        _reloadState = new PlayerCombatReloadState(this, _playerAnimation, _playerReload);
+        _attackState = new PlayerCombatAttackState(this, _playerAnimation, _attackStateTime, _weaponSfxController, _playerStats);
+        _reloadState = new PlayerCombatReloadState(this, _playerAnimation, _playerReload, _weaponSfxController);
     }
 
     private void OnEnable()
@@ -77,7 +84,6 @@ public class PlayerCombatStateMachine : MonoBehaviour
         {
             return;
         }
-
         ChangeState(isAiming ? PlayerCombatStateType.Aim : PlayerCombatStateType.None);
     }
 

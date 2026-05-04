@@ -31,7 +31,7 @@ public class PlayerStats : MonoBehaviour
     public bool UseBullet => 
         WeaponType == WeaponType.Rifle || 
         WeaponType == WeaponType.Shotgun || 
-        WeaponType == WeaponType.Util;
+        WeaponType == WeaponType.Pistol;
 
     public float GetRandomDamage()
     {
