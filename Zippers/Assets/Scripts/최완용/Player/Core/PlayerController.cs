@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     private PlayerCombatStateMachine _combatStateMachine;
     private PlayerCombat _playerCombat;
     private PlayerMovement _playerMovement;
+    private PlayerStamina _playerStamina;
 
     private void Awake()
     {
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
         _playerStateMachine = GetComponent<PlayerStateMachine>();
         _combatStateMachine = GetComponent<PlayerCombatStateMachine>();
         _playerCombat = GetComponent<PlayerCombat>();
+        _playerStamina = GetComponent<PlayerStamina>();
     }
 
     private void OnEnable()
@@ -149,8 +151,21 @@ public class PlayerController : MonoBehaviour
         }
         if (ctx.performed)
         {
+            if(_playerStamina ==null)
+            {
+                _playerMovement.SetSprint(false);
+                return;
+            }
+
+            if(!_playerStamina.TryStartSprint())
+            {
+                _playerMovement.SetSprint(false);
+                return;
+            }
+
             _playerMovement.SetSprint(true);
         }
+
         else if (ctx.canceled)
         {
             _playerMovement.SetSprint(false);

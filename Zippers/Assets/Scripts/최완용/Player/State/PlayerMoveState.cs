@@ -10,14 +10,17 @@ public class PlayerMoveState : IState
 
     //오디오
     private float _sfxTimer;
-    private float _walkSfxInterval = 0.30f;
-    private float _sprintSfxInterval = 0.25f;
-    public PlayerMoveState(PlayerStateMachine stateMachine, PlayerMovement playerMovement, PlayerAnimation playerAnimation, PlayerSfxController playerSfxController)
+    private float _walkSfxInterval;
+    private float _sprintSfxInterval;
+    public PlayerMoveState(PlayerStateMachine stateMachine, PlayerMovement playerMovement, PlayerAnimation playerAnimation, PlayerSfxController playerSfxController, float walkSfxInterval, float sprintSfxInterval)
     {
         _stateMachine = stateMachine;
         _playerMovement = playerMovement;
         _playerAnimation = playerAnimation;
         _playerSfxController = playerSfxController;
+
+        _walkSfxInterval = walkSfxInterval;
+        _sprintSfxInterval = sprintSfxInterval;
     }
     public void Enter()
     {

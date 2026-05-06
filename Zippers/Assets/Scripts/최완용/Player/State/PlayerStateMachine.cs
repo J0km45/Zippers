@@ -15,6 +15,10 @@ public class PlayerStateMachine : MonoBehaviour
     private PlayerHitState _hitState;
     private PlayerRetireState _retireState;
 
+    [Header("이동 사운드 인터벌")]
+    [SerializeField] private float _walkSfxInterval = 0.3f;
+    [SerializeField] private float _sprintSfxInterval = 0.25f;
+
     private PlayerSfxController _sfxController;
 
     private PlayerStateType _playerStateType;
@@ -37,7 +41,7 @@ public class PlayerStateMachine : MonoBehaviour
         _sfxController = GetComponent<PlayerSfxController>();
 
         _idleState = new PlayerIdleState(this, _playerMovement, _playerAnimation);
-        _moveState = new PlayerMoveState(this, _playerMovement, _playerAnimation, _sfxController);
+        _moveState = new PlayerMoveState(this, _playerMovement, _playerAnimation, _sfxController, _walkSfxInterval, _sprintSfxInterval);
         _hitState = new PlayerHitState(this, _playerMovement, _playerAnimation, 0.25f, _sfxController);
         _retireState = new PlayerRetireState(this, _playerMovement, _playerAnimation, GetComponent<BoxCollider>(),_sfxController);
     }
