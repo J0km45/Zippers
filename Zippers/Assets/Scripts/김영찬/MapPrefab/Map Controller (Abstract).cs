@@ -130,6 +130,11 @@ public abstract class MapController : MonoBehaviour
     
     private IEnumerator WaitCoroutine()
     {
+        while (!Manager.DataContainer.IsDictReady)
+        {
+            yield return _wait;
+        }
+        
         while (EventController.Machine == null)
         {
             yield return _wait;

@@ -64,7 +64,7 @@ public class NodeManager : MonoBehaviour
     public void SetDifficulty(NodeDifficulty difficulty)
     {
         _currentDifficulty = difficulty;
-        DebugTool.Log("ChangeDifficulty: " + difficulty, DebugType.Node, this);
-        OnDifficultyChanged?.Invoke(difficulty);
+        DebugTool.Log("ChangeDifficulty: " + _currentDifficulty, DebugType.Node, this);
+        OnDifficultyChanged?.Invoke(_currentDifficulty);
     }
 }
