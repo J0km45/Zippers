@@ -22,7 +22,6 @@ public class NodePathMaker
     {
         _nodeManager = nodeManager;
         Path = new();
-        
     }
 
     public void MakePath(NodeDifficulty difficulty)
@@ -36,6 +35,7 @@ public class NodePathMaker
         if (difficulty == NodeDifficulty.Test)
         {
             TestPathWay();
+            DebugTool.Log("PathMaking Complete", DebugType.Node);
             return;
         }
         
