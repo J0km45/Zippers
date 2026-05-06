@@ -6,6 +6,7 @@ public class MapObjectCounter : MonoBehaviour
     [SerializeField] private MapController _controller;
     [SerializeField] LayerMask _unitLayer;
     [SerializeField] LayerMask _monsterLayer;
+    [SerializeField] bool isGizmoActive = true;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -32,9 +33,10 @@ public class MapObjectCounter : MonoBehaviour
             _controller.Data.MinusAliveMonsterCount();
         }
     }
-
+    
     private void OnDrawGizmos()
     {
+        if(!isGizmoActive) return;
         if(_countArea == null) return;
         Gizmos.matrix = transform.localToWorldMatrix;
         Gizmos.color = Color.blue;

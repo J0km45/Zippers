@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class NoPlayerZoneGizmo : MonoBehaviour
 {
+    [SerializeField] bool isGizmoActive = true;
+    
     private void OnDrawGizmos()
     {
+        if(!isGizmoActive) return;
         BoxCollider collider = GetComponent<BoxCollider>();
         if(collider == null) return;
         Gizmos.matrix = transform.localToWorldMatrix;

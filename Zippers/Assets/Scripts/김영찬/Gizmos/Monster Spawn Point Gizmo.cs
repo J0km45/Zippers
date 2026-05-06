@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class MonsterSpawnPointGizmo : MonoBehaviour
 {
+    [SerializeField] bool isGizmoActive = true;
+    
     private void OnDrawGizmos()
     {
+        if(!isGizmoActive) return;
         Gizmos.matrix = transform.localToWorldMatrix;
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(Vector3.zero, new Vector3(1,2,1));
