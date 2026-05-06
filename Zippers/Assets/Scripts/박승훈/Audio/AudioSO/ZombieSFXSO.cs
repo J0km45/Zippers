@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ZombieSFXSO", menuName = "Zippers/SO/Audio/ZombieSFXSO", order = 2)]
+[CreateAssetMenu(fileName = "ZombieSFXSO", menuName = "Zippers/Audio/ZombieSFXSO", order = 2)]
 public class ZombieSFXSO : ZippersSO
 {
     [Header("좀비 SFX 목록")]

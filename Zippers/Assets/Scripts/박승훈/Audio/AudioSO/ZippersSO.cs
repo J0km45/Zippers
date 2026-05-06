@@ -4,12 +4,7 @@ using UnityEngine;
 public abstract class ZippersSO : ScriptableObject
 {
     public void OnEnable()
-    {
-        if (!Application.isPlaying)
-            return;
-        
-        DictionaryInit();
-    }
+        => DictionaryInit();
 
     protected abstract void DictionaryInit();
 }

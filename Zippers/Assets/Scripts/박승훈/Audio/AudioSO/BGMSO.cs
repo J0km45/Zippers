@@ -2,7 +2,7 @@ using Audio;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BGMSO", menuName = "Zippers/SO/Audio/BGMSO", order = 4)]
+[CreateAssetMenu(fileName = "BGMSO", menuName = "Zippers/Audio/BGMSO", order = 4)]
 public class BGMSO : ZippersSO
 {
     [Header("BGM 목록")]
