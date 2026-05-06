@@ -16,8 +16,8 @@ public class NodeDataContainer : MonoBehaviour
     
     int _postBattleNodeIndex;
 
-    private bool _isDictReady;
-    
+    public bool IsDictReady { get; private set; }
+
     private void Awake()
     {
         InitDict();
@@ -26,7 +26,7 @@ public class NodeDataContainer : MonoBehaviour
     
     private void InitDict()
     {
-        _isDictReady = false;
+        IsDictReady = false;
         
         _postBattleNodeIndex = -1;
     }
@@ -49,7 +49,7 @@ public class NodeDataContainer : MonoBehaviour
             _difficultyDict[data.Difficulty].Add(data);
         }
         
-        _isDictReady = true;
+        IsDictReady = true;
     }
 
     public void RegisterMap(MapController map)
@@ -112,7 +112,7 @@ public class NodeDataContainer : MonoBehaviour
     /// <returns>해당 타입에 대응하는 Event SO</returns>
     public EventContainerSO GetEventData(NodeEventType type)
     {
-        if (!_isDictReady)
+        if (!IsDictReady)
         {
             DebugTool.Error("Data Container Not Ready", DebugType.Node, this);
             return null;
