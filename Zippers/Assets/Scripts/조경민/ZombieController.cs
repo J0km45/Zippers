@@ -19,8 +19,14 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     [SerializeField] private float _groanSfxChance = 0.3f;
     [Tooltip("피격 시 경직 시간")]
     [SerializeField] private float _stunDuration = 0.2f;
-    [Tooltip("재화 프리팹")]
-    [SerializeField] private GameObject _rewardPrefab;
+
+    [Header("재화 프리팹")]
+    [Tooltip("개인 재화")]
+    [SerializeField] private GameObject _scrapPrefab;
+    [Tooltip("팀 재화")]
+    [SerializeField] private GameObject _suppliesPrefab;
+    [Tooltip("메타 재화")]
+    [SerializeField] private GameObject _infectionSamplePrefab;
 
     private StateMachine _stateMachine;
     private bool _isDead; // 죽음 상태 여부
@@ -56,6 +62,14 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     public float HandRadius => _stat.HandRadius;
     public float AttackRange => _stat.AttackRange;
     public float DetectRange => _stat.DetectionRange;
+    public int MinScrap => _stat.MinScrap;
+    public int MaxScrap => _stat.MaxScrap;
+    public float ScrapDropChance => _stat.ScrapDropChance;
+    public int MinSupplies => _stat.MinSupplies;
+    public int MaxSupplies => _stat.MaxSupplies;
+    public float SuppliesDropChance => _stat.SuppliesDropChance;
+    public int InfectionSample => _stat.InfectionSample;
+    public float SampleDropChance => _stat.SampleDropChance;
 
     private void Awake()
     {
@@ -100,7 +114,7 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
         // TODO : NGO 적용되면 서버에서 타이머 관리하도록 변경
         _timer += Time.deltaTime;
 
-        if(_timer >= _groanSfxInterval)
+        if (_timer >= _groanSfxInterval)
         {
             _timer = 0f;
             if (Random.value < _groanSfxChance)
@@ -171,11 +185,31 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     public void SpawnReward()
     {
         if (_hasSpawnedReward) return;
-        
+
         _hasSpawnedReward = true;
-        // TODO : 수정해야됨
-        //_sfx.PlayDropResourcesSfx(ResourcesType.Scrap);
-        //Instantiate(_rewardPrefab, transform.position, Quaternion.identity);
+
+        Sfx.PlayDropResourcesSfx(ResourcesType.Scrap);
+        TrySpawnReward(_scrapPrefab, ResourcesType.Scrap, ScrapDropChance, MinScrap, MaxScrap);
+        TrySpawnReward(_suppliesPrefab, ResourcesType.Supplies, SuppliesDropChance, MinSupplies, MaxSupplies);
+        TrySpawnReward(_infectionSamplePrefab, ResourcesType.InfectionSample, SampleDropChance, InfectionSample, InfectionSample);
+    }
+
+    private void TrySpawnReward(GameObject prefab, ResourcesType type, float dropChance, int minAmount, int maxAmount)
+    {
+        float randomChance = Random.Range(0f, 100f);
+        if (randomChance > dropChance) return;
+
+        int amount = Random.Range(minAmount, maxAmount + 1);
+
+        Vector2 randomPos = Random.insideUnitCircle;
+        Vector3 spawnPos = transform.position + new Vector3(randomPos.x, 0, randomPos.y);
+
+        GameObject obj = PoolManager.Instance.Get(prefab, spawnPos, Quaternion.identity);
+
+        if (obj.TryGetComponent(out Reward reward))
+        {
+            reward.Init(type, amount);
+        }
     }
 
     void OnDrawGizmos()
