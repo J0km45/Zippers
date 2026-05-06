@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerCombatNoneState : IState
 {
-    private readonly PlayerCombatStateMachine _combatStateMachine;
+    private PlayerCombatStateMachine _combatStateMachine;
 
     public PlayerCombatNoneState(PlayerCombatStateMachine combatStateMachine)
     {

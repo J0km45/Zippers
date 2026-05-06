@@ -47,11 +47,11 @@ public class WeaponSFXSO : ZippersSO
         _weaponSfxDict.Add(WeaponType.Melee, meleeClips);
         _weaponSfxDict.Add(WeaponType.Rifle, rifleClips);
         _weaponSfxDict.Add(WeaponType.Shotgun, ShotgunClips);
-        _weaponSfxDict.Add(WeaponType.Util, pistolClips);
+        _weaponSfxDict.Add(WeaponType.Pistol, pistolClips);    
 
         _reloadSfxDict.Clear();
         _reloadSfxDict.Add(WeaponType.Rifle, rifleReloadClip);
         _reloadSfxDict.Add(WeaponType.Shotgun, shotgunReloadClip);
-        _reloadSfxDict.Add(WeaponType.Util, pistolReloadClip);
+        _reloadSfxDict.Add(WeaponType.Pistol, pistolReloadClip);
     }
 }

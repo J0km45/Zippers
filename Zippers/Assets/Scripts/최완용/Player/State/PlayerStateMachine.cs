@@ -1,5 +1,5 @@
+using Audio;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -15,6 +15,12 @@ public class PlayerStateMachine : MonoBehaviour
     private PlayerHitState _hitState;
     private PlayerRetireState _retireState;
 
+    [Header("이동 사운드 인터벌")]
+    [SerializeField] private float _walkSfxInterval = 0.3f;
+    [SerializeField] private float _sprintSfxInterval = 0.25f;
+
+    private PlayerSfxController _sfxController;
+
     private PlayerStateType _playerStateType;
     private Vector2 _moveInput;
 
@@ -27,16 +33,17 @@ public class PlayerStateMachine : MonoBehaviour
     private void Awake()
     {
         _stateMachine = new StateMachine();
-        _combatStateMachine = new PlayerCombatStateMachine();
+        _combatStateMachine = GetComponent<PlayerCombatStateMachine>();
 
         _playerMovement = GetComponent<PlayerMovement>();
         _playerAnimation = GetComponent<PlayerAnimation>();
         _playerHealth = GetComponent<PlayerHealth>();
+        _sfxController = GetComponent<PlayerSfxController>();
 
         _idleState = new PlayerIdleState(this, _playerMovement, _playerAnimation);
-        _moveState = new PlayerMoveState(this, _playerMovement, _playerAnimation);
-        _hitState = new PlayerHitState(this, _playerMovement, _playerAnimation, 0.25f);
-        _retireState = new PlayerRetireState(this, _playerMovement, _playerAnimation, GetComponent<BoxCollider>());
+        _moveState = new PlayerMoveState(this, _playerMovement, _playerAnimation, _sfxController, _walkSfxInterval, _sprintSfxInterval);
+        _hitState = new PlayerHitState(this, _playerMovement, _playerAnimation, 0.25f, _sfxController);
+        _retireState = new PlayerRetireState(this, _playerMovement, _playerAnimation, GetComponent<BoxCollider>(),_sfxController);
     }
     private void OnEnable()
     {
@@ -70,6 +77,24 @@ public class PlayerStateMachine : MonoBehaviour
         {
             ChangeState(PlayerStateType.Idle);
         }
+    }
+    //추가
+    public void ReturnMoveOrIdleState()
+    {
+        if (IsRetired)
+        {
+            DebugTool.Log("리타이어 상태라 Move/Idle 복귀를 무시합니다.", DebugType.Character, this);
+            return;
+        }
+
+        if (_moveInput.sqrMagnitude > 0.01f)
+        {
+            ChangeState(PlayerStateType.Move);
+            return;
+        }
+
+        ChangeState(PlayerStateType.Idle);
+
     }
 
     public void ChangeState(PlayerStateType stateType)

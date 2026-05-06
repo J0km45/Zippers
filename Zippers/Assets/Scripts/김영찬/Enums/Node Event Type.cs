@@ -6,5 +6,6 @@ public enum NodeEventType
     NoEvent,
     MonsterSpawn,
     MonsterEnhance,
-    SupplyItem
+    SupplyItem,
+    VoteSetting
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,16 +17,75 @@ public class DataManager : MonoBehaviour
     [SerializeField] private List<ZombieStatSO> _zombieStatDataList;
     private Dictionary<int, ZombieStatSO> _zombieStatDataDictionary = new();
 
+    [Header("Wave Info")]
+    public SheetData _waveInfoSheet;
+    [SerializeField] private List<WaveInfoSO> _waveInfoDataList;
+    private Dictionary<int, WaveInfoSO> _waveInfoDataDictionary = new();
+
+    [Header("Wave Spawn Table")]
+    public SheetData _waveSpawnSheet;
+    [SerializeField] private WaveSpawnTableSO _waveSpawnTable;
+
+
+    private int _pendingSheetCount;
+
+
     private void Awake()
     {
         _classDataDictionary = InitDict(_classDataList);
         _zombieStatDataDictionary = InitDict(_zombieStatDataList);
+        _waveInfoDataDictionary = InitDict(_waveInfoDataList);
     }
 
     private void Start()
     {
-        LoadSheetData(_classSheet, _classDataList, _classDataDictionary);
-        LoadSheetData(_zombieStatSheet, _zombieStatDataList, _zombieStatDataDictionary);
+        if (LocalDataAccess.Instance == null)
+        {
+            DebugTool.Error(
+                "[DataManager] LocalDataAccess.Instance가 없음. 씬에 LocalDataAccess GameObject를 추가하세요.",
+                DebugType.Data, this);
+            return;
+        }
+
+        _pendingSheetCount = 4;
+
+        LoadSheetData(_classSheet, _classDataList, _classDataDictionary, onComplete: () =>
+        {
+            LocalDataAccess.Instance.Game.RegisterClasses(_classDataDictionary);
+            OnSheetCompleted();
+        });
+
+        LoadSheetData(_zombieStatSheet, _zombieStatDataList, _zombieStatDataDictionary, onComplete: () =>
+        {
+            LocalDataAccess.Instance.Game.RegisterZombieStats(_zombieStatDataDictionary);
+            OnSheetCompleted();
+        });
+
+        LoadSheetData(_waveInfoSheet, _waveInfoDataList, _waveInfoDataDictionary, onComplete: () =>
+        {
+            LocalDataAccess.Instance.Game.RegisterWaveInfos(_waveInfoDataDictionary);
+            OnSheetCompleted();
+        });
+
+        LoadWaveSpawnTable(_waveSpawnSheet, _waveSpawnTable, onComplete: () =>
+        {
+            LocalDataAccess.Instance.Game.RegisterWaveSpawnTable(_waveSpawnTable);
+            OnSheetCompleted();
+        });
+    }
+
+
+    private void OnSheetCompleted()
+    {
+        _pendingSheetCount--;
+        DebugTool.Log(
+            $"[DataManager] 시트 완료 카운터: 남음 {_pendingSheetCount}",
+            DebugType.Data, this);
+
+        if (_pendingSheetCount <= 0)
+        {
+            LocalDataAccess.Instance.Game.MarkReady();
+        }
     }
 
 
@@ -48,7 +108,8 @@ public class DataManager : MonoBehaviour
         SheetData sheet,
         List<T> list,
         Dictionary<int, T> dict,
-        int headerRowCount = 1
+        int headerRowCount = 1,
+        Action onComplete = null
     ) where T : ScriptableObject, ISheetParsable
     {
         StartCoroutine(sheet.Load((split, lines) =>
@@ -58,6 +119,7 @@ public class DataManager : MonoBehaviour
                 DebugTool.Error(
                     $"[{typeof(T).Name}] 시트 로드 실패 - lines가 null",
                     DebugType.Data, this);
+                onComplete?.Invoke();
                 return;
             }
 
@@ -79,12 +141,10 @@ public class DataManager : MonoBehaviour
                 T data;
                 if (dict.TryGetValue(id, out var existing))
                 {
-                    // 사전에 이미 있는 경우엔 기존 SO를 갱신
                     data = existing;
                 }
                 else
                 {
-                    // 사전에 없으면 임시 인스턴스 생성하여 추가
                     data = ScriptableObject.CreateInstance<T>();
                     data.name = $"{typeof(T).Name}_{id}";
                     dict.Add(id, data);
@@ -100,6 +160,39 @@ public class DataManager : MonoBehaviour
             DebugTool.Log(
                 $"[{typeof(T).Name}] 시트 로드 완료 (총 {dict.Count}건)",
                 DebugType.Data, this);
+            onComplete?.Invoke();
+        }));
+    }
+
+
+    private void LoadWaveSpawnTable(
+        SheetData sheet,
+        WaveSpawnTableSO table,
+        int headerRowCount = 1,
+        Action onComplete = null)
+    {
+        if (table == null)
+        {
+            DebugTool.Error(
+                "[DataManager] _waveSpawnTable이 인스펙터에 미할당",
+                DebugType.Data, this);
+            onComplete?.Invoke();
+            return;
+        }
+
+        StartCoroutine(sheet.Load((split, lines) =>
+        {
+            if (lines == null)
+            {
+                DebugTool.Error(
+                    "[DataManager] WaveSpawn 시트 로드 실패 - lines가 null",
+                    DebugType.Data, this);
+                onComplete?.Invoke();
+                return;
+            }
+
+            table.LoadFromSheet(split, lines, headerRowCount);
+            onComplete?.Invoke();
         }));
     }
 }

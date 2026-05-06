@@ -5,5 +5,5 @@ public enum WeaponType
    Melee,
    Rifle,
    Shotgun,
-   Util
+   Pistol
 }

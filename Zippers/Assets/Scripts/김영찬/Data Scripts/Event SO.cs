@@ -1,41 +1,22 @@
 using UnityEngine;
 
 /// <summary>
-/// 노드의 이벤트를 저장하기 위한 SO
+/// 노드에 플레이어가 진입 하면 발동되는 상황 개별 단위를 Event로 칭함<br/>
+/// Event는 상태 패턴으로 구현<br/>
+/// Event 상태 패턴 구현을 위한 추상클래스<br/>
+/// 확장 및 수정 용이를 위해 SO로 관리
 /// </summary>
-[CreateAssetMenu(fileName = "Event SO", menuName = "Node Data/Event SO")]
-public class EventSO : ScriptableObject
+// ToDO : 자식 클래스에 [CreateAssetMenu(fileName = "** Event SO", menuName = "Node Data/Event Data/** Event SO")] 삽입 할 것
+public abstract class EventSO : ScriptableObject
 {
-    /// <summary>
-    /// 이벤트 타입
-    /// </summary>
-    [field:SerializeField] public NodeEventType EventType { get; private set; }
-    
-    /// <summary>
-    /// 이벤트 인덱스<br/>
-    /// 이벤트 타입 별로 0부터 시작
-    /// </summary>
-    [field:SerializeField] public int EventIndex { get; private set; }
-    
-    /// <summary>
-    /// 연결된 이벤트 스크립트
-    /// </summary>
-    [field:SerializeField] public NodeEvent EventScript { get; private set; }
-    
-    /// <summary>
-    /// 이벤트 데이터 불러오기
-    /// </summary>
-    /// <param name="controller">제어 할 이벤트 컨트롤러</param>
-    /// <returns>Node Event 추상 클래스를 가지는 자식 클래스 반환</returns>
-    public NodeEvent GetEventScript(MapEventController controller)
+    protected MapEventController _controller;
+
+    public abstract void EventEnter();
+    public abstract void EventUpdate();
+    public abstract void EventExit();
+
+    public void SetController(MapEventController controller)
     {
-        if (EventScript == null)
-        {
-            DebugTool.Warning($"Not SerializeField EventScript : {EventType}_{EventIndex}", DebugType.Node, this);
-            return null;
-        }
-        NodeEvent temp = EventScript;
-        temp.SetController(controller);
-        return temp;
+        _controller = controller;
     }
 }
