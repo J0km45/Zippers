@@ -3,7 +3,7 @@ using UnityEngine.AI;
 using Unity.Netcode;
 using Audio;
 
-public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
+public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBehaviour
 {
     [SerializeField] private ZombieStatSO _stat;
 
@@ -29,8 +29,10 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     [SerializeField] private GameObject _infectionSamplePrefab;
 
     private StateMachine _stateMachine;
+    private ZombieCountManager _zombieCount;
     private bool _isDead; // 죽음 상태 여부
     private bool _hasSpawnedReward; // 보상 생성 여부
+    private bool _isCountRemoved; // 카운트 제거 여부
     private float _timer; // Groan Sfx 재생용 타이머
     private float _lastAttackTime = 0f; // 공격 쿨타임 관리용 시간
 
@@ -50,7 +52,7 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
 
     //public NetworkVariable<int> CurrentHp = new NetworkVariable<float>();
     public float CurrentHp; //임시(테스트용)
-    public Transform Player; //임시(테스트용)
+    public Transform Player;
 
     public ZombieType Type => _stat.ZombieType;
     public float MaxHp => _stat.MaxHealth;
@@ -62,6 +64,7 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     public float HandRadius => _stat.HandRadius;
     public float AttackRange => _stat.AttackRange;
     public float DetectRange => _stat.DetectionRange;
+
     public int MinScrap => _stat.MinScrap;
     public int MaxScrap => _stat.MaxScrap;
     public float ScrapDropChance => _stat.ScrapDropChance;
@@ -83,8 +86,6 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
         Animator = GetComponentInChildren<Animator>();
         Sfx = GetComponent<ZombieSfxController>();
         ZombieAttack = GetComponent<IZombieAttack>();
-        Agent.stoppingDistance = AttackRange;
-        CurrentHp = MaxHp; // 임시(테스트용)
     }
     // TODO : NGO 적용되면 수정
     //public override void OnNetworkSpawn()
@@ -95,9 +96,46 @@ public class ZombieController : MonoBehaviour, IDamagable//NetworkBehaviour
     //    }
     //}
 
-    private void Start()
+    public void Init(ZombieCountManager zombieCount)
     {
-        _stateMachine.ChangeState(Chase);
+        _zombieCount = zombieCount;
+        _zombieCount.AddCount();
+    }
+
+    public void OnSpawn()
+    {
+        ResetZombie();
+    }
+
+    private void ResetZombie()
+    {
+        _isDead = false;
+        _hasSpawnedReward = false;
+        _isCountRemoved = false;
+
+        CurrentHp = MaxHp;
+
+        _timer = 0f;
+        _lastAttackTime = 0f;
+
+        if (TryGetComponent(out Collider collider))
+        {
+            collider.enabled = true;
+        }
+
+        Agent.enabled = true;
+        Agent.isStopped = false;
+        Agent.stoppingDistance = AttackRange;
+
+        ChangeState(Chase);
+    }
+
+    public void OnDespawn()
+    {
+        if (_isCountRemoved) return;
+        
+        _isCountRemoved = true;
+        _zombieCount.RemoveCount();
     }
 
     private void Update()
