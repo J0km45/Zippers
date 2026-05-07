@@ -31,8 +31,7 @@ public class ZombieDieState : IState
         if (stateInfo.normalizedTime >= 1.0f)
         {
             _zombie.SpawnReward();
-            // TODO : 수정해야됨
-            //Object.Destroy(_zombie.gameObject);
+            PoolManager.Instance.Release(_zombie.gameObject);
         }
     }
 
