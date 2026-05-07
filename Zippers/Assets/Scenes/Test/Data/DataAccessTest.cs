@@ -12,13 +12,15 @@ public class DataAccessTest : MonoBehaviour
     ZombieStatSO stat;
     List<WaveInfoSO> infos;
     List<WaveSpawnEntry> spawns;
+    ClassUpgradeData upgrade;
 
     void Start()
     {
         cls = LocalDataAccess.Instance.Game.GetClass(10001);
         stat = LocalDataAccess.Instance.Game.GetZombieStat(20001);
-        infos = LocalDataAccess.Instance.Game.GetWaveInfo(0); 
+        infos = LocalDataAccess.Instance.Game.GetWaveInfo(0);
         spawns = LocalDataAccess.Instance.Game.GetWaveSpawns(30001);
+        upgrade = LocalDataAccess.Instance.Game.GetUpgrade("Melee");
     }
 
     public void CallPlayerClass()
@@ -77,6 +79,31 @@ public class DataAccessTest : MonoBehaviour
         Debug.Log($"웨이브 인덱스: 30002, 그룹 인덱스 1, GroupIndex = {spawns2[1].GroupIndex}");
         Debug.Log($"웨이브 인덱스: 30002, 그룹 인덱스 1, Count = {spawns2[1].Count}");
 
+    }
+
+    public void CallPlayerUpgrade()
+    {
+        // ─── 공통 stat 접근 (캐스팅 없이) ───
+        Debug.Log($"[Melee] 클래스 타입: {upgrade.ClassType}");
+        Debug.Log($"[Melee] MaxHealth: Id={upgrade.MaxHealth.Id}, Name={upgrade.MaxHealth.UpgradeName}, ValuePerLevel={upgrade.MaxHealth.ValuePerLevel}, IsEnabled={upgrade.MaxHealth.IsEnabled}");
+        Debug.Log($"[Melee] Damage: ValuePerLevel={upgrade.Damage.ValuePerLevel}, BaseCost={upgrade.Damage.BaseCost}");
+        Debug.Log($"[Melee] AttackSpeed: ValuePerLevel={upgrade.AttackSpeed.ValuePerLevel}, MaxLevel={upgrade.AttackSpeed.MaxLevel}");
+
+        // ─── Melee 전용 stat 접근 (캐스팅 후) ───
+        var melee = (MeleeUpgradeData)upgrade;
+        Debug.Log($"[Melee] DamageReduction: ValuePerLevel={melee.DamageReduction.ValuePerLevel}, IsEnabled={melee.DamageReduction.IsEnabled}");
+        Debug.Log($"[Melee] SprintSpeed: ValuePerLevel={melee.SprintSpeed.ValuePerLevel}");
+
+        // ─── 다른 클래스 (Rifle) 즉시 조회 + 캐스팅 ───
+        var rifle = (RifleUpgradeData)LocalDataAccess.Instance.Game.GetUpgrade("Rifle");
+        Debug.Log($"[Rifle] Damage: ValuePerLevel={rifle.Damage.ValuePerLevel}");
+        Debug.Log($"[Rifle] MagazineCapacity: ValuePerLevel={rifle.MagazineCapacity.ValuePerLevel}");
+        Debug.Log($"[Rifle] PierceCount: ValuePerLevel={rifle.PierceCount.ValuePerLevel}, IsEnabled={rifle.PierceCount.IsEnabled}");
+
+        // ─── WeaponType enum 오버로드 ───
+        var pistol = (PistolUpgradeData)LocalDataAccess.Instance.Game.GetUpgrade(WeaponType.Pistol);
+        Debug.Log($"[Pistol] SightRange: ValuePerLevel={pistol.SightRange.ValuePerLevel}");
+        Debug.Log($"[Pistol] CollectRange: ValuePerLevel={pistol.CollectRange.ValuePerLevel}");
     }
 
 

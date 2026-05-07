@@ -10,6 +10,7 @@ public class GameDataModule
     private Dictionary<int, ZombieStatSO>      _zombieStats;
     private WaveInfoTableSO                    _waveInfoTable;
     private WaveSpawnTableSO                   _waveSpawnTable;
+    private PlayerUpgradeTableSO               _playerUpgradeTable;
 
     // ─── 상태 ────────────────────────────────────────────────
     public bool IsReady { get; private set; }
@@ -53,6 +54,14 @@ public class GameDataModule
         _waveSpawnTable = table;
         DebugTool.Log(
             $"[GameDataModule] WaveSpawnTable 등록 (그룹 {table?.GroupCount ?? 0}개)",
+            DebugType.Data);
+    }
+
+    public void RegisterPlayerUpgradeTable(PlayerUpgradeTableSO table)
+    {
+        _playerUpgradeTable = table;
+        DebugTool.Log(
+            $"[GameDataModule] PlayerUpgradeTable 등록 (그룹 {table?.GroupCount ?? 0}개)",
             DebugType.Data);
     }
 
@@ -121,6 +130,33 @@ public class GameDataModule
             return new List<WaveSpawnEntry>();
         }
         return _waveSpawnTable.GetEntries(waveId);
+    }
+
+    /// <summary>
+    /// ClassType 문자열로 업그레이드 데이터 조회. 대소문자 무관.
+    /// 사용 예: GetUpgrade("Melee").MaxHealth.ValuePerLevel
+    /// </summary>
+    public ClassUpgradeData GetUpgrade(string classType)
+    {
+        if (!CheckReady(nameof(GetUpgrade), 0)) return null;
+        if (_playerUpgradeTable == null)
+        {
+            DebugTool.Warning("[GameDataModule] PlayerUpgradeTable 미등록", DebugType.Data);
+            return null;
+        }
+        return _playerUpgradeTable.GetUpgrade(classType);
+    }
+
+    /// <summary>WeaponType enum으로 업그레이드 데이터 조회.</summary>
+    public ClassUpgradeData GetUpgrade(WeaponType classType)
+    {
+        if (!CheckReady(nameof(GetUpgrade), (int)classType)) return null;
+        if (_playerUpgradeTable == null)
+        {
+            DebugTool.Warning("[GameDataModule] PlayerUpgradeTable 미등록", DebugType.Data);
+            return null;
+        }
+        return _playerUpgradeTable.GetUpgrade(classType);
     }
 
     // ─── 전체 ID 순회 ────────────────────────────────────
