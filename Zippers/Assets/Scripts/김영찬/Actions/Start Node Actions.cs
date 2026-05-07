@@ -18,7 +18,7 @@ public class StartNodeReadyAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.PlayerCheck,0);
     }
 
     public void RunningState()
@@ -50,7 +50,7 @@ public class StartNodeBattleAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.Data.SetNodeState(NodeState.Clear);
     }
 
     public void RunningState()

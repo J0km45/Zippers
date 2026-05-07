@@ -24,6 +24,7 @@ public class TeleportSupporter : MonoBehaviour
     int _voteRight;
     
     private event Action OnVoteChange;
+    public event Action<NodeStartDir> OnTeleportStart; 
 
     private void Awake()
     {
@@ -134,32 +135,30 @@ public class TeleportSupporter : MonoBehaviour
         
         if (_voteUp > minVoteWin)
         {
-            //Teleport(NodeStartDir.Up);
             DebugTool.Log($"{_controller.gameObject.name} Teleport To Upper Map", DebugType.Node, this);
+            OnTeleportStart?.Invoke(NodeStartDir.Up);
             return;
         }
         
         if (_voteRight > minVoteWin)
         {
-            //Teleport(NodeStartDir.Right);
             DebugTool.Log($"{_controller.gameObject.name} Teleport To Right Map", DebugType.Node, this);
+            OnTeleportStart?.Invoke(NodeStartDir.Right);
             return;
         }
         
         if (_voteLeft > minVoteWin)
         {
-            //Teleport(NodeStartDir.Left);
             DebugTool.Log($"{_controller.gameObject.name} Teleport To Left Map", DebugType.Node, this);
+            OnTeleportStart?.Invoke(NodeStartDir.Left);
             return;
         }
         
         if (_voteDown > minVoteWin)
         {
-            //Teleport(NodeStartDir.Down);
             DebugTool.Log($"{_controller.gameObject.name} Teleport To Lower Map", DebugType.Node, this);
+            OnTeleportStart?.Invoke(NodeStartDir.Down);
             return;
         }
-        
-        
     }
 }

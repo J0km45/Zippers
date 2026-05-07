@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 063d7dd98ccdeae48bf49d90eb5059a3, type: 3}
-  m_Name: Vote Setting Event Container SO
+  m_Script: {fileID: 11500000, guid: 26bc8cb536a9be34882394c6700c7469, type: 3}
+  m_Name: Player Check Event Container SO
   m_EditorClassIdentifier: Assembly-CSharp::EventContainerSO
-  _eventType: 2
+  _eventType: 3
   _eventData:
-  - {fileID: 11400000, guid: e7bfac9c22abe324ead2a3c1db94823b, type: 2}
+  - {fileID: 11400000, guid: e5116e2c3b832e445acaec434923ac88, type: 2}

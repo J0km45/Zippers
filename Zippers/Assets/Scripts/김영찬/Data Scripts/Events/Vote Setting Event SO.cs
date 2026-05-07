@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 /// <summary>
@@ -9,11 +8,8 @@ public class VoteSettingEventSO : EventSO
 {
     private MapRow _nextMapRow;
     
-    public event Action OnVoteSettingComplete;
-    
     public override void EventEnter()
     { 
-        OnVoteSettingComplete += _controller.SetDefaultEvent;
         VoteSetting();
     }
 
@@ -24,7 +20,7 @@ public class VoteSettingEventSO : EventSO
 
     public override void EventExit()
     {
-        OnVoteSettingComplete -= _controller.SetDefaultEvent;
+        
     }
     
     private void VoteSetting()
@@ -41,6 +37,6 @@ public class VoteSettingEventSO : EventSO
         _controller.Controller.TeleportSupporter.EnableBeaconAvailable();
         
         DebugTool.Log($"{_controller.Controller.gameObject.name}Vote Setting Complete",DebugType.Node, this);
-        OnVoteSettingComplete?.Invoke();
+        _controller.SetDefaultEvent();
     }
 }

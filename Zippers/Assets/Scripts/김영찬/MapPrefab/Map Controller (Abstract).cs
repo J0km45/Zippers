@@ -114,6 +114,7 @@ public abstract class MapController : MonoBehaviour
     {
         Data.OnChangeState += ActionController.ChangeState;
         EventController.Machine.OnEventChangeSendPostEvent += DestroyEventData;
+        TeleportSupporter.OnTeleportStart += TeleportNextMap;
         TeleportSupporter.EnableEvent();
     }
 
@@ -121,6 +122,7 @@ public abstract class MapController : MonoBehaviour
     {
         Data.OnChangeState -= ActionController.ChangeState;
         EventController.Machine.OnEventChangeSendPostEvent -= DestroyEventData;
+        TeleportSupporter.OnTeleportStart -= TeleportNextMap;
     }
 
     private void DestroyEventData(EventSO postEvent)
@@ -140,5 +142,43 @@ public abstract class MapController : MonoBehaviour
             yield return _wait;
         }
         EventEnable();
+    }
+
+    private void TeleportNextMap(NodeStartDir dir)
+    {
+        Transform[] nextMapStartPos = null;
+        MapData nextMapData = null;
+        
+        switch (dir)
+        {
+            case NodeStartDir.Up:
+                nextMapStartPos = Data.PlayerSpawnPoint_Up;
+                nextMapData = Data.NextMap_Up.GetComponent<MapData>();
+                break;
+            case NodeStartDir.Down:
+                nextMapStartPos = Data.PlayerSpawnPoint_Down;
+                nextMapData = Data.NextMap_Down.GetComponent<MapData>();
+                break;
+            case NodeStartDir.Left:
+                nextMapStartPos = Data.PlayerSpawnPoint_Left;
+                nextMapData = Data.NextMap_Left.GetComponent<MapData>();
+                break;
+            case NodeStartDir.Right:
+                nextMapStartPos = Data.PlayerSpawnPoint_Right;
+                nextMapData = Data.NextMap_Right.GetComponent<MapData>();
+                break;
+        }
+
+        if (nextMapData == null || nextMapStartPos == null)
+        {
+            DebugTool.Warning($"{gameObject.name} Wrong Position Teleport : {dir}", DebugType.Node, this);
+            return;
+        }
+        
+        // ToDo : 플레이어 텔레포트 구현 (NetworkTransform 컴포넌트 삽입되어야 함)
+        
+        nextMapData.SetNodeStartDir(dir);
+        
+        DebugTool.Log($"{gameObject.name} Teleport Complete. Next Map : {nextMapData.gameObject.name}", DebugType.Node, nextMapData);
     }
 }
