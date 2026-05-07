@@ -121,6 +121,7 @@ public class QuarterViewCamera : MonoBehaviour
         return aimDirection.normalized * _aimCameraOffset;
     }
 
+    //장애물 감지
     private void DetectObstacles()
     {
         CachePreviousDetectedTargets();
