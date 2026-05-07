@@ -21,13 +21,4 @@ public class TeleportBallotBox : MonoBehaviour
         _votePlayer--;
         OnVoteChange?.Invoke(_votePlayer);
     }
-    
-    private void OnDrawGizmos()
-    {
-        if(_collider == null) return;
-        Gizmos.matrix = transform.localToWorldMatrix;
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(_collider.center, _collider.size);
-    }
-    
 }
