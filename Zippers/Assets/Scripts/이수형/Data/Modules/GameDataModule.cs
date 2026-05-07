@@ -8,7 +8,7 @@ public class GameDataModule
 
     private Dictionary<int, PlayerClassDataSO> _classes;
     private Dictionary<int, ZombieStatSO>      _zombieStats;
-    private Dictionary<int, WaveInfoSO>        _waveInfos;
+    private WaveInfoTableSO                    _waveInfoTable;
     private WaveSpawnTableSO                   _waveSpawnTable;
 
     // ─── 상태 ────────────────────────────────────────────────
@@ -40,10 +40,12 @@ public class GameDataModule
         DebugTool.Log($"[GameDataModule] ZombieStats 등록 ({dict?.Count ?? 0}건)", DebugType.Data);
     }
 
-    public void RegisterWaveInfos(Dictionary<int, WaveInfoSO> dict)
+    public void RegisterWaveInfoTable(WaveInfoTableSO table)
     {
-        _waveInfos = dict;
-        DebugTool.Log($"[GameDataModule] WaveInfos 등록 ({dict?.Count ?? 0}건)", DebugType.Data);
+        _waveInfoTable = table;
+        DebugTool.Log(
+            $"[GameDataModule] WaveInfoTable 등록 (그룹 {table?.GroupCount ?? 0}개)",
+            DebugType.Data);
     }
 
     public void RegisterWaveSpawnTable(WaveSpawnTableSO table)
@@ -90,17 +92,26 @@ public class GameDataModule
         return data;
     }
 
-    public WaveInfoSO GetWaveInfo(int waveId)
+    /// <summary>
+    /// 지정한 BattleNodeIndex의 모든 WaveInfoSO를 WaveIndex 오름차순으로 반환.
+    /// 없으면 빈 리스트(웨이브 0개도 정상 케이스).
+    /// 테이블 자체가 미등록 상태일 때만 Warning.
+    /// </summary>
+    public List<WaveInfoSO> GetWaveInfo(int battleNodeIndex)
     {
-        if (!CheckReady(nameof(GetWaveInfo), waveId)) return null;
-        if (_waveInfos == null || !_waveInfos.TryGetValue(waveId, out var data))
+        if (!CheckReady(nameof(GetWaveInfo), battleNodeIndex)) return new List<WaveInfoSO>();
+        if (_waveInfoTable == null)
         {
-            DebugTool.Warning($"[GameDataModule] WaveId {waveId} 없음 (Info)", DebugType.Data);
-            return null;
+            DebugTool.Warning("[GameDataModule] WaveInfoTable 미등록", DebugType.Data);
+            return new List<WaveInfoSO>();
         }
-        return data;
+        return _waveInfoTable.GetEntries(battleNodeIndex);
     }
 
+    /// <summary>
+    /// WaveId의 스폰 엔트리들을 반환. 없으면 빈 리스트(스폰 0개도 정상 케이스).
+    /// 테이블 자체가 미등록 상태일 때만 Warning.
+    /// </summary>
     public List<WaveSpawnEntry> GetWaveSpawns(int waveId)
     {
         if (!CheckReady(nameof(GetWaveSpawns), waveId)) return new List<WaveSpawnEntry>();
@@ -112,23 +123,6 @@ public class GameDataModule
         return _waveSpawnTable.GetEntries(waveId);
     }
 
-    // ─── 외래키 조인 ──────────────────────────────────
-
-    public WaveBundle GetWave(int waveId)
-    {
-        if (!CheckReady(nameof(GetWave), waveId)) return null;
-        var info = GetWaveInfoSilent(waveId);
-        if (info == null)
-        {
-            DebugTool.Warning($"[GameDataModule] WaveId {waveId} 없음 (GetWave)", DebugType.Data);
-            return null;
-        }
-        var spawns = _waveSpawnTable != null
-            ? _waveSpawnTable.GetEntries(waveId)
-            : new List<WaveSpawnEntry>();
-        return new WaveBundle(info, spawns);
-    }
-
     // ─── 전체 ID 순회 ────────────────────────────────────
     public IEnumerable<int> GetAllClassIds()
         => _classes?.Keys ?? Enumerable.Empty<int>();
@@ -136,8 +130,8 @@ public class GameDataModule
     public IEnumerable<int> GetAllZombieIds()
         => _zombieStats?.Keys ?? Enumerable.Empty<int>();
 
-    public IEnumerable<int> GetAllWaveIds()
-        => _waveInfos?.Keys ?? Enumerable.Empty<int>();
+    public IEnumerable<int> GetAllBattleNodeIndices()
+        => _waveInfoTable?.BattleNodeIndices ?? Enumerable.Empty<int>();
 
 
     private bool CheckReady(string methodName, int id)
@@ -147,11 +141,5 @@ public class GameDataModule
             $"[GameDataModule] 미준비 상태에서 {methodName}({id}) 호출",
             DebugType.Data);
         return false;
-    }
-
-
-    private WaveInfoSO GetWaveInfoSilent(int waveId)
-    {
-        return _waveInfos != null && _waveInfos.TryGetValue(waveId, out var data) ? data : null;
     }
 }

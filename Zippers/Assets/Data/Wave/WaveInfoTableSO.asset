@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d4060557c5c4347a72bd624f9ca3b9, type: 3}
+  m_Name: WaveInfoTableSO
+  m_EditorClassIdentifier: Assembly-CSharp::WaveInfoTableSO
+  _groups:
+  - BattleNodeIndex: 0
+    Entries:
+    - {fileID: 11400000, guid: d30bbe20981d2fc46a38819f0a439544, type: 2}
+    - {fileID: 11400000, guid: c80e3f46be9036f449167a3adfb7cedd, type: 2}
+  - BattleNodeIndex: 1
+    Entries:
+    - {fileID: 11400000, guid: 7634a2f37373dda448c0b50c4b249c9a, type: 2}
+    - {fileID: 11400000, guid: 75260e8c85fe5a84e865da34e524475d, type: 2}
+  - BattleNodeIndex: 2
+    Entries:
+    - {fileID: 11400000, guid: f82b024765294414f8f526c0df4e0d9e, type: 2}
+    - {fileID: 11400000, guid: d49784bd07dc56440b0058e5c0f03029, type: 2}
+    - {fileID: 11400000, guid: 58d2a3ce1f14da54982fdb03a54c6791, type: 2}
+  - BattleNodeIndex: 3
+    Entries:
+    - {fileID: 11400000, guid: b9eb1a75eeb62b342a8907102a60d9ea, type: 2}
+    - {fileID: 11400000, guid: aec73e5d6fb09c947805e49dcf781c33, type: 2}
+    - {fileID: 11400000, guid: 955f23f5937fbd449bc232c278e3ed1e, type: 2}
+  - BattleNodeIndex: 4
+    Entries:
+    - {fileID: 11400000, guid: 0228b40877dcf96409e2a8e8cb145ce5, type: 2}
+    - {fileID: 11400000, guid: a9c3bdbe2e24e0c48aa87aa63967e344, type: 2}
+    - {fileID: 11400000, guid: 7361e310b46f3d846bc4ab5a57642260, type: 2}
+  - BattleNodeIndex: 5
+    Entries:
+    - {fileID: 11400000, guid: 6f1a65a1b2017d84f86cdaaccede520c, type: 2}
+    - {fileID: 11400000, guid: 5c2275e76a4ab7e42bc29c0ee69cad63, type: 2}
+    - {fileID: 11400000, guid: eab785ecce5e8a343a3cc07047b4db18, type: 2}

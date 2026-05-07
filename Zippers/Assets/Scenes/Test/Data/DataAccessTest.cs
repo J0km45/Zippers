@@ -10,14 +10,14 @@ public class DataAccessTest : MonoBehaviour
     //List<WaveSpawnEntry> spawns = LocalDataAccess.Instance.Game.GetWaveSpawns(30001); <-- X
     PlayerClassDataSO cls;
     ZombieStatSO stat;
-    WaveInfoSO info;
+    List<WaveInfoSO> infos;
     List<WaveSpawnEntry> spawns;
 
     void Start()
     {
         cls = LocalDataAccess.Instance.Game.GetClass(10001);
         stat = LocalDataAccess.Instance.Game.GetZombieStat(20001);
-        info = LocalDataAccess.Instance.Game.GetWaveInfo(30001);
+        infos = LocalDataAccess.Instance.Game.GetWaveInfo(0); 
         spawns = LocalDataAccess.Instance.Game.GetWaveSpawns(30001);
     }
 
@@ -44,11 +44,13 @@ public class DataAccessTest : MonoBehaviour
 
     public void CallWaveInfo()
     {
-        Debug.Log(info.WaveId);
-        Debug.Log(info.BattleNodeIndex);
-        WaveInfoSO info2 = LocalDataAccess.Instance.Game.GetWaveInfo(30005);
-        Debug.Log(info2.WaveId);
-        Debug.Log(info2.BattleNodeIndex);
+        Debug.Log($"BattleNode 0, WaveIndex 0: NextWaveDelay = {infos[0].NextWaveDelay}");
+        Debug.Log($"BattleNode 0, WaveIndex 1: NextWaveDelay = {infos[1].NextWaveDelay}");
+
+        List<WaveInfoSO> infos2 = LocalDataAccess.Instance.Game.GetWaveInfo(2);    // BattleNodeIndex 2
+        Debug.Log($"BattleNode 2, WaveIndex 0: WaveId = {infos2[0].WaveId}");
+        Debug.Log($"BattleNode 2, WaveIndex 1: WaveId = {infos2[1].WaveId}");
+        Debug.Log($"BattleNode 2, WaveIndex 2: WaveId = {infos2[2].WaveId}");
     }
 
     public void CallWaveSpawn()

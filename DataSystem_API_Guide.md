@@ -8,7 +8,7 @@
 
 게임플레이 씬에선 그냥 호출하면 됨. 대기 코드 필요 없음:
 ```csharp
-var wave = LocalDataAccess.Instance.Game.GetWave(30001);
+var waves = LocalDataAccess.Instance.Game.GetWaveInfo(battleNodeIndex: 0);
 ```
 
 ---
@@ -39,7 +39,7 @@ var wave = LocalDataAccess.Instance.Game.GetWave(30001);
 | GameObject | 컴포넌트 | 인스펙터 할당 |
 |---|---|---|
 | `LocalDataAccess` | `LocalDataAccess` | (없음) |
-| `DataManager` | `DataManager` | 시트 URL들 + 데이터 SO 리스트 + `WaveSpawnTable.asset` |
+| `DataManager` | `DataManager` | 시트 URL들 + 데이터 SO 리스트 + `WaveInfoTable.asset` + `WaveSpawnTable.asset` |
 
 `LocalDataAccess`는 자동으로 `DontDestroyOnLoad`. 이후 모든 씬에서 살아있음.
 
@@ -51,45 +51,44 @@ var wave = LocalDataAccess.Instance.Game.GetWave(30001);
 
 ## 2. 데이터 종류 & API
 
-### Player Class
+### Player Class (단일 조회)
 ```csharp
 PlayerClassDataSO cls = LocalDataAccess.Instance.Game.GetClass(10001);
-Debug.Log(cls.MaxHealth);
 Debug.Log(cls.WeaponType);
+Debug.Log(cls.MaxHealth);
 ```
 
-### Zombie Stat
+### Zombie Stat (단일 조회)
 ```csharp
 ZombieStatSO stat = LocalDataAccess.Instance.Game.GetZombieStat(20001);
 Debug.Log(stat.MaxHp);
 Debug.Log(stat.MoveSpeed);
 ```
 
-### Wave Info
+### Wave Info (BattleNodeIndex로 조회 → 리스트)
 ```csharp
-WaveInfoSO info = LocalDataAccess.Instance.Game.GetWaveInfo(30001);
-Debug.Log(info.TimeLimit);
-Debug.Log(info.SpawnGroupCount);
+List<WaveInfoSO> waves = LocalDataAccess.Instance.Game.GetWaveInfo(battleNodeIndex: 0);
+// waves[0] = WaveIndex 0의 WaveInfoSO
+// waves[1] = WaveIndex 1의 WaveInfoSO
+// waves[2] = WaveIndex 2의 WaveInfoSO ...
+// WaveIndex 오름차순 정렬됨
+
+foreach (WaveInfoSO wave in waves)
+{
+    Debug.Log($"WaveId={wave.WaveId}, WaveIndex={wave.WaveIndex}, TimeLimit={wave.TimeLimit}");
+}
 ```
 
-### Wave Spawn 리스트
+> ⚠️ **주의**: 입력은 `BattleNodeIndex` (0, 1, 2 ...). WaveId(30001 등)가 아님. 반환은 단일 SO가 아닌 **리스트**.
+
+### Wave Spawn (WaveId로 조회 → 리스트)
 ```csharp
 List<WaveSpawnEntry> spawns = LocalDataAccess.Instance.Game.GetWaveSpawns(30001);
 // GroupIndex 0, 1, 2 ... 순으로 정렬됨
-```
 
-### Wave 통합 조회 ★ 추천
-```csharp
-WaveBundle wave = LocalDataAccess.Instance.Game.GetWave(30001);
-// wave.Info: WaveInfoSO
-// wave.SpawnEntries: GroupIndex 순 정렬된 List<WaveSpawnEntry>
-
-float timeLimit = wave.Info.TimeLimit;
-
-foreach (WaveSpawnEntry spawn in wave.SpawnEntries)
+foreach (WaveSpawnEntry spawn in spawns)
 {
-    // spawn.SpawnId, spawn.GroupIndex, spawn.ZombieId, spawn.Count,
-    // spawn.StartDelay, spawn.Interval, spawn.BatchCount, spawn.SpawnRadius
+    Debug.Log($"SpawnId={spawn.SpawnId}, ZombieId={spawn.ZombieId}, Count={spawn.Count}");
 }
 ```
 
@@ -97,32 +96,41 @@ foreach (WaveSpawnEntry spawn in wave.SpawnEntries)
 ```csharp
 foreach (int id in LocalDataAccess.Instance.Game.GetAllClassIds()) { ... }
 foreach (int id in LocalDataAccess.Instance.Game.GetAllZombieIds()) { ... }
-foreach (int id in LocalDataAccess.Instance.Game.GetAllWaveIds()) { ... }
+foreach (int idx in LocalDataAccess.Instance.Game.GetAllBattleNodeIndices()) { ... }
 ```
 
 ---
 
 ## 3. 게임플레이 스크립트 사용 예시
 
-### 가장 일반적인 사용 (Awake/Start에서 그냥 호출)
+### 배틀 노드의 모든 웨이브 진행
 ```csharp
-public class WaveSpawner : MonoBehaviour
+public class BattleNodeRunner : MonoBehaviour
 {
-    private void Start()
-    {
-        var wave = LocalDataAccess.Instance.Game.GetWave(30001);
-        if (wave == null) return;
+    [SerializeField] private int _battleNodeIndex = 0;
 
-        StartCoroutine(RunWave(wave));
+    private IEnumerator Start()
+    {
+        var waves = LocalDataAccess.Instance.Game.GetWaveInfo(_battleNodeIndex);
+        if (waves.Count == 0) yield break;
+
+        foreach (var wave in waves)
+        {
+            yield return new WaitForSeconds(wave.StartDelay);
+            yield return StartCoroutine(RunWave(wave));
+            yield return new WaitForSeconds(wave.NextWaveDelay);
+        }
     }
 
-    private IEnumerator RunWave(WaveBundle wave)
+    private IEnumerator RunWave(WaveInfoSO wave)
     {
-        foreach (var spawn in wave.SpawnEntries)
+        var spawns = LocalDataAccess.Instance.Game.GetWaveSpawns(wave.WaveId);
+        foreach (var spawn in spawns)
         {
             yield return new WaitForSeconds(spawn.StartDelay);
             SpawnZombies(spawn.ZombieId, spawn.Count, spawn.BatchCount, spawn.Interval);
         }
+        yield return new WaitForSeconds(wave.TimeLimit);
     }
 }
 ```
@@ -139,13 +147,12 @@ private void SpawnZombie(int zombieId)
 }
 ```
 
-### 특정 배틀 노드 웨이브들만 필터링
+### 모든 배틀 노드 순회
 ```csharp
-foreach (int waveId in LocalDataAccess.Instance.Game.GetAllWaveIds())
+foreach (int nodeIdx in LocalDataAccess.Instance.Game.GetAllBattleNodeIndices())
 {
-    var wave = LocalDataAccess.Instance.Game.GetWave(waveId);
-    if (wave.Info.BattleNodeIndex != currentNode) continue;
-    // ...
+    var waves = LocalDataAccess.Instance.Game.GetWaveInfo(nodeIdx);
+    Debug.Log($"BattleNode {nodeIdx}: 웨이브 {waves.Count}개");
 }
 ```
 
@@ -156,7 +163,6 @@ foreach (int waveId in LocalDataAccess.Instance.Game.GetAllWaveIds())
 Title 씬에선 시트 로드 완료 시점을 알아야 "Play 버튼 활성화" 또는 "자동 씬 전환"이 가능. 이때만 OnReady 사용:
 
 ```csharp
-// TitleSceneController
 public class TitleSceneController : MonoBehaviour
 {
     [SerializeField] private Button _playButton;
@@ -190,31 +196,38 @@ public class TitleSceneController : MonoBehaviour
 
 | 상황 | 반환 |
 |---|---|
-| 정상 조회 | 해당 데이터 |
-| 잘못된 ID | `null` 또는 빈 리스트 + Warning 로그 |
-| 미준비 상태 호출 (Title 씬에서 일찍 호출 시) | `null` 또는 빈 리스트 + Warning 로그 |
-| `GetWave` Info 없음 | `null` |
-| `GetWave` Spawn 없음 | Bundle 반환 (SpawnEntries는 빈 리스트) |
-| `GetWaveSpawns` 스폰 0개 (정상 케이스) | 빈 리스트 (Warning 없음) |
+| 정상 조회 (단일) | 해당 데이터 |
+| 정상 조회 (리스트) | 정렬된 리스트 |
+| 잘못된 ID (단일) | `null` + Warning 로그 |
+| 잘못된 ID (리스트) | 빈 리스트 (Warning 없음 — 0개도 정상) |
+| 미준비 상태 호출 (Title 씬에서 일찍) | `null` 또는 빈 리스트 + Warning |
+| 테이블 미등록 (`_waveInfoTable` / `_waveSpawnTable` 미할당) | 빈 리스트 + Warning |
 
-→ **방어적 코드 권장**. null 체크 안 하면 NullReferenceException 가능.
+→ **단일 조회는 null 체크, 리스트 조회는 Count 체크 권장**.
 
 ---
 
 ## 6. FAQ
 
+### Q. Wave 조회 시 BattleNodeIndex와 WaveId, 어느 걸 어디서 써?
+- `GetWaveInfo(battleNodeIndex)` → **BattleNodeIndex** 사용. 그 노드의 모든 웨이브 정보 리스트
+- `GetWaveSpawns(waveId)` → **WaveId** 사용. 그 웨이브의 스폰 명단
+- 보통 흐름: BattleNodeIndex로 웨이브 리스트 → 각 wave.WaveId로 스폰 조회
+
 ### Q. ID는 어디서 확인?
 구글 스프레드시트 첫 컬럼:
 - 클래스: 10001~
 - 좀비: 20001~
-- 웨이브: 30001~
-- 스폰: 31001~
+- 웨이브: 30001~ (WaveId)
+- 스폰: 31001~ (SpawnId)
+- BattleNodeIndex: 0, 1, 2 ... (별도 컬럼)
+- WaveIndex: 0, 1, 2 ... (별도 컬럼, 배틀 노드 안에서의 순서)
 
 ### Q. 시트 변경 후 게임 재시작 안 하고 반영?
 현재는 게임 시작 시 1회 로드. 핫리로드 필요하면 별도 요청.
 
 ### Q. 게임플레이 씬에서 LocalDataAccess가 없어요!
-Title 씬을 빌드 인덱스 **0번**으로 두고 거기서 시작해야 함. 직접 게임플레이 씬을 첫 씬으로 Play하면 LocalDataAccess가 안 만들어짐. 빌드/Play 시 항상 Title 씬부터 시작.
+Title 씬을 빌드 인덱스 **0번**으로 두고 거기서 시작해야 함. 직접 게임플레이 씬을 첫 씬으로 Play하면 LocalDataAccess가 안 만들어짐.
 
 ### Q. DataManager는 게임플레이 씬에 둬야 해?
 **아니. Title 씬에만**. 게임플레이 씬에선 LocalDataAccess만 알면 됨 (DontDestroyOnLoad로 자동 보존).
@@ -233,8 +246,9 @@ Title 씬을 빌드 인덱스 **0번**으로 두고 거기서 시작해야 함. 
 
 주요 로그:
 - `[GameDataModule] 모든 데이터 준비 완료 (IsReady = true)` — 데이터 사용 가능 시점
+- `[WaveInfoTableSO] Build 완료 (그룹 N개)` — Wave Info 그룹핑 완료
 - `[WaveSpawnTableSO] 시트 로드 완료 (그룹 N개)` — 스폰 테이블 로드 완료
-- `[GameDataModule] WaveId XXX 없음` — 잘못된 ID 조회
+- `[GameDataModule] WaveInfoTable 미등록` — `_waveInfoTable` 인스펙터 미할당
 - `미준비 상태에서 GetXxx 호출` — Title 씬에서 너무 일찍 호출 (게임플레이 씬에선 안 떠야 정상)
 
 ---

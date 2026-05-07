@@ -21,6 +21,7 @@ public class DataManager : MonoBehaviour
     public SheetData _waveInfoSheet;
     [SerializeField] private List<WaveInfoSO> _waveInfoDataList;
     private Dictionary<int, WaveInfoSO> _waveInfoDataDictionary = new();
+    [SerializeField] private WaveInfoTableSO _waveInfoTable;
 
     [Header("Wave Spawn Table")]
     public SheetData _waveSpawnSheet;
@@ -63,7 +64,17 @@ public class DataManager : MonoBehaviour
 
         LoadSheetData(_waveInfoSheet, _waveInfoDataList, _waveInfoDataDictionary, onComplete: () =>
         {
-            LocalDataAccess.Instance.Game.RegisterWaveInfos(_waveInfoDataDictionary);
+            if (_waveInfoTable != null)
+            {
+                _waveInfoTable.Build(_waveInfoDataList);
+                LocalDataAccess.Instance.Game.RegisterWaveInfoTable(_waveInfoTable);
+            }
+            else
+            {
+                DebugTool.Error(
+                    "[DataManager] _waveInfoTable이 인스펙터에 미할당",
+                    DebugType.Data, this);
+            }
             OnSheetCompleted();
         });
 
