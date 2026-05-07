@@ -27,6 +27,10 @@ public class DataManager : MonoBehaviour
     public SheetData _waveSpawnSheet;
     [SerializeField] private WaveSpawnTableSO _waveSpawnTable;
 
+    [Header("Player Upgrade")]
+    public SheetData _playerUpgradeSheet;
+    [SerializeField] private PlayerUpgradeTableSO _playerUpgradeTable;
+
 
     private int _pendingSheetCount;
 
@@ -48,7 +52,7 @@ public class DataManager : MonoBehaviour
             return;
         }
 
-        _pendingSheetCount = 4;
+        _pendingSheetCount = 5;
 
         LoadSheetData(_classSheet, _classDataList, _classDataDictionary, onComplete: () =>
         {
@@ -81,6 +85,12 @@ public class DataManager : MonoBehaviour
         LoadWaveSpawnTable(_waveSpawnSheet, _waveSpawnTable, onComplete: () =>
         {
             LocalDataAccess.Instance.Game.RegisterWaveSpawnTable(_waveSpawnTable);
+            OnSheetCompleted();
+        });
+
+        LoadPlayerUpgradeTable(_playerUpgradeSheet, _playerUpgradeTable, onComplete: () =>
+        {
+            LocalDataAccess.Instance.Game.RegisterPlayerUpgradeTable(_playerUpgradeTable);
             OnSheetCompleted();
         });
     }
@@ -197,6 +207,38 @@ public class DataManager : MonoBehaviour
             {
                 DebugTool.Error(
                     "[DataManager] WaveSpawn 시트 로드 실패 - lines가 null",
+                    DebugType.Data, this);
+                onComplete?.Invoke();
+                return;
+            }
+
+            table.LoadFromSheet(split, lines, headerRowCount);
+            onComplete?.Invoke();
+        }));
+    }
+
+
+    private void LoadPlayerUpgradeTable(
+        SheetData sheet,
+        PlayerUpgradeTableSO table,
+        int headerRowCount = 1,
+        Action onComplete = null)
+    {
+        if (table == null)
+        {
+            DebugTool.Error(
+                "[DataManager] _playerUpgradeTable이 인스펙터에 미할당",
+                DebugType.Data, this);
+            onComplete?.Invoke();
+            return;
+        }
+
+        StartCoroutine(sheet.Load((split, lines) =>
+        {
+            if (lines == null)
+            {
+                DebugTool.Error(
+                    "[DataManager] PlayerUpgrade 시트 로드 실패 - lines가 null",
                     DebugType.Data, this);
                 onComplete?.Invoke();
                 return;

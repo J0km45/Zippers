@@ -81,7 +81,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6f1a65a1b2017d84f86cdaaccede520c, type: 2}
   - {fileID: 11400000, guid: 5c2275e76a4ab7e42bc29c0ee69cad63, type: 2}
   - {fileID: 11400000, guid: eab785ecce5e8a343a3cc07047b4db18, type: 2}
+  _waveInfoTable: {fileID: 11400000, guid: 73654e53d47172d44980240c5f8a1a79, type: 2}
   _waveSpawnSheet:
     <URL>k__BackingField: https://docs.google.com/spreadsheets/d/1H4POPGGxh0x_jcwinL-_VVhK1FWRPD0jASYWtFIzxrQ/edit?gid=1931696212#gid=1931696212
     <Type>k__BackingField: 2
   _waveSpawnTable: {fileID: 11400000, guid: adf3f548ee4b70f4080cb01a490a0e51, type: 2}
+  _playerUpgradeSheet:
+    <URL>k__BackingField: https://docs.google.com/spreadsheets/d/1H4POPGGxh0x_jcwinL-_VVhK1FWRPD0jASYWtFIzxrQ/edit?gid=894108557#gid=894108557
+    <Type>k__BackingField: 2
+  _playerUpgradeTable: {fileID: 11400000, guid: 07cae3c66ee780045bd52f5b90214706, type: 2}
