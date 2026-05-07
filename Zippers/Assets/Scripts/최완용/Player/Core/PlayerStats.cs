@@ -4,6 +4,7 @@ public class PlayerStats : MonoBehaviour
 {
     [Header("클래스 데이터")]
     [SerializeField] private PlayerClassDataSO _playerClassData;
+
     public PlayerClassDataSO PlayerClassData => _playerClassData;
 
     public int ClassID => _playerClassData.ClassId;
@@ -12,6 +13,7 @@ public class PlayerStats : MonoBehaviour
     public float MaxHealth => _playerClassData.MaxHealth;
     public float Stamina => _playerClassData.MaxStamina;
     public float StaminaDelay => _playerClassData.StaminaDelay;
+    public float StaminaConsume => _playerClassData.StaminaConsume;
     public float StaminaPeriod => _playerClassData.StaminaPeriod;
     public float StaminaRegen => _playerClassData.StaminaRegen;
     public float MinDamage => _playerClassData.MinDamage;
