@@ -88,7 +88,5 @@ public class ZombiePrefabsSO : ZippersSO
         zombieDict.Add(ZombieType.Ranged, rangedZombies);
         zombieDict.Add(ZombieType.Elite, eliteZombies);
         zombieDict.Add(ZombieType.Boss, bossZombies);
-
-        DebugTool.Log("좀비 프리팹 딕셔너리 초기화 완료", DebugType.Zombie);
     }
 }

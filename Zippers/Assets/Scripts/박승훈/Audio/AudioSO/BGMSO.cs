@@ -2,7 +2,7 @@ using Audio;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BGMSO", menuName = "Zippers/SO/Audio/BGMSO", order = 4)]
+[CreateAssetMenu(fileName = "BGMSO", menuName = "Zippers/Audio/BGMSO", order = 4)]
 public class BGMSO : ZippersSO
 {
     [Header("BGM 목록")]
@@ -49,7 +49,5 @@ public class BGMSO : ZippersSO
         _BGMDict.Add(BGMType.Shop, _shop);
         _BGMDict.Add(BGMType.Clear, _clear);
         _BGMDict.Add(BGMType.Fail, _fail);
-        
-        DebugTool.Log("BGM 딕셔너리 초기화 완료", DebugType.Zombie);
     }
 }
