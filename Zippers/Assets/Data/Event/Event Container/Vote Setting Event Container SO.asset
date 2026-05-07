@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 063d7dd98ccdeae48bf49d90eb5059a3, type: 3}
   m_Name: Vote Setting Event Container SO
   m_EditorClassIdentifier: Assembly-CSharp::EventContainerSO
-  _eventType: 4
+  _eventType: 2
   _eventData:
   - {fileID: 11400000, guid: e7bfac9c22abe324ead2a3c1db94823b, type: 2}

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26bc8cb536a9be34882394c6700c7469, type: 3}
-  m_Name: Spawn Event Container SO
+  m_Name: Game Over Event Container SO
   m_EditorClassIdentifier: Assembly-CSharp::EventContainerSO
-  _eventType: 1
+  _eventType: 5
   _eventData:
-  - {fileID: 11400000, guid: 0c470a657549bbf4e8e11f9bcfb84212, type: 2}
+  - {fileID: 11400000, guid: 35c45d7c39b347e469480d2c819a93cb, type: 2}

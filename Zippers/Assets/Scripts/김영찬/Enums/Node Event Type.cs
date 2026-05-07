@@ -7,5 +7,6 @@ public enum NodeEventType
     MonsterSpawn,
     VoteSetting,
     PlayerCheck,
-    GameClear
+    GameClear,
+    GameOver
 }

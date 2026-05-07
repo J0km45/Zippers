@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26bc8cb536a9be34882394c6700c7469, type: 3}
-  m_Name: Spawn Event Container SO
+  m_Name: Game Clear Event Container SO
   m_EditorClassIdentifier: Assembly-CSharp::EventContainerSO
-  _eventType: 1
+  _eventType: 4
   _eventData:
-  - {fileID: 11400000, guid: 0c470a657549bbf4e8e11f9bcfb84212, type: 2}
+  - {fileID: 11400000, guid: 5f9684a91c59c9e4aab0173169b2cd59, type: 2}

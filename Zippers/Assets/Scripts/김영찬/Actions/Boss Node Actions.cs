@@ -50,7 +50,8 @@ public class BossNodeBattleAction : INodeAction
     
     public void EnterState()
     {
-        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.MonsterSpawn,_controller.Controller.Manager.BattleCount);
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.MonsterSpawn,0);
+        _controller.Controller.Data.OnChangeAlivePlayerCount += GameOver;
     }
 
     public void RunningState()
@@ -60,7 +61,12 @@ public class BossNodeBattleAction : INodeAction
 
     public void ExitState()
     {
-        
+        _controller.Controller.Data.OnChangeAlivePlayerCount -= GameOver;
+    }
+    
+    private void GameOver(int count)
+    {
+        if(count <= 0) _controller.Controller.EventController.SetCurrentEvent(NodeEventType.GameOver,0);
     }
 }
 
