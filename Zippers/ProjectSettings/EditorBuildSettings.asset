@@ -15,11 +15,14 @@ EditorBuildSettings:
     path: Assets/Scenes/Test/Data/Data.unity
     guid: 02b8590d5b5af614bac7835b6b4215a7
   - enabled: 1
-    path: "Assets/Test/\uCD5C\uC644\uC6A9 \uD14C\uC2A4\uD2B8 \uD3F4\uB354/MoveTest.unity"
-    guid: 4fa08d24ee843d04c909d3ef6273ae28
+    path: Assets/Scenes/NetworkSample/TitleSceneTest.unity
+    guid: c3c23d896d04ec147a1d2ec9e81bdd31
   - enabled: 1
-    path: "Assets/Test/\uCD5C\uC644\uC6A9 \uD14C\uC2A4\uD2B8 \uD3F4\uB354/Test Data_CWY.unity"
-    guid: 534eb5a6d1ea92f4f825465a02b7d668
+    path: Assets/Scenes/NetworkSample/LobbySceneTest.unity
+    guid: b1a9eed7673c1e148a15c77a4ba54e21
+  - enabled: 1
+    path: Assets/Scenes/NetworkSample/GameSceneTest.unity
+    guid: c14970332421f6743a33a62b6885b35e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
