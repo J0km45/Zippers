@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: ZombiePrefabsSO
   m_EditorClassIdentifier: Assembly-CSharp::ZombiePrefabsSO
   normalZombies:
-  - {fileID: 1015224441584018, guid: 2c89c5534f815e74e8db008cd8ae610d, type: 3}
-  - {fileID: 1300917902799776, guid: 9981c9fdf828eb24daf21a47711f6f5e, type: 3}
-  - {fileID: 1187010538823314, guid: 82885604020db024b87bec1694585831, type: 3}
-  - {fileID: 1331328711462180, guid: ddd6bed8c91fb2b40b273eb0b7b3abb5, type: 3}
+  - {fileID: 5650434110132030101, guid: 40d5350b7628809438a6e7f8e0949da3, type: 3}
+  - {fileID: 1583819183417812486, guid: e462c3224959b714585b613d7f02ef2d, type: 3}
+  - {fileID: 3451719860285815290, guid: 1e67622333853a94e8fa3d19398d35e1, type: 3}
+  - {fileID: 5567315189836336915, guid: 2c46f7652d0c2fd4096b2a6c6ee942d3, type: 3}
   runnerZombies: []
   rangedZombies: []
   eliteZombies:
