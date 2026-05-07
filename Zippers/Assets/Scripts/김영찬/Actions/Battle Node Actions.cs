@@ -18,7 +18,7 @@ public class BattleNodeReadyAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.PlayerCheck,0);
     }
 
     public void RunningState()
@@ -50,7 +50,7 @@ public class BattleNodeBattleAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.MonsterSpawn,_controller.Controller.Manager.BattleCount);
     }
 
     public void RunningState()
@@ -82,7 +82,7 @@ public class BattleNodeClearAction : INodeAction
     
     public void EnterState()
     {
-        _controller.Controller.TeleportSupporter.EnableBeaconAvailable();
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.VoteSetting,0);
     }
 
     public void RunningState()
