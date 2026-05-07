@@ -6,12 +6,11 @@ public class PlayerStamina : MonoBehaviour
     public event Action<float, float> OnStaminaChanged;
     public event Action OnStaminaEmpty;
 
-    [SerializeField] private float _staminaTest;
-
     private PlayerStats _playerStats;
     private PlayerMovement _playerMovement;
 
     private float _regenDelayTimer;
+    private float _consumePeriodTimer;
     private float _regenPeriodTimer;
 
     public float CurrentStamina { get; private set; }
@@ -32,55 +31,81 @@ public class PlayerStamina : MonoBehaviour
 
     private void Update()
     {
-        bool isMoving = _playerMovement.MoveDir.sqrMagnitude > 0.01f;
-        bool isUsingStamina =_playerMovement.IsSprinting && isMoving;
+        if (_playerStats == null || _playerMovement == null)
+        {
+            return;
+        }
 
-        if (isUsingStamina) 
+        bool isMoving = _playerMovement.MoveDir.sqrMagnitude > 0.01f;
+        bool isUsingStamina = _playerMovement.IsSprinting && isMoving;
+
+        if (isUsingStamina)
         {
             UseStamina();
             return;
         }
+
         RecoverStamina();
     }
 
     private void Init()
     {
+        if (_playerStats == null)
+        {
+            DebugTool.Error("PlayerStats가 없습니다.", DebugType.Character, this);
+            return;
+        }
+
         MaxStamina = _playerStats.Stamina;
         CurrentStamina = MaxStamina;
 
         _regenDelayTimer = 0f;
+        _consumePeriodTimer = 0f;
         _regenPeriodTimer = 0f;
 
         OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
 
-        DebugTool.Log("스테미나 초기화", DebugType.Data, this);
+        DebugTool.Log($"스테미나 초기화: {CurrentStamina}/{MaxStamina}", DebugType.Character, this);
     }
 
     public bool TryStartSprint()
     {
-        if(!CanSprint)
+        if (!CanSprint)
         {
+            DebugTool.Log("스테미나가 부족해서 달리기 불가", DebugType.Character, this);
             return false;
         }
+
         return true;
     }
 
     private void UseStamina()
     {
-        // 왜 두번 초기화 하지?
-        if(CurrentStamina <=0f)
+        if (CurrentStamina <= 0f)
         {
             StopSprintNoStamina();
             return;
         }
 
-        CurrentStamina -= _staminaTest * Time.deltaTime;
+        _consumePeriodTimer += Time.deltaTime;
+
+        if (_consumePeriodTimer < _playerStats.StaminaPeriod)
+        {
+            return;
+        }
+
+        _consumePeriodTimer = 0f;
+
+        CurrentStamina -= _playerStats.StaminaConsume;
         CurrentStamina = Mathf.Max(CurrentStamina, 0f);
 
         ResetRegenDelay();
-        OnStaminaChanged?.Invoke(MaxStamina, CurrentStamina);
 
-        if(CurrentStamina < 0f)
+        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
+
+        DebugTool.Log($"스테미나 소모: {CurrentStamina}/{MaxStamina}", DebugType.Character, this);
+
+        if (CurrentStamina <= 0f)
         {
             StopSprintNoStamina();
         }
@@ -88,11 +113,14 @@ public class PlayerStamina : MonoBehaviour
 
     private void RecoverStamina()
     {
-        if(CurrentStamina >= MaxStamina)
+        _consumePeriodTimer = 0f;
+
+        if (CurrentStamina >= MaxStamina)
         {
             return;
         }
-        if(_regenDelayTimer > 0f)
+
+        if (_regenDelayTimer > 0f)
         {
             _regenDelayTimer -= Time.deltaTime;
             return;
@@ -100,19 +128,34 @@ public class PlayerStamina : MonoBehaviour
 
         _regenPeriodTimer += Time.deltaTime;
 
+        if (_regenPeriodTimer < _playerStats.StaminaPeriod)
+        {
+            return;
+        }
+
         _regenPeriodTimer = 0f;
+
         CurrentStamina += _playerStats.StaminaRegen;
-        CurrentStamina = Mathf.Min(CurrentStamina,MaxStamina);
+        CurrentStamina = Mathf.Min(CurrentStamina, MaxStamina);
 
         OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
+
+        DebugTool.Log($"스테미나 회복: {CurrentStamina}/{MaxStamina}", DebugType.Character, this);
     }
 
     private void StopSprintNoStamina()
     {
         CurrentStamina = 0f;
 
+        if (_playerMovement != null)
+        {
+            _playerMovement.SetSprint(false);
+        }
+
         OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
         OnStaminaEmpty?.Invoke();
+
+        DebugTool.Log("스테미나 소진 - 달리기 중단", DebugType.Character, this);
     }
 
     private void ResetRegenDelay()
