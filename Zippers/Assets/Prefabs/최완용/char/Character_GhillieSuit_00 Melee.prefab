@@ -3001,6 +3001,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad4c95c4190a4446bd821bae5f7c836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateMachine
+  _walkSfxInterval: 0.3
+  _sprintSfxInterval: 0.25
 --- !u!114 &3272761920512701596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3013,6 +3015,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad4c95c4190a4446bd821bae5f7c836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateMachine
+  _walkSfxInterval: 0.3
+  _sprintSfxInterval: 0.25
 --- !u!114 &2612951257628920865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3050,9 +3054,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 042cb5b6b5eeb8f4ea5728400dc5586e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLook
-  _mainCamera: {fileID: 0}
   _playerAim: {fileID: 5909832541495729898}
   _playerMovement: {fileID: 6657302829162069274}
+  _playerAimCal: {fileID: 0}
   _rotateSpeed: 20
 --- !u!114 &6700624999247946068
 MonoBehaviour:
@@ -3244,7 +3248,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   _shotgunFirePoint: {fileID: 0}
-  _shotgunRadius: 1.5
+  _shotgunAngle: 45
   _meleePoint: {fileID: 3070419387282461543}
   _meleeRadius: 1.5
 --- !u!1 &6773827273407059252

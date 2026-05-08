@@ -3278,7 +3278,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  _spawnPoints: []
+  _spawnPoints:
+  - {fileID: 4035876160696822029}
+  - {fileID: 5070578409318192434}
+  - {fileID: 6786756069789420854}
+  - {fileID: 2264703263134081256}
 --- !u!1001 &1942860307
 PrefabInstance:
   m_ObjectHideFlags: 0

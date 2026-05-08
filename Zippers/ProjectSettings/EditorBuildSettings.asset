@@ -24,16 +24,16 @@ EditorBuildSettings:
     path: Assets/Scenes/NetworkSample/GameSceneTest.unity
     guid: c14970332421f6743a33a62b6885b35e
   - enabled: 1
-    path: Assets/Scenes/AuthScene.unity
+    path: Assets/Scenes/Lobby/AuthScene.unity
     guid: 8538e5ccecae7744a998b9d6e0e93bb8
   - enabled: 1
     path: Assets/Scenes/DataLoadScene.unity
     guid: 8e12c7411b74f7143926460a109bce24
   - enabled: 1
-    path: Assets/Scenes/LobbyScene.unity
+    path: Assets/Scenes/Lobby/LobbyScene.unity
     guid: 97ea5bb9c5e117144bdcdb16fc45dbae
   - enabled: 1
-    path: Assets/Scenes/RoomListScene.unity
+    path: Assets/Scenes/Lobby/RoomListScene.unity
     guid: 24c558ef3a28da046a96cfdbaab2d1e4
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
