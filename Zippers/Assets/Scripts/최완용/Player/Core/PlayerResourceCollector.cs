@@ -3,24 +3,24 @@ using System;
 
 public class PlayerResourceCollector : MonoBehaviour, IResourceCollectable
 {
-    public Action<ResourcesType, int> OnResourceCollected;
+    public Action<ResourcesType, float> OnResourceCollected;
 
-    private int _scrap;
-    private int _supplies;
-    private int _infectionSample;
+    private float _scrap;
+    private float _supplies;
+    private float _infectionSample;
 
-    public int Scrap => _scrap;
-    public int Supplies => _supplies;
-    public int InfectionSample => _infectionSample;
+    public float Scrap => _scrap;
+    public float Supplies => _supplies;
+    public float InfectionSample => _infectionSample;
 
-    public void CollectResource(ResourcesType type, int amount)
+    public void CollectResource(ResourcesType type, float amount)
     {
         bool isAdded = AddResource(type, amount);
 
         OnResourceCollected?.Invoke(type, amount);
     }
 
-    private bool AddResource(ResourcesType type, int amount)
+    private bool AddResource(ResourcesType type, float amount)
     {
         switch (type)
         {

@@ -12,8 +12,9 @@ public class NormalZombieAttack : MonoBehaviour, IZombieAttack
             if (hit.TryGetComponent(out IDamagable player))
             {
                 float damage = Random.Range(zombie.MinAttackDamage, zombie.MaxAttackDamage);
-                damage = Mathf.Round(damage * 10f) * 0.1f;
-                player.TakeDamage(damage);
+                float finalDamage = damage * NodeScaling.GetMultiplier(zombie.NodeManager.BattleCount).Damage;
+                finalDamage = Mathf.Round(finalDamage * 10f) * 0.1f;
+                player.TakeDamage(finalDamage);
                 break;
             }
         }
