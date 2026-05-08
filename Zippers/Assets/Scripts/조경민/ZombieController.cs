@@ -36,8 +36,9 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     private bool _hasSpawnedReward; // 보상 생성 여부
     private bool _isCountRemoved; // 카운트 제거 여부
     private float _groanSfxTimer; // Groan Sfx 재생용 타이머
-    private float _lastAttackTime = 0f; // 공격 쿨타임 관리용 시간
+    private float _lastAttackTime; // 공격 쿨타임 관리용 시간
     private float _playerDetectTimer; // 플레이어 감지용 타이머
+    private float _healthRegenTimer; // 체력 재생용 타이머
 
     public ZombieChaseState Chase { get; private set; }
     public ZombieAttackState Attack { get; private set; }
@@ -67,6 +68,8 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     public float HandRadius => _stat.HandRadius;
     public float AttackRange => _stat.AttackRange;
     public float DetectRange => _stat.DetectionRange;
+    public float HealthRegen => _stat.HealthRegen;
+    public float HealthPeriod => _stat.HealthPeriod;
 
     public int MinScrap => _stat.MinScrap;
     public int MaxScrap => _stat.MaxScrap;
@@ -121,6 +124,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         _groanSfxTimer = 0f;
         _lastAttackTime = 0f;
         _playerDetectTimer = 0f;
+        _healthRegenTimer = 0f;
 
         if (TryGetComponent(out Collider collider))
         {
@@ -147,6 +151,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     {
         PlayGroanSfx();
         UpdatePlayer();
+        RegenHealth();
         _stateMachine.Update();
     }
 
@@ -187,6 +192,24 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     private void RefreshPlayer() 
         => Player = PlayerTransformList.instance.GetClosestPlayer(transform.position);
 
+    private void RegenHealth()
+    {
+        if (_isDead) return;
+        if (CurrentHp >= MaxHp) return;
+
+        // TODO : NGO 적용되면 서버시간으로 변경
+        _healthRegenTimer += Time.deltaTime;
+
+        if(_healthRegenTimer >= HealthPeriod)
+        {
+            _healthRegenTimer = 0f;
+            float helathRegenAmount = MaxHp * (HealthRegen / 100f);
+            CurrentHp += helathRegenAmount;
+            CurrentHp = Mathf.Min(CurrentHp, MaxHp);
+            DebugTool.Log($"좀비 체력 회복: {helathRegenAmount}, 현재 체력: {CurrentHp}", DebugType.Zombie, this);
+        }
+    }
+
     public void ChangeState(IState state)
     {
         _stateMachine.ChangeState(state);
@@ -226,6 +249,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
 
         Sfx.PlayHitSfx();
         CurrentHp -= damage;
+        DebugTool.Log($"좀비가 {damage} 데미지 입음. 현재 체력: {CurrentHp}", DebugType.Zombie, this);
 
         if (CurrentHp <= 0)
         {
