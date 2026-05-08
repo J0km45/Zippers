@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class NodeDataContainer : MonoBehaviour
@@ -52,6 +50,10 @@ public class NodeDataContainer : MonoBehaviour
         IsDictReady = true;
     }
 
+    /// <summary>
+    /// 맵 등록
+    /// </summary>
+    /// <param name="map">노드에 쓰이는 맵</param>
     public void RegisterMap(MapController map)
     {
         NodeType type = map.NodeType;
@@ -92,6 +94,11 @@ public class NodeDataContainer : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// 난이도 데이터 반환
+    /// </summary>
+    /// <param name="difficulty">설정된 난이도</param>
+    /// <returns>난이도 데이터 SO</returns>
     public DifficultyDataSO GetDifficultyData(NodeDifficulty difficulty)
     {
         if (_difficultyDict.ContainsKey(difficulty) && _difficultyDict[difficulty].Count > 0)

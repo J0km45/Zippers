@@ -22,13 +22,14 @@ public class NodePathMaker
     {
         _nodeManager = nodeManager;
         Path = new();
+        _weightInfo = new();
     }
 
     public void MakePath(NodeDifficulty difficulty)
     {
-        _weightInfo = new();
-        _sumWeight = 0;
         Path.Clear();
+        _weightInfo.Clear();
+        _sumWeight = 0;
         
         _difficultyData = _nodeManager.DataContainer.GetDifficultyData(difficulty);
         

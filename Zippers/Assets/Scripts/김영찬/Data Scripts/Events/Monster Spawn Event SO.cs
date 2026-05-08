@@ -24,7 +24,7 @@ public class MonsterSpawnEventSO : EventSO
 
     public override void EventExit()
     {
-        _controller.Controller.Manager.OnBattleCountChanged -= _waveManager.StartBattleNode;
+        
     }
 
     private void Init()
@@ -33,9 +33,9 @@ public class MonsterSpawnEventSO : EventSO
         _spawnManager = FindFirstObjectByType<ZombieSpawnManager>();
         
         // ToDo : _spawnManager에 스폰 포인트 지정하는 메서드 생성되면 삽입
-
-        _controller.Controller.Manager.OnBattleCountChanged += _waveManager.StartBattleNode;
         
         _controller.Controller.Manager.AddBattleCount();
+
+        _waveManager.StartBattleNode(_controller.Controller.Manager.BattleCount);
     }
 }

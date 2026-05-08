@@ -113,7 +113,6 @@ public class MapData : MonoBehaviour
 
     private void Awake()
     {
-        AlivePlayerCount = 0;
         DebugTool.Log($"{gameObject.name} Map Data Awake", DebugType.Node, this);
     }
 
@@ -135,6 +134,8 @@ public class MapData : MonoBehaviour
     /// <param name="nextMap">다음 맵 프리팹</param>
     public void SetNextMap(NodeStartDir dir, MapController nextMap)
     {
+        nextMap.gameObject.SetActive(true);
+        
         switch (dir)
         {
             case NodeStartDir.Up:
@@ -152,6 +153,19 @@ public class MapData : MonoBehaviour
         }
         OnChangeNextMaps?.Invoke();
         DebugTool.Log($"{gameObject.name} Map Next Map Set\n dir : {dir}", DebugType.Node, this);
+    }
+
+    /// <summary>
+    /// 초기화를 위한 연결 맵 리셋
+    /// </summary>
+    public void ResetNextMaps()
+    {
+        NextMap_Up = null;
+        NextMap_Down = null;
+        NextMap_Left = null;
+        NextMap_Right = null;
+        OnChangeNextMaps?.Invoke();
+        DebugTool.Log($"{gameObject.name} Next Map Reset", DebugType.Node, this);
     }
     
     /// <summary>
@@ -190,8 +204,8 @@ public class MapData : MonoBehaviour
     {
         if(AlivePlayerCount >= 4) return;
         AlivePlayerCount++;
-        OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
         DebugTool.Log($"{gameObject.name} Player Income, Current Player : {AlivePlayerCount}", DebugType.Node, this);
+        OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
     }
     
     /// <summary>
@@ -201,8 +215,15 @@ public class MapData : MonoBehaviour
     {
         if(AlivePlayerCount <= 0) return;
         AlivePlayerCount--;
-        OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
         DebugTool.Log($"{gameObject.name} Player Out, Current Player : {AlivePlayerCount}", DebugType.Node, this);
+        OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
+    }
+
+    public void ResetAlivePlayerCount()
+    {
+        AlivePlayerCount = 0;
+        DebugTool.Log($"{gameObject.name} Player Count Reset", DebugType.Node, this);
+        OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
     }
     
     #endregion

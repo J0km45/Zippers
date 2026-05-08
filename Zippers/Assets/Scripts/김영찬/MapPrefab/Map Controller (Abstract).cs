@@ -38,13 +38,10 @@ public abstract class MapController : MonoBehaviour
     /// </summary>
     public TeleportSupporter TeleportSupporter { get; private set; }
 
-    private WaitForEndOfFrame _wait;
-
     protected virtual void Awake()
     {
         Init();
         Register();
-        _wait = new WaitForEndOfFrame();
     }
     
     protected virtual void OnEnable()
@@ -55,6 +52,7 @@ public abstract class MapController : MonoBehaviour
     protected virtual void OnDisable()
     {
         EventDisable();
+        ReadyForUse();
     }
 
     private void Register()
@@ -93,6 +91,8 @@ public abstract class MapController : MonoBehaviour
     private void ReadyForUse()
     {
         Data.SetNodeState(NodeState.Ready);
+        Data.ResetAlivePlayerCount();
+        Data.ResetNextMaps();
         EventController.SetDefaultEvent();
         TeleportSupporter.DisableBeaconAll();
     }
@@ -129,20 +129,6 @@ public abstract class MapController : MonoBehaviour
     {
         Destroy(postEvent);
     }
-    
-    private IEnumerator WaitCoroutine()
-    {
-        while (!Manager.DataContainer.IsDictReady)
-        {
-            yield return _wait;
-        }
-        
-        while (EventController.Machine == null)
-        {
-            yield return _wait;
-        }
-        EventEnable();
-    }
 
     private void TeleportNextMap(NodeStartDir dir)
     {
@@ -154,18 +140,30 @@ public abstract class MapController : MonoBehaviour
             case NodeStartDir.Up:
                 nextMapStartPos = Data.PlayerSpawnPoint_Up;
                 nextMapData = Data.NextMap_Up.GetComponent<MapData>();
+                if(Data.NextMap_Down != null) Data.NextMap_Down.gameObject.SetActive(false);
+                if(Data.NextMap_Left != null) Data.NextMap_Left.gameObject.SetActive(false);
+                if(Data.NextMap_Right != null) Data.NextMap_Right.gameObject.SetActive(false);
                 break;
             case NodeStartDir.Down:
                 nextMapStartPos = Data.PlayerSpawnPoint_Down;
                 nextMapData = Data.NextMap_Down.GetComponent<MapData>();
+                if(Data.NextMap_Up != null) Data.NextMap_Up.gameObject.SetActive(false);
+                if(Data.NextMap_Left != null) Data.NextMap_Left.gameObject.SetActive(false);
+                if(Data.NextMap_Right != null) Data.NextMap_Right.gameObject.SetActive(false);
                 break;
             case NodeStartDir.Left:
                 nextMapStartPos = Data.PlayerSpawnPoint_Left;
                 nextMapData = Data.NextMap_Left.GetComponent<MapData>();
+                if(Data.NextMap_Down != null) Data.NextMap_Down.gameObject.SetActive(false);
+                if(Data.NextMap_Up != null) Data.NextMap_Up.gameObject.SetActive(false);
+                if(Data.NextMap_Right != null) Data.NextMap_Right.gameObject.SetActive(false);
                 break;
             case NodeStartDir.Right:
                 nextMapStartPos = Data.PlayerSpawnPoint_Right;
                 nextMapData = Data.NextMap_Right.GetComponent<MapData>();
+                if(Data.NextMap_Down != null) Data.NextMap_Down.gameObject.SetActive(false);
+                if(Data.NextMap_Left != null) Data.NextMap_Left.gameObject.SetActive(false);
+                if(Data.NextMap_Up != null) Data.NextMap_Up.gameObject.SetActive(false);
                 break;
         }
 
@@ -180,5 +178,20 @@ public abstract class MapController : MonoBehaviour
         nextMapData.SetNodeStartDir(dir);
         
         DebugTool.Log($"{gameObject.name} Teleport Complete. Next Map : {nextMapData.gameObject.name}", DebugType.Node, nextMapData);
+        gameObject.SetActive(false);
+    }
+    
+    private IEnumerator WaitCoroutine()
+    {
+        while (!Manager.DataContainer.IsDictReady)
+        {
+            yield return YieldContainer.EndOfFrame();
+        }
+        
+        while (EventController.Machine == null)
+        {
+            yield return YieldContainer.EndOfFrame();
+        }
+        EventEnable();
     }
 }
