@@ -119,19 +119,19 @@ public class GameSessionManager : NetworkBehaviour
 
     private void InitServerSide()
     {
-        _expectedPlayerCountNet.Value = LobbyManager.Instance.ExpectedPlayerCount;
+        _expectedPlayerCountNet.Value = LobbyManagerSample.Instance.ExpectedPlayerCount;
         _currentJoinedCountNet.Value = 0;
     }
 
     private void OnClientSceneLoadComplete(ulong clientId, string sceneName, LoadSceneMode mode)
     {
-        if (sceneName != SceneId.Game.GetName()) return;
+        if (sceneName != SceneIdTest.Game.GetName()) return;
         _currentJoinedCountNet.Value = _currentJoinedCountNet.Value + 1;
     }
 
     private void OnAllClientsSceneLoaded(string sceneName, LoadSceneMode mode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
-        if (sceneName != SceneId.Game.GetName()) return;
+        if (sceneName != SceneIdTest.Game.GetName()) return;
         if (clientsTimedOut != null && clientsTimedOut.Count > 0)
         {
             Debug.LogWarning($"GameSessionManager: {clientsTimedOut.Count}명 씬 로드 timeout - 룸으로 복귀");
@@ -159,7 +159,7 @@ public class GameSessionManager : NetworkBehaviour
     [ClientRpc]
     private void EndGameClientRpc()
     {
-        _ = LobbyManager.Instance.ReturnToRoomAsync();
+        _ = LobbyManagerSample.Instance.ReturnToRoomAsync();
     }
 
     private void SetSingleton()

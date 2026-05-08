@@ -77,7 +77,7 @@ public class JoinByCodeDialogUI : MonoBehaviour
         _confirmButton.interactable = false;
         SetWarning("참여 중...");
 
-        bool success = await LobbyManager.Instance.JoinSessionByCodeAsync(code);
+        bool success = await LobbyManagerSample.Instance.JoinSessionByCodeAsync(code);
 
         _isProcessing = false;
         if (success)
