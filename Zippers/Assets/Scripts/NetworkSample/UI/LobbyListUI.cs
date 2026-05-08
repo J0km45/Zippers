@@ -38,7 +38,7 @@ public class LobbyListUI : MonoBehaviour
 
     private void Start()
     {
-        ShowLobbyListPanel(LobbyManager.Instance.CurrentSession == null);
+        ShowLobbyListPanel(LobbyManagerSample.Instance.CurrentSession == null);
         if (_lobbyListPanel.activeSelf)
         {
             RefreshLobbyList();
@@ -48,13 +48,13 @@ public class LobbyListUI : MonoBehaviour
     private void BindEvents()
     {
         BindButtonEvents();
-        BindLobbyManagerEvents();
+        BindLobbyManagerSampleEvents();
     }
 
     private void UnbindEvents()
     {
         UnbindButtonEvents();
-        UnbindLobbyManagerEvents();
+        UnbindLobbyManagerSampleEvents();
     }
 
     private void BindButtonEvents()
@@ -73,16 +73,16 @@ public class LobbyListUI : MonoBehaviour
         _refreshButton.onClick.RemoveListener(RefreshLobbyList);
     }
 
-    private void BindLobbyManagerEvents()
+    private void BindLobbyManagerSampleEvents()
     {
-        LobbyManager.Instance.OnSessionUpdated += OnSessionUpdated;
-        LobbyManager.Instance.OnSessionLeft += OnSessionLeft;
+        LobbyManagerSample.Instance.OnSessionUpdated += OnSessionUpdated;
+        LobbyManagerSample.Instance.OnSessionLeft += OnSessionLeft;
     }
 
-    private void UnbindLobbyManagerEvents()
+    private void UnbindLobbyManagerSampleEvents()
     {
-        LobbyManager.Instance.OnSessionUpdated -= OnSessionUpdated;
-        LobbyManager.Instance.OnSessionLeft -= OnSessionLeft;
+        LobbyManagerSample.Instance.OnSessionUpdated -= OnSessionUpdated;
+        LobbyManagerSample.Instance.OnSessionLeft -= OnSessionLeft;
     }
 
     private async void RefreshLobbyList()
@@ -98,7 +98,7 @@ public class LobbyListUI : MonoBehaviour
         SetStatus("방 목록 조회 중...");
         try
         {
-            IList<ISessionInfo> sessions = await LobbyManager.Instance.QuerySessionsAsync();
+            IList<ISessionInfo> sessions = await LobbyManagerSample.Instance.QuerySessionsAsync();
             PopulateEntries(sessions);
             RefreshEmptyLabel(sessions.Count);
             SetStatus($"방 {sessions.Count}개 조회됨");
@@ -153,7 +153,7 @@ public class LobbyListUI : MonoBehaviour
         SetStatus("빠른 참여 중...");
         try
         {
-            bool success = await LobbyManager.Instance.QuickJoinAsync();
+            bool success = await LobbyManagerSample.Instance.QuickJoinAsync();
             if (!success) SetStatus("참여할 방을 찾지 못했습니다.");
         }
         finally
@@ -169,7 +169,7 @@ public class LobbyListUI : MonoBehaviour
         SetStatus($"'{sessionInfo.Name}' 참여 중...");
         try
         {
-            bool success = await LobbyManager.Instance.JoinSessionByIdAsync(sessionInfo.Id);
+            bool success = await LobbyManagerSample.Instance.JoinSessionByIdAsync(sessionInfo.Id);
             if (!success) SetStatus("방 참여 실패");
         }
         finally

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// 방 생성 팝업. 방 이름만 입력받아 LobbyManager로 생성 요청
+/// 방 생성 팝업. 방 이름만 입력받아 LobbyManagerSample로 생성 요청
 /// </summary>
 public class CreateRoomDialogUI : MonoBehaviour
 {
@@ -69,14 +69,14 @@ public class CreateRoomDialogUI : MonoBehaviour
         string roomName = _roomNameInput.text;
         if (string.IsNullOrWhiteSpace(roomName))
         {
-            roomName = $"{LobbyManager.Instance.PlayerName}'s Room";
+            roomName = $"{LobbyManagerSample.Instance.PlayerName}'s Room";
         }
 
         _isProcessing = true;
         _confirmButton.interactable = false;
         SetWarning("방 생성 중...");
 
-        bool success = await LobbyManager.Instance.CreateSessionAsync(roomName);
+        bool success = await LobbyManagerSample.Instance.CreateSessionAsync(roomName);
 
         _isProcessing = false;
         if (success)

@@ -46,10 +46,10 @@ public class TitleUI : MonoBehaviour
         SetStatus("로그인 중...");
         try
         {
-            await AuthService.InitializeAsync();
-            LobbyManager.Instance.SetPlayerName(GetPlayerName());
+            await AuthServiceTest.InitializeAsync();
+            LobbyManagerSample.Instance.SetPlayerName(GetPlayerName());
             SetStatus("로비로 이동 중...");
-            SceneLoader.LoadLocal(SceneId.Lobby);
+            SceneLoaderTest.LoadLocal(SceneIdTest.Lobby);
         }
         catch (Exception e)
         {
