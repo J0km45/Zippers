@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 캐릭터 관련 SFX를 관리하기 위한 SO
 /// </summary>
-[CreateAssetMenu(fileName = "CharacterSFXSO", menuName = "Zippers/SO/Audio/CharacterSFXSO", order = 0)]
+[CreateAssetMenu(fileName = "CharacterSFXSO", menuName = "Zippers/Audio/CharacterSFXSO", order = 0)]
 public class CharacterSFXSO : ZippersSO
 {
     [Header("캐릭터 SFX 목록")]

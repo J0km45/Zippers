@@ -18,7 +18,7 @@ public class BattleNodeReadyAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.PlayerCheck,0);
     }
 
     public void RunningState()
@@ -50,7 +50,8 @@ public class BattleNodeBattleAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.MonsterSpawn,0);
+        _controller.Controller.Data.OnChangeAlivePlayerCount += GameOver;
     }
 
     public void RunningState()
@@ -60,7 +61,12 @@ public class BattleNodeBattleAction : INodeAction
 
     public void ExitState()
     {
-        
+        _controller.Controller.Data.OnChangeAlivePlayerCount -= GameOver;
+    }
+    
+    private void GameOver(int count)
+    {
+        if(count <= 0) _controller.Controller.EventController.SetCurrentEvent(NodeEventType.GameOver,0);
     }
 }
 
@@ -82,7 +88,7 @@ public class BattleNodeClearAction : INodeAction
     
     public void EnterState()
     {
-        _controller.Controller.TeleportSupporter.EnableBeaconAvailable();
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.VoteSetting,0);
     }
 
     public void RunningState()

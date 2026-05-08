@@ -88,16 +88,6 @@ public class MapData : MonoBehaviour
     /// </summary>
     public int AlivePlayerCount { get; private set; }
 
-    /// <summary>
-    /// 맵에 생존한 몬스터 수
-    /// </summary>
-    private int _aliveMonsterCount;
-
-    /// <summary>
-    /// 맵에 남은 웨이브 횟수
-    /// </summary>
-    private int _remainingWaveCount;
-
     #endregion
     
     #region 이벤트
@@ -116,16 +106,6 @@ public class MapData : MonoBehaviour
     /// 맵에 생존한 플레이어의 수가 변경되면 전파
     /// </summary>
     public event Action<int> OnChangeAlivePlayerCount;
-    
-    /// <summary>
-    /// 맵에 생존한 몬스터의 수가 변경되면 전파
-    /// </summary>
-    public event Action<int> OnChangeAliveMonsterCount;
-    
-    /// <summary>
-    /// 맵에 잔여 웨이브가 변경되면 전파
-    /// </summary>
-    public event Action<int> OnChangeRemainingWaveCount;
 
     #endregion
 
@@ -134,9 +114,7 @@ public class MapData : MonoBehaviour
     private void Awake()
     {
         AlivePlayerCount = 0;
-        _aliveMonsterCount = 0;
-        _remainingWaveCount = 0;
-        DebugTool.Log($"{_controller.gameObject.name} Map Data Awake", DebugType.Node, this);
+        DebugTool.Log($"{gameObject.name} Map Data Awake", DebugType.Node, this);
     }
 
     /// <summary>
@@ -147,8 +125,7 @@ public class MapData : MonoBehaviour
     public void SetNodeStartDir(NodeStartDir dir)
     {
         StartDir = dir;
-        // SetSpawnPoint(dir);
-        DebugTool.Log($"{_controller.gameObject.name} Map Node Start Dir Set {StartDir}", DebugType.Node, this);
+        DebugTool.Log($"{gameObject.name} Map Node Start Dir Set {StartDir}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -174,20 +151,7 @@ public class MapData : MonoBehaviour
                 break;
         }
         OnChangeNextMaps?.Invoke();
-        DebugTool.Log($"{_controller.gameObject.name} Map Next Map Set\n dir : {dir}", DebugType.Node, this);
-    }
-    
-    /// <summary>
-    /// 현재 맵의 최대 Wave 횟수 지정<br/>
-    /// NodeTreeMaker.cs에서만 사용함<br/>
-    /// 임의 변경 금지
-    /// </summary>
-    /// <param name="count">지정할 현재 맵의 최대 Wave</param>
-    public void SetRemainingWaveCount(int count)
-    {
-        _remainingWaveCount = count;
-        OnChangeRemainingWaveCount?.Invoke(count);
-        DebugTool.Log($"{_controller.gameObject.name} Map Wave Count Set : {count}", DebugType.Node, this);
+        DebugTool.Log($"{gameObject.name} Map Next Map Set\n dir : {dir}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -216,7 +180,7 @@ public class MapData : MonoBehaviour
     {
         NodeState = state;
         OnChangeState?.Invoke(state);
-        DebugTool.Log($"{_controller.gameObject.name} Map Node State Change : {NodeState}", DebugType.Node, this);
+        DebugTool.Log($"{gameObject.name} Map Node State Change : {NodeState}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -227,7 +191,7 @@ public class MapData : MonoBehaviour
         if(AlivePlayerCount >= 4) return;
         AlivePlayerCount++;
         OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
-        DebugTool.Log($"{_controller.gameObject.name} Player Income, Current Player : {AlivePlayerCount}", DebugType.Node, this);
+        DebugTool.Log($"{gameObject.name} Player Income, Current Player : {AlivePlayerCount}", DebugType.Node, this);
     }
     
     /// <summary>
@@ -238,80 +202,8 @@ public class MapData : MonoBehaviour
         if(AlivePlayerCount <= 0) return;
         AlivePlayerCount--;
         OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
-        DebugTool.Log($"{_controller.gameObject.name} Player Out, Current Player : {AlivePlayerCount}", DebugType.Node, this);
+        DebugTool.Log($"{gameObject.name} Player Out, Current Player : {AlivePlayerCount}", DebugType.Node, this);
     }
-
-    /// <summary>
-    /// 현재 맵에서 살아남은 몬스터 숫자 증가
-    /// </summary>
-    public void PlusAliveMonsterCount()
-    {
-        _aliveMonsterCount++;
-        OnChangeAliveMonsterCount?.Invoke(_aliveMonsterCount);
-        DebugTool.Log($"{_controller.gameObject.name} Monster Income, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
-    }
-    
-    /// <summary>
-    /// 현재 맵에서 살아남은 몬스터 숫자 감소
-    /// </summary>
-    public void MinusAliveMonsterCount()
-    {
-        if(_aliveMonsterCount <= 0) return;
-        _aliveMonsterCount--;
-        OnChangeAliveMonsterCount?.Invoke(_aliveMonsterCount);
-        DebugTool.Log($"{_controller.gameObject.name} Monster Out, Current Monster : {_aliveMonsterCount}", DebugType.Node, this);
-    }
-
-    /// <summary>
-    /// 웨이브 1회 클리어 시
-    /// </summary>
-    public void ClearOneWave()
-    {
-        if(_remainingWaveCount <= 0) return;
-        _remainingWaveCount--;
-        OnChangeRemainingWaveCount?.Invoke(_remainingWaveCount);
-        DebugTool.Log($"{_controller.gameObject.name} Wave Clear, Remain Wave : {_remainingWaveCount}", DebugType.Node, this);
-    }
-    
-    // /// <summary>
-    // /// 시작 위치에 따른 스폰 포인트 지정
-    // /// </summary>
-    // /// <param name="dir">플레이어 입장 위치(노드 시작 지점)</param>
-    // private void SetSpawnPoint(NodeStartDir dir)
-    // {
-    //     MonsterSpawnPoint tempUp = TeleportBeacon_Up.GetComponent<MonsterSpawnPoint>();
-    //     MonsterSpawnPoint tempDown = TeleportBeacon_Down.GetComponent<MonsterSpawnPoint>();
-    //     MonsterSpawnPoint tempLeft = TeleportBeacon_Left.GetComponent<MonsterSpawnPoint>();
-    //     MonsterSpawnPoint tempRight = TeleportBeacon_Right.GetComponent<MonsterSpawnPoint>();
-    //     
-    //     switch (dir)
-    //     {
-    //         case NodeStartDir.Down:
-    //             MonsterSpawnPoints[0] = tempLeft.SpawnPoint;
-    //             MonsterSpawnPoints[1] = tempUp.SpawnPoint;
-    //             MonsterSpawnPoints[2] = tempRight.SpawnPoint;
-    //             MonsterSpawnPoints[3] = tempDown.SpawnPoint;
-    //             break;
-    //         case NodeStartDir.Left:
-    //             MonsterSpawnPoints[0] = tempUp.SpawnPoint;
-    //             MonsterSpawnPoints[1] = tempRight.SpawnPoint;
-    //             MonsterSpawnPoints[2] = tempDown.SpawnPoint;
-    //             MonsterSpawnPoints[3] = tempLeft.SpawnPoint;
-    //             break;
-    //         case NodeStartDir.Up:
-    //             MonsterSpawnPoints[0] = tempRight.SpawnPoint;
-    //             MonsterSpawnPoints[1] = tempDown.SpawnPoint;
-    //             MonsterSpawnPoints[2] = tempLeft.SpawnPoint;
-    //             MonsterSpawnPoints[3] = tempUp.SpawnPoint;
-    //             break;
-    //         case NodeStartDir.Right:
-    //             MonsterSpawnPoints[0] = tempDown.SpawnPoint;
-    //             MonsterSpawnPoints[1] = tempLeft.SpawnPoint;
-    //             MonsterSpawnPoints[2] = tempUp.SpawnPoint;
-    //             MonsterSpawnPoints[3] = tempRight.SpawnPoint;
-    //             break;
-    //     }
-    // }
     
     #endregion
 }

@@ -5,7 +5,8 @@ public enum NodeEventType
 {
     NoEvent,
     MonsterSpawn,
-    MonsterEnhance,
-    SupplyItem,
-    VoteSetting
+    VoteSetting,
+    PlayerCheck,
+    GameClear,
+    GameOver
 }

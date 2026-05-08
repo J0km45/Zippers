@@ -18,7 +18,7 @@ public class EscapeNodeReadyAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.PlayerCheck,0);
     }
 
     public void RunningState()
@@ -50,7 +50,7 @@ public class EscapeNodeBattleAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.Data.SetNodeState(NodeState.Clear);
     }
 
     public void RunningState()
@@ -82,7 +82,7 @@ public class EscapeNodeClearAction : INodeAction
     
     public void EnterState()
     {
-        
+        _controller.Controller.EventController.SetCurrentEvent(NodeEventType.GameClear,0);
     }
 
     public void RunningState()
