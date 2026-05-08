@@ -25,9 +25,9 @@ public class RoomUI : MonoBehaviour
     {
         BindEvents();
         ResetInteractables();
-        if (LobbyManager.Instance.CurrentSession != null)
+        if (LobbyManagerSample.Instance.CurrentSession != null)
         {
-            Refresh(LobbyManager.Instance.CurrentSession);
+            Refresh(LobbyManagerSample.Instance.CurrentSession);
         }
     }
 
@@ -48,13 +48,13 @@ public class RoomUI : MonoBehaviour
     private void BindEvents()
     {
         BindButtonEvents();
-        BindLobbyManagerEvents();
+        BindLobbyManagerSampleEvents();
     }
 
     private void UnbindEvents()
     {
         UnbindButtonEvents();
-        UnbindLobbyManagerEvents();
+        UnbindLobbyManagerSampleEvents();
     }
 
     private void BindButtonEvents()
@@ -69,18 +69,18 @@ public class RoomUI : MonoBehaviour
         _leaveButton.onClick.RemoveListener(OnLeaveClicked);
     }
 
-    private void BindLobbyManagerEvents()
+    private void BindLobbyManagerSampleEvents()
     {
-        LobbyManager.Instance.OnSessionUpdated += Refresh;
-        LobbyManager.Instance.OnGameStarting += OnGameStarting;
-        LobbyManager.Instance.OnRestartCooldownEnded += RefreshReadyButton;
+        LobbyManagerSample.Instance.OnSessionUpdated += Refresh;
+        LobbyManagerSample.Instance.OnGameStarting += OnGameStarting;
+        LobbyManagerSample.Instance.OnRestartCooldownEnded += RefreshReadyButton;
     }
 
-    private void UnbindLobbyManagerEvents()
+    private void UnbindLobbyManagerSampleEvents()
     {
-        LobbyManager.Instance.OnSessionUpdated -= Refresh;
-        LobbyManager.Instance.OnGameStarting -= OnGameStarting;
-        LobbyManager.Instance.OnRestartCooldownEnded -= RefreshReadyButton;
+        LobbyManagerSample.Instance.OnSessionUpdated -= Refresh;
+        LobbyManagerSample.Instance.OnGameStarting -= OnGameStarting;
+        LobbyManagerSample.Instance.OnRestartCooldownEnded -= RefreshReadyButton;
     }
 
     private void Refresh(ISession session)
@@ -98,8 +98,8 @@ public class RoomUI : MonoBehaviour
         bool isLocalHost = session.CurrentPlayer != null && session.CurrentPlayer.Id == session.Host;
         if (!isLocalHost && session.CurrentPlayer != null)
         {
-            string readyValue = LobbyManager.GetPlayerProperty(session.CurrentPlayer, LobbyConstants.KEY_PLAYER_READY);
-            _isLocalPlayerReady = readyValue == LobbyConstants.VALUE_TRUE;
+            string readyValue = LobbyManagerSample.GetPlayerProperty(session.CurrentPlayer, LobbyConstantsTest.KEY_PLAYER_READY);
+            _isLocalPlayerReady = readyValue == LobbyConstantsTest.VALUE_TRUE;
         }
         else
         {
@@ -122,16 +122,16 @@ public class RoomUI : MonoBehaviour
     private void ApplyPlayerToSlot(ISession session, int index)
     {
         IReadOnlyPlayer player = session.Players[index];
-        string playerName = LobbyManager.GetPlayerProperty(player, LobbyConstants.KEY_PLAYER_NAME) ?? "Player";
-        string readyValue = LobbyManager.GetPlayerProperty(player, LobbyConstants.KEY_PLAYER_READY);
-        bool isReady = readyValue == LobbyConstants.VALUE_TRUE;
+        string playerName = LobbyManagerSample.GetPlayerProperty(player, LobbyConstantsTest.KEY_PLAYER_NAME) ?? "Player";
+        string readyValue = LobbyManagerSample.GetPlayerProperty(player, LobbyConstantsTest.KEY_PLAYER_READY);
+        bool isReady = readyValue == LobbyConstantsTest.VALUE_TRUE;
         bool isHost = player.Id == session.Host;
         _playerSlots[index].SetPlayer(playerName, isReady, isHost);
     }
 
     private void RefreshReadyButton()
     {
-        bool isHost = LobbyManager.Instance.IsHost;
+        bool isHost = LobbyManagerSample.Instance.IsHost;
 
         _readyButtonLabel.text = isHost
             ? "게임 시작"
@@ -139,7 +139,7 @@ public class RoomUI : MonoBehaviour
 
         if (!_isProcessingReady)
         {
-            _readyButton.interactable = !isHost || LobbyManager.Instance.CanHostStartGame;
+            _readyButton.interactable = !isHost || LobbyManagerSample.Instance.CanHostStartGame;
         }
         _leaveButton.interactable = true;
     }
@@ -181,8 +181,8 @@ public class RoomUI : MonoBehaviour
         {
             IReadOnlyPlayer player = session.Players[i];
             if (player.Id == session.Host) continue;
-            string ready = LobbyManager.GetPlayerProperty(player, LobbyConstants.KEY_PLAYER_READY);
-            if (ready == LobbyConstants.VALUE_TRUE) count++;
+            string ready = LobbyManagerSample.GetPlayerProperty(player, LobbyConstantsTest.KEY_PLAYER_READY);
+            if (ready == LobbyConstantsTest.VALUE_TRUE) count++;
         }
         return count;
     }
@@ -194,13 +194,13 @@ public class RoomUI : MonoBehaviour
         _readyButton.interactable = false;
         try
         {
-            if (LobbyManager.Instance.IsHost)
+            if (LobbyManagerSample.Instance.IsHost)
             {
-                await LobbyManager.Instance.TryStartGameAsHostAsync();
+                await LobbyManagerSample.Instance.TryStartGameAsHostAsync();
             }
             else
             {
-                await LobbyManager.Instance.SetReadyAsync(!_isLocalPlayerReady);
+                await LobbyManagerSample.Instance.SetReadyAsync(!_isLocalPlayerReady);
             }
         }
         finally
@@ -213,7 +213,7 @@ public class RoomUI : MonoBehaviour
     private async void OnLeaveClicked()
     {
         _leaveButton.interactable = false;
-        await LobbyManager.Instance.LeaveSessionAsync();
+        await LobbyManagerSample.Instance.LeaveSessionAsync();
     }
 
     private void OnGameStarting()

@@ -7,12 +7,15 @@ using Unity.Netcode;
 using Unity.Services.Multiplayer;
 
 /// <summary>
-/// 세션(Lobby + Relay + NGO 통합) 진입/퇴장과 게임 시작을 총괄하는 싱글톤 매니저.
+/// [SAMPLE / 참조용] 세션(Lobby + Relay + NGO 통합) 진입/퇴장과 게임 시작을 총괄하는 싱글톤 매니저.
 /// Unity Services Multiplayer Sessions API 위에서 동작함.
+///
+/// 본 코드는 NetworkSample 씬 흐름의 참조 구현이며, production 코드는
+/// Zippers.Network.LobbyManager (Assets/Scripts/이수형/Network/Core/LobbyManager.cs) 로 이전 중.
 /// </summary>
-public class LobbyManager : MonoBehaviour
+public class LobbyManagerSample : MonoBehaviour
 {
-    public static LobbyManager Instance { get; private set; }
+    public static LobbyManagerSample Instance { get; private set; }
 
     [SerializeField] private LobbySettings _settings;
 
@@ -316,9 +319,9 @@ public class LobbyManager : MonoBehaviour
     private async Task UpdateLocalReadyPropertyAsync(bool isReady)
     {
         if (_session == null) return;
-        string value = isReady ? LobbyConstants.VALUE_TRUE : LobbyConstants.VALUE_FALSE;
+        string value = isReady ? LobbyConstantsTest.VALUE_TRUE : LobbyConstantsTest.VALUE_FALSE;
         _session.CurrentPlayer.SetProperty(
-            LobbyConstants.KEY_PLAYER_READY,
+            LobbyConstantsTest.KEY_PLAYER_READY,
             new PlayerProperty(value, VisibilityPropertyOptions.Member));
         await _session.SaveCurrentPlayerDataAsync();
     }
@@ -344,7 +347,7 @@ public class LobbyManager : MonoBehaviour
             await host.SavePropertiesAsync();
             OnGameStarting?.Invoke();
 
-            if (!SceneLoader.LoadNetworked(SceneId.Game))
+            if (!SceneLoaderTest.LoadNetworked(SceneIdTest.Game))
             {
                 _isStartingGame = false;
                 return false;
@@ -396,7 +399,7 @@ public class LobbyManager : MonoBehaviour
 
         if (IsHost)
         {
-            SceneLoader.LoadNetworked(SceneId.Lobby);
+            SceneLoaderTest.LoadNetworked(SceneIdTest.Lobby);
         }
     }
 
@@ -494,8 +497,8 @@ public class LobbyManager : MonoBehaviour
             IReadOnlyPlayer player = _session.Players[i];
             if (player.Id == _session.Host) continue;
             hasNonHost = true;
-            string ready = GetPlayerProperty(player, LobbyConstants.KEY_PLAYER_READY);
-            if (ready != LobbyConstants.VALUE_TRUE) return false;
+            string ready = GetPlayerProperty(player, LobbyConstantsTest.KEY_PLAYER_READY);
+            if (ready != LobbyConstantsTest.VALUE_TRUE) return false;
         }
         return hasNonHost;
     }
@@ -504,8 +507,8 @@ public class LobbyManager : MonoBehaviour
     {
         return new Dictionary<string, PlayerProperty>
         {
-            { LobbyConstants.KEY_PLAYER_NAME, new PlayerProperty(_playerName, VisibilityPropertyOptions.Member) },
-            { LobbyConstants.KEY_PLAYER_READY, new PlayerProperty(LobbyConstants.VALUE_FALSE, VisibilityPropertyOptions.Member) }
+            { LobbyConstantsTest.KEY_PLAYER_NAME, new PlayerProperty(_playerName, VisibilityPropertyOptions.Member) },
+            { LobbyConstantsTest.KEY_PLAYER_READY, new PlayerProperty(LobbyConstantsTest.VALUE_FALSE, VisibilityPropertyOptions.Member) }
         };
     }
 
