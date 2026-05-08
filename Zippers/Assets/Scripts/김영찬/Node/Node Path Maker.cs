@@ -59,8 +59,8 @@ public class NodePathMaker
             else if (i == _difficultyData.PathNodeCount - 1)
             {
                 if(canMoveUpperSide) tempUp = NodeType.Escape;
-                if(canMoveLeftSide) tempLeft = NodeType.Escape;
-                if(canMoveRightSide) tempRight = NodeType.Escape;
+                if(canMoveLeftSide) tempLeft = NodeType.Empty;
+                if(canMoveRightSide) tempRight = NodeType.Empty;
             }
             else
             {
