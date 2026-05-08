@@ -5,6 +5,7 @@ using UnityEngine;
 public class ZombieSpawnManager : MonoBehaviour
 {
     [SerializeField] private ZombieCountManager _zombieCount;
+    [SerializeField] private NodeManager _nodeManager;
     [Tooltip("좀비 프리팹 SO")]
     [SerializeField] private ZombiePrefabsSO _zombiePrefabsSO;
     [Tooltip("스포너 위치")]
@@ -66,7 +67,7 @@ public class ZombieSpawnManager : MonoBehaviour
         GameObject obj = PoolManager.Instance.Get(prefab, spawnPos, spawnPoint.rotation);
         if(obj.TryGetComponent(out ZombieController zombie))
         {
-            zombie.Init(_zombieCount);
+            zombie.Init(_zombieCount, _nodeManager);
         }
     }
 }

@@ -1,4 +1,4 @@
 public interface IResourceCollectable
 {
-    void CollectResource(ResourcesType type, int amount);
+    void CollectResource(ResourcesType type, float amount);
 }
