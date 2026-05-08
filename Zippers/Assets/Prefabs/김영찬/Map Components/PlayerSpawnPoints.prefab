@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3cdd268be739d41b6d24c4d34bf0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawnPointGizmo
+  isGizmoActive: 1
 --- !u!1 &4851488571638175052
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3cdd268be739d41b6d24c4d34bf0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawnPointGizmo
+  isGizmoActive: 1
 --- !u!1 &6082504465699312355
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,6 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3cdd268be739d41b6d24c4d34bf0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawnPointGizmo
+  isGizmoActive: 1
 --- !u!1 &6957080238103406577
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +144,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4523033693698552276}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: PlayerSpawnPoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,3 +214,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3cdd268be739d41b6d24c4d34bf0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawnPointGizmo
+  isGizmoActive: 1
