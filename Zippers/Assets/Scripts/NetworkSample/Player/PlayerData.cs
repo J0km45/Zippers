@@ -21,7 +21,7 @@ public class PlayerData : NetworkBehaviour
         NetworkVariableWritePermission.Owner);
 
     /// <summary>
-    /// NGO 동기화된 플레이어 이름. Owner가 spawn 시 LobbyManager에서 한 번 미러링
+    /// NGO 동기화된 플레이어 이름. Owner가 spawn 시 LobbyManagerSample에서 한 번 미러링
     /// </summary>
     public string PlayerName => _playerName.Value.ToString();
 
@@ -30,6 +30,6 @@ public class PlayerData : NetworkBehaviour
         if (!IsOwner) return;
         // Lobby PlayerProperty의 이름을 in-game NetworkVariable로 한 번 미러링.
         // 이후 다른 클라들은 NetworkVariable 변경 이벤트로 자동 인지
-        _playerName.Value = new FixedString64Bytes(LobbyManager.Instance.PlayerName);
+        _playerName.Value = new FixedString64Bytes(LobbyManagerSample.Instance.PlayerName);
     }
 }

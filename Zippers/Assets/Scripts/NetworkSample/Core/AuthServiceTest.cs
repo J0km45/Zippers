@@ -6,7 +6,7 @@ using Unity.Services.Core;
 /// <summary>
 /// UGS(Unity Gaming Service) Core 초기화 + 익명 로그인.
 /// </summary>
-public static class AuthService
+public static class AuthServiceTest
 {
     public static async Task InitializeAsync()
     {
@@ -20,6 +20,6 @@ public static class AuthService
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
 
-        Debug.Log($"AuthService: 로그인 완료: {AuthenticationService.Instance.PlayerId}");
+        Debug.Log($"AuthServiceTest: 로그인 완료: {AuthenticationService.Instance.PlayerId}");
     }
 }

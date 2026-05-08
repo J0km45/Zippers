@@ -50,6 +50,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     public ZombieSfxController Sfx { get; private set; }
     public IZombieAttack ZombieAttack { get; private set; }
     public Transform Player { get; private set; }
+    public NodeManager NodeManager { get; private set; }
     public LayerMask PlayerLayer => _playerLayer;
     public Transform LeftHand => _leftHand;
     public Transform RightHand => _rightHand;
@@ -59,12 +60,12 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     public float CurrentHp; //임시(테스트용)
 
     public ZombieType Type => _stat.ZombieType;
-    public float MaxHp => _stat.MaxHealth;
-    public float MoveSpeed => _stat.BaseMoveSpeed;
-    public float DetectMoveSpeed => _stat.ChasingMoveSpeed;
+    public float MaxHp => _stat.MaxHealth * NodeScaling.GetMultiplier(NodeManager.BattleCount).Health;
+    public float MoveSpeed => _stat.BaseMoveSpeed * NodeScaling.GetMultiplier(NodeManager.BattleCount).MoveSpeed;
+    public float DetectMoveSpeed => _stat.ChasingMoveSpeed * NodeScaling.GetMultiplier(NodeManager.BattleCount).MoveSpeed;
     public float MinAttackDamage => _stat.MinDamage;
     public float MaxAttackDamage => _stat.MaxDamage;
-    public float AttackCooldown => _stat.AttackSpeed;
+    public float AttackCooldown => _stat.AttackSpeed * NodeScaling.GetMultiplier(NodeManager.BattleCount).AttackSpeed;
     public float HandRadius => _stat.HandRadius;
     public float AttackRange => _stat.AttackRange;
     public float DetectRange => _stat.DetectionRange;
@@ -102,15 +103,17 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     //    }
     //}
 
-    public void Init(ZombieCountManager zombieCount)
+    public void Init(ZombieCountManager zombieCount, NodeManager nodeManager)
     {
         _zombieCount = zombieCount;
+        NodeManager = nodeManager;
+        ResetZombie();
         _zombieCount.AddCount();
     }
 
     public void OnSpawn()
     {
-        ResetZombie();
+        
     }
 
     private void ResetZombie()
@@ -280,6 +283,15 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         if (randomChance > dropChance) return;
 
         int amount = Random.Range(minAmount, maxAmount + 1);
+        float finalAmount = amount;
+        if (type == ResourcesType.Scrap)
+        {
+            finalAmount *= NodeScaling.GetMultiplier(NodeManager.BattleCount).ScrapDrop;
+        }
+        else if (type == ResourcesType.Supplies)
+        {
+            finalAmount *= NodeScaling.GetMultiplier(NodeManager.BattleCount).SupplyDrop;
+        }
 
         Vector2 randomPos = Random.insideUnitCircle;
         Vector3 spawnPos = transform.position + new Vector3(randomPos.x, 0, randomPos.y);
@@ -288,7 +300,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
 
         if (obj.TryGetComponent(out Reward reward))
         {
-            reward.Init(type, amount);
+            reward.Init(type, finalAmount);
         }
     }
 
