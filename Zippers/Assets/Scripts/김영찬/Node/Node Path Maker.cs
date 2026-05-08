@@ -22,13 +22,14 @@ public class NodePathMaker
     {
         _nodeManager = nodeManager;
         Path = new();
+        _weightInfo = new();
     }
 
     public void MakePath(NodeDifficulty difficulty)
     {
-        _weightInfo = new();
-        _sumWeight = 0;
         Path.Clear();
+        _weightInfo.Clear();
+        _sumWeight = 0;
         
         _difficultyData = _nodeManager.DataContainer.GetDifficultyData(difficulty);
         
@@ -58,8 +59,8 @@ public class NodePathMaker
             else if (i == _difficultyData.PathNodeCount - 1)
             {
                 if(canMoveUpperSide) tempUp = NodeType.Escape;
-                if(canMoveLeftSide) tempLeft = NodeType.Escape;
-                if(canMoveRightSide) tempRight = NodeType.Escape;
+                if(canMoveLeftSide) tempLeft = NodeType.Empty;
+                if(canMoveRightSide) tempRight = NodeType.Empty;
             }
             else
             {

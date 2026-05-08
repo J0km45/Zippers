@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4010873454602250293}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TeleportBeaconBundle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,6 +87,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TeleportBeacon_Right
       objectReference: {fileID: 0}
+    - target: {fileID: 6915479819076687034, guid: d89d10da7dfec284b9cd1116767b7e62, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -148,6 +152,10 @@ PrefabInstance:
     - target: {fileID: 6915479819076687034, guid: d89d10da7dfec284b9cd1116767b7e62, type: 3}
       propertyPath: m_Name
       value: TeleportBeacon_Down
+      objectReference: {fileID: 0}
+    - target: {fileID: 6915479819076687034, guid: d89d10da7dfec284b9cd1116767b7e62, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -218,6 +226,10 @@ PrefabInstance:
     - target: {fileID: 6915479819076687034, guid: d89d10da7dfec284b9cd1116767b7e62, type: 3}
       propertyPath: m_Name
       value: TeleportBeacon_Up
+      objectReference: {fileID: 0}
+    - target: {fileID: 6915479819076687034, guid: d89d10da7dfec284b9cd1116767b7e62, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7062132372806643751, guid: d89d10da7dfec284b9cd1116767b7e62, type: 3}
       propertyPath: m_AreaSize.x
@@ -296,6 +308,10 @@ PrefabInstance:
     - target: {fileID: 6915479819076687034, guid: d89d10da7dfec284b9cd1116767b7e62, type: 3}
       propertyPath: m_Name
       value: TeleportBeacon_Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 6915479819076687034, guid: d89d10da7dfec284b9cd1116767b7e62, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
