@@ -11,19 +11,23 @@ public class ZombieSpawnManager : MonoBehaviour
     [Tooltip("스포너 위치")]
     [SerializeField] private Transform[] _spawnPoints;
 
+    public bool IsSpawnStopped { get; private set; }
+
     public void StartWave(int waveId)
     {
+        IsSpawnStopped = false;
         List<WaveSpawnEntry> groups = LocalDataAccess.Instance.Game.GetWaveSpawns(waveId);
 
         foreach (WaveSpawnEntry group in groups)
         {
-            DebugTool.Log($"웨이브 {waveId} 그룹 {group.GroupIndex} 대기", DebugType.Zombie, this);
+            DebugTool.Log($"웨이브 {waveId} 그룹 {group.GroupIndex} 스폰 대기", DebugType.Zombie, this);
             StartCoroutine(SpawnGroup(group));
         }
     }
 
     private IEnumerator SpawnGroup(WaveSpawnEntry group)
     {
+        if (IsSpawnStopped) yield break;
         if (group.BatchCount <= 0) yield break;
 
         if (_spawnPoints == null || _spawnPoints.Length == 0)
@@ -33,12 +37,14 @@ public class ZombieSpawnManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(group.StartDelay);
-        DebugTool.Log($"그룹 {group.GroupIndex} 시작", DebugType.Zombie, this);
+        if (IsSpawnStopped) yield break;
+        DebugTool.Log($"그룹 {group.GroupIndex} 스폰 시작", DebugType.Zombie, this);
 
         int spawnedCount = 0;
 
         while (spawnedCount < group.Count)
         {
+            if (IsSpawnStopped) yield break;
             int remainCount = group.Count - spawnedCount;
             int spawnCount = Mathf.Min(group.BatchCount, remainCount);
 
@@ -77,5 +83,15 @@ public class ZombieSpawnManager : MonoBehaviour
     public void SetSpawnPoint(Transform[] points)
     {
         _spawnPoints = points;
+    }
+
+    /// <summary>
+    /// 플레이어 전멸 시 호출하거나 이벤트 구독하여 스폰을 중지할 때 사용
+    /// </summary>
+    // TODO: 호출 or 이벤트 사용
+    public void StopSpawn()
+    {
+        IsSpawnStopped = true;
+        DebugTool.Log("좀비 스폰 중지", DebugType.Zombie, this);
     }
 }
