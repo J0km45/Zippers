@@ -70,4 +70,12 @@ public class ZombieSpawnManager : MonoBehaviour
             zombie.Init(_zombieCount, _nodeManager);
         }
     }
+
+    /// <summary>
+    /// 스폰 포인트 설정
+    /// </summary>
+    public void SetSpawnPoint(Transform[] points)
+    {
+        _spawnPoints = points;
+    }
 }
