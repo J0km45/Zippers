@@ -201,11 +201,9 @@ MonoBehaviour:
   _groanSfxInterval: 3
   _groanSfxChance: 0.3
   _stunDuration: 0.2
-  _scrapPrefab: {fileID: 7183387426499127232, guid: c3bc54be9080bb7409228b1187f20b7b, type: 3}
-  _suppliesPrefab: {fileID: 4848725834299096850, guid: 8f68980263495a64a9f574ceee724927, type: 3}
-  _infectionSamplePrefab: {fileID: 4604897062321837468, guid: 1581bca0d9b4e0641a38b9563f4029f1, type: 3}
+  _playerDetectInterval: 0.5
+  _resourceSO: {fileID: 11400000, guid: 1029e2828df1523439dc573216007714, type: 2}
   CurrentHp: 0
-  Player: {fileID: 0}
 --- !u!114 &7950968537378865311
 MonoBehaviour:
   m_ObjectHideFlags: 0

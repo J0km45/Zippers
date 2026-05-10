@@ -23,12 +23,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     [SerializeField] private float _playerDetectInterval = 0.5f;
 
     [Header("재화 프리팹")]
-    [Tooltip("개인 재화")]
-    [SerializeField] private GameObject _scrapPrefab;
-    [Tooltip("팀 재화")]
-    [SerializeField] private GameObject _suppliesPrefab;
-    [Tooltip("메타 재화")]
-    [SerializeField] private GameObject _infectionSamplePrefab;
+    [SerializeField] private ResourceSo _resourceSO;
 
     private StateMachine _stateMachine;
     private ZombieCountManager _zombieCount;
@@ -272,12 +267,12 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         _hasSpawnedReward = true;
 
         Sfx.PlayDropResourcesSfx(ResourcesType.Scrap);
-        TrySpawnReward(_scrapPrefab, ResourcesType.Scrap, ScrapDropChance, MinScrap, MaxScrap);
-        TrySpawnReward(_suppliesPrefab, ResourcesType.Supplies, SuppliesDropChance, MinSupplies, MaxSupplies);
-        TrySpawnReward(_infectionSamplePrefab, ResourcesType.InfectionSample, SampleDropChance, InfectionSample, InfectionSample);
+        TrySpawnReward(ResourcesType.Scrap, ScrapDropChance, MinScrap, MaxScrap);
+        TrySpawnReward(ResourcesType.Supplies, SuppliesDropChance, MinSupplies, MaxSupplies);
+        TrySpawnReward(ResourcesType.InfectionSample, SampleDropChance, InfectionSample, InfectionSample);
     }
 
-    private void TrySpawnReward(GameObject prefab, ResourcesType type, float dropChance, int minAmount, int maxAmount)
+    private void TrySpawnReward(ResourcesType type, float dropChance, int minAmount, int maxAmount)
     {
         float randomChance = Random.Range(0f, 100f);
         if (randomChance > dropChance) return;
@@ -296,7 +291,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         Vector2 randomPos = Random.insideUnitCircle;
         Vector3 spawnPos = transform.position + new Vector3(randomPos.x, 0, randomPos.y);
 
-        GameObject obj = PoolManager.Instance.Get(prefab, spawnPos, Quaternion.identity);
+        GameObject obj = PoolManager.Instance.Get(_resourceSO.GetResource(type), spawnPos, Quaternion.identity);
 
         if (obj.TryGetComponent(out Reward reward))
         {
