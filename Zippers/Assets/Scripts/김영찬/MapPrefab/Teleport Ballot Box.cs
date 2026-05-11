@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class TeleportBallotBox : MonoBehaviour
 {
-    [SerializeField] BoxCollider _collider;
-
     private int _votePlayer;
     public event Action<int> OnVoteChange;
-    
+
+    private void OnEnable()
+    {
+        _votePlayer = 0;
+        OnVoteChange?.Invoke(_votePlayer);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(_votePlayer >= 4) return;

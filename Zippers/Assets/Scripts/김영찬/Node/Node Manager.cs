@@ -33,7 +33,7 @@ public class NodeManager : MonoBehaviour
     /// <summary>
     /// 전투회수가 변경 될 때 전파
     /// </summary>
-    public event Action<int> OnBattleCountChanged; 
+    public event Action<int> OnBattleCountChanged;
 
     private void Awake()
     {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 198949429497909459}
   - component: {fileID: 1187359215629206792}
   - component: {fileID: 8716442711306571313}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: NoPlayerZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6fc1a4cdd81db3449776dc35a7be0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NoPlayerZoneGizmo
+  isGizmoActive: 1
 --- !u!1 &7577282370254030786
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,3 +112,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e421b5712bca9e84790d3c1384d614f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterSpawnPointGizmo
+  isGizmoActive: 1

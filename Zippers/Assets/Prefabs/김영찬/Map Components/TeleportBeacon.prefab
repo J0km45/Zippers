@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 2983597347395930984}
   - component: {fileID: 5210941419540571964}
   - component: {fileID: -5759871174124136151}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TeleportBeacon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01783cb7ebcfad4997ec02a2f752312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallotBoxGizmo
+  isGizmoActive: 1
 --- !u!1 &8842294215439299706
 GameObject:
   m_ObjectHideFlags: 0

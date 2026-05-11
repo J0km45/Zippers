@@ -55,6 +55,27 @@ public class PlayerTransformList : MonoBehaviour
         return _playerPosition.Count;
     }
 
+    public Transform GetClosestPlayer(Vector3 pos)
+    {
+        if(_playerPosition.Count == 0) return null;
+
+        Transform closestPlayer = null;
+        float closestDistance = float.MaxValue;
+
+        foreach (Transform player in _playerPosition)
+        {
+            if (player == null) continue;
+            float distance = Vector3.Distance(pos, player.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestPlayer = player;
+            }
+        }
+
+        return closestPlayer;
+    }
+
     //null이 된 플레이어 List에서 제거
     public void RemoveNullPlayer()
     {

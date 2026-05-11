@@ -19,6 +19,8 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     [SerializeField] private float _groanSfxChance = 0.3f;
     [Tooltip("피격 시 경직 시간")]
     [SerializeField] private float _stunDuration = 0.2f;
+    [Tooltip("플레이어 감지 주기")]
+    [SerializeField] private float _playerDetectInterval = 0.5f;
 
     [Header("재화 프리팹")]
     [Tooltip("개인 재화")]
@@ -33,8 +35,10 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     private bool _isDead; // 죽음 상태 여부
     private bool _hasSpawnedReward; // 보상 생성 여부
     private bool _isCountRemoved; // 카운트 제거 여부
-    private float _timer; // Groan Sfx 재생용 타이머
-    private float _lastAttackTime = 0f; // 공격 쿨타임 관리용 시간
+    private float _groanSfxTimer; // Groan Sfx 재생용 타이머
+    private float _lastAttackTime; // 공격 쿨타임 관리용 시간
+    private float _playerDetectTimer; // 플레이어 감지용 타이머
+    private float _healthRegenTimer; // 체력 재생용 타이머
 
     public ZombieChaseState Chase { get; private set; }
     public ZombieAttackState Attack { get; private set; }
@@ -45,6 +49,8 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     public Animator Animator { get; private set; }
     public ZombieSfxController Sfx { get; private set; }
     public IZombieAttack ZombieAttack { get; private set; }
+    public Transform Player { get; private set; }
+    public NodeManager NodeManager { get; private set; }
     public LayerMask PlayerLayer => _playerLayer;
     public Transform LeftHand => _leftHand;
     public Transform RightHand => _rightHand;
@@ -52,18 +58,19 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
 
     //public NetworkVariable<int> CurrentHp = new NetworkVariable<float>();
     public float CurrentHp; //임시(테스트용)
-    public Transform Player;
 
     public ZombieType Type => _stat.ZombieType;
-    public float MaxHp => _stat.MaxHealth;
-    public float MoveSpeed => _stat.BaseMoveSpeed;
-    public float DetectMoveSpeed => _stat.ChasingMoveSpeed;
+    public float MaxHp => _stat.MaxHealth * NodeScaling.GetMultiplier(NodeManager.BattleCount).Health;
+    public float MoveSpeed => _stat.BaseMoveSpeed * NodeScaling.GetMultiplier(NodeManager.BattleCount).MoveSpeed;
+    public float DetectMoveSpeed => _stat.ChasingMoveSpeed * NodeScaling.GetMultiplier(NodeManager.BattleCount).MoveSpeed;
     public float MinAttackDamage => _stat.MinDamage;
     public float MaxAttackDamage => _stat.MaxDamage;
-    public float AttackCooldown => _stat.AttackSpeed;
+    public float AttackCooldown => _stat.AttackSpeed * NodeScaling.GetMultiplier(NodeManager.BattleCount).AttackSpeed;
     public float HandRadius => _stat.HandRadius;
     public float AttackRange => _stat.AttackRange;
     public float DetectRange => _stat.DetectionRange;
+    public float HealthRegen => _stat.HealthRegen;
+    public float HealthPeriod => _stat.HealthPeriod;
 
     public int MinScrap => _stat.MinScrap;
     public int MaxScrap => _stat.MaxScrap;
@@ -96,15 +103,17 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     //    }
     //}
 
-    public void Init(ZombieCountManager zombieCount)
+    public void Init(ZombieCountManager zombieCount, NodeManager nodeManager)
     {
         _zombieCount = zombieCount;
+        NodeManager = nodeManager;
+        ResetZombie();
         _zombieCount.AddCount();
     }
 
     public void OnSpawn()
     {
-        ResetZombie();
+        
     }
 
     private void ResetZombie()
@@ -115,8 +124,10 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
 
         CurrentHp = MaxHp;
 
-        _timer = 0f;
+        _groanSfxTimer = 0f;
         _lastAttackTime = 0f;
+        _playerDetectTimer = 0f;
+        _healthRegenTimer = 0f;
 
         if (TryGetComponent(out Collider collider))
         {
@@ -127,13 +138,14 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         Agent.isStopped = false;
         Agent.stoppingDistance = AttackRange;
 
+        RefreshPlayer();
         ChangeState(Chase);
     }
 
     public void OnDespawn()
     {
         if (_isCountRemoved) return;
-        
+
         _isCountRemoved = true;
         _zombieCount.RemoveCount();
     }
@@ -141,8 +153,8 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     private void Update()
     {
         PlayGroanSfx();
-        // TODO : 플레이어 위치 받아오는거 필요함
-        //Player = 가장 가까운 생존 플레이어
+        UpdatePlayer();
+        RegenHealth();
         _stateMachine.Update();
     }
 
@@ -150,11 +162,11 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     {
         if (_isDead) return;
         // TODO : NGO 적용되면 서버에서 타이머 관리하도록 변경
-        _timer += Time.deltaTime;
+        _groanSfxTimer += Time.deltaTime;
 
-        if (_timer >= _groanSfxInterval)
+        if (_groanSfxTimer >= _groanSfxInterval)
         {
-            _timer = 0f;
+            _groanSfxTimer = 0f;
             if (Random.value < _groanSfxChance)
             {
                 if (Type == ZombieType.Boss)
@@ -166,6 +178,38 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
                     Sfx.PlayGroanSfx();
                 }
             }
+        }
+    }
+
+    private void UpdatePlayer()
+    {
+        // TODO : NGO 적용되면 서버시간으로 변경
+        _playerDetectTimer += Time.deltaTime;
+
+        if (_playerDetectTimer < _playerDetectInterval) return;
+
+        _playerDetectTimer = 0f;
+        RefreshPlayer();
+    }
+    
+    private void RefreshPlayer() 
+        => Player = PlayerTransformList.instance.GetClosestPlayer(transform.position);
+
+    private void RegenHealth()
+    {
+        if (_isDead) return;
+        if (CurrentHp >= MaxHp) return;
+
+        // TODO : NGO 적용되면 서버시간으로 변경
+        _healthRegenTimer += Time.deltaTime;
+
+        if(_healthRegenTimer >= HealthPeriod)
+        {
+            _healthRegenTimer = 0f;
+            float helathRegenAmount = MaxHp * (HealthRegen / 100f);
+            CurrentHp += helathRegenAmount;
+            CurrentHp = Mathf.Min(CurrentHp, MaxHp);
+            DebugTool.Log($"좀비 체력 회복: {helathRegenAmount}, 현재 체력: {CurrentHp}", DebugType.Zombie, this);
         }
     }
 
@@ -208,6 +252,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
 
         Sfx.PlayHitSfx();
         CurrentHp -= damage;
+        DebugTool.Log($"좀비가 {damage} 데미지 입음. 현재 체력: {CurrentHp}", DebugType.Zombie, this);
 
         if (CurrentHp <= 0)
         {
@@ -238,6 +283,15 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         if (randomChance > dropChance) return;
 
         int amount = Random.Range(minAmount, maxAmount + 1);
+        float finalAmount = amount;
+        if (type == ResourcesType.Scrap)
+        {
+            finalAmount *= NodeScaling.GetMultiplier(NodeManager.BattleCount).ScrapDrop;
+        }
+        else if (type == ResourcesType.Supplies)
+        {
+            finalAmount *= NodeScaling.GetMultiplier(NodeManager.BattleCount).SupplyDrop;
+        }
 
         Vector2 randomPos = Random.insideUnitCircle;
         Vector3 spawnPos = transform.position + new Vector3(randomPos.x, 0, randomPos.y);
@@ -246,7 +300,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
 
         if (obj.TryGetComponent(out Reward reward))
         {
-            reward.Init(type, amount);
+            reward.Init(type, finalAmount);
         }
     }
 
