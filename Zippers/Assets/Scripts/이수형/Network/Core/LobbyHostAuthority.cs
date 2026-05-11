@@ -23,7 +23,7 @@ public class LobbyHostAuthority : NetworkBehaviour
 
     // ── Inspector: 클래스별 prefab + 슬롯 위치 ─────────────────────
     [Header("Class Prefabs (index = (int)PlayerClass)")]
-    [Tooltip("배열 길이 = PlayerClass enum 항목 수. [0]=None 자리는 비워둠. [1]=Warrior, [2]=Ranger, [3]=Tank, [4]=Support 순.")]
+    [Tooltip("배열 길이 = 4. [0]=Melee, [1]=Rifle, [2]=Shotgun, [3]=Pistol 순. None(-1)은 별도 자리 없음 — 음수 인덱스라 spawn 단계에서 자연스럽게 차단됨.")]
     [SerializeField] private NetworkObject[] _classPrefabs;
 
     [Header("Spawn Points (index = SlotIndex)")]
