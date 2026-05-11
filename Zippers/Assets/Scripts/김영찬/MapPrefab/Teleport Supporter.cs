@@ -24,6 +24,16 @@ public class TeleportSupporter : MonoBehaviour
     int _voteRight;
     
     private event Action OnVoteChange;
+
+    /// <summary>
+    /// 투표 수가 바뀌면 UI에서 결과를 가져갈 수 있도록 하는 이벤트<br/>
+    /// 각각의 int변수는 순서대로 상,하,좌,우 투표수
+    /// </summary>
+    public event Action<int, int, int, int> OnSendVoteResult;
+    
+    /// <summary>
+    /// 지정된 방향으로 텔레포트를 시작하도록 명령을 보내는 이벤트
+    /// </summary>
     public event Action<NodeStartDir> OnTeleportStart; 
 
     private void Awake()
@@ -160,5 +170,7 @@ public class TeleportSupporter : MonoBehaviour
             OnTeleportStart?.Invoke(NodeStartDir.Down);
             return;
         }
+
+        OnSendVoteResult?.Invoke(_voteUp, _voteDown, _voteLeft, _voteRight);
     }
 }
