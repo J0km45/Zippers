@@ -17,7 +17,9 @@ MonoBehaviour:
   - {fileID: 1583819183417812486, guid: e462c3224959b714585b613d7f02ef2d, type: 3}
   - {fileID: 3451719860285815290, guid: 1e67622333853a94e8fa3d19398d35e1, type: 3}
   - {fileID: 5567315189836336915, guid: 2c46f7652d0c2fd4096b2a6c6ee942d3, type: 3}
-  runnerZombies: []
+  runnerZombies:
+  - {fileID: 8867563260790568599, guid: 7f4a10ac2aa4c2f40b6bb26193c08adc, type: 3}
+  - {fileID: 712863882287003301, guid: 8c040b6c21d416140a52b71f413fbd83, type: 3}
   rangedZombies: []
   eliteZombies:
   - {fileID: 0}
