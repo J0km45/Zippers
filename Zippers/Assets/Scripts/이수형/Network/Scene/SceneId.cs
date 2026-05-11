@@ -7,7 +7,7 @@ using System;
 /// </summary>
 public enum SceneId
 {
-    Title,
+    Auth,
     DataLoad,
     RoomList,
     Lobby,
@@ -17,8 +17,7 @@ public enum SceneId
 public static class SceneIdExtensions
 {
     // 씬 파일명(확장자 제외) - Build Settings 에 동일 이름이 등록되어 있어야 한다.
-    // (temp)TitleScene 의 괄호는 Unity Scene 이름으로 유효하며 SceneManager.LoadScene 에 그대로 전달됨.
-    public const string TitleSceneName    = "(temp)TitleScene";
+    public const string AuthSceneName     = "AuthScene";
     public const string DataLoadSceneName = "DataLoadScene";
     public const string RoomListSceneName = "RoomListScene";
     public const string LobbySceneName    = "LobbyScene";
@@ -30,7 +29,7 @@ public static class SceneIdExtensions
     /// </summary>
     public static string GetName(this SceneId id) => id switch
     {
-        SceneId.Title    => TitleSceneName,
+        SceneId.Auth     => AuthSceneName,
         SceneId.DataLoad => DataLoadSceneName,
         SceneId.RoomList => RoomListSceneName,
         SceneId.Lobby    => LobbySceneName,
