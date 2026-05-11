@@ -31,6 +31,10 @@ public class DataManager : MonoBehaviour
     public SheetData _playerUpgradeSheet;
     [SerializeField] private PlayerUpgradeTableSO _playerUpgradeTable;
 
+    [Header("Team Upgrade")]
+    public SheetData _teamUpgradeSheet;
+    [SerializeField] private TeamUpgradeTableSO _teamUpgradeTable;
+
 
     private int _pendingSheetCount;
 
@@ -52,7 +56,7 @@ public class DataManager : MonoBehaviour
             return;
         }
 
-        _pendingSheetCount = 5;
+        _pendingSheetCount = 6;
 
         LoadSheetData(_classSheet, _classDataList, _classDataDictionary, onComplete: () =>
         {
@@ -91,6 +95,12 @@ public class DataManager : MonoBehaviour
         LoadPlayerUpgradeTable(_playerUpgradeSheet, _playerUpgradeTable, onComplete: () =>
         {
             LocalDataAccess.Instance.Game.RegisterPlayerUpgradeTable(_playerUpgradeTable);
+            OnSheetCompleted();
+        });
+
+        LoadTeamUpgradeTable(_teamUpgradeSheet, _teamUpgradeTable, onComplete: () =>
+        {
+            LocalDataAccess.Instance.Game.RegisterTeamUpgradeTable(_teamUpgradeTable);
             OnSheetCompleted();
         });
     }
@@ -239,6 +249,38 @@ public class DataManager : MonoBehaviour
             {
                 DebugTool.Error(
                     "[DataManager] PlayerUpgrade 시트 로드 실패 - lines가 null",
+                    DebugType.Data, this);
+                onComplete?.Invoke();
+                return;
+            }
+
+            table.LoadFromSheet(split, lines, headerRowCount);
+            onComplete?.Invoke();
+        }));
+    }
+
+
+    private void LoadTeamUpgradeTable(
+        SheetData sheet,
+        TeamUpgradeTableSO table,
+        int headerRowCount = 1,
+        Action onComplete = null)
+    {
+        if (table == null)
+        {
+            DebugTool.Error(
+                "[DataManager] _teamUpgradeTable이 인스펙터에 미할당",
+                DebugType.Data, this);
+            onComplete?.Invoke();
+            return;
+        }
+
+        StartCoroutine(sheet.Load((split, lines) =>
+        {
+            if (lines == null)
+            {
+                DebugTool.Error(
+                    "[DataManager] TeamUpgrade 시트 로드 실패 - lines가 null",
                     DebugType.Data, this);
                 onComplete?.Invoke();
                 return;
