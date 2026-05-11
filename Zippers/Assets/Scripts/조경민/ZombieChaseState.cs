@@ -19,14 +19,14 @@ public class ZombieChaseState : IState
 
         if (distance <= _zombie.AttackRange)
         {
-            if (_zombie.Type == ZombieType.Normal)
-            { 
-                _zombie.Agent.isStopped = false; 
-            }
-            else 
-            { 
-                _zombie.Agent.isStopped = true; 
+            if (_zombie.Type == ZombieType.Ranged)
+            {
+                _zombie.Agent.isStopped = true;
                 _zombie.Animator.SetFloat("MoveSpeed", 0f);
+            }
+            else
+            {
+                _zombie.Agent.isStopped = false;
             }
 
             if (_zombie.CanAttack())
