@@ -2451,6 +2451,10 @@ GameObject:
   - component: {fileID: 6689627067512881287}
   - component: {fileID: -7095246262599218632}
   - component: {fileID: 5930036017942659546}
+  - component: {fileID: -210312635136322163}
+  - component: {fileID: 786332280501172647}
+  - component: {fileID: -9145615182855542706}
+  - component: {fileID: -7729774192181745941}
   m_Layer: 0
   m_Name: Rifle
   m_TagString: Untagged
@@ -2656,6 +2660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   _playerClassData: {fileID: 11400000, guid: 866cc4a4fb5b59b4aa1716c8129450ad, type: 2}
+  _playerIngameData: {fileID: 0}
 --- !u!114 &8794095650008967081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2943,6 +2948,62 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &-210312635136322163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399122269168980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02fbb797478fc8f45939c660257715ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStamina
+--- !u!114 &786332280501172647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399122269168980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511c236881b496842be20aed0c71cb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerUpgradeProvider
+--- !u!114 &-9145615182855542706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399122269168980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93236f7a76845b408fdd54d3874d6ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerIngameData
+--- !u!114 &-7729774192181745941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399122269168980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e13e9af0a3aa3144adfe7927bd7750a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerUpgradeKeyInputTest
+  _playerStats: {fileID: 0}
+  _playerIngameData: {fileID: 0}
+  _playerUpgradeProvider: {fileID: 0}
+  _playerHealth: {fileID: 0}
+  _playerStamina: {fileID: 0}
+  _playerReload: {fileID: 0}
+  _playerResourceCollector: {fileID: 0}
+  _testResourceAmount: 500
 --- !u!1 &1436760088571996
 GameObject:
   m_ObjectHideFlags: 0

@@ -39,10 +39,10 @@ EditorBuildSettings:
     path: Assets/Scenes/GameScene.unity
     guid: 673ca1020ed523c47a26a20ca1c8a2f3
   - enabled: 1
-    path: "Assets/Test/최완용 테스트 폴더/MoveTest.unity"
+    path: "Assets/Test/\uCD5C\uC644\uC6A9 \uD14C\uC2A4\uD2B8 \uD3F4\uB354/MoveTest.unity"
     guid: 4fa08d24ee843d04c909d3ef6273ae28
   - enabled: 1
-    path: "Assets/Test/최완용 테스트 폴더/Test Data_CWY.unity"
+    path: "Assets/Test/\uCD5C\uC644\uC6A9 \uD14C\uC2A4\uD2B8 \uD3F4\uB354/Test Data_CWY.unity"
     guid: 534eb5a6d1ea92f4f825465a02b7d668
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

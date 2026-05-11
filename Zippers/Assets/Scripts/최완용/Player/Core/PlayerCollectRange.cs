@@ -25,7 +25,7 @@ public class PlayerCollectRange : MonoBehaviour
         if (_playerStats == null || _collider == null)
             return;
 
-        if (Mathf.Approximately(_lastCollectRange, _playerStats.CollectRange))
+        if (Mathf.Approximately(_lastCollectRange, _playerStats.TotalCollectRange))
             return;
 
         UpdateCollectTrigger();
@@ -38,7 +38,7 @@ public class PlayerCollectRange : MonoBehaviour
 
     private void UpdateCollectTrigger()
     {
-        float collectRange = Mathf.Max(0f, _playerStats.CollectRange);
+        float collectRange = Mathf.Max(0f, _playerStats.TotalCollectRange);
 
         _collider.radius = collectRange;
         _lastCollectRange = collectRange;
@@ -57,6 +57,6 @@ public class PlayerCollectRange : MonoBehaviour
         if (playerStats == null)
             return;
 
-        Gizmos.DrawWireSphere(transform.position, playerStats.CollectRange);
+        Gizmos.DrawWireSphere(transform.position, playerStats.TotalCollectRange);
     }
 }

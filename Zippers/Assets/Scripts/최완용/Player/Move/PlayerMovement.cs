@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -42,9 +41,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if(!IsSprinting)
         {
-            return _playerStats.MoveSpeed;
+            return _playerStats.TotalMoveSpeed;
         }
-        return _playerStats.MoveSpeed * _playerStats.SprintSpeed;
+        return _playerStats.TotalSprintMoveSpeed;
     }
     public void StopMove()
     {

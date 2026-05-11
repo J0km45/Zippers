@@ -36,7 +36,7 @@ public class PlayerCombat : MonoBehaviour
             Debug.Log("[PlayerCombat] 재장전 중이라 공격 불가");
             return;
         }
-        if (Time.time < _lastAttackTime + _playerStats.AttackSpeed)
+        if (Time.time < _lastAttackTime + _playerStats.TotalAttackSpeed)
         {
             Debug.Log("[PlayerCombat] 공격 속도 제한 중");
             return;
@@ -89,8 +89,8 @@ public class PlayerCombat : MonoBehaviour
         _playerGun.Shoot
             (
                 damage,
-                _playerStats.BulletSpeed,
-                _playerStats.BulletDistance,
+                _playerStats.TotalBulletSpeed,
+                _playerStats.TotalBulletDistance,
                 canPirece
             );
     }
@@ -104,7 +104,7 @@ public class PlayerCombat : MonoBehaviour
         _playerHitScan.ShotGunHitScan
             (
                 damage,
-                _playerStats.BulletDistance
+                _playerStats.TotalBulletDistance
             );
     }
     private bool IsGunWeapon()
