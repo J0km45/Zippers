@@ -3,29 +3,27 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour, IDamagable
 {
-
-    [Header("디버그 테스트")]
-    [SerializeField] private float _debugDamageAmount = 9999f;
-
     [ContextMenu("Debug/테스트 데미지 적용")]
     private void DebugApplyDamage()
     {
         DebugTool.Log($"디버그 데미지 적용: {_debugDamageAmount}", DebugType.Character, this);
         TakeDamage(_debugDamageAmount);
     }
-
-
-
+    
     public event Action<float, float> OnHealthChanged;
     public event Action OnDamage;
     public event Action PlayerDied;
 
     private PlayerStats _playerStats;
 
-    public float CurrentHealth { get; private set; }
-    public float MaxHealth { get; private set; }
-    public bool IsDead { get; private set; }
+    [Header("플레이어 체력 정보")]
+    [field:SerializeField] public float CurrentHealth { get; private set; }
+    [field:SerializeField] public float MaxHealth { get; private set; }
+    [field:SerializeField] public bool IsDead { get; private set; }
 
+    [Space(10)] [Header("디버그 테스트")]
+    [SerializeField] private float _debugDamageAmount = 9999f;
+    
     public void Awake()
     {
         _playerStats = GetComponent<PlayerStats>();
