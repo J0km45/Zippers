@@ -22,6 +22,6 @@ MonoBehaviour:
   - {fileID: 712863882287003301, guid: 8c040b6c21d416140a52b71f413fbd83, type: 3}
   rangedZombies: []
   eliteZombies:
-  - {fileID: 0}
+  - {fileID: 9174561699367685619, guid: 3f2d67b905e993a40b7535d6fde73406, type: 3}
   bossZombies:
   - {fileID: 0}

@@ -13,23 +13,23 @@ MonoBehaviour:
   m_Name: Zombie_Runner
   m_EditorClassIdentifier: Assembly-CSharp::ZombieStatSO
   ZombieId: 20002
-  Type: 1
-  MaxHp: 40
-  HealthRegen: 0
-  HealthPeriod: 0
-  MinAttackDamage: 13
-  MaxAttackDamage: 16
-  AttackCooldown: 3
+  ZombieType: 1
+  MaxHealth: 120
+  HealthRegen: 1
+  HealthPeriod: 2
+  MinDamage: 9
+  MaxDamage: 13
+  AttackSpeed: 2
   AttackRange: 1
-  MoveSpeed: 1
-  DetectMoveSpeed: 2
-  DetectRange: 12
-  MinScrap: 0
-  MaxScrap: 0
-  ScrapDropChance: 0
-  MinSupplies: 0
-  MaxSupplies: 0
-  SuppliesDropChance: 0
+  BaseMoveSpeed: 2.4
+  ChasingMoveSpeed: 4.5
+  DetectionRange: 6.5
+  MinScrap: 5
+  MaxScrap: 8
+  ScrapDropChance: 90
+  MinSupplies: 2
+  MaxSupplies: 3
+  SuppliesDropChance: 30
   InfectionSample: 0
-  HandRadius: 0.25
-  KillReward: 10
+  SampleDropChance: 0
+  HandRadius: 0.28
