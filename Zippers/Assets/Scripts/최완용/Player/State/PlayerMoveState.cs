@@ -12,15 +12,12 @@ public class PlayerMoveState : IState
     private float _sfxTimer;
     private float _walkSfxInterval;
     private float _sprintSfxInterval;
-    public PlayerMoveState(PlayerStateMachine stateMachine, PlayerMovement playerMovement, PlayerAnimation playerAnimation, PlayerSfxController playerSfxController, float walkSfxInterval, float sprintSfxInterval)
+    public PlayerMoveState(PlayerStateMachine stateMachine, PlayerMovement playerMovement, PlayerAnimation playerAnimation, PlayerSfxController playerSfxController)
     {
         _stateMachine = stateMachine;
         _playerMovement = playerMovement;
         _playerAnimation = playerAnimation;
         _playerSfxController = playerSfxController;
-
-        _walkSfxInterval = walkSfxInterval;
-        _sprintSfxInterval = sprintSfxInterval;
     }
     public void Enter()
     {
@@ -54,20 +51,22 @@ public class PlayerMoveState : IState
     }
     private void MoveSfx(Vector2 moveInput)
     {
-        _sfxTimer -= Time.deltaTime;
+        bool isSpirnting = _playerMovement.IsSprinting;
 
-        if (_sfxTimer > 0f)
+        if(!_stateMachine.PlayMoveSfx(isSpirnting))
         {
             return;
         }
-        if ( _playerMovement.IsSprinting )
+        if (!isSpirnting)
         {
             _playerSfxController.PlaySprintSfx();
-            _sfxTimer = _sprintSfxInterval;
-            return;
+        }
+        else
+        {
+            _playerSfxController.PlayWalkingSfx();
         }
 
-        _playerSfxController.PlayWalkingSfx();
-        _sfxTimer = _walkSfxInterval;
+        _stateMachine.RecordSfxMove();
+
     }
 }

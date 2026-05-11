@@ -1,5 +1,6 @@
 using Audio;
 using UnityEngine;
+using System;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -24,11 +25,15 @@ public class PlayerStateMachine : MonoBehaviour
     private PlayerStateType _playerStateType;
     private Vector2 _moveInput;
 
+    // 마지막으로 이동 사운드가 재생된 시간
+    private float _lastMoveSound = -999f;
     public Vector2 MoveInput => _moveInput;
     public PlayerStateType PlayerStateType => _playerStateType;
 
     public bool IsRetired => _playerStateType == PlayerStateType.Retire;
 
+    public float WalkInterval => Mathf.Max(0.01f, _walkSfxInterval);
+    public float SprintInterval =>Mathf.Max(0.01f, _sprintSfxInterval);
 
     private void Awake()
     {
@@ -41,7 +46,7 @@ public class PlayerStateMachine : MonoBehaviour
         _sfxController = GetComponent<PlayerSfxController>();
 
         _idleState = new PlayerIdleState(this, _playerMovement, _playerAnimation);
-        _moveState = new PlayerMoveState(this, _playerMovement, _playerAnimation, _sfxController, _walkSfxInterval, _sprintSfxInterval);
+        _moveState = new PlayerMoveState(this, _playerMovement, _playerAnimation, _sfxController);
         _hitState = new PlayerHitState(this, _playerMovement, _playerAnimation, 0.25f, _sfxController);
         _retireState = new PlayerRetireState(this, _playerMovement, _playerAnimation, GetComponent<BoxCollider>(),_sfxController);
     }
@@ -126,6 +131,24 @@ public class PlayerStateMachine : MonoBehaviour
                 _stateMachine.ChangeState(_retireState);
                 break;
         }
+    }
+    public bool PlayMoveSfx(bool isSprinting)
+    {
+        float interval = GetMoveSfxInterval(isSprinting);
+        return Time.time - _lastMoveSound >= interval;
+    }
+
+    public void RecordSfxMove()
+    {
+        _lastMoveSound = Time.time;
+    }
+    public float GetMoveSfxInterval(bool isSprinting)
+    {
+        if(isSprinting)
+        {
+            return SprintInterval;
+        }
+        return WalkInterval;
     }
     private void OnPlayerDamaged()
     {

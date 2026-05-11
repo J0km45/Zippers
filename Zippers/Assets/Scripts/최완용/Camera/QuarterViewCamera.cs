@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// 쿼터뷰 카메라.
 public class QuarterViewCamera : MonoBehaviour
 {
     [Header("추적 대상")]
@@ -9,7 +10,6 @@ public class QuarterViewCamera : MonoBehaviour
 
     [Header("카메라 위치 설정")]
     [SerializeField] private Vector3 _offset = new Vector3(0f, 10f, -8f);
-    [SerializeField] private float _followSpeed = 10f;
 
     [Header("장애물 감지 설정")]
     [SerializeField] private LayerMask _obstacleLayer;
@@ -29,12 +29,16 @@ public class QuarterViewCamera : MonoBehaviour
     [SerializeField] private PlayerAim _playerAim;
     [SerializeField] private float _aimCameraOffset = 5f;
 
+    [Tooltip("조준 오프셋이 부드럽게 이동하는 속도")]
+    [SerializeField] private float _aimOffsetSmoothSpeed = 12f;
+
     [Header("디버그")]
     [SerializeField] private bool _showDebugLog = false;
 
     private Camera _mainCamera;
     private RaycastHit[] _hitBuffer;
     private float _detectTimer;
+    private Vector3 _currentAimOffset;
 
     // 현재 감지된 장애물
     private readonly HashSet<ObstacleFadeTarget> _currentDetectedTargets = new();
@@ -48,6 +52,7 @@ public class QuarterViewCamera : MonoBehaviour
     // Fade 대상 중복 확인용 HashSet
     private readonly HashSet<ObstacleFadeTarget> _activeFadeTargetSet = new();
 
+    // Collider 기준 ObstacleFadeTarget 캐싱
     private readonly Dictionary<Collider, ObstacleFadeTarget> _fadeTargetCache = new();
 
     private void Awake()
@@ -81,39 +86,63 @@ public class QuarterViewCamera : MonoBehaviour
         UpdateFadeTargets();
     }
 
+    /// 플레이어를 즉시 따라가기
     private void FollowTarget()
     {
         Vector3 targetPosition = _target.position + _offset;
+        Vector3 targetAimOffset = Vector3.zero;
 
         if (_playerAim != null && _playerAim.IsAiming)
         {
-            targetPosition += CalculateAimOffset();
+            targetAimOffset = CalculateAimOffset();
         }
 
-        transform.position = Vector3.Lerp(
-            transform.position,
-            targetPosition,
-            _followSpeed * Time.deltaTime
+        _currentAimOffset = Vector3.Lerp(
+            _currentAimOffset,
+            targetAimOffset,
+            _aimOffsetSmoothSpeed * Time.deltaTime
         );
+
+        transform.position = targetPosition + _currentAimOffset;
     }
 
+    /// 조준 중 카메라가 이동할 방향을 계산한다.
     private Vector3 CalculateAimOffset()
     {
-        if (_mainCamera == null || Mouse.current == null)
+        if (Mouse.current == null)
             return Vector3.zero;
 
         Vector2 mousePosition = Mouse.current.position.ReadValue();
-        Ray ray = _mainCamera.ScreenPointToRay(mousePosition);
 
-        Plane groundPlane = new Plane(Vector3.up, _target.position);
+        Vector2 screenCenter = new Vector2(
+            Screen.width * 0.5f,
+            Screen.height * 0.5f
+        );
 
-        if (!groundPlane.Raycast(ray, out float distance))
+        Vector2 screenDirection = mousePosition - screenCenter;
+
+        if (screenDirection.sqrMagnitude < 0.01f)
             return Vector3.zero;
 
-        Vector3 mouseWorldPosition = ray.GetPoint(distance);
+        screenDirection.x /= Screen.width * 0.5f;
+        screenDirection.y /= Screen.height * 0.5f;
 
-        Vector3 aimDirection = mouseWorldPosition - _target.position;
-        aimDirection.y = 0f;
+        screenDirection = Vector2.ClampMagnitude(screenDirection, 1f);
+
+        Vector3 cameraRight = transform.right;
+        cameraRight.y = 0f;
+
+        Vector3 cameraForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+
+        if (cameraRight.sqrMagnitude < 0.01f || cameraForward.sqrMagnitude < 0.01f)
+            return Vector3.zero;
+
+        cameraRight.Normalize();
+        cameraForward.Normalize();
+
+        Vector3 aimDirection =
+            cameraRight * screenDirection.x +
+            cameraForward * screenDirection.y;
 
         if (aimDirection.sqrMagnitude < 0.01f)
             return Vector3.zero;
@@ -121,7 +150,7 @@ public class QuarterViewCamera : MonoBehaviour
         return aimDirection.normalized * _aimCameraOffset;
     }
 
-    //장애물 감지
+    /// 카메라와 플레이어 사이의 장애물을 감지한다.
     private void DetectObstacles()
     {
         CachePreviousDetectedTargets();
@@ -161,6 +190,7 @@ public class QuarterViewCamera : MonoBehaviour
         RestoreUndetectedTargets();
     }
 
+    /// 이전 감지 장애물 목록을 저장한다.
     private void CachePreviousDetectedTargets()
     {
         _previousDetectedTargets.Clear();
@@ -188,6 +218,7 @@ public class QuarterViewCamera : MonoBehaviour
         return fadeTarget;
     }
 
+    /// 감지된 장애물을 투명화 대상으로 등록한다.
     private void DetectFadeTarget(ObstacleFadeTarget fadeTarget)
     {
         _currentDetectedTargets.Add(fadeTarget);
@@ -205,6 +236,7 @@ public class QuarterViewCamera : MonoBehaviour
         }
     }
 
+    /// 더 이상 감지되지 않는 장애물을 원래 상태로 복구한다.
     private void RestoreUndetectedTargets()
     {
         foreach (ObstacleFadeTarget previousTarget in _previousDetectedTargets)

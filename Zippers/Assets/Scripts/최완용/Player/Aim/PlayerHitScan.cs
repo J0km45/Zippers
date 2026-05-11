@@ -9,6 +9,7 @@ public class PlayerHitScan : MonoBehaviour
     [Header("샷건 설정")]
     [SerializeField] private Transform _shotgunFirePoint;
     [SerializeField] private float _shotgunAngle = 45f;
+    [SerializeField] private int _shotgunRayCount = 4;
 
     [Header("근접 설정")]
     [SerializeField] private Transform _meleePoint;
@@ -19,24 +20,58 @@ public class PlayerHitScan : MonoBehaviour
 
     public void ShotGunHitScan(float damage, float shotgunDistance)
     {
+        if (_shotgunFirePoint == null)
+        {
+            Debug.LogWarning("[PlayerHitScan] Shotgun Fire Point가 없습니다.");
+            return;
+        }
+
+        if (_shotgunRayCount <= 0)
+        {
+            Debug.LogWarning("[PlayerHitScan] Shotgun Ray Count가 0 이하입니다.");
+            return;
+        }
+
         _hitTarget.Clear();
 
         Vector3 origin = _shotgunFirePoint.position;
-        Vector3 direction = GetAttackDirection();
+        Vector3 centerDirection = GetAttackDirection();
 
-        Collider[] hits = Physics.OverlapSphere(
-            origin,
-            shotgunDistance,
-            _targetLayer
-        );
+        float halfAngle = _shotgunAngle * 0.5f;
 
-        foreach (Collider hit in hits)
+        for (int i = 0; i < _shotgunRayCount; i++)
         {
-            if (!IsInsideShotgunCone(origin, direction, hit.transform.position))
-                continue;
+            float angle;
 
-            ApplyDamage(hit, damage);
+            if (_shotgunRayCount == 1)
+            {
+                angle = 0f;
+            }
+            else
+            {
+                float t = i / (float)(_shotgunRayCount - 1);
+                angle = Mathf.Lerp(-halfAngle, halfAngle, t);
+            }
+
+            Vector3 rayDirection = Quaternion.AngleAxis(angle, Vector3.up) * centerDirection;
+            rayDirection.y = 0f;
+            rayDirection.Normalize();
+
+            if (Physics.Raycast(origin, rayDirection, out RaycastHit hit, shotgunDistance, _targetLayer))
+            {
+                ApplyDamage(hit.collider, damage);
+
+                // 빨간색 = 적중한 Ray
+                Debug.DrawRay(origin, rayDirection * hit.distance, Color.red, 0.3f);
+            }
+            else
+            {
+                // 노란색 = 빗나간 Ray
+                Debug.DrawRay(origin, rayDirection * shotgunDistance, Color.yellow, 0.3f);
+            }
         }
+
+        Debug.Log($"[PlayerHitScan] 샷건 발사 / RayCount: {_shotgunRayCount}, Distance: {shotgunDistance}");
     }
     public void MeleeHitScan(float damage)
     {
