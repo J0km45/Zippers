@@ -175,6 +175,9 @@ GameObject:
   - component: {fileID: 5202209765412013565}
   - component: {fileID: -8645326747982446550}
   - component: {fileID: -8124471436582268121}
+  - component: {fileID: 5559219273121398065}
+  - component: {fileID: 4448754570142360385}
+  - component: {fileID: 8986272881324780800}
   m_Layer: 0
   m_Name: Util
   m_TagString: Untagged
@@ -380,6 +383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   _playerClassData: {fileID: 11400000, guid: f31be457f27e5494da16d3cc5a44a194, type: 2}
+  _playerIngameData: {fileID: 0}
 --- !u!114 &6272469454809576963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -679,6 +683,50 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &5559219273121398065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019482250056662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511c236881b496842be20aed0c71cb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerUpgradeProvider
+--- !u!114 &4448754570142360385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019482250056662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93236f7a76845b408fdd54d3874d6ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerIngameData
+--- !u!114 &8986272881324780800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019482250056662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e13e9af0a3aa3144adfe7927bd7750a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerUpgradeKeyInputTest
+  _playerStats: {fileID: 0}
+  _playerIngameData: {fileID: 0}
+  _playerUpgradeProvider: {fileID: 0}
+  _playerHealth: {fileID: 0}
+  _playerStamina: {fileID: 0}
+  _playerReload: {fileID: 0}
+  _playerResourceCollector: {fileID: 0}
+  _testResourceAmount: 500
 --- !u!1 &1026896123653936
 GameObject:
   m_ObjectHideFlags: 0

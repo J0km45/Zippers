@@ -56,7 +56,7 @@ public class PlayerStamina : MonoBehaviour
             return;
         }
 
-        MaxStamina = _playerStats.Stamina;
+        MaxStamina = _playerStats.TotalStamina;
         CurrentStamina = MaxStamina;
 
         _regenDelayTimer = 0f;
@@ -66,6 +66,22 @@ public class PlayerStamina : MonoBehaviour
         OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
 
         DebugTool.Log($"스테미나 초기화: {CurrentStamina}/{MaxStamina}", DebugType.Character, this);
+    }
+
+    //업그레이드 UI에서 연결
+    public void RefreshMaxStamina()
+    {
+        float beforeMaxStamina = MaxStamina;
+        MaxStamina = _playerStats.TotalMaxHealth;
+
+        float increaseStamina = MaxStamina - beforeMaxStamina;
+
+        if (increaseStamina > 0f)
+        {
+            CurrentStamina += increaseStamina;
+        }
+        CurrentStamina = MathF.Min(CurrentStamina, MaxStamina);
+        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
     }
 
     public bool TryStartSprint()
@@ -135,7 +151,7 @@ public class PlayerStamina : MonoBehaviour
 
         _regenPeriodTimer = 0f;
 
-        CurrentStamina += _playerStats.StaminaRegen;
+        CurrentStamina += _playerStats.TotalStaminaRegen;
         CurrentStamina = Mathf.Min(CurrentStamina, MaxStamina);
 
         OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);

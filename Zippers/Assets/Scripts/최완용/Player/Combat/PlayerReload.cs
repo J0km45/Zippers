@@ -23,10 +23,10 @@ public class PlayerReload : MonoBehaviour
 
     private void Start()
     {
-        Initialize();
+        Init();
     }
 
-    private void Initialize()
+    private void Init()
     {
         if (_playerStats == null)
         {
@@ -46,12 +46,31 @@ public class PlayerReload : MonoBehaviour
             return;
         }
 
-        MaxBullet = _playerStats.MagazineCapacity;
+        MaxBullet = _playerStats.TotalMagazineCapacity;
         CurrentBullet = MaxBullet;
         IsReloading = false;
 
         OnAmmoChanged?.Invoke(CurrentBullet, MaxBullet);
         Debug.Log($"[PlayerReload] 탄창 초기화 완료: {CurrentBullet}/{MaxBullet}");
+    }
+    //업그레이드 UI에서 연결
+    public void RefreshMaxBullet()
+    {
+        if (!UsesAmmo)
+        {
+            return;
+        }
+
+        float beforeMaxBullet = MaxBullet;
+        MaxBullet = _playerStats.TotalMagazineCapacity;
+
+        if (MaxBullet > beforeMaxBullet)
+        {
+            Debug.Log($"[PlayerReload] 최대 탄창 증가: {beforeMaxBullet} -> {MaxBullet}");
+        }
+
+        CurrentBullet = Mathf.Min(CurrentBullet, MaxBullet);
+        OnAmmoChanged?.Invoke(CurrentBullet, MaxBullet);
     }
 
     public bool TryUseAmmo()
@@ -112,7 +131,7 @@ public class PlayerReload : MonoBehaviour
 
         Debug.Log("[PlayerReload] 재장전 시작");
 
-        yield return new WaitForSeconds(_playerStats.ReloadTime);
+        yield return new WaitForSeconds(_playerStats.TotalReloadTime);
 
         CurrentBullet = MaxBullet;
         IsReloading = false;

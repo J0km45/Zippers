@@ -37,14 +37,28 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     private void Init()
     {
-        MaxHealth = _playerStats.MaxHealth;
+        MaxHealth = _playerStats.TotalMaxHealth;
         CurrentHealth = MaxHealth;
         IsDead = false;
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
 
         DebugTool.Log($"PlayerHealth 초기화: {CurrentHealth}/{MaxHealth}", DebugType.Character, this);
     }
+    //업그레이드 UI에서 연결
+    public void RefreshHealth()
+    {
+        float beforeHealth = MaxHealth;
+        MaxHealth = _playerStats.TotalMaxHealth;
 
+        float incresaseHealth = MaxHealth - beforeHealth;
+
+        if (incresaseHealth > 0f)
+        {
+            CurrentHealth += incresaseHealth;
+        }
+        CurrentHealth = MathF.Min(CurrentHealth, MaxHealth);
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+    }
     //인터페이스 참조
     public void TakeDamage(float damage)
     {
