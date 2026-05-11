@@ -27,7 +27,9 @@ public class QuarterViewCamera : MonoBehaviour
 
     [Header("조준 카메라 설정")]
     [SerializeField] private PlayerAim _playerAim;
-    [SerializeField] private float _aimCameraOffset = 5f;
+    [Tooltip("0 = 플레이어 위치 ,1 = 에임위치 면 0.5 = AimOffset")]
+    [Range(0f, 1f)]
+    [SerializeField] private float _aimCameraOffset = 0.5f;
 
     [Tooltip("조준 오프셋이 부드럽게 이동하는 속도")]
     [SerializeField] private float _aimOffsetSmoothSpeed = 12f;
@@ -39,6 +41,7 @@ public class QuarterViewCamera : MonoBehaviour
     private RaycastHit[] _hitBuffer;
     private float _detectTimer;
     private Vector3 _currentAimOffset;
+    private PlayerStats _playerstats;
 
     // 현재 감지된 장애물
     private readonly HashSet<ObstacleFadeTarget> _currentDetectedTargets = new();
@@ -64,6 +67,7 @@ public class QuarterViewCamera : MonoBehaviour
         {
             _playerAim = _target.GetComponent<PlayerAim>();
         }
+        _playerstats = _target.GetComponent<PlayerStats>();
 
         _detectTimer = 0f;
     }
@@ -107,22 +111,27 @@ public class QuarterViewCamera : MonoBehaviour
     }
 
     /// 조준 중 카메라가 이동할 방향을 계산한다.
+    /// 조준 중 카메라가 플레이어와 에임 위치 사이로 이동할 오프셋을 계산한다.
     private Vector3 CalculateAimOffset()
     {
         if (Mouse.current == null)
+        {
             return Vector3.zero;
-
+        }
         Vector2 mousePosition = Mouse.current.position.ReadValue();
 
-        Vector2 screenCenter = new Vector2(
-            Screen.width * 0.5f,
-            Screen.height * 0.5f
-        );
+        Vector2 screenCenter = new Vector2
+            (
+                Screen.width * 0.5f,
+                Screen.height * 0.5f
+            );
 
         Vector2 screenDirection = mousePosition - screenCenter;
 
         if (screenDirection.sqrMagnitude < 0.01f)
+        {
             return Vector3.zero;
+        }
 
         screenDirection.x /= Screen.width * 0.5f;
         screenDirection.y /= Screen.height * 0.5f;
@@ -147,7 +156,32 @@ public class QuarterViewCamera : MonoBehaviour
         if (aimDirection.sqrMagnitude < 0.01f)
             return Vector3.zero;
 
-        return aimDirection.normalized * _aimCameraOffset;
+        float maxAimOffsetDistance = _playerstats.SightRange;
+
+        Vector3 aimOffset = aimDirection * maxAimOffsetDistance * _aimCameraOffset;
+
+        return OffsetCameraSightRange(aimOffset);
+    }
+
+    private Vector3 OffsetCameraSightRange(Vector3 aimOffset)
+    {
+        if(_playerstats ==null)
+        {
+            return aimOffset;
+        }
+        float sightRange = _playerstats.SightRange;
+
+        if(sightRange <= 0f)
+        {
+            return Vector3.zero;
+        }
+
+        if(aimOffset.sqrMagnitude <= sightRange*sightRange)
+        {
+            return aimOffset;
+        }
+
+        return aimOffset.normalized * sightRange;
     }
 
     /// 카메라와 플레이어 사이의 장애물을 감지한다.

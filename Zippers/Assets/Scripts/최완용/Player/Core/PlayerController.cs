@@ -113,6 +113,9 @@ public class PlayerController : MonoBehaviour
 
         if (ctx.performed)
         {
+            //추가
+            StopSprintForAiming();
+
             Debug.Log("[PlayerController] 조준 시작");
             _combatStateMachine.SetAiming(true);
         }
@@ -163,6 +166,9 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
+            //추가
+            StopAimingForSprint();
+
             _playerMovement.SetSprint(true);
         }
 
@@ -170,6 +176,35 @@ public class PlayerController : MonoBehaviour
         {
             _playerMovement.SetSprint(false);
         }
+    }
+
+    //추가(조준중 달리기하면 조준 해제)
+    private void StopAimingForSprint()
+    {
+        if(_combatStateMachine == null)
+        {
+            return;
+        }
+        if(!_combatStateMachine.IsAiming)
+        {
+            return;
+        }
+
+        _combatStateMachine.SetAiming(false);
+    }
+    //추가(달리기중 조준하면 조준 해제)
+    private void StopSprintForAiming()
+    {
+        if(_playerMovement == null)
+        {
+            return;
+        }
+        if(!_playerMovement.IsSprinting)
+        {
+            return;
+        }
+
+        _playerMovement.SetSprint(false);
     }
     private bool IsInputBlocked()
     {
