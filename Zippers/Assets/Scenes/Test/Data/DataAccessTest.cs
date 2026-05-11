@@ -13,6 +13,7 @@ public class DataAccessTest : MonoBehaviour
     List<WaveInfoSO> infos;
     List<WaveSpawnEntry> spawns;
     ClassUpgradeData upgrade;
+    TeamUpgradeEntry teamUpgrade;
 
     void Start()
     {
@@ -21,6 +22,7 @@ public class DataAccessTest : MonoBehaviour
         infos = LocalDataAccess.Instance.Game.GetWaveInfo(0);
         spawns = LocalDataAccess.Instance.Game.GetWaveSpawns(30001);
         upgrade = LocalDataAccess.Instance.Game.GetUpgrade("Melee");
+        teamUpgrade = LocalDataAccess.Instance.Game.GetTeamUpgrade(51001);
     }
 
     public void CallPlayerClass()
@@ -104,6 +106,32 @@ public class DataAccessTest : MonoBehaviour
         var pistol = (PistolUpgradeData)LocalDataAccess.Instance.Game.GetUpgrade(WeaponType.Pistol);
         Debug.Log($"[Pistol] SightRange: ValuePerLevel={pistol.SightRange.ValuePerLevel}");
         Debug.Log($"[Pistol] CollectRange: ValuePerLevel={pistol.CollectRange.ValuePerLevel}");
+    }
+
+    public void CallTeamUpgrade()
+    {
+        // ─── 캐시된 엔트리 (51001 의료 보급) 모든 필드 출력 ───
+        Debug.Log($"[TeamUpgrade] {teamUpgrade.UpgradeId} - {teamUpgrade.UpgradeName} (MaxLv {teamUpgrade.MaxLevel})");
+        Debug.Log($"[TeamUpgrade] StatKey={teamUpgrade.StatKey}, ApplyType={teamUpgrade.ApplyType}, ValuePerLevel={teamUpgrade.ValuePerLevel}");
+        Debug.Log($"[TeamUpgrade] BaseCost={teamUpgrade.BaseCost}, CostIncrease={teamUpgrade.CostIncrease}");
+        Debug.Log($"[TeamUpgrade] Description: {teamUpgrade.Description}");
+
+        // ─── 즉시 조회로 다른 ID 두 개 추가 출력 ───
+        var survivalTraining = LocalDataAccess.Instance.Game.GetTeamUpgrade(51005);
+        Debug.Log($"[TeamUpgrade] {survivalTraining.UpgradeId} - {survivalTraining.UpgradeName}, StatKey={survivalTraining.StatKey}, ApplyType={survivalTraining.ApplyType}, ValuePerLevel={survivalTraining.ValuePerLevel}");
+        Debug.Log($"[TeamUpgrade] Description: {survivalTraining.Description}");
+
+        var mobilityTraining = LocalDataAccess.Instance.Game.GetTeamUpgrade(51009);
+        Debug.Log($"[TeamUpgrade] {mobilityTraining.UpgradeId} - {mobilityTraining.UpgradeName}, StatKey={mobilityTraining.StatKey}, ApplyType={mobilityTraining.ApplyType}, ValuePerLevel={mobilityTraining.ValuePerLevel}");
+        Debug.Log($"[TeamUpgrade] Description: {mobilityTraining.Description}");
+
+        // ─── 전체 ID 순회 (GetAllTeamUpgradeIds 시연) ───
+        Debug.Log("[TeamUpgrade] === 전체 ID 목록 ===");
+        foreach (int id in LocalDataAccess.Instance.Game.GetAllTeamUpgradeIds())
+        {
+            var entry = LocalDataAccess.Instance.Game.GetTeamUpgrade(id);
+            Debug.Log($"[TeamUpgrade] {id}: {entry.UpgradeName} ({entry.StatKey})");
+        }
     }
 
 
