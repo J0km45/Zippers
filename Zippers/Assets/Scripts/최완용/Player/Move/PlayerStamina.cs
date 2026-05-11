@@ -13,8 +13,9 @@ public class PlayerStamina : MonoBehaviour
     private float _consumePeriodTimer;
     private float _regenPeriodTimer;
 
-    public float CurrentStamina { get; private set; }
-    public float MaxStamina { get; private set; }
+    [Header("플레이어 스테미나 정보")]
+    [field:SerializeField] public float CurrentStamina { get; private set; }
+    [field:SerializeField] public float MaxStamina { get; private set; }
 
     public bool CanSprint => CurrentStamina > 0f;
 
@@ -151,7 +152,7 @@ public class PlayerStamina : MonoBehaviour
 
         _regenPeriodTimer = 0f;
 
-        CurrentStamina += _playerStats.TotalStaminaRegen;
+        CurrentStamina += _playerStats.TotalStamina * (_playerStats.TotalStaminaRegen / 100f);
         CurrentStamina = Mathf.Min(CurrentStamina, MaxStamina);
 
         OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
