@@ -28,6 +28,7 @@ public class LocalDataAccess : MonoBehaviour
 
     private void OnDestroy()
     {
+        Instance.Game.ClearEvent(); 
         if (Instance == this) Instance = null;
     }
 }

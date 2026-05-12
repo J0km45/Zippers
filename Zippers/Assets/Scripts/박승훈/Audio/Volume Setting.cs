@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class VolumeSetting : MonoBehaviour
@@ -16,11 +17,27 @@ public class VolumeSetting : MonoBehaviour
 
     [SerializeField][Range(1f, 1.5f)] private float _maxSliderValue = 1.2f;
     private const float _minSliderValue = 0.0001f;
+
+    private void OnEnable()
+    {
+        _masterVolumeSlider.onValueChanged.AddListener(MasterVolumeSetting);
+        _bgmVolumeSlider.onValueChanged.AddListener(BgmVolumeSetting);
+        _sfxVolumeSlider.onValueChanged.AddListener(SfxVolumeSetting);
+        _uiVolumeSlider.onValueChanged.AddListener(UIVolumeSetting);
+    }
     
     private void Start()
     {
         SliderInit();
         VolumeInit();
+    }
+
+    private void OnDisable()
+    {
+        _masterVolumeSlider.onValueChanged.RemoveListener(MasterVolumeSetting);
+        _bgmVolumeSlider.onValueChanged.RemoveListener(BgmVolumeSetting);
+        _sfxVolumeSlider.onValueChanged.RemoveListener(SfxVolumeSetting);
+        _uiVolumeSlider.onValueChanged.RemoveListener(UIVolumeSetting);
     }
 
     private void VolumeInit()
@@ -44,32 +61,32 @@ public class VolumeSetting : MonoBehaviour
         SliderMinMaxSetting(_uiVolumeSlider);
     }
 
-    public void MasterVolumeSetting()
+    public void MasterVolumeSetting(float value)
     {
-        AudioManager.Instance.SetMasterVolume(_masterVolumeSlider.value);
+        AudioManager.Instance.SetMasterVolume(value);
         SetText(masterText, _masterVolumeSlider);
-        DebugTool.Log($"마스터 볼륨 변경 : {_masterVolumeSlider.value}", DebugType.UI, this);
+        DebugTool.Log($"마스터 볼륨 변경 : {value}", DebugType.UI, this);
     }
 
-    public void BgmVolumeSetting()
+    public void BgmVolumeSetting(float value)
     {
-        AudioManager.Instance.SetBGMVolume(_bgmVolumeSlider.value);
+        AudioManager.Instance.SetBGMVolume(value);
         SetText(bgmText, _bgmVolumeSlider);
-        DebugTool.Log($"BGM 볼륨 변경 : {_bgmVolumeSlider.value}", DebugType.UI, this);
+        DebugTool.Log($"BGM 볼륨 변경 : {value}", DebugType.UI, this);
     }
 
-    public void SfxVolumeSetting()
+    public void SfxVolumeSetting(float value)
     {
-        AudioManager.Instance.SetSFXVolume(_sfxVolumeSlider.value);
+        AudioManager.Instance.SetSFXVolume(value);
         SetText(sfxText, _sfxVolumeSlider);
-        DebugTool.Log($"SFX 볼륨 변경 : {_sfxVolumeSlider.value}", DebugType.UI, this);
+        DebugTool.Log($"SFX 볼륨 변경 : {value}", DebugType.UI, this);
     }
 
-    public void UIVolumeSetting()
+    public void UIVolumeSetting(float value)
     {
-        AudioManager.Instance.SetUIVolume(_uiVolumeSlider.value);
+        AudioManager.Instance.SetUIVolume(value);
         SetText(uiText, _uiVolumeSlider);
-        DebugTool.Log($"UI 볼륨 변경 : {_uiVolumeSlider.value}", DebugType.UI, this);
+        DebugTool.Log($"UI 볼륨 변경 : {value}", DebugType.UI, this);
     }
 
     private void SliderMinMaxSetting(Slider slider)

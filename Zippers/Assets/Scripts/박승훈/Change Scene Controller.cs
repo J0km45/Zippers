@@ -1,0 +1,73 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+
+public class ChangeSceneController : MonoBehaviour
+{
+    [Space(3)] [Header("화면 전환 이미지 컴포넌트")] [SerializeField]
+    private Image _changeSceneImage;
+
+    [Space(3)] [Header("전환 시간")] [SerializeField] [Range(0.1f, 10.0f)]
+    private float _enterDuration = 1f;
+
+    [SerializeField] [Range(0.1f, 10.0f)] private float _outTime = 2f;
+
+    [Space(3)] [Header("이미지 색상")] [SerializeField]
+    private Color color;
+
+    public UnityAction OnChangeScene;
+
+    private void Awake()
+    {
+        if (_changeSceneImage == null)
+            DebugTool.Log("이미지 컴포넌트를 등록해야 합니다.", DebugType.Missing);
+
+        color = _changeSceneImage.color;
+    }
+
+    public void OnEnterScene()
+        => StartCoroutine(EnterScene());
+
+    public void OnExitScene()
+        => StartCoroutine(ExitScene());
+
+    private IEnumerator EnterScene()
+    {
+        float time = 0f;
+
+        while (time < _enterDuration)
+        {
+            time += Time.deltaTime;
+            float t = time / _enterDuration;
+
+            color.a = Mathf.Lerp(1f, 0f, t);
+
+            _changeSceneImage.color = color;
+
+            yield return null;
+        }
+
+        _changeSceneImage.gameObject.SetActive(false);
+        OnChangeScene?.Invoke();
+    }
+
+    private IEnumerator ExitScene()
+    {
+        _changeSceneImage.gameObject.SetActive(true);
+        
+        float time = 0f;
+        
+        while (time < _enterDuration)
+        {
+            time += Time.deltaTime;
+            float t = time / _enterDuration;
+
+            color.a = Mathf.Lerp(0f, 1f, t);
+
+            _changeSceneImage.color = color;
+
+            yield return null;
+        }
+    }
+}

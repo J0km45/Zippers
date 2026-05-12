@@ -18,7 +18,6 @@ public class GameDataModule
 
     private event Action _onReady;
 
-
     public event Action OnReady
     {
         add
@@ -205,4 +204,8 @@ public class GameDataModule
             DebugType.Data);
         return false;
     }
+
+    public void ClearEvent()
+        => _onReady = null;
+
 }
