@@ -109,4 +109,16 @@ public class NodeManager : MonoBehaviour
         BattleCount = 0;
         DebugTool.Log("ResetBattleCount", DebugType.Node, this);
     }
+    
+    public Transform[] GetStartSpawnPoints()
+    {
+        var startMap = FindFirstObjectByType<StartTypeMapController>();
+        if (startMap == null || startMap.Data.PlayerSpawnPoint_Down.Length <= 0)
+        {
+            DebugTool.Warning("Start Map Not Found", DebugType.Node, this);
+            return null;
+        }
+        
+        return startMap.Data.PlayerSpawnPoint_Down;
+    }
 }

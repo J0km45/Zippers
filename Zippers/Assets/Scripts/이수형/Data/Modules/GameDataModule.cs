@@ -11,6 +11,7 @@ public class GameDataModule
     private WaveInfoTableSO                    _waveInfoTable;
     private WaveSpawnTableSO                   _waveSpawnTable;
     private PlayerUpgradeTableSO               _playerUpgradeTable;
+    private TeamUpgradeTableSO                 _teamUpgradeTable;
 
     // ─── 상태 ────────────────────────────────────────────────
     public bool IsReady { get; private set; }
@@ -62,6 +63,14 @@ public class GameDataModule
         _playerUpgradeTable = table;
         DebugTool.Log(
             $"[GameDataModule] PlayerUpgradeTable 등록 (그룹 {table?.GroupCount ?? 0}개)",
+            DebugType.Data);
+    }
+
+    public void RegisterTeamUpgradeTable(TeamUpgradeTableSO table)
+    {
+        _teamUpgradeTable = table;
+        DebugTool.Log(
+            $"[GameDataModule] TeamUpgradeTable 등록 (엔트리 {table?.EntryCount ?? 0}개)",
             DebugType.Data);
     }
 
@@ -159,6 +168,21 @@ public class GameDataModule
         return _playerUpgradeTable.GetUpgrade(classType);
     }
 
+    /// <summary>
+    /// UpgradeId로 팀 업그레이드 엔트리 조회.
+    /// 사용 예: GetTeamUpgrade(51009).UpgradeName
+    /// </summary>
+    public TeamUpgradeEntry GetTeamUpgrade(int upgradeId)
+    {
+        if (!CheckReady(nameof(GetTeamUpgrade), upgradeId)) return null;
+        if (_teamUpgradeTable == null)
+        {
+            DebugTool.Warning("[GameDataModule] TeamUpgradeTable 미등록", DebugType.Data);
+            return null;
+        }
+        return _teamUpgradeTable.GetEntry(upgradeId);
+    }
+
     // ─── 전체 ID 순회 ────────────────────────────────────
     public IEnumerable<int> GetAllClassIds()
         => _classes?.Keys ?? Enumerable.Empty<int>();
@@ -168,6 +192,9 @@ public class GameDataModule
 
     public IEnumerable<int> GetAllBattleNodeIndices()
         => _waveInfoTable?.BattleNodeIndices ?? Enumerable.Empty<int>();
+
+    public IEnumerable<int> GetAllTeamUpgradeIds()
+        => _teamUpgradeTable?.Ids ?? Enumerable.Empty<int>();
 
 
     private bool CheckReady(string methodName, int id)

@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: Zombie_Elite
   m_EditorClassIdentifier: Assembly-CSharp::ZombieStatSO
   ZombieId: 20004
-  Type: 3
-  MaxHp: 40
+  ZombieType: 0
+  MaxHealth: 0
   HealthRegen: 0
   HealthPeriod: 0
-  MinAttackDamage: 13
-  MaxAttackDamage: 16
-  AttackCooldown: 3
+  MinDamage: 0
+  MaxDamage: 0
+  AttackSpeed: 0
   AttackRange: 1
-  MoveSpeed: 1
-  DetectMoveSpeed: 2
-  DetectRange: 12
+  BaseMoveSpeed: 0
+  ChasingMoveSpeed: 0
+  DetectionRange: 0
   MinScrap: 0
   MaxScrap: 0
   ScrapDropChance: 0
@@ -31,5 +31,5 @@ MonoBehaviour:
   MaxSupplies: 0
   SuppliesDropChance: 0
   InfectionSample: 0
-  HandRadius: 0.25
-  KillReward: 10
+  SampleDropChance: 0
+  HandRadius: 0.45

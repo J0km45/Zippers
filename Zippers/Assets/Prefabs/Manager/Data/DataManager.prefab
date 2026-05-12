@@ -90,3 +90,7 @@ MonoBehaviour:
     <URL>k__BackingField: https://docs.google.com/spreadsheets/d/1H4POPGGxh0x_jcwinL-_VVhK1FWRPD0jASYWtFIzxrQ/edit?gid=894108557#gid=894108557
     <Type>k__BackingField: 2
   _playerUpgradeTable: {fileID: 11400000, guid: 07cae3c66ee780045bd52f5b90214706, type: 2}
+  _teamUpgradeSheet:
+    <URL>k__BackingField: https://docs.google.com/spreadsheets/d/1H4POPGGxh0x_jcwinL-_VVhK1FWRPD0jASYWtFIzxrQ/edit?gid=1364064216#gid=1364064216
+    <Type>k__BackingField: 2
+  _teamUpgradeTable: {fileID: 11400000, guid: cc89a12f3bafed446a01c119dad97b9f, type: 2}

@@ -38,7 +38,7 @@ public class GameSceneManager : MonoBehaviour
 
     public int CurrentSceneIndex()
     {
-        Debug.Log(SceneManager.GetActiveScene().buildIndex);
+        DebugTool.Log($"{SceneManager.GetActiveScene().buildIndex}", DebugType.Game);
         return SceneManager.GetActiveScene().buildIndex;
     }
     
