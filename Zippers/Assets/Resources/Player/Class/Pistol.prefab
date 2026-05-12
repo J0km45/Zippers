@@ -36,6 +36,8 @@ GameObject:
   - component: {fileID: 5559219273121398065}
   - component: {fileID: 4448754570142360385}
   - component: {fileID: 8986272881324780800}
+  - component: {fileID: -1506622291132155388}
+  - component: {fileID: -6664887911851077287}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -225,6 +227,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a62b035c91416f144aa17f83642cc2fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  <CurrentHealth>k__BackingField: 0
+  <MaxHealth>k__BackingField: 0
+  <IsDead>k__BackingField: 0
   _debugDamageAmount: 9999
 --- !u!82 &7447242962329891936
 AudioSource:
@@ -394,6 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStamina
   <CurrentStamina>k__BackingField: 0
+  <MaxStamina>k__BackingField: 0
 --- !u!114 &216109493594011135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,7 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3327158331
+  GlobalObjectIdHash: 2448165940
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -557,6 +563,67 @@ MonoBehaviour:
   _playerReload: {fileID: 0}
   _playerResourceCollector: {fileID: 0}
   _testResourceAmount: 500
+--- !u!114 &-1506622291132155388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019482250056662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkTransform
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AutoOwnerAuthorityTickOffset: 1
+  PositionInterpolationType: 0
+  RotationInterpolationType: 0
+  ScaleInterpolationType: 0
+  PositionLerpSmoothing: 1
+  PositionMaxInterpolationTime: 0.1
+  RotationLerpSmoothing: 1
+  RotationMaxInterpolationTime: 0.1
+  ScaleLerpSmoothing: 1
+  ScaleMaxInterpolationTime: 0.1
+  AuthorityMode: 0
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
+--- !u!114 &-6664887911851077287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019482250056662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a4d5bfc6d0ebf34e8128127ecd7485e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerOwnershipGate
+  ShowTopMostFoldoutHeaderGroup: 1
+  _ownerOnlyBehaviours: []
+  _ownerOnlyGameObjects: []
 --- !u!1 &1026896123653936
 GameObject:
   m_ObjectHideFlags: 0
