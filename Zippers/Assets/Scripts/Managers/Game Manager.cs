@@ -1,10 +1,14 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
     
+    [Header("매니저 프리팹")]
     [SerializeField] private AudioManager _audioManager;
+    [SerializeField] private NetworkManager _networkManager;
+    [SerializeField] private LobbyManager _lobbyManager;
     
     private void Awake()
     {
@@ -25,6 +29,8 @@ public class GameManager : MonoBehaviour
         GenerateManager<GameSceneManager>();
         GenerateManager(_audioManager);
         GenerateManager<TimeScaleManager>();
+        GenerateManager(_networkManager);
+        GenerateManager(_lobbyManager);
     }
 
     private void Start()
