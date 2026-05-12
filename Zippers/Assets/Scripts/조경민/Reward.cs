@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class Reward : MonoBehaviour, IPoolable
+public class Reward : NetworkBehaviour
 {
     private ResourcesType _type = ResourcesType.None; // 재화 타입
     private float _amount; // 재화량
@@ -8,16 +9,13 @@ public class Reward : MonoBehaviour, IPoolable
 
     public void Init(ResourcesType type, float amount)
     {
+        if (!IsServer) return;
         _type = type;
         _amount = amount;
-    }
-
-    public void OnSpawn()
-    {
         _isCollected = false;
     }
 
-    public void OnDespawn()
+    public override void OnNetworkDespawn()
     {
         _type = ResourcesType.None;
         _amount = 0f;
@@ -26,6 +24,7 @@ public class Reward : MonoBehaviour, IPoolable
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!IsServer) return;
         if (_isCollected) return;
 
         if (other.TryGetComponent(out IResourceCollectable resourceCollector))

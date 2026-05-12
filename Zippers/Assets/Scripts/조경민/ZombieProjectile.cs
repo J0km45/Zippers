@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class ZombieProjectile : MonoBehaviour, IPoolable
+public class ZombieProjectile : NetworkBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _lifeTime;
@@ -17,18 +18,15 @@ public class ZombieProjectile : MonoBehaviour, IPoolable
         _damage = damage;
     }
 
-    public void OnSpawn()
+    public override void OnNetworkSpawn()
     {
-        _timer = 0;
-    }
-
-    public void OnDespawn()
-    {
-
+        _timer = 0f;
     }
 
     private void Update()
     {
+        if (!IsServer) return;
+
         _timer += Time.deltaTime;
         transform.position += _dir * _speed * Time.deltaTime;
         if(_timer >= _lifeTime)
@@ -39,6 +37,7 @@ public class ZombieProjectile : MonoBehaviour, IPoolable
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!IsServer) return;
         if (!IsTargetLayer(other.gameObject)) return;
 
         if (other.TryGetComponent(out IDamagable player))
