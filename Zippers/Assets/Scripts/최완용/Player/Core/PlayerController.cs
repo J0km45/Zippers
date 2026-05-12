@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     private PlayerActions _playerAction;
 
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private PlayerCombat _playerCombat;
     private PlayerMovement _playerMovement;
     private PlayerStamina _playerStamina;
+    private bool _isLocalInputEnabled;
 
     private void Awake()
     {
@@ -21,9 +23,35 @@ public class PlayerController : MonoBehaviour
         _playerStamina = GetComponent<PlayerStamina>();
     }
 
+    private void Start()
+    {
+        // 네트워크 없이 싱글 테스트할 때는 기존처럼 입력을 사용한다.
+        if (!IsNetworkGameRunning())
+        {
+            EnableLocalInput();
+            Debug.Log("[PlayerController] 싱글 테스트 입력 활성화");
+        }
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if(IsOwner || IsLocalPlayer)
+        {
+            EnableLocalInput();
+            Debug.Log("[PlayerController] 네트워크 플레이어 입력 활성화");
+            return;
+        }
+        DisableLocalInput();
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        DisableLocalInput();
+    }
+
     private void OnEnable()
     {
-        _playerAction.Enable();
+        //_playerAction.Enable();
 
         _playerAction.PlayerControl.Move.performed += OnMove;
         _playerAction.PlayerControl.Move.canceled += OnMove;
@@ -58,11 +86,17 @@ public class PlayerController : MonoBehaviour
         _playerAction.PlayerControl.Sprint.performed -= OnSprint;
         _playerAction.PlayerControl.Sprint.canceled -= OnSprint;
 
-        _playerAction.Disable();
+        //_playerAction.Disable();
+        DisableLocalInput();
     }
 
     private void OnMove(InputAction.CallbackContext ctx)
     {
+        if (!CanUseLocalInput())
+        {
+            return;
+        }
+
         if (ctx.performed)
         {
             Vector2 moveInput = ctx.ReadValue<Vector2>();
@@ -81,6 +115,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext ctx)
     {
+        if (!CanUseLocalInput())
+        {
+            return;
+
+        }
         if (IsInputBlocked())
         {
             return;
@@ -101,6 +140,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnAiming(InputAction.CallbackContext ctx)
     {
+        if (!CanUseLocalInput())
+        {
+            return;
+        }
+
         if (IsInputBlocked())
         {
             return;
@@ -113,6 +157,9 @@ public class PlayerController : MonoBehaviour
 
         if (ctx.performed)
         {
+            //추가
+            StopSprintForAiming();
+
             Debug.Log("[PlayerController] 조준 시작");
             _combatStateMachine.SetAiming(true);
         }
@@ -125,6 +172,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnReload(InputAction.CallbackContext ctx)
     {
+        if (!CanUseLocalInput())
+        {
+            return;
+        }
         if (!ctx.performed)
             return;
 
@@ -144,6 +195,11 @@ public class PlayerController : MonoBehaviour
     }
     private void OnSprint(InputAction.CallbackContext ctx)
     {
+        if (!CanUseLocalInput())
+        {
+            return;
+        }
+
         if (IsInputBlocked())
         {
             _playerMovement.SetSprint(false);
@@ -163,6 +219,9 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
+            //추가
+            StopAimingForSprint();
+
             _playerMovement.SetSprint(true);
         }
 
@@ -170,6 +229,35 @@ public class PlayerController : MonoBehaviour
         {
             _playerMovement.SetSprint(false);
         }
+    }
+
+    //추가(조준중 달리기하면 조준 해제)
+    private void StopAimingForSprint()
+    {
+        if(_combatStateMachine == null)
+        {
+            return;
+        }
+        if(!_combatStateMachine.IsAiming)
+        {
+            return;
+        }
+
+        _combatStateMachine.SetAiming(false);
+    }
+    //추가(달리기중 조준하면 조준 해제)
+    private void StopSprintForAiming()
+    {
+        if(_playerMovement == null)
+        {
+            return;
+        }
+        if(!_playerMovement.IsSprinting)
+        {
+            return;
+        }
+
+        _playerMovement.SetSprint(false);
     }
     private bool IsInputBlocked()
     {
@@ -186,5 +274,57 @@ public class PlayerController : MonoBehaviour
         }
 
         return false;
+    }
+
+    //네트워크
+    private void EnableLocalInput()
+    {
+        if (_playerAction == null || _isLocalInputEnabled)
+        {
+            return;
+        }
+
+        _playerAction.Enable();
+        _isLocalInputEnabled = true;
+    }
+
+    private void DisableLocalInput()
+    {
+        if (_playerAction == null)
+        {
+            return;
+        }
+
+        _playerAction.Disable();
+        _isLocalInputEnabled = false;
+        ResetLocalInputState();
+    }
+
+    private void ResetLocalInputState()
+    {
+        if (_playerStateMachine != null)
+        {
+            _playerStateMachine.SetMoveInput(Vector2.zero);
+        }
+
+        if (_playerMovement != null)
+        {
+            _playerMovement.StopMove();
+        }
+
+        if (_combatStateMachine != null && _combatStateMachine.IsAiming)
+        {
+            _combatStateMachine.SetAiming(false);
+        }
+    }
+
+    private bool CanUseLocalInput()
+    {
+        return _isLocalInputEnabled;
+    }
+
+    private bool IsNetworkGameRunning()
+    {
+        return NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening;
     }
 }
