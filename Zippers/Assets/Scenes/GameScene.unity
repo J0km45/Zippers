@@ -119,6 +119,82 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &1087265187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1087265190}
+  - component: {fileID: 1087265188}
+  - component: {fileID: 1087265189}
+  m_Layer: 0
+  m_Name: GameSpawnController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1087265188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087265187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2198294937
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 1
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &1087265189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087265187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 632647043ce0d6c42b58509ceb8c1476, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameSpawnController
+  ShowTopMostFoldoutHeaderGroup: 1
+  _classPrefabs:
+  - {fileID: 2325650914068353150, guid: 1f24f833c4723b54eacbbfa0f24fa107, type: 3}
+  - {fileID: 7287247240734866001, guid: 0cd21804ce5573c4da9350e22d8ba6ef, type: 3}
+  - {fileID: -5697153619093868588, guid: 8d9b1c0130f01b040a7f1cef3596cf3c, type: 3}
+  - {fileID: 5202209765412013565, guid: ac230831fd5021c42b64aa75cf6ea4b9, type: 3}
+--- !u!4 &1087265190
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087265187}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 897.8859, y: 531.5564, z: -81.53586}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1660688306
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,6 +334,7 @@ GameObject:
   - component: {fileID: 1765966254}
   - component: {fileID: 1765966253}
   - component: {fileID: 1765966256}
+  - component: {fileID: 1765966257}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -383,6 +460,32 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1765966257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765966252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7065cf07055334bb5625463dc4f6e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuarterViewCamera
+  _target: {fileID: 0}
+  _offset: {x: 0, y: 10, z: -8}
+  _obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  _detectRadius: 0.3
+  _maxHitCount: 32
+  _detectInterval: 0.05
+  _fadeAlpha: 0.2
+  _fadeSpeed: 4
+  _playerAim: {fileID: 0}
+  _aimCameraOffset: 5
+  _aimOffsetSmoothSpeed: 12
+  _showDebugLog: 0
 --- !u!1001 &1926810616
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -822,6 +925,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1667056891908183136, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 3248819028177369288, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1926810618}
     - targetCorrespondingSourceObject: {fileID: 1688209146621270177, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -829,6 +935,40 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+--- !u!1 &1926810617 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3248819028177369288, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+  m_PrefabInstance: {fileID: 1926810616}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1926810618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926810617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -836,3 +976,4 @@ SceneRoots:
   - {fileID: 1765966255}
   - {fileID: 1660688308}
   - {fileID: 1926810616}
+  - {fileID: 1087265190}

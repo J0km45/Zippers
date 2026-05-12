@@ -58,6 +58,26 @@ public class QuarterViewCamera : MonoBehaviour
     // Collider 기준 ObstacleFadeTarget 캐싱
     private readonly Dictionary<Collider, ObstacleFadeTarget> _fadeTargetCache = new();
 
+    /// <summary>
+    /// 카메라가 추적할 대상 Transform. 런타임에 멀티플레이어 로컬 플레이어 바인딩용으로 외부에서 설정 가능.
+    /// PlayerOwnershipGate (이수형) 가 IsOwner==true 시점에 호출.
+    /// </summary>
+    public Transform Target
+    {
+        get => _target;
+        set => _target = value;
+    }
+
+    /// <summary>
+    /// 조준 카메라 오프셋 계산에 사용하는 PlayerAim. 런타임 멀티플레이어 바인딩용.
+    /// Target 과 함께 설정되어야 정상 동작 (Target 만 바뀌고 PlayerAim 이 이전 플레이어를 가리키면 오작동 가능).
+    /// </summary>
+    public PlayerAim PlayerAim
+    {
+        get => _playerAim;
+        set => _playerAim = value;
+    }
+
     private void Awake()
     {
         _mainCamera = Camera.main;

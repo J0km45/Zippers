@@ -230,9 +230,8 @@ GameObject:
   - component: {fileID: -2309002462616297967}
   - component: {fileID: -1519893727389798444}
   - component: {fileID: 4414626585289756540}
-  - component: {fileID: -1865121801672552583}
-  - component: {fileID: -6587485928574693312}
-  - component: {fileID: -6721662627677325866}
+  - component: {fileID: -363986340636957488}
+  - component: {fileID: -1198867438575760023}
   m_Layer: 0
   m_Name: Shotgun
   m_TagString: Untagged
@@ -764,7 +763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511c236881b496842be20aed0c71cb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerUpgradeProvider
---- !u!114 &-1865121801672552583
+--- !u!114 &-363986340636957488
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -788,18 +787,18 @@ MonoBehaviour:
   RotationMaxInterpolationTime: 0.1
   ScaleLerpSmoothing: 1
   ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 1
+  AuthorityMode: 0
   TickSyncChildren: 0
-  UseUnreliableDeltas: 1
+  UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 0
+  SyncRotAngleX: 1
   SyncRotAngleY: 1
-  SyncRotAngleZ: 0
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
@@ -810,7 +809,7 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &-6587485928574693312
+--- !u!114 &-1198867438575760023
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -819,30 +818,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1082915869594634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a4d5bfc6d0ebf34e8128127ecd7485e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkRigidbody
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerOwnershipGate
   ShowTopMostFoldoutHeaderGroup: 1
-  NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 1
-  AutoUpdateKinematicState: 1
-  AutoSetKinematicOnDespawn: 1
---- !u!114 &-6721662627677325866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1082915869594634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b828575a820c504d87756dc1ffb6d59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerNetworkLocalInitializer
-  ShowTopMostFoldoutHeaderGroup: 1
-  _playerLook: {fileID: 0}
-  _playerAimMarker: {fileID: 0}
-  _playerUpgradeKeyInputTest: {fileID: 0}
+  _ownerOnlyBehaviours:
+  - {fileID: -1336468841940603572}
+  - {fileID: 3307013045222578800}
+  - {fileID: 8953460471856265953}
+  - {fileID: -8882835680436504210}
+  - {fileID: -8277981543732272047}
+  - {fileID: 6950387226447055079}
+  - {fileID: 725008806011388365}
+  - {fileID: 9140983486648026561}
+  - {fileID: 4480562419945001929}
+  - {fileID: 8444922590922574260}
+  - {fileID: -4442512570184962680}
+  - {fileID: -2309002462616297967}
+  _ownerOnlyGameObjects: []
 --- !u!1 &1103278349565816
 GameObject:
   m_ObjectHideFlags: 0

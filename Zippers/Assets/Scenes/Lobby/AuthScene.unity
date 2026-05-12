@@ -869,6 +869,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900098990}
   m_CullTransparentMesh: 1
+--- !u!1 &946112030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 946112032}
+  - component: {fileID: 946112031}
+  m_Layer: 0
+  m_Name: PlayerSessionBridge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &946112031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946112030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 013fc3c3e9f6789469a9801a46e1bf08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSessionBridge
+--- !u!4 &946112032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946112030}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1064.7706, y: 476.99222, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1055866655
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,6 +1187,53 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1195126755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1195126757}
+  - component: {fileID: 1195126756}
+  m_Layer: 0
+  m_Name: TestSoloHostBootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1195126756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195126755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec212bc0a5e2d964889a79daeb03ec63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestSoloHostBootstrap
+  _testClass: 3
+  _autoStartOnPlay: 0
+  _delayBeforeStart: 0.5
+--- !u!4 &1195126757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195126755}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 470.93185, y: 613.512, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1478855840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1452,32 +1543,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6854382151281232354, guid: a8df2b642674935458578e103b8fa4d4, type: 3}
+      propertyPath: NetworkConfig.PlayerPrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6854382151281232354, guid: a8df2b642674935458578e103b8fa4d4, type: 3}
+      propertyPath: 'NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 497bb05efde764a41baeff8bdc78cc79, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1939517439586145839, guid: a8df2b642674935458578e103b8fa4d4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1528369860}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8df2b642674935458578e103b8fa4d4, type: 3}
---- !u!1 &1528369859 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1939517439586145839, guid: a8df2b642674935458578e103b8fa4d4, type: 3}
-  m_PrefabInstance: {fileID: 1528369858}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1528369860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1528369859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27260c914dfadf949b2d0d21aa70f91b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.LobbyManager
-  _settings: {fileID: 11400000, guid: f43f25c7901c14ab7b766c9a475d4e3d, type: 2}
 --- !u!1 &1594813169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1977,3 +2055,5 @@ SceneRoots:
   - {fileID: 1860068222}
   - {fileID: 1528369858}
   - {fileID: 6694823502742835581}
+  - {fileID: 1195126757}
+  - {fileID: 946112032}

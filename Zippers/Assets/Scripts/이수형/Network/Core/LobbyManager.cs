@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Services.Authentication;
 using Unity.Services.Multiplayer;
 
 /// <summary>
@@ -170,6 +172,9 @@ public class LobbyManager : MonoBehaviour
         for (int attempt = 0; attempt <= JOIN_MAX_RETRY; attempt++)
         {
             await EnsureCleanNetworkStateAsync();
+            // NGO start 가 MultiplayerService.CreateSessionAsync 내부에서 일어나므로
+            // ConnectionData 는 그 호출 직전에 세팅되어 있어야 호스트 측 ConnectionApproval 콜백이 받아볼 수 있음.
+            SetConnectionDataFromAuth();
             try
             {
                 string region = string.IsNullOrWhiteSpace(_settings.RelayRegion) ? null : _settings.RelayRegion;
@@ -249,6 +254,8 @@ public class LobbyManager : MonoBehaviour
         for (int attempt = 0; attempt <= JOIN_MAX_RETRY; attempt++)
         {
             await EnsureCleanNetworkStateAsync();
+            // CreateSessionAsync 와 동일 이유 - NGO start 직전에 ConnectionData 세팅 필요.
+            SetConnectionDataFromAuth();
             try
             {
                 JoinSessionOptions options = new JoinSessionOptions
@@ -501,6 +508,44 @@ public class LobbyManager : MonoBehaviour
     // ─────────────────────────────────────────────────────────────────
     // Internals: NGO clean state / NGO Started polling / transient 판별
     // ─────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// NGO start 직전에 호출. AuthenticationService.PlayerId 를 UTF-8 바이트로 인코딩하여
+    /// NetworkConfig.ConnectionData 에 세팅. 호스트는 ConnectionApprovalCallback (PlayerSessionBridge) 에서
+    /// 이 payload 를 디코드해 clientId ↔ playerId 매핑을 등록함.
+    /// </summary>
+    private void SetConnectionDataFromAuth()
+    {
+        NetworkManager nm = NetworkManager.Singleton;
+        if (nm == null)
+        {
+            DebugTool.Warning("NetworkManager.Singleton 없음 - ConnectionData 세팅 생략", DebugType.Network);
+            return;
+        }
+
+        string playerId = null;
+        try
+        {
+            if (AuthenticationService.Instance != null && AuthenticationService.Instance.IsSignedIn)
+            {
+                playerId = AuthenticationService.Instance.PlayerId;
+            }
+        }
+        catch (Exception e)
+        {
+            DebugTool.Warning($"AuthenticationService 조회 예외: {e.Message}", DebugType.Network);
+        }
+
+        if (string.IsNullOrEmpty(playerId))
+        {
+            DebugTool.Warning("AuthenticationService.PlayerId 비어있음 - ConnectionData 세팅 생략 (PlayerSessionBridge 매핑 실패 가능)", DebugType.Network);
+            nm.NetworkConfig.ConnectionData = Array.Empty<byte>();
+            return;
+        }
+
+        nm.NetworkConfig.ConnectionData = Encoding.UTF8.GetBytes(playerId);
+        DebugTool.Log($"ConnectionData 세팅: playerId={playerId}", DebugType.Network);
+    }
 
     // 진입 전 NGO 잔재 정리 (이전 시도 흔적이 남으면 다음 StartHost/StartClient 가 깨질 수 있음)
     private async Task EnsureCleanNetworkStateAsync()

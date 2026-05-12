@@ -893,9 +893,8 @@ GameObject:
   - component: {fileID: 786332280501172647}
   - component: {fileID: -9145615182855542706}
   - component: {fileID: -7729774192181745941}
-  - component: {fileID: -8284571850958333308}
-  - component: {fileID: 5341779821913911483}
-  - component: {fileID: 6788786869661216004}
+  - component: {fileID: -4050121366747534136}
+  - component: {fileID: -2264612312225183606}
   m_Layer: 0
   m_Name: Rifle
   m_TagString: Untagged
@@ -1422,7 +1421,7 @@ MonoBehaviour:
   _playerReload: {fileID: 0}
   _playerResourceCollector: {fileID: 0}
   _testResourceAmount: 500
---- !u!114 &-8284571850958333308
+--- !u!114 &-4050121366747534136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1446,18 +1445,18 @@ MonoBehaviour:
   RotationMaxInterpolationTime: 0.1
   ScaleLerpSmoothing: 1
   ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 1
+  AuthorityMode: 0
   TickSyncChildren: 0
-  UseUnreliableDeltas: 1
+  UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 0
+  SyncRotAngleX: 1
   SyncRotAngleY: 1
-  SyncRotAngleZ: 0
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
@@ -1468,7 +1467,7 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &5341779821913911483
+--- !u!114 &-2264612312225183606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1477,30 +1476,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1399122269168980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a4d5bfc6d0ebf34e8128127ecd7485e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkRigidbody
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerOwnershipGate
   ShowTopMostFoldoutHeaderGroup: 1
-  NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 1
-  AutoUpdateKinematicState: 1
-  AutoSetKinematicOnDespawn: 1
---- !u!114 &6788786869661216004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1399122269168980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b828575a820c504d87756dc1ffb6d59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerNetworkLocalInitializer
-  ShowTopMostFoldoutHeaderGroup: 1
-  _playerLook: {fileID: 0}
-  _playerAimMarker: {fileID: 0}
-  _playerUpgradeKeyInputTest: {fileID: 0}
+  _ownerOnlyBehaviours:
+  - {fileID: 1778748557868984135}
+  - {fileID: 8631980802259185073}
+  - {fileID: 5208047023511409042}
+  - {fileID: 7627477484211779866}
+  - {fileID: 6939369211211074933}
+  - {fileID: 8031968554984743393}
+  - {fileID: 1977592983861236490}
+  - {fileID: 6383688018685756551}
+  - {fileID: 3780925892082509957}
+  - {fileID: -210312635136322163}
+  - {fileID: 3710049099252103592}
+  - {fileID: -7729774192181745941}
+  _ownerOnlyGameObjects: []
 --- !u!1 &1436760088571996
 GameObject:
   m_ObjectHideFlags: 0
