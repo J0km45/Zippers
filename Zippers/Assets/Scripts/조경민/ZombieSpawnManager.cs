@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class ZombieSpawnManager : MonoBehaviour
@@ -15,6 +16,8 @@ public class ZombieSpawnManager : MonoBehaviour
 
     public void StartWave(int waveId)
     {
+        if (!NetworkManager.Singleton.IsServer) return;
+
         IsSpawnStopped = false;
         List<WaveSpawnEntry> groups = LocalDataAccess.Instance.Game.GetWaveSpawns(waveId);
 
@@ -27,6 +30,7 @@ public class ZombieSpawnManager : MonoBehaviour
 
     private IEnumerator SpawnGroup(WaveSpawnEntry group)
     {
+        if (!NetworkManager.Singleton.IsServer) yield break;
         if (IsSpawnStopped) yield break;
         if (group.BatchCount <= 0) yield break;
 
@@ -37,6 +41,8 @@ public class ZombieSpawnManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(group.StartDelay);
+
+        if (!NetworkManager.Singleton.IsServer) yield break;
         if (IsSpawnStopped) yield break;
         DebugTool.Log($"그룹 {group.GroupIndex} 스폰 시작", DebugType.Zombie, this);
 
@@ -44,6 +50,7 @@ public class ZombieSpawnManager : MonoBehaviour
 
         while (spawnedCount < group.Count)
         {
+            if (!NetworkManager.Singleton.IsServer) yield break;
             if (IsSpawnStopped) yield break;
             int remainCount = group.Count - spawnedCount;
             int spawnCount = Mathf.Min(group.BatchCount, remainCount);
@@ -60,6 +67,8 @@ public class ZombieSpawnManager : MonoBehaviour
 
     private void SpawnZombie(WaveSpawnEntry group)
     {
+        if (!NetworkManager.Singleton.IsServer) return;
+
         int index = Random.Range(0, _spawnPoints.Length);
         Transform spawnPoint = _spawnPoints[index];
 
@@ -91,6 +100,8 @@ public class ZombieSpawnManager : MonoBehaviour
     // TODO: 호출 or 이벤트 사용
     public void StopSpawn()
     {
+        if (!NetworkManager.Singleton.IsServer) return;
+
         IsSpawnStopped = true;
         DebugTool.Log("좀비 스폰 중지", DebugType.Zombie, this);
     }

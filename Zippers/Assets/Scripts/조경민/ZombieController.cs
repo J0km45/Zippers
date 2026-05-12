@@ -3,7 +3,7 @@ using UnityEngine.AI;
 using Unity.Netcode;
 using Audio;
 
-public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBehaviour
+public class ZombieController : NetworkBehaviour, IDamagable
 {
     [SerializeField] private ZombieStatSO _stat;
 
@@ -51,8 +51,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     public Transform RightHand => _rightHand;
     public float StunDuration => _stunDuration;
 
-    //public NetworkVariable<int> CurrentHp = new NetworkVariable<float>();
-    public float CurrentHp; //임시(테스트용)
+    public NetworkVariable<float> CurrentHp = new NetworkVariable<float>();
 
     public ZombieType Type => _stat.ZombieType;
     public float MaxHp => _stat.MaxHealth * NodeScaling.GetMultiplier(NodeManager.BattleCount).Health;
@@ -89,14 +88,14 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         Sfx = GetComponent<ZombieSfxController>();
         ZombieAttack = GetComponent<IZombieAttack>();
     }
-    // TODO : NGO 적용되면 수정
-    //public override void OnNetworkSpawn()
-    //{
-    //    if (IsServer)
-    //    {
-    //        CurrentHp.Value = MaxHp;
-    //    }
-    //}
+
+    public override void OnNetworkDespawn()
+    {
+        if (_isCountRemoved) return;
+
+        _isCountRemoved = true;
+        _zombieCount.RemoveCount();
+    }
 
     public void Init(ZombieCountManager zombieCount, NodeManager nodeManager)
     {
@@ -106,18 +105,16 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         _zombieCount.AddCount();
     }
 
-    public void OnSpawn()
-    {
-        
-    }
-
     private void ResetZombie()
     {
         _isDead = false;
         _hasSpawnedReward = false;
         _isCountRemoved = false;
 
-        CurrentHp = MaxHp;
+        if (IsServer)
+        {
+            CurrentHp.Value = MaxHp;
+        }
 
         _groanSfxTimer = 0f;
         _lastAttackTime = 0f;
@@ -137,16 +134,10 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         ChangeState(Chase);
     }
 
-    public void OnDespawn()
-    {
-        if (_isCountRemoved) return;
-
-        _isCountRemoved = true;
-        _zombieCount.RemoveCount();
-    }
-
     private void Update()
     {
+        if (!IsServer) return;
+
         PlayGroanSfx();
         UpdatePlayer();
         RegenHealth();
@@ -156,7 +147,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     private void PlayGroanSfx()
     {
         if (_isDead) return;
-        // TODO : NGO 적용되면 서버에서 타이머 관리하도록 변경
+
         _groanSfxTimer += Time.deltaTime;
 
         if (_groanSfxTimer >= _groanSfxInterval)
@@ -164,21 +155,26 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
             _groanSfxTimer = 0f;
             if (Random.value < _groanSfxChance)
             {
-                if (Type == ZombieType.Boss)
-                {
-                    Sfx.PlayBossGroanSfx();
-                }
-                else
-                {
-                    Sfx.PlayGroanSfx();
-                }
+                PlayGroanSfxClientRpc();
             }
+        }
+    }
+
+    [ClientRpc]
+    private void PlayGroanSfxClientRpc()
+    {
+        if (Type == ZombieType.Boss)
+        {
+            Sfx.PlayBossGroanSfx();
+        }
+        else
+        {
+            Sfx.PlayGroanSfx();
         }
     }
 
     private void UpdatePlayer()
     {
-        // TODO : NGO 적용되면 서버시간으로 변경
         _playerDetectTimer += Time.deltaTime;
 
         if (_playerDetectTimer < _playerDetectInterval) return;
@@ -193,18 +189,17 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
     private void RegenHealth()
     {
         if (_isDead) return;
-        if (CurrentHp >= MaxHp) return;
+        if (CurrentHp.Value >= MaxHp) return;
 
-        // TODO : NGO 적용되면 서버시간으로 변경
         _healthRegenTimer += Time.deltaTime;
 
         if(_healthRegenTimer >= HealthPeriod)
         {
             _healthRegenTimer = 0f;
             float helathRegenAmount = MaxHp * (HealthRegen / 100f);
-            CurrentHp += helathRegenAmount;
-            CurrentHp = Mathf.Min(CurrentHp, MaxHp);
-            DebugTool.Log($"좀비 체력 회복: {helathRegenAmount}, 현재 체력: {CurrentHp}", DebugType.Zombie, this);
+            CurrentHp.Value += helathRegenAmount;
+            CurrentHp.Value = Mathf.Min(CurrentHp.Value, MaxHp);
+            DebugTool.Log($"좀비 체력 회복: {helathRegenAmount}, 현재 체력: {CurrentHp.Value}", DebugType.Zombie, this);
         }
     }
 
@@ -220,39 +215,78 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
 
     public bool CanAttack()
     {
-        // if (!IsServer) return false;
-        // TODO : 서버시간으로 변경 필요
+        if (!IsServer) return false;
+
         return Time.time >= _lastAttackTime + AttackCooldown;
     }
 
     public void SetAttackCooldown()
     {
-        // if (!IsServer) return;
-        // TODO : 서버시간으로 변경 필요
+        if (!IsServer) return;
+
         _lastAttackTime = Time.time;
     }
 
-    public void OnAttackHit() => Attack.OnAttackHit();
+    public void OnAttackHit()
+    {
+        if (!IsServer) return;
 
-    public void OnAttackEnd() => Attack.OnAttackEnd();
+        Attack.OnAttackHit();
+    }
 
-    public void OnFootStep() => Chase.OnFootStep();
+    public void OnAttackEnd()
+    {
+        if (!IsServer) return;
 
-    public void OnAttackSfx() => Attack.OnAttackSfx();
+        Attack.OnAttackEnd();
+    }
 
-    // TODO : NGO 적용되면 수정
+    public void OnFootStep()
+    {
+        if (!IsServer) return;
+
+        PlayFootStepSfxClientRpc();
+    }
+
+    [ClientRpc]
+    private void PlayFootStepSfxClientRpc()
+    {
+        if (Type == ZombieType.Boss)
+        {
+            Sfx.PlayBossMoveSfx();
+        }
+        else
+        {
+            Sfx.PlayMoveSfx();
+        }
+    }
+
+    public void OnAttackSfx()
+    {
+        if (!IsServer) return;
+
+        PlayAttackSfxClientRpc();
+    }
+
+    [ClientRpc]
+    private void PlayAttackSfxClientRpc()
+    {
+        Sfx.PlayAttackSfx(Type);
+    }
+
     public void TakeDamage(float damage)
     {
+        if (!IsServer) return;
         if (_isDead) return;
 
-        Sfx.PlayHitSfx();
-        CurrentHp -= damage;
-        DebugTool.Log($"좀비가 {damage} 데미지 입음. 현재 체력: {CurrentHp}", DebugType.Zombie, this);
+        PlayHitSfxClientRpc();
+        CurrentHp.Value -= damage;
+        DebugTool.Log($"좀비가 {damage} 데미지 입음. 현재 체력: {CurrentHp.Value}", DebugType.Zombie, this);
 
-        if (CurrentHp <= 0)
+        if (CurrentHp.Value <= 0)
         {
             _isDead = true;
-            Sfx.PlayDeathSfx();
+            PlayDeathSfxClientRpc();
             ChangeState(Die);
             return;
         }
@@ -260,13 +294,25 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         ChangeState(Hit);
     }
 
+    [ClientRpc]
+    private void PlayHitSfxClientRpc()
+    {
+        Sfx.PlayHitSfx();
+    }
+
+    [ClientRpc]
+    private void PlayDeathSfxClientRpc()
+    {
+        Sfx.PlayDeathSfx();
+    }
+
     public void SpawnReward()
     {
+        if (!IsServer) return;
         if (_hasSpawnedReward) return;
 
         _hasSpawnedReward = true;
 
-        Sfx.PlayDropResourcesSfx(ResourcesType.Scrap);
         TrySpawnReward(ResourcesType.Scrap, ScrapDropChance, MinScrap, MaxScrap);
         TrySpawnReward(ResourcesType.Supplies, SuppliesDropChance, MinSupplies, MaxSupplies);
         TrySpawnReward(ResourcesType.InfectionSample, SampleDropChance, InfectionSample, InfectionSample);
@@ -277,6 +323,7 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         float randomChance = Random.Range(0f, 100f);
         if (randomChance > dropChance) return;
 
+        PlayDropResourcesSfxClientRpc(type);
         int amount = Random.Range(minAmount, maxAmount + 1);
         float finalAmount = amount;
         if (type == ResourcesType.Scrap)
@@ -297,6 +344,12 @@ public class ZombieController : MonoBehaviour, IDamagable, IPoolable//NetworkBeh
         {
             reward.Init(type, finalAmount);
         }
+    }
+
+    [ClientRpc]
+    private void PlayDropResourcesSfxClientRpc(ResourcesType type)
+    {
+        Sfx.PlayDropResourcesSfx(type);
     }
 
     void OnDrawGizmos()

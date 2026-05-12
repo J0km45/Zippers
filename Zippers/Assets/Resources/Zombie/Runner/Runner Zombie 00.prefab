@@ -555,6 +555,7 @@ GameObject:
   - component: {fileID: 4183049840701662}
   - component: {fileID: 95687670202327948}
   - component: {fileID: 7824254588754962295}
+  - component: {fileID: 917790690067927451}
   m_Layer: 11
   m_Name: Runner Zombie 00
   m_TagString: Untagged
@@ -613,6 +614,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a5b57d8c80279148a18cabc80a95b2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieAnimationEventController
+--- !u!114 &917790690067927451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1300917902799776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkAnimatorExpanded: 0
+  AuthorityMode: 0
+  m_Animator: {fileID: 95687670202327948}
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 1335795830
+    DestinationState: 1691181582
+    TransitionDuration: 0.25
+    TriggerNameHash: 1080829965
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 2041659395
+    DestinationState: 1691181582
+    TransitionDuration: 0.25
+    TriggerNameHash: 1080829965
+    TransitionIndex: 1
+  AnimatorParameterEntries:
+    ParameterEntries:
+    - name: MoveSpeed
+      NameHash: 526065662
+      Synchronize: 1
+      ParameterType: 1
+    - name: Attack
+      NameHash: 1080829965
+      Synchronize: 1
+      ParameterType: 9
+    - name: IsAttacking
+      NameHash: -1130678506
+      Synchronize: 1
+      ParameterType: 4
+    - name: Hit
+      NameHash: 1654612129
+      Synchronize: 1
+      ParameterType: 9
+    - name: IsHit
+      NameHash: 2006285284
+      Synchronize: 1
+      ParameterType: 4
+    - name: Die
+      NameHash: 20298039
+      Synchronize: 1
+      ParameterType: 9
+  AnimatorParametersExpanded: 0
 --- !u!1 &1358033712443036
 GameObject:
   m_ObjectHideFlags: 0

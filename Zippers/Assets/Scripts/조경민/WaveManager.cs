@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour
@@ -11,20 +12,17 @@ public class WaveManager : MonoBehaviour
     // 노드 클리어 이벤트(인자: 클리어한 노드 인덱스)
     public event Action<int> OnBattleNodeCleared;
 
-    public void OnStart(int battleNodeIndex)
-    {
-        // TODO : 나중에 삭제
-        // 테스트용(버튼)
-        StartBattleNode(battleNodeIndex);
-    }
-
     public void StartBattleNode(int battleNodeIndex)
     {
+        if (!NetworkManager.Singleton.IsServer) return;
+
         StartCoroutine(RunBattleNode(battleNodeIndex));
     }
 
     private IEnumerator RunBattleNode(int battleNodeIndex)
     {
+        if (!NetworkManager.Singleton.IsServer) yield break;
+
         // 전체 카운트 초기화
         _zombieCountManager.ResetTotalCount();
 
@@ -38,6 +36,8 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < waves.Count; i++)
         {
+            if (!NetworkManager.Singleton.IsServer) yield break;
+
             WaveInfoSO waveInfo = waves[i];
 
             // 첫 웨이브 시작 대기
@@ -83,6 +83,7 @@ public class WaveManager : MonoBehaviour
 
         while (timer < waveInfo.TimeLimit)
         {
+            if (!NetworkManager.Singleton.IsServer) yield break;
             if (_zombieSpawnManager.IsSpawnStopped) yield break;
 
             // 웨이브 클리어 조건 체크
@@ -91,7 +92,7 @@ public class WaveManager : MonoBehaviour
                 DebugTool.Log($"웨이브 ({waveInfo.WaveIndex}) {waveInfo.WaveId} 클리어", DebugType.Zombie, this);
                 yield break;
             }
-            // TODO: 네트워크 적용 후 서버시간으로 변경
+            
             timer += Time.deltaTime;
             yield return null;
         }
@@ -101,7 +102,7 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator WaitAllZombiesDead()
     {
-        while (!_zombieSpawnManager.IsSpawnStopped && !_zombieCountManager.IsNodeCleared)
+        while (NetworkManager.Singleton.IsServer && !_zombieSpawnManager.IsSpawnStopped && !_zombieCountManager.IsNodeCleared)
         {
             yield return null;
         }
