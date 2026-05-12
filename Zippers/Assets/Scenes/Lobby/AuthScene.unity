@@ -1217,7 +1217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestSoloHostBootstrap
   _testClass: 3
-  _autoStartOnPlay: 1
+  _autoStartOnPlay: 0
   _delayBeforeStart: 0.5
 --- !u!4 &1195126757
 Transform:
