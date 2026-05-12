@@ -21,9 +21,9 @@ public class VolumeSetting : MonoBehaviour
     private void OnEnable()
     {
         _masterVolumeSlider.onValueChanged.AddListener(MasterVolumeSetting);
-        _bgmVolumeSlider.onValueChanged.AddListener(MasterVolumeSetting);
-        _sfxVolumeSlider.onValueChanged.AddListener(MasterVolumeSetting);
-        _uiVolumeSlider.onValueChanged.AddListener(MasterVolumeSetting);
+        _bgmVolumeSlider.onValueChanged.AddListener(BgmVolumeSetting);
+        _sfxVolumeSlider.onValueChanged.AddListener(SfxVolumeSetting);
+        _uiVolumeSlider.onValueChanged.AddListener(UIVolumeSetting);
     }
     
     private void Start()
@@ -35,9 +35,9 @@ public class VolumeSetting : MonoBehaviour
     private void OnDisable()
     {
         _masterVolumeSlider.onValueChanged.RemoveListener(MasterVolumeSetting);
-        _bgmVolumeSlider.onValueChanged.RemoveListener(MasterVolumeSetting);
-        _sfxVolumeSlider.onValueChanged.RemoveListener(MasterVolumeSetting);
-        _uiVolumeSlider.onValueChanged.RemoveListener(MasterVolumeSetting);
+        _bgmVolumeSlider.onValueChanged.RemoveListener(BgmVolumeSetting);
+        _sfxVolumeSlider.onValueChanged.RemoveListener(SfxVolumeSetting);
+        _uiVolumeSlider.onValueChanged.RemoveListener(UIVolumeSetting);
     }
 
     private void VolumeInit()
