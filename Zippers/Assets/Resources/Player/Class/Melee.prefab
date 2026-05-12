@@ -508,9 +508,8 @@ GameObject:
   - component: {fileID: 8543937339311557116}
   - component: {fileID: -4935378882621731558}
   - component: {fileID: -8053725602007112604}
-  - component: {fileID: -1030620478838318768}
-  - component: {fileID: -4420205741138830113}
-  - component: {fileID: 5228926542448425835}
+  - component: {fileID: -2014678582811589804}
+  - component: {fileID: 5415209466837377931}
   m_Layer: 0
   m_Name: Melee
   m_TagString: Untagged
@@ -1043,7 +1042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511c236881b496842be20aed0c71cb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerUpgradeProvider
---- !u!114 &-1030620478838318768
+--- !u!114 &-2014678582811589804
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1067,18 +1066,18 @@ MonoBehaviour:
   RotationMaxInterpolationTime: 0.1
   ScaleLerpSmoothing: 1
   ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 1
+  AuthorityMode: 0
   TickSyncChildren: 0
-  UseUnreliableDeltas: 1
+  UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 0
+  SyncRotAngleX: 1
   SyncRotAngleY: 1
-  SyncRotAngleZ: 0
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
@@ -1089,7 +1088,7 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &-4420205741138830113
+--- !u!114 &5415209466837377931
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1098,30 +1097,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1274019000965958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b828575a820c504d87756dc1ffb6d59, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a4d5bfc6d0ebf34e8128127ecd7485e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerNetworkLocalInitializer
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerOwnershipGate
   ShowTopMostFoldoutHeaderGroup: 1
-  _playerLook: {fileID: 0}
-  _playerAimMarker: {fileID: 0}
-  _playerUpgradeKeyInputTest: {fileID: 0}
---- !u!114 &5228926542448425835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274019000965958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkRigidbody
-  ShowTopMostFoldoutHeaderGroup: 1
-  NetworkRigidbodyBaseExpanded: 0
-  UseRigidBodyForMotion: 1
-  AutoUpdateKinematicState: 1
-  AutoSetKinematicOnDespawn: 1
+  _ownerOnlyBehaviours:
+  - {fileID: 574231514571398472}
+  - {fileID: 8049221978748498824}
+  - {fileID: 8270839177321676366}
+  - {fileID: 6792306487914795734}
+  - {fileID: 1053686039666722831}
+  - {fileID: 8795098328721232065}
+  - {fileID: 7878355291678046614}
+  - {fileID: 2919367550906155214}
+  - {fileID: 1103848870472195409}
+  - {fileID: 438206128735748743}
+  - {fileID: 238093600285782063}
+  - {fileID: 8543937339311557116}
+  _ownerOnlyGameObjects: []
 --- !u!1 &1288505126190028
 GameObject:
   m_ObjectHideFlags: 0
