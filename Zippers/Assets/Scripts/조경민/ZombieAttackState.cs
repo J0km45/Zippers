@@ -29,20 +29,14 @@ public class ZombieAttackState : IState
 
     public void OnAttackHit()
     {
-        //if (!_zombie.IsServer) return;
-
         if (_hasAttacked) return;
         _hasAttacked = true;
 
         _zombie.ZombieAttack.Attack(_zombie);
     }
 
-    public void OnAttackSfx() => _zombie.Sfx.PlayAttackSfx(_zombie.Type);
-
     public void OnAttackEnd()
     {
-        // if (!_zombie.IsServer) return;
-
         _zombie.SetAttackCooldown();
         _zombie.Animator.SetBool("IsAttacking", false);
         _zombie.ChangeState(_zombie.Chase);

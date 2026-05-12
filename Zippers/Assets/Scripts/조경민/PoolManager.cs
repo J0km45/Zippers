@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class PoolManager : MonoBehaviour
 {
@@ -48,6 +49,14 @@ public class PoolManager : MonoBehaviour
             poolable.OnSpawn();
         }
 
+        if (obj.TryGetComponent(out NetworkObject networkObject))
+        {
+            if (!networkObject.IsSpawned)
+            {
+                networkObject.Spawn();
+            }
+        }
+
         return obj;
     }
 
@@ -72,6 +81,14 @@ public class PoolManager : MonoBehaviour
         if (obj.TryGetComponent(out IPoolable poolable))
         {
             poolable.OnDespawn();
+        }
+
+        if(obj.TryGetComponent(out NetworkObject networkObject))
+        {
+            if (networkObject.IsSpawned)
+            {
+                networkObject.Despawn(false);
+            }
         }
 
         obj.SetActive(false);

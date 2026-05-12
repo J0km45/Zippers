@@ -12,8 +12,6 @@ public class ZombieHitState : IState
 
     public void Enter()
     {
-        // if (!IsServer) return;
-        // TODO : NGO 적용되면 서버시간으로 변경
         _hitStartTime = Time.time;
         _zombie.Agent.isStopped = true;
         _zombie.Animator.SetTrigger("Hit");
@@ -22,8 +20,6 @@ public class ZombieHitState : IState
 
     public void UpdateState()
     {
-        // if (!IsServer) return;
-
         if (Time.time >= _hitStartTime + _zombie.StunDuration)
         {
             _zombie.ChangeState(_zombie.Chase);
