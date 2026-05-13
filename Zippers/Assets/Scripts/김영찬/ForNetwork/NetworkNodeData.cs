@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NetworkNodeData : NetworkBehaviour
 {
+    [SerializeField] NodeManager _manager;
     [SerializeField] NetworkVariable<NodeDifficulty> _difficulty;
     [SerializeField] NetworkVariable<int> _battleCount;
     [SerializeField] NetworkVariable<int> _mapSeed;
@@ -18,25 +19,18 @@ public class NetworkNodeData : NetworkBehaviour
     /// </summary>
     public NetworkVariable<int> BattleCount => _battleCount;
     
+    /// <summary>
+    /// 이번 게임의 맵 시드
+    /// </summary>
     public NetworkVariable<int> MapSeed => _mapSeed;
 
     private void Awake()
     {
         DebugTool.Log("Network Node Data Awake", DebugType.Node, this);
     }
-
-    /// <summary>
-    /// 난이도 변경
-    /// </summary>
-    /// <param name="difficulty">게임 난이도</param>
-    private void SetDifficulty(NodeDifficulty difficulty)
-    {
-        if(!IsServer) return;
-        _difficulty.Value = difficulty;
-    }
     
     /// <summary>
-    /// 게임 씬 시작 시 방장(Server)이 최초 1회 호출하여 난이도와 시드를 결정합니다.
+    /// 방장(Server)이 호출하여 난이도와 시드를 결정
     /// </summary>
     public void SetDifficultyAndGenerateMap(NodeDifficulty difficulty)
     {
@@ -87,6 +81,6 @@ public class NetworkNodeData : NetworkBehaviour
     private void GenerateMapClientRpc(NodeDifficulty difficulty, int seed)
     {
         UnityEngine.Random.InitState(seed);
-        SetDifficulty(difficulty);
+        _manager.NodePathMaker.MakePath(difficulty);
     }
 }
