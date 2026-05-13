@@ -34,7 +34,7 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
             _mapData = FindFirstObjectByType<MapData>();
             return;
         }
-        
+        //TODO 실제 전투시작 클리어 종료 이벤트 구독하기
         _mapData.NetworkMapData.NodeState.OnValueChanged += NodeStateChange;
 
         //예시
@@ -48,16 +48,16 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
         {
             return;
         }
-        
+        //TODO 실제 전투시작 클리어 종료 이벤트 구독 해제하기
         _mapData.NetworkMapData.NodeState.OnValueChanged -= NodeStateChange;
         //예시
         //BattleManager.Instance.OnBattleStarted -= StartBattle;
         //BattleManager.Instance.OnBattleCleared -= ClearBattle;
         //BattleManager.Instance.OnBattleEnded -= EndBattle;
     }
-    private void NodeStateChange(NodeState preState ,NodeState curState)
+    private void NodeStateChange(NodeState temp, NodeState state)
     {
-        switch (curState)
+        switch (state)
         {
             case NodeState.Ready:
                 EndBattle();
@@ -72,7 +72,7 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
                 break;
         }
 
-        DebugTool.Log($"[TeamBattleUpgradeEffect] NodeState 이벤트 수신: {curState}", DebugType.Data, this);
+        DebugTool.Log($"[TeamBattleUpgradeEffect] NodeState 이벤트 수신: {state}", DebugType.Data, this);
     }
 
     public void StartBattle()
@@ -178,10 +178,7 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
             playerHealth.Heal(healAmount);
         }
 
-        DebugTool.Log(
-            $"[TeamBattleUpgradeEffect] ClearHeal 적용 완료 / 회복 비율: {healPercent * 100f}% / 대상 수: {playerHealths.Length}",
-            DebugType.Data,
-            this
+        DebugTool.Log($"[TeamBattleUpgradeEffect] ClearHeal 적용 완료 / 회복 비율: {healPercent * 100f}% / 대상 수: {playerHealths.Length}", DebugType.Data, this
         );
     }
 

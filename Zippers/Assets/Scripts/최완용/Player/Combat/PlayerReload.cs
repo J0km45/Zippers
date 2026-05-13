@@ -139,19 +139,4 @@ public class PlayerReload : MonoBehaviour
 
         DebugTool.Log($"[PlayerReload] 재장전 완료: {CurrentBullet}/{MaxBullet}", DebugType.Data,this);
     }
-
-    public void CancelReload()
-    {
-        if (!IsReloading)
-            return;
-
-        if (_reloadCoroutine != null)
-        {
-            StopCoroutine(_reloadCoroutine);
-            _reloadCoroutine = null;
-        }
-
-        IsReloading = false;
-
-    }
 }
