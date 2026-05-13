@@ -6,9 +6,6 @@ public class NetworkMapData : NetworkBehaviour
     [SerializeField] private NetworkVariable<int> _alivePlayerCount;
     [SerializeField] private NetworkVariable<NodeState> _nodeState;
     
-    private int _preAlivePlayerCount;
-    private NodeState _preNodeState;
-    
     /// <summary>
     /// 맵에 생존한 플레이어의 수
     /// </summary>
@@ -31,10 +28,8 @@ public class NetworkMapData : NetworkBehaviour
     {
         if(!IsServer) return;
         if(AlivePlayerCount.Value >= 4) return;
-        _preAlivePlayerCount = AlivePlayerCount.Value;
         _alivePlayerCount.Value++;
         DebugTool.Log($"{gameObject.name} Player Income, Current Player : {AlivePlayerCount}", DebugType.Node, this);
-        AlivePlayerCount.OnValueChanged?.Invoke(_preAlivePlayerCount, AlivePlayerCount.Value);
     }
 
     /// <summary>
@@ -44,10 +39,8 @@ public class NetworkMapData : NetworkBehaviour
     {
         if(!IsServer) return;
         if (AlivePlayerCount.Value <= 0) return;
-        _preAlivePlayerCount = AlivePlayerCount.Value;
         _alivePlayerCount.Value--;
         DebugTool.Log($"{gameObject.name} Player Out, Current Player : {AlivePlayerCount}", DebugType.Node, this);
-        AlivePlayerCount.OnValueChanged?.Invoke(_preAlivePlayerCount, AlivePlayerCount.Value);
     }
 
     /// <summary>
@@ -56,10 +49,8 @@ public class NetworkMapData : NetworkBehaviour
     public void ResetAlivePlayerCount()
     {
         if(!IsServer) return;
-        _preAlivePlayerCount = AlivePlayerCount.Value;
         _alivePlayerCount.Value = 0;
         DebugTool.Log($"{gameObject.name} Player Count Reset", DebugType.Node, this);
-        AlivePlayerCount.OnValueChanged?.Invoke(_preAlivePlayerCount, AlivePlayerCount.Value);
     }
     
     /// <summary>
@@ -71,6 +62,5 @@ public class NetworkMapData : NetworkBehaviour
         if(!IsServer) return;
         _nodeState.Value = state;
         DebugTool.Log($"{gameObject.name} Map Node State Change : {NodeState}", DebugType.Node, this);
-        NodeState.OnValueChanged?.Invoke(_preNodeState, _nodeState.Value);
     }
 }
