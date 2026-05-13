@@ -7,6 +7,6 @@ public class PlayerAim : MonoBehaviour
     public void SetAiming(bool aiming)
     {
         IsAiming = aiming;
-        Debug.Log($"[PlayerAim] Aiming 상태: {IsAiming}");
+        DebugTool.Log($"[PlayerAim] Aiming 상태: {IsAiming}", DebugType.Character, this);
     }
 }

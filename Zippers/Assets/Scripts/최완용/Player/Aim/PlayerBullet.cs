@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerBullet : MonoBehaviour
+public class PlayerBullet : NetworkBehaviour
 {
     [Header("충돌 설정")]
     [SerializeField] private LayerMask _targetLayerMask; // 데미지를 줄 대상 레이어
@@ -33,13 +34,20 @@ public class PlayerBullet : MonoBehaviour
         _hitTargets.Clear();
         _isInitialized = true;
 
-        Debug.Log($"[PlayerProjectile] 초기화 완료 / Damage: {_damage}, Speed: {_speed}, Distance: {_maxDistance}, Pierce: {_canPierce}");
+        DebugTool.Log($"[PlayerProjectile] 초기화 완료 / Damage: {_damage}, Speed: {_speed}, Distance: {_maxDistance}, Pierce: {_canPierce}", DebugType.Data, this);
     }
 
     private void Update()
     {
         if (!_isInitialized)
+        {
             return;
+        }
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening && !IsServer)
+        {
+            return;
+        }
+
 
         Move();
         CheckDistance();
@@ -61,17 +69,29 @@ public class PlayerBullet : MonoBehaviour
         float movedDistance = Vector3.Distance(_startPosition, transform.position);
 
         if (movedDistance < _maxDistance)
+        {
             return;
+        }
 
         DebugTool.Log("최대 사거리 도달", DebugType.Data, this);
+        if(NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening && !IsServer)
+        {
+            NetworkObject.Despawn(true);
+            return;
+        }
         Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (!IsTargetLayer(other.gameObject))
+        {
             return;
-
+        }
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening && !IsServer)
+        {
+            return;
+        }
         IDamagable damagable = other.GetComponentInParent<IDamagable>();
 
         if (damagable == null)
@@ -89,6 +109,11 @@ public class PlayerBullet : MonoBehaviour
 
         if (!_canPierce)
         {
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening && !IsServer)
+            {
+                NetworkObject.Despawn(true);
+                return;
+            }
             Destroy(gameObject);
         }
     }

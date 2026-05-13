@@ -46,14 +46,12 @@ public class PlayerCombatAttackState : IState
             //{
             //    _weaponSFXController.PlayWeaponSfx(WeaponType.Shotgun);
             //}
-
-            Debug.Log("[PlayerCombatAttackState] Attack 상태 진입");
         }
     }
 
     public void Exit()
     {
-        Debug.Log("[PlayerCombatAttackState] Attack 상태 종료");
+        DebugTool.Log("[PlayerCombatAttackState] Attack 상태 종료", DebugType.Data);
     }
 
     public void UpdateState()
@@ -69,13 +67,11 @@ public class PlayerCombatAttackState : IState
     {
         if (_weaponSFXController == null)
         {
-            Debug.LogWarning("[PlayerCombatAttackState] WeaponSFXController가 없습니다.");
             return;
         }
 
         if (_playerStats == null)
         {
-            Debug.LogWarning("[PlayerCombatAttackState] PlayerStats가 없습니다.");
             return;
         }
 

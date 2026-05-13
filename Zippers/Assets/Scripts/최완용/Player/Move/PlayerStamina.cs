@@ -98,6 +98,7 @@ public class PlayerStamina : MonoBehaviour
 
     private void UseStamina()
     {
+        //TODO : 스테미나 소모/ 회복은 서버 검증후 동기화 필요
         if (CurrentStamina <= 0f)
         {
             StopSprintNoStamina();

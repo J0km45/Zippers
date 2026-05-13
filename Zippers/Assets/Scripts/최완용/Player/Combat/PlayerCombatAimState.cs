@@ -11,7 +11,7 @@ public class PlayerCombatAimState : IState
 
     public void Enter()
     {
-        Debug.Log("[PlayerCombatAimState] Aim 상태 진입");
+        DebugTool.Log("[PlayerCombatAimState] Aim 상태 진입", DebugType.Data);
     }
 
     public void Exit()

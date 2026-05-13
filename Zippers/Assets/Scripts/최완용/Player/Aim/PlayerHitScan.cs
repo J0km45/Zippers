@@ -71,13 +71,12 @@ public class PlayerHitScan : MonoBehaviour
             }
         }
 
-        Debug.Log($"[PlayerHitScan] 샷건 발사 / RayCount: {_shotgunRayCount}, Distance: {shotgunDistance}");
+        DebugTool.Log($"[PlayerHitScan] 샷건 발사 / RayCount: {_shotgunRayCount}, Distance: {shotgunDistance}", DebugType.Character, this);
     }
     public void MeleeHitScan(float damage)
     {
         if (_meleePoint == null)
         {
-            Debug.LogWarning("[PlayerHitScan] Melee Point가 없습니다.");
             return;
         }
 
@@ -94,20 +93,7 @@ public class PlayerHitScan : MonoBehaviour
             ApplyDamage(hit, damage);
         }
 
-        Debug.Log($"[PlayerHitScan] 근접 판정 완료 / Radius: {_meleeRadius}, HitCount: {hits.Length}");
-    }
-    private bool IsInsideShotgunCone(Vector3 origin, Vector3 attackDirection, Vector3 targetPosition)
-    {
-        Vector3 directionToTarget = targetPosition - origin;
-        directionToTarget.y = 0f;
-
-        if (directionToTarget.sqrMagnitude < 0.001f)
-            return true;
-
-        float halfAngle = _shotgunAngle * 0.5f;
-        float targetAngle = Vector3.Angle(attackDirection, directionToTarget.normalized);
-
-        return targetAngle <= halfAngle;
+        DebugTool.Log($"[PlayerHitScan] 근접 판정 완료 / Radius: {_meleeRadius}, HitCount: {hits.Length}", DebugType.Data, this);
     }
 
     private void ApplyDamage(Collider targetCollider, float damage)
@@ -119,6 +105,8 @@ public class PlayerHitScan : MonoBehaviour
             return;
         }
         _hitTarget.Add(damagable);
+
+        //TODO : 히트스캔 판정과 데미지 적용은 서버 RayCast/OverLap 서버 검증 구조로 변경해야됨
         damagable.TakeDamage(damage);
     }
 

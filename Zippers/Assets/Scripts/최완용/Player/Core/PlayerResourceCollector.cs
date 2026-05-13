@@ -40,6 +40,7 @@ public class PlayerResourceCollector : MonoBehaviour, IResourceCollectable
 
     public void CollectResource(ResourcesType type, float amount)
     {
+        //TODO : 재화 획득은 클라이언트가 직접 증가시키지 않고 서버에 획득 요청 후 승인결과를 반영해야됨
         if (type == ResourcesType.Supplies)
         {
             AddTeamSupplies(amount);
@@ -59,6 +60,7 @@ public class PlayerResourceCollector : MonoBehaviour, IResourceCollectable
     // 재화 보유량 확인
     public bool HasEnoughResource(ResourcesType type, float amount)
     {
+        //TODO : 멀티 전환 시 재화 보유량 검사는 클라이언트 값이 아니라 서버 값을 기준으로 해야 됨
         if (amount <= 0f)
         {
             return false;
@@ -82,6 +84,7 @@ public class PlayerResourceCollector : MonoBehaviour, IResourceCollectable
     // 재화 사용
     public bool UseResource(ResourcesType type, float amount)
     {
+        //TODO : 재화 사용 차감은 서버거 보유량을 검증한 뒤 처리해야 됨
         if (amount <= 0f)
         {
             return false;
@@ -131,6 +134,7 @@ public class PlayerResourceCollector : MonoBehaviour, IResourceCollectable
 
     private bool AddResource(ResourcesType type, float amount)
     {
+        //TODO : 재화 증가 값은 서버 PlayerRunTimeData의 기준으로 동기화 해야됨
         switch (type)
         {
             case ResourcesType.Scrap:
@@ -216,6 +220,7 @@ public class PlayerResourceCollector : MonoBehaviour, IResourceCollectable
     // 팀 Supplies 변경 이벤트를 받아 UI 갱신용 이벤트만 전달
     private void HandleTeamResourceChanged(ResourcesType type, float currentAmount, float changedAmount)
     {
+        //TODO : 재화 변경 이벤트는 서버가 확정한 결과를 받은 뒤 UI 갱신용으로 호출해야됨
         if (type != ResourcesType.Supplies)
         {
             return;
