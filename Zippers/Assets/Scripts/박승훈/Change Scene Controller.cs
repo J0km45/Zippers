@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class ChangeSceneController : MonoBehaviour
+public class SceneChangeController : MonoBehaviour
 {
     [Space(3)] [Header("화면 전환 이미지 컴포넌트")] [SerializeField]
     private Image _changeSceneImage;
@@ -69,5 +69,7 @@ public class ChangeSceneController : MonoBehaviour
 
             yield return null;
         }
+        
+        GameSceneManager.Instance.LoadNextStage();
     }
 }
