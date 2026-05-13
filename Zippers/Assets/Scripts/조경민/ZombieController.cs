@@ -358,6 +358,8 @@ public class ZombieController : NetworkBehaviour, IDamagable
         Gizmos.DrawWireSphere(gameObject.transform.position, DetectRange); // 감지 범위
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere((LeftHand.position + RightHand.position) * 0.5f, HandRadius); // 손 범위
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(RightHand.position, HandRadius); // 오른손(보스)
         Gizmos.color = Color.orange;
         Gizmos.DrawWireSphere(gameObject.transform.position, AttackRange); // 공격 범위
     }
