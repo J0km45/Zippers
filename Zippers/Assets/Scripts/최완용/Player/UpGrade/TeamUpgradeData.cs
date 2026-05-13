@@ -70,6 +70,7 @@ public class TeamUpgradeData : MonoBehaviour
     //가능한지 판단
     public bool CanUpgrade(TeamUpgradeEntry entry)
     {
+        //TODO : 팀 업그레이드 가능 여부는 서버가 Supplies, MaxLevel 기준으로 검증해야됨
         if (entry == null)
         {
             return false;
@@ -101,23 +102,27 @@ public class TeamUpgradeData : MonoBehaviour
     //팀 업그레이드 1레벨 증가
     public bool Upgrade(TeamUpgradeEntry entry)
     {
-        if(!CanUpgrade(entry))
+        //TODO : 팀 업그레이드는 클라이언트가 직접 적용하지않고 ID만 서버에 요청해야됨
+        if (!CanUpgrade(entry))
         {
             return false;
         }
 
         int cost = UpgradeCost(entry);
 
-        if(!_teamResourceManager.UseResource(_upgradeCostType, cost))
+        //TODO : 팀 업그레이드 비용 차감을 서버 기준으로 처리해야됨       
+        if (!_teamResourceManager.UseResource(_upgradeCostType, cost))
         {
             return false;
         }
 
+        //TODO : 팀 업그레이드 레벨 Dictionary는 서버 기준으로 관리하고 모든 클라이언트에 동기화
         int beforeLevel = GetLevel(entry);
         int nextLevel = beforeLevel + 1;
 
         _upgradeLevel[entry.UpgradeId] = nextLevel;
 
+        //TODO : 이벤트는 서버 승인후 변경돈 팀 업그레이드 레벨을 받은 뒤 호출해야됨
         TeamUpgradeChanged?.Invoke(entry, nextLevel);
         return true;
     }

@@ -47,6 +47,7 @@ public class TeamUpgradeRuntimeApplier : MonoBehaviour
     /// </summary>
     private void ApplyRuntimeValue(TeamUpgradeEntry entry, int level)
     {
+        //TODO : 팀 업그레이드로 변경되는 스텟은 서버 계산 결과를 기준으로 동기화 해야됨
         if (entry == null)
         {
             return;
@@ -65,19 +66,11 @@ public class TeamUpgradeRuntimeApplier : MonoBehaviour
             case TeamUpgradeStatKey.Damage:
             case TeamUpgradeStatKey.AttackSpeed:
             case TeamUpgradeStatKey.MoveSpeed:
-                DebugTool.Log(
-                    $"[TeamUpgradeRuntimeApplier] {entry.StatKey}는 PlayerStats에서 즉시 계산됩니다.",
-                    DebugType.Data,
-                    this
-                );
+                DebugTool.Log($"[TeamUpgradeRuntimeApplier] {entry.StatKey}는 PlayerStats에서 즉시 계산됩니다.", DebugType.Data, this);
                 break;
 
             default:
-                DebugTool.Log(
-                    $"[TeamUpgradeRuntimeApplier] {entry.StatKey}는 아직 런타임 갱신 대상이 아닙니다.",
-                    DebugType.Data,
-                    this
-                );
+                DebugTool.Log($"[TeamUpgradeRuntimeApplier] {entry.StatKey}는 아직 런타임 갱신 대상이 아닙니다.", DebugType.Data, this);
                 break;
         }
     }
@@ -99,10 +92,7 @@ public class TeamUpgradeRuntimeApplier : MonoBehaviour
             playerHealth.RefreshHealth();
         }
 
-        DebugTool.Log(
-            $"[TeamUpgradeRuntimeApplier] 모든 PlayerHealth 갱신 완료 / Count: {playerHealths.Length}",
-            DebugType.Data,
-            this
+        DebugTool.Log($"[TeamUpgradeRuntimeApplier] 모든 PlayerHealth 갱신 완료 / Count: {playerHealths.Length}", DebugType.Data, this
         );
     }
 

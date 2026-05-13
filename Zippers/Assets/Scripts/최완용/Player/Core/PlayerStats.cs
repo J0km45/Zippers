@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
+    // TODO(Network): PlayerStats는 클라이언트 표시용으로 유지하되,
+    // 체력/데미지/공격속도/탄약/이동속도 등 전투 핵심 스탯은 서버에서도 동일한 기준으로 계산해야 함.
     [Header("클래스 데이터")]
     [SerializeField] private PlayerClassDataSO _playerClassData;
 

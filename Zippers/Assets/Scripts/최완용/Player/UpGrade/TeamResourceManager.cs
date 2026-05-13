@@ -41,6 +41,7 @@ public class TeamResourceManager : MonoBehaviour
 
     public bool AddResource(ResourcesType type, float amount)
     {
+        //TODO : 팀 공용 Supplies증가는 서버에서 관리해야됨
         if (amount <= 0f)
         {
             DebugTool.Log($"[TeamResourceManager] 증가량이 올바르지 않습니다. amount: {amount}", DebugType.Data, this);
@@ -49,15 +50,12 @@ public class TeamResourceManager : MonoBehaviour
 
         switch (type)
         {
+            //TODO : 짐 재화 번경 이벤트는 서버가 확정한 후 값은 받아서 호출해야됨
             case ResourcesType.Supplies:
                 _supplies += amount;
                 TeamResourceChanged?.Invoke(type, _supplies, amount);
 
-                DebugTool.Log(
-                    $"[TeamResourceManager] 팀 Supplies 획득 : +{amount} / 현재 Supplies : {_supplies}",
-                    DebugType.Data,
-                    this
-                );
+                DebugTool.Log($"[TeamResourceManager] 팀 Supplies 획득 : +{amount} / 현재 Supplies : {_supplies}", DebugType.Data, this);
 
                 return true;
 
@@ -83,6 +81,7 @@ public class TeamResourceManager : MonoBehaviour
     // 팀 재화를 사용한다.
     public bool UseResource(ResourcesType type, float amount)
     {
+        //TODO : 팀 공용 제화는 서버가 보유량을 검증한 뒤 모든 클라이언트에 동기화 해야된다.
         if (amount <= 0f)
         {
             return false;

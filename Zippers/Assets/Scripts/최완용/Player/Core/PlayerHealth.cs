@@ -26,6 +26,7 @@ public class PlayerHealth : MonoBehaviour, IDamagable
     
     public void Awake()
     {
+        //TODO : 멀티 전환시 MaxHealth와 CurrentHealth 초기값을 PlayerRuntimeData에서 가져오도록 수정
         _playerStats = GetComponent<PlayerStats>();
     }
     private void Start()
@@ -60,7 +61,9 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     public void Heal(float amont)
     {
-        if(IsDead)
+        //TODO : OnHealthChanged는 서버가 확정한 체력값을 받은 뒤 UI생신용으로 호출해야됨
+        //TODO : 회복 요청을 클라이언트가 직접 하지않고 서버에 회복 요청후 결과를 받아서 해야됨
+        if (IsDead)
         {
             DebugTool.Log("죽음 상태입니다. 치료할 수 없습니다.", DebugType.Character, this);
             return;
@@ -81,11 +84,13 @@ public class PlayerHealth : MonoBehaviour, IDamagable
     //인터페이스 참조
     public void TakeDamage(float damage)
     {
+        //TODO : 체력 감소 요청을 클라이언트가 직접 하지않고 서버에 데미지 요청후 결과를 받아서 해야됨 
         ApplyDamage(damage);
     }
 
     private void ApplyDamage(float damage)
     {
+        //TODO : 실제 CurrentHealth 감소는 서버에서 처리후 결과를 클라이언트에 전달해서 해야됨
         if (IsDead)
         {
             DebugTool.Log("죽음 상태입니다.", DebugType.Character, this);
@@ -109,6 +114,7 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     private void Die()
     {
+        //TODO : 사망 판정은 서버에서 확정하고 모든 클라이언트에  사망상태를 동기화 해야됨
         IsDead = true;
         CurrentHealth = 0f;
         PlayerTransform playerTransform = GetComponent<PlayerTransform>();

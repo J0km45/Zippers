@@ -45,13 +45,13 @@ public class PlayerUpgradeKeyInputTest : MonoBehaviour
 
         if (Keyboard.current.uKey.wasPressedThisFrame)
         {
-            Debug.Log("[PlayerUpgradeKeyInputTest] U 입력 감지");
+            DebugTool.Log("[PlayerUpgradeKeyInputTest] U 입력 감지", DebugType.Data, this);
             UpgradeCurrentIndex();
         }
 
         if (Keyboard.current.iKey.wasPressedThisFrame)
         {
-            Debug.Log("[PlayerUpgradeKeyInputTest] I 입력 감지");
+            DebugTool.Log("[PlayerUpgradeKeyInputTest] I 입력 감지", DebugType.Data, this);
             PrintStats();
         }
         if (Keyboard.current.kKey.wasPressedThisFrame)
@@ -60,7 +60,7 @@ public class PlayerUpgradeKeyInputTest : MonoBehaviour
         }
         if (Keyboard.current.tKey.wasPressedThisFrame)
         {
-            Debug.Log("[PlayerUpgradeKeyInputTest] t 입력 감지 / 랜덤 업그레이드 목록 재생성");
+            DebugTool.Log("[PlayerUpgradeKeyInputTest] t 입력 감지 / 랜덤 업그레이드 목록 재생성", DebugType.Data, this);
             LoadUpgradeList();
         }
     }
@@ -114,13 +114,11 @@ public class PlayerUpgradeKeyInputTest : MonoBehaviour
     {
         if (_playerStats == null)
         {
-            Debug.LogWarning("[PlayerUpgradeKeyInputTest] PlayerStats가 없습니다.");
             return;
         }
 
         if (_playerUpgradeProvider == null)
         {
-            Debug.LogWarning("[PlayerUpgradeKeyInputTest] PlayerUpgradeProvider가 없습니다.");
             return;
         }
 
@@ -129,19 +127,21 @@ public class PlayerUpgradeKeyInputTest : MonoBehaviour
             _playerIngameData,
             4
         );
-        Debug.Log($"[PlayerUpgradeKeyInputTest] 클래스: {_playerStats.WeaponType}");
-        Debug.Log($"[PlayerUpgradeKeyInputTest] 테스트 가능 업그레이드 수: {_upgradeList.Count}");
+        DebugTool.Log($"[PlayerUpgradeKeyInputTest] 클래스: {_playerStats.WeaponType}", DebugType.Data, this);
+        DebugTool.Log($"[PlayerUpgradeKeyInputTest] 테스트 가능 업그레이드 수: {_upgradeList.Count}", DebugType.Data, this);
 
         for (int i = 0; i < _upgradeList.Count; i++)
         {
             UpgradeEntry entry = _upgradeList[i];
 
-            Debug.Log(
+            DebugTool.Log(
                 $"[PlayerUpgradeKeyInputTest] Index:{i} / " +
                 $"ID:{entry.Id} / " +
                 $"Name:{entry.UpgradeName} / " +
                 $"StatKey:{entry.StatKey} / " +
-                $"Value:{entry.ValuePerLevel}"
+                $"Value:{entry.ValuePerLevel}",
+                DebugType.Data,
+                this
             );
         }
     }
@@ -154,13 +154,11 @@ public class PlayerUpgradeKeyInputTest : MonoBehaviour
     {
         if (_playerIngameData == null)
         {
-            Debug.LogWarning("[PlayerUpgradeKeyInputTest] PlayerIngameData가 없습니다.");
             return;
         }
 
         if (_upgradeList == null || _upgradeList.Count == 0)
         {
-            Debug.LogWarning("[PlayerUpgradeKeyInputTest] 업그레이드 목록이 비어있습니다.");
             return;
         }
 
@@ -178,13 +176,14 @@ public class PlayerUpgradeKeyInputTest : MonoBehaviour
 
         int afterLevel = _playerIngameData.GetLevel(entry);
 
-        Debug.Log(
+        DebugTool.Log(
             $"[PlayerUpgradeKeyInputTest] 업그레이드 테스트 / " +
             $"Index:{_upgradeIndex} / " +
             $"Name:{entry.UpgradeName} / " +
             $"Cost:{cost} / " +
             $"Level:{beforeLevel} -> {afterLevel} / " +
             $"Success:{isSuccess}"
+            , DebugType.Data, this
         );
 
         if (isSuccess)
@@ -203,7 +202,6 @@ public class PlayerUpgradeKeyInputTest : MonoBehaviour
     {
         if (_playerResourceCollector == null)
         {
-            Debug.LogWarning("[PlayerUpgradeKeyInputTest] PlayerResourceCollector가 없습니다.");
             return;
         }
 
@@ -211,18 +209,22 @@ public class PlayerUpgradeKeyInputTest : MonoBehaviour
         _playerResourceCollector.CollectResource(ResourcesType.Supplies, _testResourceAmount);
         _playerResourceCollector.CollectResource(ResourcesType.InfectionSample, _testResourceAmount);
 
-        Debug.Log(
+        DebugTool.Log(
             $"[PlayerUpgradeKeyInputTest] 테스트 재화 지급 완료 / " +
             $"Scrap +{_testResourceAmount}, " +
             $"Supplies +{_testResourceAmount}, " +
-            $"InfectionSample +{_testResourceAmount}"
+            $"InfectionSample +{_testResourceAmount}",
+            DebugType.Data,
+            this
         );
 
-        Debug.Log(
+        DebugTool.Log(
             $"[PlayerUpgradeKeyInputTest] 현재 재화 / " +
             $"Scrap: {_playerResourceCollector.Scrap}, " +
             $"Supplies: {_playerResourceCollector.Supplies}, " +
-            $"InfectionSample: {_playerResourceCollector.InfectionSample}"
+            $"InfectionSample: {_playerResourceCollector.InfectionSample}",
+            DebugType.Data,
+            this
         );
     }
 
@@ -254,25 +256,24 @@ public class PlayerUpgradeKeyInputTest : MonoBehaviour
     {
         if (_playerStats == null)
         {
-            Debug.LogWarning("[PlayerUpgradeKeyInputTest] PlayerStats가 없습니다.");
             return;
         }
 
-        Debug.Log($"[Stats] 체력: {_playerStats.MaxHealth} + {_playerStats.AddMaxHealth} = {_playerStats.TotalMaxHealth}");
-        Debug.Log($"[Stats] 스테미나: {_playerStats.Stamina} + {_playerStats.AddStamina} = {_playerStats.TotalStamina}");
-        Debug.Log($"[Stats] 스테미나 회복량: {_playerStats.StaminaRegen} + {_playerStats.AddStaminaRegen} = {_playerStats.TotalStaminaRegen}");
+        DebugTool.Log($"[Stats] 체력: {_playerStats.MaxHealth} + {_playerStats.AddMaxHealth} = {_playerStats.TotalMaxHealth}", DebugType.Data, this);
+        DebugTool.Log($"[Stats] 스테미나: {_playerStats.Stamina} + {_playerStats.AddStamina} = {_playerStats.TotalStamina}", DebugType.Data, this);
+        DebugTool.Log($"[Stats] 스테미나 회복량: {_playerStats.StaminaRegen} + {_playerStats.AddStaminaRegen} = {_playerStats.TotalStaminaRegen}", DebugType.Data, this        );
 
-        Debug.Log($"[Stats] 데미지: {_playerStats.MinDamage}~{_playerStats.MaxDamage} + {_playerStats.AddDamage} = {_playerStats.TotalMinDamage}~{_playerStats.TotalMaxDamage}");
-        Debug.Log($"[Stats] 공격속도: {_playerStats.AttackSpeed} + {_playerStats.AddAttackSpeed} = {_playerStats.TotalAttackSpeed}");
+        DebugTool.Log($"[Stats] 데미지: {_playerStats.MinDamage}~{_playerStats.MaxDamage} + {_playerStats.AddDamage} = {_playerStats.TotalMinDamage}~{_playerStats.TotalMaxDamage}", DebugType.Data, this);
+        DebugTool.Log($"[Stats] 공격속도: {_playerStats.AttackSpeed} + {_playerStats.AddAttackSpeed} = {_playerStats.TotalAttackSpeed}", DebugType.Data, this);
 
-        Debug.Log($"[Stats] 이동속도: {_playerStats.MoveSpeed} + {_playerStats.AddMoveSpeed} = {_playerStats.TotalMoveSpeed}");
-        Debug.Log($"[Stats] 달리기 이동속도: {_playerStats.TotalSprintMoveSpeed}");
+        DebugTool.Log($"[Stats] 이동속도: {_playerStats.MoveSpeed} + {_playerStats.AddMoveSpeed} = {_playerStats.TotalMoveSpeed}", DebugType.Data, this);
+        DebugTool.Log($"[Stats] 달리기 이동속도: {_playerStats.TotalSprintMoveSpeed}", DebugType.Data, this);  
+        
+        DebugTool.Log($"[Stats] 장탄수: {_playerStats.MagazineCapacity} + {_playerStats.AddMagazineCapacity} = {_playerStats.TotalMagazineCapacity}", DebugType.Data, this);
+        DebugTool.Log($"[Stats] 재장전 시간: {_playerStats.ReloadTime} + {_playerStats.AddReloadTime} = {_playerStats.TotalReloadTime}", DebugType.Data, this);
 
-        Debug.Log($"[Stats] 장탄수: {_playerStats.MagazineCapacity} + {_playerStats.AddMagazineCapacity} = {_playerStats.TotalMagazineCapacity}");
-        Debug.Log($"[Stats] 재장전 시간: {_playerStats.ReloadTime} + {_playerStats.AddReloadTime} = {_playerStats.TotalReloadTime}");
-
-        Debug.Log($"[Stats] 탄환 거리: {_playerStats.BulletDistance} + {_playerStats.AddBulletDistance} = {_playerStats.TotalBulletDistance}");
-        Debug.Log($"[Stats] 시야 범위: {_playerStats.SightRange} + {_playerStats.AddSightRange} = {_playerStats.TotalSightRange}");
-        Debug.Log($"[Stats] 재화 획득 범위: {_playerStats.CollectRange} + {_playerStats.AddCollectRange} = {_playerStats.TotalCollectRange}");
+        DebugTool.Log($"[Stats] 탄환 거리: {_playerStats.BulletDistance} + {_playerStats.AddBulletDistance} = {_playerStats.TotalBulletDistance}", DebugType.Data, this);
+        DebugTool.Log($"[Stats] 시야 범위: {_playerStats.SightRange} + {_playerStats.AddSightRange} = {_playerStats.TotalSightRange}", DebugType.Data, this);
+        DebugTool.Log($"[Stats] 재화 획득 범위: {_playerStats.CollectRange} + {_playerStats.AddCollectRange} = {_playerStats.TotalCollectRange}", DebugType.Data, this);
     }
 }

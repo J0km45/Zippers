@@ -35,7 +35,7 @@ public class PlayerNetworkLocalInitializer : NetworkBehaviour
         if (!IsNetworkGameRunning())
         {
             SetLocalComponentsActive(true);
-            Debug.Log("[PlayerNetworkLocalInitializer] 싱글 테스트 로컬 기능 활성화");
+            DebugTool.Log("[PlayerNetworkLocalInitializer] 싱글 테스트 로컬 기능 활성화", DebugType.Network, this);
         }
     }
 
@@ -59,14 +59,14 @@ public class PlayerNetworkLocalInitializer : NetworkBehaviour
     {
         SetLocalComponentsActive(true);
 
-        Debug.Log("[PlayerNetworkLocalInitializer] 로컬 플레이어 기능 활성화");
+        DebugTool.Log("[PlayerNetworkLocalInitializer] 로컬 플레이어 기능 활성화", DebugType.Network, this);
     }
 
     private void DisableRemotePlayerObjects()
     {
         SetLocalComponentsActive(false);
 
-        Debug.Log("[PlayerNetworkLocalInitializer] 원격 플레이어 로컬 기능 비활성화");
+        DebugTool.Log("[PlayerNetworkLocalInitializer] 원격 플레이어 로컬 기능 비활성화", DebugType.Network, this);
     }
 
     private void SetLocalComponentsActive(bool isActive)

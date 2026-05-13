@@ -65,7 +65,21 @@ public class QuarterViewCamera : MonoBehaviour
     public Transform Target
     {
         get => _target;
-        set => _target = value;
+        set
+        {
+            _target = value;
+
+           if(_target ==null)
+           {
+                _playerstats = null;
+                return;
+           }
+           if( _playerAim == null)
+           {
+                _playerAim = _target.GetComponent<PlayerAim>();
+           }
+           _playerstats = _target.GetComponent<PlayerStats>();
+        }
     }
 
     /// <summary>
@@ -83,11 +97,14 @@ public class QuarterViewCamera : MonoBehaviour
         _mainCamera = Camera.main;
         _hitBuffer = new RaycastHit[_maxHitCount];
 
-        if (_target != null && _playerAim == null)
-        {
-            _playerAim = _target.GetComponent<PlayerAim>();
-        }
-        _playerstats = _target.GetComponent<PlayerStats>();
+       if(_target !=null)
+       {
+            if(_playerAim ==null)
+            {
+                _playerAim = _target.GetComponent<PlayerAim>();
+            }
+            _playerstats = _target.GetComponent<PlayerStats>();
+       }
 
         _detectTimer = 0f;
     }
@@ -175,6 +192,11 @@ public class QuarterViewCamera : MonoBehaviour
 
         if (aimDirection.sqrMagnitude < 0.01f)
             return Vector3.zero;
+
+        if(_playerstats == null)
+        {
+            return Vector3.zero;
+        }
 
         float maxAimOffsetDistance = _playerstats.SightRange;
 
@@ -305,7 +327,7 @@ public class QuarterViewCamera : MonoBehaviour
 
             if (_showDebugLog)
             {
-                Debug.Log($"[QuarterViewCamera] 장애물 감지 해제: {previousTarget.name}", previousTarget);
+                DebugTool.Log($"[QuarterViewCamera] 장애물 감지 해제: {previousTarget.name}", DebugType.Data, previousTarget);
             }
         }
     }
