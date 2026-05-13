@@ -142,9 +142,10 @@ public class LobbyHostAuthority : NetworkBehaviour
             return Task.FromResult(false);
         }
 
-        _pendingLocalRequest = new TaskCompletionSource<bool>();
+        TaskCompletionSource<bool> request = new TaskCompletionSource<bool>();
+        _pendingLocalRequest = request;
         RequestClassChangeServerRpc((int)requested, new FixedString64Bytes(ownId));
-        return _pendingLocalRequest.Task;
+        return request.Task;
     }
 
     // ─────────────────────────────────────────────────────────────────
