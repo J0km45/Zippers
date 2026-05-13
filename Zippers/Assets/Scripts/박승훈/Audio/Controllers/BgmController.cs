@@ -21,6 +21,7 @@ public class BgmController : AudioController
     [SerializeField] private float _fadeOutTime = 1f;
 
     private float _baseTime = 12f;
+    private float _startVolume = 0f;
 
     private bool _hasFocus = true;
     private bool _pausedByFocus;
@@ -35,7 +36,9 @@ public class BgmController : AudioController
     private void Start()
     {
         _audioSource.clip = _titleAudioClip;
+        
         DebugTool.Log("인트로 BGM 시작", DebugType.Audio);
+        _startVolume = _audioSource.volume;
         _audioSource.Play();
         StartCoroutine(TitleBGMChange());
     }
@@ -63,7 +66,7 @@ public class BgmController : AudioController
         {
             if (_audioSource.isPlaying)
             {
-                _audioSource.Pause();
+                _audioSource.volume = 0;
                 _pausedByFocus = true;
             }
 
@@ -72,7 +75,7 @@ public class BgmController : AudioController
 
         if (_pausedByFocus)
         {
-            _audioSource.UnPause();
+            _audioSource.volume = _startVolume;
             _pausedByFocus = false;
         }
     }
@@ -92,17 +95,21 @@ public class BgmController : AudioController
         }
         
         float waitTime = _introTime - _fadeOutTime;
-        float startVolume = _audioSource.volume;
         
         yield return WaitWhileFocused(waitTime);
         
-        yield return FadeVolume(startVolume, 0f, _fadeOutTime);
+        yield return FadeVolume(_startVolume, 0f, _fadeOutTime);
         
         DebugTool.Log("타이틀 BGM 시작", DebugType.Audio);
         PlayBGM(BGMType.Title);
-        yield return FadeVolume(0f, startVolume, _fadeOutTime / 2f);
+        yield return FadeVolume(0f, _startVolume, _fadeOutTime);
     }
 
+    /// <summary>
+    /// 다른 
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     private IEnumerator WaitWhileFocused(float duration)
     {
         float time = 0f;
