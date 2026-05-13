@@ -232,6 +232,8 @@ GameObject:
   - component: {fileID: 4414626585289756540}
   - component: {fileID: -363986340636957488}
   - component: {fileID: -1198867438575760023}
+  - component: {fileID: -1582711810641623473}
+  - component: {fileID: 3924908651905105082}
   m_Layer: 0
   m_Name: Shotgun
   m_TagString: Untagged
@@ -293,6 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   _playerClassData: {fileID: 11400000, guid: 8e09d728738ce7c45be426f6d8cf3834, type: 2}
   _playerIngameData: {fileID: 0}
+  _teamUpgradeCalculator: {fileID: 0}
 --- !u!114 &3307013045222578800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -836,6 +839,39 @@ MonoBehaviour:
   - {fileID: -4442512570184962680}
   - {fileID: -2309002462616297967}
   _ownerOnlyGameObjects: []
+--- !u!114 &-1582711810641623473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082915869594634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkRigidbody
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
+  UseRigidBodyForMotion: 1
+  AutoUpdateKinematicState: 0
+  AutoSetKinematicOnDespawn: 1
+--- !u!114 &3924908651905105082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082915869594634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b828575a820c504d87756dc1ffb6d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerNetworkLocalInitializer
+  ShowTopMostFoldoutHeaderGroup: 1
+  _playerLook: {fileID: 0}
+  _playerAimMarker: {fileID: 0}
+  _playerUpgradeKeyInputTest: {fileID: 0}
 --- !u!1 &1103278349565816
 GameObject:
   m_ObjectHideFlags: 0

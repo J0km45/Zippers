@@ -895,6 +895,8 @@ GameObject:
   - component: {fileID: -7729774192181745941}
   - component: {fileID: -4050121366747534136}
   - component: {fileID: -2264612312225183606}
+  - component: {fileID: 3880357532415171130}
+  - component: {fileID: 1749304983516452393}
   m_Layer: 0
   m_Name: Rifle
   m_TagString: Untagged
@@ -1098,6 +1100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   _playerClassData: {fileID: 11400000, guid: 866cc4a4fb5b59b4aa1716c8129450ad, type: 2}
   _playerIngameData: {fileID: 0}
+  _teamUpgradeCalculator: {fileID: 0}
 --- !u!114 &8794095650008967081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1494,6 +1497,39 @@ MonoBehaviour:
   - {fileID: 3710049099252103592}
   - {fileID: -7729774192181745941}
   _ownerOnlyGameObjects: []
+--- !u!114 &3880357532415171130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399122269168980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkRigidbody
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
+  UseRigidBodyForMotion: 1
+  AutoUpdateKinematicState: 0
+  AutoSetKinematicOnDespawn: 1
+--- !u!114 &1749304983516452393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399122269168980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b828575a820c504d87756dc1ffb6d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerNetworkLocalInitializer
+  ShowTopMostFoldoutHeaderGroup: 1
+  _playerLook: {fileID: 0}
+  _playerAimMarker: {fileID: 0}
+  _playerUpgradeKeyInputTest: {fileID: 0}
 --- !u!1 &1436760088571996
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,9 @@ public class PlayerStats : MonoBehaviour
 
     [SerializeField] private PlayerIngameData _playerIngameData;
 
+    [SerializeField] private TeamUpgradeCalculator _teamUpgradeCalculator;
+    [SerializeField] TeamBattleUpgradeEffect _teamBattleUpgradeEffect;
+
     private ClassUpgradeData _classUpgradeData;
     public PlayerClassDataSO PlayerClassData => _playerClassData;
 
@@ -68,21 +71,21 @@ public class PlayerStats : MonoBehaviour
     // 계산식: 기본 스탯 + 추가 스탯
     // ─────────────────────────────────────
 
-    public float TotalMaxHealth => MaxHealth + AddMaxHealth;
-    public float TotalStamina => Stamina + AddStamina;
+    public float TotalMaxHealth => ApplyTeamUpgrade(MaxHealth + AddMaxHealth, TeamUpgradeStatKey.MaxHealth);
+    public float TotalStamina => ApplyTeamUpgrade(Stamina + AddStamina, TeamUpgradeStatKey.Stamina);
     public float TotalStaminaRegen => StaminaRegen + AddStaminaRegen;
 
-    public float TotalMinDamage => MinDamage + AddDamage;
-    public float TotalMaxDamage => MaxDamage + AddDamage;
+    public float TotalMinDamage => ApplyBattleUpgrade(ApplyTeamUpgrade(MinDamage + AddDamage, TeamUpgradeStatKey.Damage), TeamUpgradeStatKey.BattleDamage);
+    public float TotalMaxDamage => ApplyBattleUpgrade(ApplyTeamUpgrade(MaxDamage + AddDamage, TeamUpgradeStatKey.Damage), TeamUpgradeStatKey.BattleDamage);
 
-    public float TotalAttackSpeed => AttackSpeed + AddAttackSpeed;
+    public float TotalAttackSpeed => ApplyBattleUpgrade(ApplyTeamUpgrade(AttackSpeed + AddAttackSpeed, TeamUpgradeStatKey.AttackSpeed, true), TeamUpgradeStatKey.BattleAttackSpeed,true);
     public float TotalMagazineCapacity => MagazineCapacity + AddMagazineCapacity;
     public float TotalReloadTime => ReloadTime + AddReloadTime;
 
     public float TotalBulletSpeed => BulletSpeed;
     public float TotalBulletDistance => BulletDistance + AddBulletDistance;
 
-    public float TotalMoveSpeed => MoveSpeed + AddMoveSpeed;
+    public float TotalMoveSpeed => ApplyBattleUpgrade(ApplyTeamUpgrade(MoveSpeed + AddMoveSpeed, TeamUpgradeStatKey.MoveSpeed), TeamUpgradeStatKey.BattleMoveSpeed);
     public float TotalSprintSpeed => SprintSpeed + AddSprintSpeed;
 
     /// <summary>
@@ -110,6 +113,14 @@ public class PlayerStats : MonoBehaviour
         if (_playerIngameData == null)
         {
             _playerIngameData = GetComponent<PlayerIngameData>();
+        }
+        if(_teamUpgradeCalculator == null)
+        {
+            _teamUpgradeCalculator = FindFirstObjectByType<TeamUpgradeCalculator>();
+        }
+        if(_teamBattleUpgradeEffect == null)
+        {
+            _teamBattleUpgradeEffect = FindFirstObjectByType<TeamBattleUpgradeEffect>();
         }
     }
     private void Start()
@@ -248,6 +259,25 @@ public class PlayerStats : MonoBehaviour
             return 0f;
         }
         return _playerIngameData.GetValue(entry);
+    }
+
+    private float ApplyTeamUpgrade(float baseValue, TeamUpgradeStatKey statKey, bool isCooldownStat = false)
+    {
+        if(_teamUpgradeCalculator == null)
+        {
+            return baseValue;
+        }
+        return _teamUpgradeCalculator.Apply(baseValue, statKey, isCooldownStat);
+    }
+
+    private float ApplyBattleUpgrade(float baseValue, TeamUpgradeStatKey statKey, bool isCooldownStat = false)
+    {
+        if(_teamBattleUpgradeEffect == null)
+        {
+            return baseValue;
+        }
+ 
+        return _teamBattleUpgradeEffect.ApplyBattleStat(baseValue, statKey, isCooldownStat);
     }
     public float GetRandomDamage()
     {

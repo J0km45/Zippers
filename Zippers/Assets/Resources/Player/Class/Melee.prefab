@@ -510,6 +510,8 @@ GameObject:
   - component: {fileID: -8053725602007112604}
   - component: {fileID: -2014678582811589804}
   - component: {fileID: 5415209466837377931}
+  - component: {fileID: -573557078281724137}
+  - component: {fileID: 6596542038493482882}
   m_Layer: 0
   m_Name: Melee
   m_TagString: Untagged
@@ -714,6 +716,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   _playerClassData: {fileID: 11400000, guid: 03d0fc008c9406f44b30eb2f9a723c12, type: 2}
   _playerIngameData: {fileID: 0}
+  _teamUpgradeCalculator: {fileID: 0}
 --- !u!114 &7225041233105979973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1115,6 +1118,39 @@ MonoBehaviour:
   - {fileID: 238093600285782063}
   - {fileID: 8543937339311557116}
   _ownerOnlyGameObjects: []
+--- !u!114 &-573557078281724137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274019000965958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkRigidbody
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
+  UseRigidBodyForMotion: 1
+  AutoUpdateKinematicState: 0
+  AutoSetKinematicOnDespawn: 1
+--- !u!114 &6596542038493482882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274019000965958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b828575a820c504d87756dc1ffb6d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerNetworkLocalInitializer
+  ShowTopMostFoldoutHeaderGroup: 1
+  _playerLook: {fileID: 0}
+  _playerAimMarker: {fileID: 0}
+  _playerUpgradeKeyInputTest: {fileID: 0}
 --- !u!1 &1288505126190028
 GameObject:
   m_ObjectHideFlags: 0
