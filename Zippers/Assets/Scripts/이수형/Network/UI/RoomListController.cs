@@ -41,6 +41,7 @@ public class RoomListController : MonoBehaviour
 
     private void Awake()
     {
+        AutoWireMissingReferences();
         BindButtonEvents();
     }
 
@@ -88,6 +89,54 @@ public class RoomListController : MonoBehaviour
         if (_refreshButton != null) _refreshButton.onClick.RemoveListener(RefreshRoomList);
     }
 
+    private void AutoWireMissingReferences()
+    {
+        if (_quickJoinButton == null)
+        {
+            _quickJoinButton = FindButtonByTextOrName("빠른", "Quick", "선택한 방 참가");
+        }
+    }
+
+    private Button FindButtonByTextOrName(params string[] keywords)
+    {
+        Button[] buttons = FindObjectsOfType<Button>(true);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            Button button = buttons[i];
+            if (button == null || !button.gameObject.scene.IsValid()) continue;
+
+            if (ContainsAny(button.gameObject.name, keywords) || ButtonTextContainsAny(button.transform, keywords))
+            {
+                return button;
+            }
+        }
+
+        return null;
+    }
+
+    private static bool ButtonTextContainsAny(Transform buttonRoot, string[] keywords)
+    {
+        TMP_Text[] texts = buttonRoot.GetComponentsInChildren<TMP_Text>(true);
+        for (int i = 0; i < texts.Length; i++)
+        {
+            if (ContainsAny(texts[i].text, keywords)) return true;
+        }
+
+        return false;
+    }
+
+    private static bool ContainsAny(string value, string[] keywords)
+    {
+        if (string.IsNullOrEmpty(value)) return false;
+
+        for (int i = 0; i < keywords.Length; i++)
+        {
+            if (!string.IsNullOrEmpty(keywords[i]) && value.Contains(keywords[i])) return true;
+        }
+
+        return false;
+    }
+
     private void BindLobbyManagerEvents()
     {
         LobbyManager.Instance.OnSessionUpdated += OnSessionUpdated;
@@ -107,7 +156,7 @@ public class RoomListController : MonoBehaviour
     // List refresh
     // ─────────────────────────────────────────────────────────────────
 
-    private async void RefreshRoomList()
+    public async void RefreshRoomList()
     {
         if (_isBusy) return;
         if (!AuthenticationService.Instance.IsSignedIn)

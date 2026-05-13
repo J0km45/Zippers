@@ -12,5 +12,5 @@ public enum LobbyClassType
     Shotgun = 3,
 
     // 유틸
-    Utility = 4
+    Pistol = 4
 }

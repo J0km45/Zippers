@@ -4,7 +4,8 @@ using UnityEngine;
 public class MapData : MonoBehaviour
 {
     [SerializeField] MapController _controller;
-    
+    [field: SerializeField] public NetworkMapData NetworkMapData { get; private set; }
+
     #region 맵 데이터 변수
 
     /// <summary>
@@ -68,11 +69,6 @@ public class MapData : MonoBehaviour
     [field:SerializeField]public GameObject TeleportBeacon_Right  {get; private set;}
     
     /// <summary>
-    /// 노드의 현재 진행 상황
-    /// </summary>
-    [field:SerializeField]public NodeState NodeState {get; private set;}
-    
-    /// <summary>
     /// 이번 노드가 시작 시 어느 방향에서 시작할 지 표기
     /// </summary>
     [field:SerializeField]public NodeStartDir StartDir {get; private set;}
@@ -82,12 +78,7 @@ public class MapData : MonoBehaviour
     /// 0번 인덱스 = 플레이어 진입 방향의 왼쪽, 시계 방향으로 구성
     /// </summary>
     [field:SerializeField]public Transform[] MonsterSpawnPoints { get; private set;}
-
-    /// <summary>
-    /// 맵에 생존한 플레이어 수
-    /// </summary>
-    public int AlivePlayerCount { get; private set; }
-
+    
     #endregion
     
     #region 이벤트
@@ -96,16 +87,6 @@ public class MapData : MonoBehaviour
     /// 연결 된 다음 맵이 변경 되면 전파
     /// </summary>
     public event Action OnChangeNextMaps;
-    
-    /// <summary>
-    /// 현재 노드의 상태가 변경 되면 전파
-    /// </summary>
-    public event Action<NodeState> OnChangeState;
-    
-    /// <summary>
-    /// 맵에 생존한 플레이어의 수가 변경되면 전파
-    /// </summary>
-    public event Action<int> OnChangeAlivePlayerCount;
 
     #endregion
 
@@ -184,46 +165,6 @@ public class MapData : MonoBehaviour
     public void SetBeaconDisable(GameObject beacon)
     {
         beacon.SetActive(false);
-    }
-
-    /// <summary>
-    /// 현재 맵의 Node State를 지정
-    /// </summary>
-    /// <param name="state">지정할 Node State</param>
-    public void SetNodeState(NodeState state)
-    {
-        NodeState = state;
-        OnChangeState?.Invoke(state);
-        DebugTool.Log($"{gameObject.name} Map Node State Change : {NodeState}", DebugType.Node, this);
-    }
-    
-    /// <summary>
-    /// 현재 맵에서 살아남은 플레이어 숫자 증가
-    /// </summary>
-    public void PlusAlivePlayerCount()
-    {
-        if(AlivePlayerCount >= 4) return;
-        AlivePlayerCount++;
-        DebugTool.Log($"{gameObject.name} Player Income, Current Player : {AlivePlayerCount}", DebugType.Node, this);
-        OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
-    }
-    
-    /// <summary>
-    /// 현재 맵에서 살아남은 플레이어 숫자 감소
-    /// </summary>
-    public void MinusAlivePlayerCount()
-    {
-        if(AlivePlayerCount <= 0) return;
-        AlivePlayerCount--;
-        DebugTool.Log($"{gameObject.name} Player Out, Current Player : {AlivePlayerCount}", DebugType.Node, this);
-        OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
-    }
-
-    public void ResetAlivePlayerCount()
-    {
-        AlivePlayerCount = 0;
-        DebugTool.Log($"{gameObject.name} Player Count Reset", DebugType.Node, this);
-        OnChangeAlivePlayerCount?.Invoke(AlivePlayerCount);
     }
     
     #endregion
