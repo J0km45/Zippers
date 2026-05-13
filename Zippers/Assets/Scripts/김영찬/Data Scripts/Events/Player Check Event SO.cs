@@ -8,7 +8,7 @@ public class PlayerCheckEventSO : EventSO
 {
     public override void EventEnter()
     {
-        _controller.Controller.Data.OnChangeAlivePlayerCount += PlayerCheck;
+        _controller.Controller.Data.NetworkMapData.AlivePlayerCount.OnValueChanged += PlayerCheck;
     }
 
     public override void EventUpdate()
@@ -18,13 +18,13 @@ public class PlayerCheckEventSO : EventSO
 
     public override void EventExit()
     {
-        _controller.Controller.Data.OnChangeAlivePlayerCount -= PlayerCheck;
+        _controller.Controller.Data.NetworkMapData.AlivePlayerCount.OnValueChanged -= PlayerCheck;
     }
     
-    private void PlayerCheck(int count)
+    private void PlayerCheck(int preCount, int curCount)
     {
-        // ToDo : if(유효 플레이어 수 > count) return;
-        _controller.Controller.Data.SetNodeState(NodeState.Battle);
+        // ToDo : if(유효 플레이어 수 > curCount) return;
+        _controller.Controller.Data.NetworkMapData.SetNodeState(NodeState.Battle);
         _controller.SetDefaultEvent();
     }
 }

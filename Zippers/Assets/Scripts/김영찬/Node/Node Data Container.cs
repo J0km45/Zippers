@@ -48,6 +48,7 @@ public class NodeDataContainer : MonoBehaviour
         }
         
         IsDictReady = true;
+        DebugTool.Log($"Node Data Container Ready", DebugType.Node, this);
     }
 
     /// <summary>
