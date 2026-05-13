@@ -38,6 +38,8 @@ GameObject:
   - component: {fileID: 8986272881324780800}
   - component: {fileID: -1506622291132155388}
   - component: {fileID: -6664887911851077287}
+  - component: {fileID: 6596716657948944306}
+  - component: {fileID: 7866524702051086592}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -241,6 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   _playerClassData: {fileID: 11400000, guid: f31be457f27e5494da16d3cc5a44a194, type: 2}
   _playerIngameData: {fileID: 0}
+  _teamUpgradeCalculator: {fileID: 0}
 --- !u!114 &6272469454809576963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,6 +640,39 @@ MonoBehaviour:
   - {fileID: 216109493594011135}
   - {fileID: 8986272881324780800}
   _ownerOnlyGameObjects: []
+--- !u!114 &6596716657948944306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019482250056662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b828575a820c504d87756dc1ffb6d59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerNetworkLocalInitializer
+  ShowTopMostFoldoutHeaderGroup: 1
+  _playerLook: {fileID: 0}
+  _playerAimMarker: {fileID: 0}
+  _playerUpgradeKeyInputTest: {fileID: 0}
+--- !u!114 &7866524702051086592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019482250056662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkRigidbody
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
+  UseRigidBodyForMotion: 0
+  AutoUpdateKinematicState: 0
+  AutoSetKinematicOnDespawn: 1
 --- !u!1 &1026896123653936
 GameObject:
   m_ObjectHideFlags: 0

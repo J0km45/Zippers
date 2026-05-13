@@ -1,11 +1,9 @@
 using Unity.Netcode;
 using UnityEngine;
 
-/// <summary>
-/// 네트워크에서 로컬 플레이어 전용 기능을 초기화한다.
-/// 내 캐릭터만 마우스 회전, 조준 마커, 테스트 입력을 사용한다.
-/// 카메라 Target 연결은 QuarterViewCamera에서 담당한다.
-/// </summary>
+// 네트워크에서 로컬 플레이어 전용 기능을 초기화한다.
+// 내 캐릭터만 마우스 회전, 조준 마커, 테스트 입력을 사용한다.
+// 카메라 Target 연결은 QuarterViewCamera에서 담당한다.
 public class PlayerNetworkLocalInitializer : NetworkBehaviour
 {
     [Header("로컬 전용 컴포넌트")]
@@ -15,7 +13,20 @@ public class PlayerNetworkLocalInitializer : NetworkBehaviour
 
     private void Awake()
     {
-        FindComponents();
+        if (_playerLook == null)
+        {
+            _playerLook = GetComponent<PlayerLook>();
+        }
+
+        if (_playerAimMarker == null)
+        {
+            _playerAimMarker = GetComponent<PlayerAimMarker>();
+        }
+
+        if (_playerUpgradeKeyInputTest == null)
+        {
+            _playerUpgradeKeyInputTest = GetComponent<PlayerUpgradeKeyInputTest>();
+        }
     }
 
     private void Start()
@@ -42,24 +53,6 @@ public class PlayerNetworkLocalInitializer : NetworkBehaviour
     public override void OnNetworkDespawn()
     {
         DisableRemotePlayerObjects();
-    }
-
-    private void FindComponents()
-    {
-        if (_playerLook == null)
-        {
-            _playerLook = GetComponent<PlayerLook>();
-        }
-
-        if (_playerAimMarker == null)
-        {
-            _playerAimMarker = GetComponent<PlayerAimMarker>();
-        }
-
-        if (_playerUpgradeKeyInputTest == null)
-        {
-            _playerUpgradeKeyInputTest = GetComponent<PlayerUpgradeKeyInputTest>();
-        }
     }
 
     private void EnableLocalPlayerObjects()

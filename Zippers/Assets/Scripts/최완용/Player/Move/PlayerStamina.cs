@@ -73,7 +73,7 @@ public class PlayerStamina : MonoBehaviour
     public void RefreshMaxStamina()
     {
         float beforeMaxStamina = MaxStamina;
-        MaxStamina = _playerStats.TotalMaxHealth;
+        MaxStamina = _playerStats.TotalStamina;
 
         float increaseStamina = MaxStamina - beforeMaxStamina;
 

@@ -22,7 +22,7 @@ public class PlayerHealth : MonoBehaviour, IDamagable
     [field:SerializeField] public bool IsDead { get; private set; }
 
     [Space(10)] [Header("디버그 테스트")]
-    [SerializeField] private float _debugDamageAmount = 9999f;
+    [SerializeField] private float _debugDamageAmount = 10f;
     
     public void Awake()
     {
@@ -57,6 +57,27 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         CurrentHealth = MathF.Min(CurrentHealth, MaxHealth);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
     }
+
+    public void Heal(float amont)
+    {
+        if(IsDead)
+        {
+            DebugTool.Log("죽음 상태입니다. 치료할 수 없습니다.", DebugType.Character, this);
+            return;
+        }
+        if (amont <= 0f)
+        {
+            DebugTool.Log("음수 치료량은 적용되지 않습니다.", DebugType.Character, this);
+            return;
+        }
+
+        float beforeHealth = CurrentHealth;
+
+        CurrentHealth = Mathf.Min(CurrentHealth + amont, MaxHealth);
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+        DebugTool.Log($"치료 적용: {amont}, 현재 체력: {CurrentHealth}/{MaxHealth}", DebugType.Character, this);
+    }
+
     //인터페이스 참조
     public void TakeDamage(float damage)
     {
@@ -90,6 +111,13 @@ public class PlayerHealth : MonoBehaviour, IDamagable
     {
         IsDead = true;
         CurrentHealth = 0f;
+        PlayerTransform playerTransform = GetComponent<PlayerTransform>();
+
+        if (playerTransform != null)
+        {
+            playerTransform.Unregister();
+        }
+
         PlayerDied?.Invoke();
         DebugTool.Log("플레이어 사망", DebugType.Character, this);
     }

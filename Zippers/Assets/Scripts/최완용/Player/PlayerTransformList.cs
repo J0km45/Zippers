@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class PlayerTransformList : MonoBehaviour
 {
@@ -7,20 +8,25 @@ public class PlayerTransformList : MonoBehaviour
 
     public readonly List<Transform> _playerPosition = new List<Transform>();
 
+    public event Action OnAllPlayerDead;
+
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
-
             return;
         }
 
-        else
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        if (instance == this)
         {
-            Destroy(this.gameObject);
+            instance = null;
         }
     }
 
@@ -39,6 +45,14 @@ public class PlayerTransformList : MonoBehaviour
     //플레이어 위치 저장
     public void AddPlayer(Transform playerPosition)
     {
+        if (playerPosition ==null)
+        {
+            return;
+        }
+        if(_playerPosition.Contains(playerPosition))
+        {
+            return;
+        }
         _playerPosition.Add(playerPosition);
         DebugTool.Log("플레이어 위치 정보 저장", DebugType.Character, this);
     }
@@ -46,8 +60,18 @@ public class PlayerTransformList : MonoBehaviour
     //플레이어 위치 삭제
     public void DeletePlayer(Transform playerPosition)
     {
-        _playerPosition.Remove(playerPosition);
-        DebugTool.Log("플레이어 위치 정보 삭제", DebugType.Character, this);
+        if (playerPosition == null)
+        {
+            return;
+        }
+
+        bool isRemoved = _playerPosition.Remove(playerPosition);
+        if (!isRemoved)
+        {
+            return;
+        }
+
+        CheckAllPlayerDead();
     }
 
     public int GetPlayerCount()
@@ -88,5 +112,15 @@ public class PlayerTransformList : MonoBehaviour
 
             _playerPosition.RemoveAt(i);
         }
+    }
+
+    private void CheckAllPlayerDead()
+    {
+        if(_playerPosition.Count > 0)
+        {
+            return;
+        }
+
+        OnAllPlayerDead?.Invoke();
     }
 }
