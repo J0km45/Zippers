@@ -45,18 +45,9 @@ public class AudioManager : MonoBehaviour
     
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        SingletonInit();
+        VolumeInit();
     }
-
-    private void Start()
-        => VolumeInit();
     
     /// <summary>
     /// 마스터 볼륨 조절
@@ -114,6 +105,21 @@ public class AudioManager : MonoBehaviour
         
         if(!result)
             DebugTool.Log($"{parameter} Audio mixer를 찾을 수 없습니다.", DebugType.Game, this);
+    }
+
+    /// <summary>
+    /// 오디오 매니저 싱글톤 적용
+    /// </summary>
+    private void SingletonInit()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     /// <summary>

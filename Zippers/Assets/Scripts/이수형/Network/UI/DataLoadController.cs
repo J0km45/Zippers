@@ -15,8 +15,8 @@ public class DataLoadController : MonoBehaviour
 {
     [SerializeField] private TMP_Text _statusText;
 
-    private bool _isTransitioning;
-    private bool _isSubscribed;
+    [SerializeField] private bool _isTransitioning;
+    [SerializeField] private bool _isSubscribed;
 
     private void Start()
     {
@@ -53,7 +53,6 @@ public class DataLoadController : MonoBehaviour
 
         DebugTool.Log("데이터 준비 완료 - RoomListScene 으로 전환", DebugType.Network, this);
         SetStatus("완료. 방 목록으로 이동...");
-        SceneLoader.LoadLocal(SceneId.RoomList);
     }
 
     private void SetStatus(string message)

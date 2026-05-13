@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -35,9 +36,8 @@ public class DataManager : MonoBehaviour
     public SheetData _teamUpgradeSheet;
     [SerializeField] private TeamUpgradeTableSO _teamUpgradeTable;
 
-
-    private int _pendingSheetCount;
-
+    [SerializeField] private int _pendingSheetCount;
+    public int PendingSHeetCount => _pendingSheetCount;
 
     private void Awake()
     {
@@ -46,7 +46,7 @@ public class DataManager : MonoBehaviour
         _waveInfoDataDictionary = InitDict(_waveInfoDataList);
     }
 
-    private void Start()
+    public void DataLoad()
     {
         if (LocalDataAccess.Instance == null)
         {
@@ -55,8 +55,6 @@ public class DataManager : MonoBehaviour
                 DebugType.Data, this);
             return;
         }
-
-        _pendingSheetCount = 6;
 
         LoadSheetData(_classSheet, _classDataList, _classDataDictionary, onComplete: () =>
         {
@@ -104,8 +102,6 @@ public class DataManager : MonoBehaviour
             OnSheetCompleted();
         });
     }
-
-
     private void OnSheetCompleted()
     {
         _pendingSheetCount--;
