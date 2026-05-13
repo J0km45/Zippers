@@ -308,6 +308,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0ae3b13c24c1842be963ffad252a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NormalZombieAttack
+  _leftHand: {fileID: 2443505353343346276}
+  _rightHand: {fileID: 2447320833409598006}
 --- !u!1001 &2443197941198328662
 PrefabInstance:
   m_ObjectHideFlags: 0
