@@ -67,8 +67,8 @@ MonoBehaviour:
   _audioSource: {fileID: 0}
   _bgmSo: {fileID: 11400000, guid: 155c1a6419f5460449fa470db1eae4b0, type: 2}
   _titleAudioClip: {fileID: 8300000, guid: a950ca19d88596c4987fc46a36b60e02, type: 3}
-  _introTime: 9
-  _fadeOutTime: 2
+  _introTime: 11
+  _fadeOutTime: 1
 --- !u!82 &4200715271690335414
 AudioSource:
   m_ObjectHideFlags: 0
@@ -82,7 +82,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0

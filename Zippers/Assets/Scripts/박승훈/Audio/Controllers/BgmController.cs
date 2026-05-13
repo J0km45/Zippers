@@ -1,4 +1,5 @@
 using Audio;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,10 @@ public class BgmController : AudioController
     [SerializeField] private float _fadeOutTime = 1f;
 
     private float _baseTime = 12f;
+    private float _startVolume = 0f;
+
+    private bool _hasFocus = true;
+    private bool _pausedByFocus;
     
     private void Awake()
     {
@@ -31,7 +36,9 @@ public class BgmController : AudioController
     private void Start()
     {
         _audioSource.clip = _titleAudioClip;
+        
         DebugTool.Log("인트로 BGM 시작", DebugType.Audio);
+        _startVolume = _audioSource.volume;
         _audioSource.Play();
         StartCoroutine(TitleBGMChange());
     }
@@ -48,49 +55,89 @@ public class BgmController : AudioController
         PlayBGM(_audioSource, clips);
     }
 
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        _hasFocus = hasFocus;
+
+        if (_audioSource == null)
+            return;
+
+        if (!hasFocus)
+        {
+            if (_audioSource.isPlaying)
+            {
+                _audioSource.volume = 0;
+                _pausedByFocus = true;
+            }
+
+            return;
+        }
+
+        if (_pausedByFocus)
+        {
+            _audioSource.volume = _startVolume;
+            _pausedByFocus = false;
+        }
+    }
+
     private IEnumerator TitleBGMChange()
     {
-        if (_fadeOutTime >= _introTime)
+        if (_fadeOutTime > _introTime)
         {
-            DebugTool.Error("페이드 아웃 시간은 인트로 출력 길이보다 짧아야 합니다.", DebugType.Audio);
+            DebugTool.Warning("페이드 아웃 시간은 인트로 출력 길이보다 짧아야 합니다.", DebugType.Audio);
+
+            yield return WaitWhileFocused(_baseTime);
             
-            yield return YieldContainer.Seconds(_baseTime);
             DebugTool.Log("타이틀 BGM 시작", DebugType.Audio);
             PlayBGM(BGMType.Title);
-            
+
             yield break;
         }
         
         float waitTime = _introTime - _fadeOutTime;
         
-        yield return YieldContainer.Seconds(waitTime);
-        float time = 0f;
-        float startVolume = _audioSource.volume;
-
-        while (time < _fadeOutTime)
-        {
-            time += Time.deltaTime;
-            
-            float t = time / _fadeOutTime;
-            
-            _audioSource.volume = Mathf.Lerp(startVolume, 0f, t);
-            yield return null;
-        }
-        _audioSource.volume = 0f;
+        yield return WaitWhileFocused(waitTime);
+        
+        yield return FadeVolume(_startVolume, 0f, _fadeOutTime);
         
         DebugTool.Log("타이틀 BGM 시작", DebugType.Audio);
-        _audioSource.volume = startVolume;
         PlayBGM(BGMType.Title);
-        
-        time = 0f;
-        while (time < _fadeOutTime / 2f)
+        yield return FadeVolume(0f, _startVolume, _fadeOutTime);
+    }
+
+    /// <summary>
+    /// 다른 
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
+    private IEnumerator WaitWhileFocused(float duration)
+    {
+        float time = 0f;
+
+        while (time < duration)
         {
-            time += Time.deltaTime;
+            if(_hasFocus)
+                time += Time.unscaledDeltaTime;
             
-            float t = time / _fadeOutTime;
-            
-            _audioSource.volume = Mathf.Lerp(0f, startVolume, t);
             yield return null;
         }
+    }
+
+    private IEnumerator FadeVolume(float startVolume, float targetVolume, float duration)
+    {
+        float time = 0f;
+
+        while (time < duration)
+        {
+            if (_hasFocus)
+            {
+                time += Time.unscaledDeltaTime;
+
+                float t = Mathf.Clamp01(time / duration);
+                _audioSource.volume = Mathf.Lerp(startVolume, targetVolume, t);
+            }
+            yield return null;
+        }
+        _audioSource.volume = targetVolume;
     }
 }

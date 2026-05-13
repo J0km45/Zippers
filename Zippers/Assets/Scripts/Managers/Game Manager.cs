@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
         GenerateManager<TimeScaleManager>();
         GenerateManager(_networkManager);
         GenerateManager(_lobbyManager);
+        GenerateManager<PlayerSessionBridge>();
     }
 
     private void Start()
