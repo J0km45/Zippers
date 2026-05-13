@@ -14,6 +14,16 @@ public class ZombieSpawnManager : MonoBehaviour
 
     public bool IsSpawnStopped { get; private set; }
 
+    private void Start()
+    {
+        PlayerTransformList.instance.OnAllPlayerDead += StopSpawn;
+    }
+
+    private void OnDisable()
+    {
+        PlayerTransformList.instance.OnAllPlayerDead -= StopSpawn;
+    }
+
     public void StartWave(int waveId)
     {
         if (!NetworkManager.Singleton.IsServer) return;
@@ -95,9 +105,8 @@ public class ZombieSpawnManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 플레이어 전멸 시 호출하거나 이벤트 구독하여 스폰을 중지할 때 사용
+    /// 플레이어 전멸 시 스폰을 중지할 때 사용
     /// </summary>
-    // TODO: 호출 or 이벤트 사용
     public void StopSpawn()
     {
         if (!NetworkManager.Singleton.IsServer) return;
