@@ -30,6 +30,7 @@ public class NodePathMaker
         Path.Clear();
         _weightInfo.Clear();
         _sumWeight = 0;
+        _nodeManager.NetworkNodeData.ResetBattleCount();
         
         _difficultyData = _nodeManager.DataContainer.GetDifficultyData(curDifficulty);
         

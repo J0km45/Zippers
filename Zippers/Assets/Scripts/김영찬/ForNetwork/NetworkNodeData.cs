@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -18,13 +19,19 @@ public class NetworkNodeData : NetworkBehaviour
     /// 이번 게임에서 전투 총 회수(Boss, Battle)
     /// </summary>
     public NetworkVariable<int> BattleCount => _battleCount;
-    
+
+    private void Awake()
+    {
+        DebugTool.Log("Network Node Data Awake", DebugType.Node, this);
+    }
+
     /// <summary>
     /// 난이도 변경
     /// </summary>
     /// <param name="difficulty">게임 난이도</param>
     public void SetDifficulty(NodeDifficulty difficulty)
     {
+        if(!IsServer) return;
         _preDifficulty = Difficulty.Value;
         _difficulty.Value = difficulty;
         DebugTool.Log("ChangeDifficulty : " + Difficulty, DebugType.Node, this);
@@ -36,6 +43,7 @@ public class NetworkNodeData : NetworkBehaviour
     /// </summary>
     public void AddBattleCount()
     {
+        if(!IsServer) return;
         _preBattleCount = BattleCount.Value;
         _battleCount.Value++;
         DebugTool.Log("AddBattleCount, Current Count : " + BattleCount, DebugType.Node, this);
@@ -47,6 +55,7 @@ public class NetworkNodeData : NetworkBehaviour
     /// </summary>
     public void RemoveBattleCount()
     {
+        if(!IsServer) return;
         _battleCount.Value--;
         DebugTool.Log("RemoveBattleCount, Current Count : " + BattleCount, DebugType.Node, this);
     }
@@ -56,6 +65,7 @@ public class NetworkNodeData : NetworkBehaviour
     /// </summary>
     public void ResetBattleCount()
     {
+        if(!IsServer) return;
         _battleCount.Value = 0;
         DebugTool.Log("ResetBattleCount", DebugType.Node, this);
     }

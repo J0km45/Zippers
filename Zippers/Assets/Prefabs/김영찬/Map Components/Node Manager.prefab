@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7a65a15b3d29754bb73872eb9a48bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NodeManager
-  _currentDifficulty: 0
   _dataContainer: {fileID: 6939891680789983963}
+  _networkNodeData: {fileID: 622199892354478778}
 --- !u!114 &6939891680789983963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,3 +89,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa1bcdc41ce61345b250068dd1e6763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NetworkNodeData
+  ShowTopMostFoldoutHeaderGroup: 1
+  _difficulty:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  _battleCount:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0

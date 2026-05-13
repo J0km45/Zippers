@@ -51,8 +51,8 @@ public class NodeManager : MonoBehaviour
 
     private void Init()
     {
-        NetworkNodeData.ResetBattleCount();
         NodePathMaker = new NodePathMaker(this);
+        DebugTool.Log($"Node Manager Ready", DebugType.Node, this);
     }
     
     private void EventEnable()

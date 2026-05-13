@@ -14,14 +14,6 @@ public class MapObjectCounter : MonoBehaviour
             _controller.Data.NetworkMapData.PlusAlivePlayerCount();
         }
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == _unitLayer)
-        {
-            _controller.Data.NetworkMapData.MinusAlivePlayerCount();
-        }
-    }
     
     private void OnDrawGizmos()
     {
