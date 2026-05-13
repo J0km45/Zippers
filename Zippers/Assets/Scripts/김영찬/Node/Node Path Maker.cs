@@ -25,7 +25,7 @@ public class NodePathMaker
         _weightInfo = new();
     }
 
-    public void MakePath(NodeDifficulty preDifficulty ,NodeDifficulty curDifficulty)
+    public void MakePath(NodeDifficulty curDifficulty)
     {
         Path.Clear();
         _weightInfo.Clear();

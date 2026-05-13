@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 /// <summary>
@@ -32,36 +33,21 @@ public class NodeManager : MonoBehaviour
     {
         Init();
     }
-
-    private void OnEnable()
-    {
-        EventEnable();
-    }
-
-    private void OnDisable()
-    {
-        EventDisable();
-    }
-
+    
     private void Start()
     {
         // ToDo : 테스트 코드임으로 나중에 GameManager 등에서 다음 코드를 실행 하도록 할 것
-        NetworkNodeData.SetDifficulty(NodeDifficulty.Test);
+
+        if (NetworkManager.Singleton.IsServer)
+        {
+            NetworkNodeData.SetDifficultyAndGenerateMap(NodeDifficulty.Test);
+        }
     }
 
     private void Init()
     {
         NodePathMaker = new NodePathMaker(this);
         DebugTool.Log($"Node Manager Ready", DebugType.Node, this);
-    }
-    
-    private void EventEnable()
-    {
-        NetworkNodeData.Difficulty.OnValueChanged += NodePathMaker.MakePath;
-    }
-    private void EventDisable()
-    {
-        NetworkNodeData.Difficulty.OnValueChanged -= NodePathMaker.MakePath;
     }
     
     public Transform[] GetStartSpawnPoints()
