@@ -11,7 +11,7 @@ public class MapObjectCounter : MonoBehaviour
     {
         if (other.gameObject.layer == _unitLayer)
         {
-            _controller.Data.PlusAlivePlayerCount();
+            _controller.Data.NetworkMapData.PlusAlivePlayerCount();
         }
     }
 
@@ -19,7 +19,7 @@ public class MapObjectCounter : MonoBehaviour
     {
         if (other.gameObject.layer == _unitLayer)
         {
-            _controller.Data.MinusAlivePlayerCount();
+            _controller.Data.NetworkMapData.MinusAlivePlayerCount();
         }
     }
     

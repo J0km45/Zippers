@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2534895546517136653}
   - component: {fileID: 4495557433721430454}
   - component: {fileID: 6939891680789983963}
+  - component: {fileID: 622199892354478778}
   m_Layer: 12
   m_Name: Node Manager
   m_TagString: Untagged
@@ -76,3 +77,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5629a789ef2715942baf44921ef121ec, type: 2}
   _difficultyData:
   - {fileID: 11400000, guid: d93e25f0629a4604e90154988915582a, type: 2}
+--- !u!114 &622199892354478778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3014294432594209763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aa1bcdc41ce61345b250068dd1e6763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkNodeData

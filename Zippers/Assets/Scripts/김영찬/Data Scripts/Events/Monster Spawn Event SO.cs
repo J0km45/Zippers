@@ -33,8 +33,8 @@ public class MonsterSpawnEventSO : EventSO
         _spawnManager = FindFirstObjectByType<ZombieSpawnManager>();
         
         _spawnManager.SetSpawnPoint(_controller.Controller.Data.MonsterSpawnPoints);
-        _controller.Controller.Manager.AddBattleCount();
-        _waveManager.StartBattleNode(_controller.Controller.Manager.BattleCount);
+        _controller.Controller.Manager.NetworkNodeData.AddBattleCount();
+        _waveManager.StartBattleNode(_controller.Controller.Manager.NetworkNodeData.BattleCount.Value);
         
         DebugTool.Log($"{_controller.Controller.gameObject.name} Monster Spawner Linked And Spawn Start", DebugType.Node, this);
     }

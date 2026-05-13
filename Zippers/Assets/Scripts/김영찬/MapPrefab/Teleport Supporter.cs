@@ -12,7 +12,9 @@ public class TeleportSupporter : MonoBehaviour
     [SerializeField] private TeleportBallotBox _ballotBox_Down;
     [SerializeField] private TeleportBallotBox _ballotBox_Left;
     [SerializeField] private TeleportBallotBox _ballotBox_Right;
-    
+
+    public float MinVoteWin { get; private set; }
+
     bool _nextMapAvailable_UP;
     bool _nextMapAvailable_Down;
     bool _nextMapAvailable_Left;
@@ -60,6 +62,7 @@ public class TeleportSupporter : MonoBehaviour
     public void EnableEvent()
     {
         _controller.Data.OnChangeNextMaps += SetBeaconLocation;
+        _controller.Data.NetworkMapData.AlivePlayerCount.OnValueChanged += SetMinVoteWin;
         _ballotBox_UP.OnVoteChange += CountVoteUp;
         _ballotBox_Down.OnVoteChange += CountVoteDown;
         _ballotBox_Left.OnVoteChange += CountVoteLeft;
@@ -70,6 +73,7 @@ public class TeleportSupporter : MonoBehaviour
     private void DisableEvent()
     {
         _controller.Data.OnChangeNextMaps -= SetBeaconLocation;
+        _controller.Data.NetworkMapData.AlivePlayerCount.OnValueChanged -= SetMinVoteWin;
         _ballotBox_UP.OnVoteChange -= CountVoteUp;
         _ballotBox_Down.OnVoteChange -= CountVoteDown;
         _ballotBox_Left.OnVoteChange -= CountVoteLeft;
@@ -141,30 +145,28 @@ public class TeleportSupporter : MonoBehaviour
         DebugTool.Log($"{_controller.gameObject.name} Current Vote Result\n" +
                       $"Up : {_voteUp}, Down : {_voteDown}, Left : {_voteLeft}, Right : {_voteRight}", DebugType.Node, this);
         
-        float minVoteWin = _controller.Data.AlivePlayerCount / 2f;
-        
-        if (_voteUp > minVoteWin)
+        if (_voteUp > MinVoteWin)
         {
             DebugTool.Log($"{_controller.gameObject.name} Teleport To Upper Map", DebugType.Node, this);
             OnTeleportStart?.Invoke(NodeStartDir.Up);
             return;
         }
         
-        if (_voteRight > minVoteWin)
+        if (_voteRight > MinVoteWin)
         {
             DebugTool.Log($"{_controller.gameObject.name} Teleport To Right Map", DebugType.Node, this);
             OnTeleportStart?.Invoke(NodeStartDir.Right);
             return;
         }
         
-        if (_voteLeft > minVoteWin)
+        if (_voteLeft > MinVoteWin)
         {
             DebugTool.Log($"{_controller.gameObject.name} Teleport To Left Map", DebugType.Node, this);
             OnTeleportStart?.Invoke(NodeStartDir.Left);
             return;
         }
         
-        if (_voteDown > minVoteWin)
+        if (_voteDown > MinVoteWin)
         {
             DebugTool.Log($"{_controller.gameObject.name} Teleport To Lower Map", DebugType.Node, this);
             OnTeleportStart?.Invoke(NodeStartDir.Down);
@@ -172,5 +174,10 @@ public class TeleportSupporter : MonoBehaviour
         }
 
         OnSendVoteResult?.Invoke(_voteUp, _voteDown, _voteLeft, _voteRight);
+    }
+
+    public void SetMinVoteWin(int preCount, int curCount)
+    {
+        MinVoteWin = curCount / 2f;
     }
 }
