@@ -6,6 +6,7 @@ public class NetworkNodeData : NetworkBehaviour
 {
     [SerializeField] NetworkVariable<NodeDifficulty> _difficulty;
     [SerializeField] NetworkVariable<int> _battleCount;
+    [SerializeField] NetworkVariable<int> _mapSeed;
     
     /// <summary>
     /// 이번 게임의 난이도
@@ -16,6 +17,8 @@ public class NetworkNodeData : NetworkBehaviour
     /// 이번 게임에서 전투 총 회수(Boss, Battle)
     /// </summary>
     public NetworkVariable<int> BattleCount => _battleCount;
+    
+    public NetworkVariable<int> MapSeed => _mapSeed;
 
     private void Awake()
     {
@@ -26,11 +29,25 @@ public class NetworkNodeData : NetworkBehaviour
     /// 난이도 변경
     /// </summary>
     /// <param name="difficulty">게임 난이도</param>
-    public void SetDifficulty(NodeDifficulty difficulty)
+    private void SetDifficulty(NodeDifficulty difficulty)
     {
         if(!IsServer) return;
         _difficulty.Value = difficulty;
-        DebugTool.Log("ChangeDifficulty : " + Difficulty, DebugType.Node, this);
+    }
+    
+    /// <summary>
+    /// 게임 씬 시작 시 방장(Server)이 최초 1회 호출하여 난이도와 시드를 결정합니다.
+    /// </summary>
+    public void SetDifficultyAndGenerateMap(NodeDifficulty difficulty)
+    {
+        if(!IsServer) return;
+        
+        _difficulty.Value = difficulty;
+        _mapSeed.Value = (int)DateTime.Now.Ticks; 
+        
+        GenerateMapClientRpc(difficulty, _mapSeed.Value);
+        
+        DebugTool.Log($"[Server] 난이도: {difficulty}, 시드: {_mapSeed.Value} 설정 완료", DebugType.Node, this);
     }
     
     /// <summary>
@@ -63,5 +80,13 @@ public class NetworkNodeData : NetworkBehaviour
         DebugTool.Log("ResetBattleCount", DebugType.Node, this);
     }
 
-    
+    /// <summary>
+    /// 서버가 명령을 내리면 모든 클라이언트가 동시에 실행하는 맵 생성 로직
+    /// </summary>
+    [ClientRpc]
+    private void GenerateMapClientRpc(NodeDifficulty difficulty, int seed)
+    {
+        UnityEngine.Random.InitState(seed);
+        SetDifficulty(difficulty);
+    }
 }
