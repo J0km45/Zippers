@@ -47,6 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BgmController
   _audioSource: {fileID: 0}
   _bgmSo: {fileID: 11400000, guid: 155c1a6419f5460449fa470db1eae4b0, type: 2}
+  _titleAudioClip: {fileID: 0}
+  _introTime: 12
+  _fadeOutTime: 0.1
 --- !u!82 &2460895989199386124
 AudioSource:
   m_ObjectHideFlags: 0
