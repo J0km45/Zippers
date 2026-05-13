@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 925666714096194603}
   - component: {fileID: 8137467193740531021}
   - component: {fileID: 4825050594778193418}
+  - component: {fileID: -4394040394909225940}
   m_Layer: 12
   m_Name: Boss Map 0
   m_TagString: Untagged
@@ -64,6 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapData
   _controller: {fileID: 925666714096194603}
+  <NetworkMapData>k__BackingField: {fileID: -4394040394909225940}
   <PlayerSpawnPoint_Up>k__BackingField:
   - {fileID: 6657910490993930978}
   - {fileID: 2466206365877145309}
@@ -88,7 +90,6 @@ MonoBehaviour:
   <TeleportBeacon_Down>k__BackingField: {fileID: 7914652862833911878}
   <TeleportBeacon_Left>k__BackingField: {fileID: 4600223520302187497}
   <TeleportBeacon_Right>k__BackingField: {fileID: 5440174564047287435}
-  <NodeState>k__BackingField: 0
   <StartDir>k__BackingField: 0
   <MonsterSpawnPoints>k__BackingField:
   - {fileID: 6557672837615505690}
@@ -112,6 +113,29 @@ MonoBehaviour:
   _ballotBox_Down: {fileID: 1966132828208478100}
   _ballotBox_Left: {fileID: 5280509392014646331}
   _ballotBox_Right: {fileID: 4458568350880017241}
+--- !u!114 &-4394040394909225940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4728121328699623930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8383cd1f71dca6545a3a4d608969025a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkMapData
+  ShowTopMostFoldoutHeaderGroup: 1
+  _alivePlayerCount:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  _nodeState:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
 --- !u!1001 &1088344724716537934
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -34,8 +34,8 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
             _mapData = FindFirstObjectByType<MapData>();
             return;
         }
-        //TODO 실제 전투시작 클리어 종료 이벤트 구독하기
-        _mapData.OnChangeState += NodeStateChange;
+        
+        _mapData.NetworkMapData.NodeState.OnValueChanged += NodeStateChange;
 
         //예시
         //BattleManager.Instance.OnBattleStarted += StartBattle;
@@ -48,16 +48,16 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
         {
             return;
         }
-        //TODO 실제 전투시작 클리어 종료 이벤트 구독 해제하기
-        _mapData.OnChangeState -= NodeStateChange;
+        
+        _mapData.NetworkMapData.NodeState.OnValueChanged -= NodeStateChange;
         //예시
         //BattleManager.Instance.OnBattleStarted -= StartBattle;
         //BattleManager.Instance.OnBattleCleared -= ClearBattle;
         //BattleManager.Instance.OnBattleEnded -= EndBattle;
     }
-    private void NodeStateChange(NodeState state)
+    private void NodeStateChange(NodeState preState ,NodeState curState)
     {
-        switch (state)
+        switch (curState)
         {
             case NodeState.Ready:
                 EndBattle();
@@ -72,7 +72,7 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
                 break;
         }
 
-        DebugTool.Log($"[TeamBattleUpgradeEffect] NodeState 이벤트 수신: {state}", DebugType.Data, this);
+        DebugTool.Log($"[TeamBattleUpgradeEffect] NodeState 이벤트 수신: {curState}", DebugType.Data, this);
     }
 
     public void StartBattle()

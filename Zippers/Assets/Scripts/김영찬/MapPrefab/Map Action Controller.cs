@@ -69,10 +69,11 @@ public class MapActionController
     /// <summary>
     /// Node State가 전환 되면 현재 Action 전환<br/>
     /// 이벤트 체인으로 연결 되어 있음으로 직접 발동 금지<br/>
-    /// 이 함수를 발동 시키려면 MapData의 SetNodeState 메서드를 사용할 것
+    /// 이 함수를 발동 시키려면 NetworkMapData의 SetNodeState 메서드를 사용할 것
     /// </summary>
-    /// <param name="newState">맵 데이터의 NodeState 변수와 이벤트로 연결</param>
-    public void ChangeState(NodeState newState)
+    /// <param name="preState">이전 노드 상태, 사용하지 않음, NetworkMapData의 콜백을 받는 용도</param>
+    /// <param name="newState">맵 데이터의 NetworkMapData 변수와 이벤트로 연결</param>
+    public void ChangeState(NodeState preState ,NodeState newState)
     {
         switch (newState)
         {
