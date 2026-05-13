@@ -26,4 +26,4 @@ MonoBehaviour:
   eliteZombies:
   - {fileID: 9174561699367685619, guid: 3f2d67b905e993a40b7535d6fde73406, type: 3}
   bossZombies:
-  - {fileID: 0}
+  - {fileID: 4377082838164402515, guid: f802690848c05a141a6d9316a431386e, type: 3}

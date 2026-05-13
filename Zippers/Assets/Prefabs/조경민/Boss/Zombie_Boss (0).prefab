@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &712863882287003301
+--- !u!1 &4377082838164402515
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,45 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4405532034137891614}
-  - component: {fileID: 604174663997076240}
-  - component: {fileID: 4905559508159839150}
-  - component: {fileID: 6898566616228186013}
-  - component: {fileID: 4719040621640656989}
-  - component: {fileID: 4551721326254668036}
-  - component: {fileID: 8049381194007430815}
-  - component: {fileID: 5768426057815207900}
-  - component: {fileID: 3454663545550337135}
+  - component: {fileID: 2325166558933201775}
+  - component: {fileID: 5480746497622982877}
+  - component: {fileID: 4304403685344199563}
+  - component: {fileID: 3045072726234801727}
+  - component: {fileID: 798002147031602891}
+  - component: {fileID: 4577765976408682871}
+  - component: {fileID: 6566305443495954083}
+  - component: {fileID: 5955581427918275627}
+  - component: {fileID: 7755522031367101115}
   m_Layer: 11
-  m_Name: Zombie_Runner (1)
+  m_Name: Zombie_Boss (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4405532034137891614
+--- !u!4 &2325166558933201775
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712863882287003301}
+  m_GameObject: {fileID: 4377082838164402515}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7161517396817126101}
+  - {fileID: 8751388332231528618}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &604174663997076240
+--- !u!136 &5480746497622982877
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712863882287003301}
+  m_GameObject: {fileID: 4377082838164402515}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -59,20 +59,20 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.28
-  m_Height: 2.16
+  m_Radius: 0.7
+  m_Height: 3
   m_Direction: 1
-  m_Center: {x: 0, y: 1.08, z: 0}
---- !u!195 &4905559508159839150
+  m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!195 &4304403685344199563
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712863882287003301}
+  m_GameObject: {fileID: 4377082838164402515}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.28
+  m_Radius: 0.7
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -81,17 +81,17 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2.16
+  m_Height: 3
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!82 &6898566616228186013
+--- !u!82 &3045072726234801727
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712863882287003301}
+  m_GameObject: {fileID: 4377082838164402515}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -182,19 +182,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4719040621640656989
+--- !u!114 &798002147031602891
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712863882287003301}
+  m_GameObject: {fileID: 4377082838164402515}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3676230843
+  GlobalObjectIdHash: 1210813222
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -207,13 +207,13 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &4551721326254668036
+--- !u!114 &4577765976408682871
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712863882287003301}
+  m_GameObject: {fileID: 4377082838164402515}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
@@ -253,25 +253,25 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &8049381194007430815
+--- !u!114 &6566305443495954083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712863882287003301}
+  m_GameObject: {fileID: 4377082838164402515}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6e3545f7affdc241b6d14efbb086180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieController
   ShowTopMostFoldoutHeaderGroup: 1
-  _stat: {fileID: 11400000, guid: 8659f0941a2ae4d44a45dcb6eb9a9ba4, type: 2}
+  _stat: {fileID: 11400000, guid: ed9fa50c50e1c8745a3d3327a1136568, type: 2}
   _playerLayer:
     serializedVersion: 2
     m_Bits: 1024
-  _leftHand: {fileID: 7161689238468000843}
-  _rightHand: {fileID: 7161597710915984879}
+  _leftHand: {fileID: 1874781911435222895}
+  _rightHand: {fileID: 8519619374481475285}
   _groanSfxInterval: 3
   _groanSfxChance: 0.3
   _stunDuration: 0.2
@@ -282,83 +282,82 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
---- !u!114 &5768426057815207900
+--- !u!114 &5955581427918275627
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712863882287003301}
+  m_GameObject: {fileID: 4377082838164402515}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e75c86bf5d2a40738cccc1e06922c240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Audio.ZombieSfxController
-  _audioSource: {fileID: 6898566616228186013}
+  _audioSource: {fileID: 3045072726234801727}
   _zombieSFXSO: {fileID: 11400000, guid: 616d8d66e78135246abcb305e10004df, type: 2}
---- !u!114 &3454663545550337135
+--- !u!114 &7755522031367101115
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712863882287003301}
+  m_GameObject: {fileID: 4377082838164402515}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b0ae3b13c24c1842be963ffad252a0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c8e93d0535373245bbf1bb37b7c0759, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NormalZombieAttack
-  _leftHand: {fileID: 7161689238468000843}
-  _rightHand: {fileID: 7161597710915984879}
---- !u!1001 &7164658652359141795
+  m_EditorClassIdentifier: Assembly-CSharp::BossZombieAttack
+  _rightHand: {fileID: 8519619374481475285}
+--- !u!1001 &7050570887040872680
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4405532034137891614}
+    m_TransformParent: {fileID: 2325166558933201775}
     m_Modifications:
-    - target: {fileID: 1331328711462180, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1432238290740771576, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_Name
-      value: Runner Zombie 01
+      value: Boss
       objectReference: {fileID: 0}
-    - target: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
-    - target: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
+    - target: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
@@ -366,19 +365,19 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
---- !u!4 &7161517396817126101 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
+--- !u!4 &1874781911435222895 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4267430597299062, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
-  m_PrefabInstance: {fileID: 7164658652359141795}
+  m_CorrespondingSourceObject: {fileID: 8925071143101312903, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
+  m_PrefabInstance: {fileID: 7050570887040872680}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7161597710915984879 stripped
+--- !u!4 &8519619374481475285 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4187185254134860, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
-  m_PrefabInstance: {fileID: 7164658652359141795}
+  m_CorrespondingSourceObject: {fileID: 1721338725445219901, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
+  m_PrefabInstance: {fileID: 7050570887040872680}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7161689238468000843 stripped
+--- !u!4 &8751388332231528618 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4105020695172584, guid: 594dbe7a31091a0439f489aad629a286, type: 3}
-  m_PrefabInstance: {fileID: 7164658652359141795}
+  m_CorrespondingSourceObject: {fileID: 1777661329367146562, guid: 51a1705ba2c7ce043ae61c7af5a01364, type: 3}
+  m_PrefabInstance: {fileID: 7050570887040872680}
   m_PrefabAsset: {fileID: 0}
