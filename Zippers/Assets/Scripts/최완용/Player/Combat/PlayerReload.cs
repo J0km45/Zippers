@@ -66,7 +66,7 @@ public class PlayerReload : MonoBehaviour
 
         if (MaxBullet > beforeMaxBullet)
         {
-            Debug.Log($"[PlayerReload] 최대 탄창 증가: {beforeMaxBullet} -> {MaxBullet}");
+            DebugTool.Log($"[PlayerReload] 최대 탄창 증가: {beforeMaxBullet} -> {MaxBullet}", DebugType.Data,this);
         }
 
         CurrentBullet = Mathf.Min(CurrentBullet, MaxBullet);
@@ -75,48 +75,44 @@ public class PlayerReload : MonoBehaviour
 
     public bool TryUseAmmo()
     {
+        //TODO : 탄약 차감은 클라이언트가 직접 처리하지 않고 서버 검증후 반영해야됨
         if (!UsesAmmo)
         {
-            Debug.Log("[PlayerReload] 탄창을 사용하지 않는 공격입니다.");
             return true;
         }
 
         if (IsReloading)
         {
-            Debug.Log("[PlayerReload] 재장전 중이라 공격 불가");
             return false;
         }
 
         if (CurrentBullet <= 0)
         {
-            Debug.Log("[PlayerReload] 남은 탄 수 없음");
             return false;
         }
 
         CurrentBullet--;
         OnAmmoChanged?.Invoke(CurrentBullet, MaxBullet);
 
-        Debug.Log($"[PlayerReload] 탄 사용: {CurrentBullet}/{MaxBullet}");
+        DebugTool.Log($"[PlayerReload] 탄 사용: {CurrentBullet}/{MaxBullet}", DebugType.Data,this);
         return true;
     }
 
     public bool StartReload()
     {
+        //TODO : 재장전 시작은 서버가 현재탄약과 재장전 상태를 확인한 후 승인 해야됨
         if (!UsesAmmo)
         {
-            Debug.Log("[PlayerReload] 탄창을 사용하지 않아 재장전 불필요");
             return false;
         }
 
         if (IsReloading)
         {
-            Debug.Log("[PlayerReload] 이미 재장전 중");
             return false;
         }
 
         if (CurrentBullet >= MaxBullet)
         {
-            Debug.Log("[PlayerReload] 탄창이 가득 차 있어 재장전 무시");
             return false;
         }
 
@@ -126,10 +122,10 @@ public class PlayerReload : MonoBehaviour
 
     private IEnumerator ReloadRoutine()
     {
+        //TODO : 재장전 완료 시간과 탄약 복구는 서버 기준으로 동기화해야됨
         IsReloading = true;
         OnReloadStarted?.Invoke();
 
-        Debug.Log("[PlayerReload] 재장전 시작");
 
         yield return new WaitForSeconds(_playerStats.TotalReloadTime);
 
@@ -137,10 +133,11 @@ public class PlayerReload : MonoBehaviour
         IsReloading = false;
         _reloadCoroutine = null;
 
+        //TODO : 탄약UI갱신 이벤트는 서버가 확정한 다음 값을 호출해야됨
         OnAmmoChanged?.Invoke(CurrentBullet, MaxBullet);
         OnReloadCompleted?.Invoke();
 
-        Debug.Log($"[PlayerReload] 재장전 완료: {CurrentBullet}/{MaxBullet}");
+        DebugTool.Log($"[PlayerReload] 재장전 완료: {CurrentBullet}/{MaxBullet}", DebugType.Data,this);
     }
 
     public void CancelReload()
@@ -156,6 +153,5 @@ public class PlayerReload : MonoBehaviour
 
         IsReloading = false;
 
-        Debug.Log("[PlayerReload] 재장전 취소");
     }
 }

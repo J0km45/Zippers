@@ -64,7 +64,6 @@ public class TeamUpgradeDebugTest : MonoBehaviour
     {
         if (Keyboard.current == null)
         {
-            Debug.LogWarning("[TeamUpgradeDebugTest] Keyboard.current가 null입니다.");
             return;
         }
 
@@ -119,7 +118,6 @@ public class TeamUpgradeDebugTest : MonoBehaviour
     {
         if (_teamBattleUpgradeEffect == null)
         {
-            Debug.LogWarning("[TeamUpgradeDebugTest] TeamBattleUpgradeEffect가 없습니다.");
             return;
         }
 
@@ -136,7 +134,6 @@ public class TeamUpgradeDebugTest : MonoBehaviour
     {
         if (_teamBattleUpgradeEffect == null)
         {
-            Debug.LogWarning("[TeamUpgradeDebugTest] TeamBattleUpgradeEffect가 없습니다.");
             return;
         }
 
@@ -153,7 +150,6 @@ public class TeamUpgradeDebugTest : MonoBehaviour
     {
         if (_teamBattleUpgradeEffect == null)
         {
-            Debug.LogWarning("[TeamUpgradeDebugTest] TeamBattleUpgradeEffect가 없습니다.");
             return;
         }
 
@@ -167,13 +163,12 @@ public class TeamUpgradeDebugTest : MonoBehaviour
     {
         if (_teamUpgradeProvider == null)
         {
-            Debug.LogWarning("[TeamUpgradeDebugTest] TeamUpgradeProvider가 없습니다.");
             return;
         }
 
         _entries = _teamUpgradeProvider.GetAllUpgrades();
 
-        Debug.Log($"[TeamUpgradeDebugTest] 팀 업그레이드 전체 개수: {_entries.Count}");
+        DebugTool.Log($"[TeamUpgradeDebugTest] 팀 업그레이드 전체 개수: {_entries.Count}", DebugType.Data, this);
 
         for (int i = 0; i < _entries.Count; i++)
         {
@@ -187,7 +182,7 @@ public class TeamUpgradeDebugTest : MonoBehaviour
             int level = _teamUpgradeData != null ? _teamUpgradeData.GetLevel(entry) : 0;
             int cost = _teamUpgradeData != null ? _teamUpgradeData.UpgradeCost(entry) : 0;
 
-            Debug.Log(
+            DebugTool.Log(
                 $"[TeamUpgradeDebugTest] Index:{i} / " +
                 $"ID:{entry.UpgradeId} / " +
                 $"Name:{entry.UpgradeName} / " +
@@ -195,7 +190,9 @@ public class TeamUpgradeDebugTest : MonoBehaviour
                 $"ApplyType:{entry.ApplyType} / " +
                 $"ValuePerLevel:{entry.ValuePerLevel} / " +
                 $"Level:{level}/{entry.MaxLevel} / " +
-                $"Cost:{cost}"
+                $"Cost:{cost}",
+                DebugType.Data,
+                this
             );
         }
     }

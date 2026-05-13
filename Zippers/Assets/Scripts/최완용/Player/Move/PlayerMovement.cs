@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetSprint(bool isSprinting)
     {
+        //TODO : 달리기 가능여부강 SprintSpeed적용은 서버가 스테미나 검증한 후 처리해야됨
         IsSprinting = isSprinting;
     }
 
@@ -55,8 +56,6 @@ public class PlayerMovement : MonoBehaviour
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
         }
-
-        Debug.Log("[PlayerMovement] 이동 정지");
     }
 
 }

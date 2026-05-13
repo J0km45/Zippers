@@ -33,6 +33,7 @@ public class PlayerCollectRange : MonoBehaviour
 
     private void CollectTrigger()
     {
+        //TODO 멀티 전환시 아이템 확득 판정을 서버에서 검증해야됨
         _collider.isTrigger = true;
     }
 

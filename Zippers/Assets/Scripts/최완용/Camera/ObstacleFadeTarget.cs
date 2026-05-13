@@ -65,7 +65,7 @@ public class ObstacleFadeTarget : MonoBehaviour
 
         if (_showDebugLog)
         {
-            Debug.Log($"[ObstacleFadeTarget] 초기화 완료 / Material 수: {_materials.Count}", this);
+            DebugTool.Log($"[ObstacleFadeTarget] 초기화 완료 / Material 수: {_materials.Count}", DebugType.Data, this);
         }
     }
 

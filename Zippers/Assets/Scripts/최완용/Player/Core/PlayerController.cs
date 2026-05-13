@@ -101,15 +101,11 @@ public class PlayerController : NetworkBehaviour
         {
             Vector2 moveInput = ctx.ReadValue<Vector2>();
             _playerStateMachine.SetMoveInput(moveInput);
-
-            Debug.Log($"[PlayerController] 이동 입력: {moveInput}");
         }
 
         if (ctx.canceled)
         {
             _playerStateMachine.SetMoveInput(Vector2.zero);
-
-            Debug.Log("[PlayerController] 이동 입력 취소");
         }
     }
 
@@ -130,11 +126,9 @@ public class PlayerController : NetworkBehaviour
 
         if (_playerCombat == null)
         {
-            Debug.LogWarning("[PlayerController] PlayerCombat이 없습니다.");
             return;
         }
 
-        Debug.Log("[PlayerController] 공격 입력");
         _playerCombat.TryAttack();
     }
 
@@ -151,7 +145,6 @@ public class PlayerController : NetworkBehaviour
         }
         if (_combatStateMachine == null)
         {
-            Debug.LogWarning("[PlayerController] PlayerCombatStateMachine이 없습니다.");
             return;
         }
 
@@ -160,12 +153,10 @@ public class PlayerController : NetworkBehaviour
             //추가
             StopSprintForAiming();
 
-            Debug.Log("[PlayerController] 조준 시작");
             _combatStateMachine.SetAiming(true);
         }
         else if (ctx.canceled)
         {
-            Debug.Log("[PlayerController] 조준 종료");
             _combatStateMachine.SetAiming(false);
         }
     }
@@ -186,11 +177,9 @@ public class PlayerController : NetworkBehaviour
 
         if (_combatStateMachine == null)
         {
-            Debug.LogWarning("[PlayerController] PlayerCombatStateMachine이 없습니다.");
             return;
         }
 
-        Debug.Log("[PlayerController] 재장전 입력");
         _combatStateMachine.RequestReload();
     }
     private void OnSprint(InputAction.CallbackContext ctx)

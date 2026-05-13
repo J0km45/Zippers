@@ -17,6 +17,7 @@ public class PlayerTransform : MonoBehaviour
     // 플레이어 위치 리스트에 등록
     public void Register()
     {
+        //TODO : 멀티 전환신 플레이어 등록은 서버 AllivePlayerList기준으로 처리해야됨
         if (_isRegistered)
         {
             return;
@@ -35,6 +36,7 @@ public class PlayerTransform : MonoBehaviour
     // 플레이어 위치 리스트에서 제거
     public void Unregister()
     {
+        //TODO : 플레이어 제거는 로컬 판단이 아니라 서버 사망 확정 이벤트를 기준으로 처리해야됨
         if (!_isRegistered)
         {
             return;

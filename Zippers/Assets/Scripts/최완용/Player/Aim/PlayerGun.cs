@@ -1,4 +1,5 @@
 using UnityEngine;
+using Unity.Netcode;
 
 public class PlayerGun : MonoBehaviour
 {
@@ -24,12 +25,17 @@ public class PlayerGun : MonoBehaviour
             Debug.LogWarning("[PlayerGun] FirePoint가 없습니다.");
             return;
         }
-
+        
         Vector3 shootDirection = GetShootDirection();
 
         if (shootDirection.sqrMagnitude < 0.001f)
         {
             Debug.LogWarning("[PlayerGun] 발사 방향을 계산하지 못했습니다.");
+            return;
+        }
+
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening && !NetworkManager.Singleton.IsServer)
+        {
             return;
         }
 
@@ -47,9 +53,20 @@ public class PlayerGun : MonoBehaviour
             canPierce
         );
 
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+        {
+            NetworkObject networkObject = bullet.GetComponent<NetworkObject>();
+
+            if (networkObject == null)
+            {
+                return;
+            }
+
+            networkObject.Spawn(true);
+        }
         PlayGunShotEffect();
 
-        Debug.Log($"[PlayerGun] 총알 발사 / Direction: {shootDirection}");
+        DebugTool.Log($"[PlayerGun] 총알 발사 / Direction: {shootDirection}", DebugType.Data, this);
     }
 
     private Vector3 GetShootDirection()
