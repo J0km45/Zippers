@@ -7,9 +7,6 @@ public class NetworkNodeData : NetworkBehaviour
     [SerializeField] NetworkVariable<NodeDifficulty> _difficulty;
     [SerializeField] NetworkVariable<int> _battleCount;
     
-    private NodeDifficulty _preDifficulty;
-    private int _preBattleCount;
-    
     /// <summary>
     /// 이번 게임의 난이도
     /// </summary>
@@ -32,10 +29,8 @@ public class NetworkNodeData : NetworkBehaviour
     public void SetDifficulty(NodeDifficulty difficulty)
     {
         if(!IsServer) return;
-        _preDifficulty = Difficulty.Value;
         _difficulty.Value = difficulty;
         DebugTool.Log("ChangeDifficulty : " + Difficulty, DebugType.Node, this);
-        Difficulty.OnValueChanged?.Invoke(_preDifficulty, Difficulty.Value);
     }
     
     /// <summary>
@@ -44,10 +39,8 @@ public class NetworkNodeData : NetworkBehaviour
     public void AddBattleCount()
     {
         if(!IsServer) return;
-        _preBattleCount = BattleCount.Value;
         _battleCount.Value++;
         DebugTool.Log("AddBattleCount, Current Count : " + BattleCount, DebugType.Node, this);
-        BattleCount.OnValueChanged?.Invoke(_preBattleCount, BattleCount.Value);
     }
 
     /// <summary>
