@@ -90,8 +90,8 @@ public abstract class MapController : MonoBehaviour
 
     private void ReadyForUse()
     {
-        Data.SetNodeState(NodeState.Ready);
-        Data.ResetAlivePlayerCount();
+        Data.NetworkMapData.SetNodeState(NodeState.Ready);
+        Data.NetworkMapData.ResetAlivePlayerCount();
         Data.ResetNextMaps();
         EventController.SetDefaultEvent();
         TeleportSupporter.DisableBeaconAll();
@@ -112,7 +112,7 @@ public abstract class MapController : MonoBehaviour
     
     private void EventEnable()
     {
-        Data.OnChangeState += ActionController.ChangeState;
+        Data.NetworkMapData.NodeState.OnValueChanged += ActionController.ChangeState;
         EventController.Machine.OnEventChangeSendPostEvent += DestroyEventData;
         TeleportSupporter.OnTeleportStart += TeleportNextMap;
         TeleportSupporter.EnableEvent();
@@ -120,7 +120,7 @@ public abstract class MapController : MonoBehaviour
 
     private void EventDisable()
     {
-        Data.OnChangeState -= ActionController.ChangeState;
+        Data.NetworkMapData.NodeState.OnValueChanged -= ActionController.ChangeState;
         EventController.Machine.OnEventChangeSendPostEvent -= DestroyEventData;
         TeleportSupporter.OnTeleportStart -= TeleportNextMap;
     }

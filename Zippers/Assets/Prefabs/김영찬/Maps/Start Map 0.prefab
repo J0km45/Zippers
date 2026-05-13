@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5168434169534652530}
   - component: {fileID: 8137467193740531021}
   - component: {fileID: 4825050594778193418}
+  - component: {fileID: -1306692373416904619}
   m_Layer: 12
   m_Name: Start Map 0
   m_TagString: Untagged
@@ -63,6 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapData
   _controller: {fileID: 5168434169534652530}
+  <NetworkMapData>k__BackingField: {fileID: -1306692373416904619}
   <PlayerSpawnPoint_Up>k__BackingField:
   - {fileID: 1771728962996049200}
   - {fileID: 7406853295996053775}
@@ -87,7 +89,6 @@ MonoBehaviour:
   <TeleportBeacon_Down>k__BackingField: {fileID: 6779650353725416786}
   <TeleportBeacon_Left>k__BackingField: {fileID: 871182786530873085}
   <TeleportBeacon_Right>k__BackingField: {fileID: 8700733729846245791}
-  <NodeState>k__BackingField: 0
   <StartDir>k__BackingField: 0
   <MonsterSpawnPoints>k__BackingField: []
 --- !u!114 &4825050594778193418
@@ -107,6 +108,29 @@ MonoBehaviour:
   _ballotBox_Down: {fileID: 2920951217880332928}
   _ballotBox_Left: {fileID: 8829436379428311343}
   _ballotBox_Right: {fileID: 1017904230521464397}
+--- !u!114 &-1306692373416904619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4728121328699623930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8383cd1f71dca6545a3a4d608969025a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkMapData
+  ShowTopMostFoldoutHeaderGroup: 1
+  _alivePlayerCount:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  _nodeState:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
 --- !u!1001 &4385033829769774426
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -301,6 +325,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7166475234226850932}
     m_Modifications:
+    - target: {fileID: 1571924717290696212, guid: bae579fdaba282f40903ebb1b745a5cf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -25
+      objectReference: {fileID: 0}
     - target: {fileID: 1856692189832508869, guid: bae579fdaba282f40903ebb1b745a5cf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

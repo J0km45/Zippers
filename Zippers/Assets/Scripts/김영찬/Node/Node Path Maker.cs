@@ -25,15 +25,16 @@ public class NodePathMaker
         _weightInfo = new();
     }
 
-    public void MakePath(NodeDifficulty difficulty)
+    public void MakePath(NodeDifficulty preDifficulty ,NodeDifficulty curDifficulty)
     {
         Path.Clear();
         _weightInfo.Clear();
         _sumWeight = 0;
+        _nodeManager.NetworkNodeData.ResetBattleCount();
         
-        _difficultyData = _nodeManager.DataContainer.GetDifficultyData(difficulty);
+        _difficultyData = _nodeManager.DataContainer.GetDifficultyData(curDifficulty);
         
-        if (difficulty == NodeDifficulty.Test)
+        if (curDifficulty == NodeDifficulty.Test)
         {
             TestPathWay();
             DebugTool.Log("PathMaking Complete", DebugType.Node);

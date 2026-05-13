@@ -50,7 +50,7 @@ public class StartNodeBattleAction : INodeAction
     
     public void EnterState()
     {
-        _controller.Controller.Data.SetNodeState(NodeState.Clear);
+        _controller.Controller.Data.NetworkMapData.SetNodeState(NodeState.Clear);
     }
 
     public void RunningState()
