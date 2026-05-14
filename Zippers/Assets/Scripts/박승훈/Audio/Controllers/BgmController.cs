@@ -19,17 +19,18 @@ public class BgmController : AudioController
     [SerializeField] private float _introTime = 12f;
     [Header("인트로 음악 페이드 아웃 타이밍")] [Tooltip("인트로 출력 길이 끝에서 n초")] [Range(0.1f, 12.0f)]
     [SerializeField] private float _fadeOutTime = 1f;
+    
+    private float _baseTime = 12f;
 
     [Space(5)] [Header("개발 버전 BGM On/Off 설정")] 
     [SerializeField] private bool bgmOff = true;
 
-    private float _baseTime = 12f;
     [SerializeField] private float _startVolume;
+    [SerializeField] private float _currentVolume;
     
-    private bool _pausedByFocus;
+    private bool _hasFocus = true;
+    private bool _prevBgmOff;
     
-    public event Action<bool> OnBGMChange;
-
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
@@ -37,7 +38,16 @@ public class BgmController : AudioController
         BgmSourceInit(_audioSource);
 
         _startVolume = _audioSource.volume;
-        CheckVolumeOff(bgmOff);
+        _currentVolume = _startVolume;
+        
+        _prevBgmOff = bgmOff;
+        
+        ApplyVolume();
+    }
+
+    private void OnEnable()
+    {
+        
     }
 
     private void Start()
@@ -51,7 +61,15 @@ public class BgmController : AudioController
     }
     
     private void Update()
-        => CheckVolumeOff(bgmOff);
+    {
+        if (_prevBgmOff == bgmOff)
+            return;
+        
+        _prevBgmOff = bgmOff;
+        
+        ApplyVolume();
+        
+    }
 
     public void PlayBGM(BGMType type)
     {
@@ -67,25 +85,8 @@ public class BgmController : AudioController
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        if (_audioSource == null)
-            return;
-
-        if (!hasFocus)
-        {
-            if (_audioSource.isPlaying)
-            {
-                _audioSource.volume = 0;
-                _pausedByFocus = true;
-            }
-
-            return;
-        }
-
-        if (_pausedByFocus)
-        {
-            _audioSource.volume = _startVolume;
-            _pausedByFocus = false;
-        }
+        _hasFocus = hasFocus;
+        ApplyVolume();
     }
 
     private IEnumerator TitleBGMChange()
@@ -139,21 +140,30 @@ public class BgmController : AudioController
             time += Time.unscaledDeltaTime;
 
             float t = Mathf.Clamp01(time / duration);
-            _audioSource.volume = Mathf.Lerp(startVolume, targetVolume, t);
+            SetVolume(Mathf.Lerp(startVolume, targetVolume, t));
             
             yield return null;
         }
-        _audioSource.volume = targetVolume;
+        SetVolume(targetVolume);
     }
 
-    private void CheckVolumeOff(bool value)
+    private void SetVolume(float volume)
     {
-        if (!value)
+        _currentVolume = volume;
+        ApplyVolume();
+    }
+
+    private void ApplyVolume()
+    {
+        if (_audioSource == null)
+            return;
+
+        if (bgmOff || !_hasFocus)
         {
             _audioSource.volume = 0f;
             return;
         }
-
-        _audioSource.volume = _startVolume;
+        
+        _audioSource.volume = _currentVolume;
     }
 }
