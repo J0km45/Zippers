@@ -8,17 +8,17 @@ public class NetworkNodeData : NetworkBehaviour
     [SerializeField] NetworkVariable<NodeDifficulty> _difficulty;
     [SerializeField] NetworkVariable<int> _battleCount;
     [SerializeField] NetworkVariable<int> _mapSeed;
-    
+
     /// <summary>
     /// 이번 게임의 난이도
     /// </summary>
     public NetworkVariable<NodeDifficulty> Difficulty => _difficulty;
-    
+
     /// <summary>
     /// 이번 게임에서 전투 총 회수(Boss, Battle)
     /// </summary>
     public NetworkVariable<int> BattleCount => _battleCount;
-    
+
     /// <summary>
     /// 이번 게임의 맵 시드
     /// </summary>
@@ -35,12 +35,12 @@ public class NetworkNodeData : NetworkBehaviour
     public void SetDifficultyAndGenerateMap(NodeDifficulty difficulty)
     {
         if(!IsServer) return;
-        
+
         _difficulty.Value = difficulty;
-        _mapSeed.Value = (int)DateTime.Now.Ticks; 
-        
+        _mapSeed.Value = (int)DateTime.Now.Ticks;
+
         GenerateMapClientRpc(difficulty, _mapSeed.Value);
-        
+
         DebugTool.Log($"[Server] 난이도: {difficulty}, 시드: {_mapSeed.Value} 설정 완료", DebugType.Node, this);
     }
     

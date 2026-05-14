@@ -110,7 +110,7 @@ public class GameSpawnController : NetworkBehaviour
     /// 클라이언트 disconnect 시 호스트 콜백.
     /// PlayerObject 자체는 NGO 가 자동 despawn/destroy (NetworkObject.DontDestroyWithOwner == false 기본).
     /// destroy 가 발생하면 Unity 가 OnTriggerExit 를 발화 → MapObjectCounter 가 AlivePlayerCount 감소.
-    /// 여기서는 추적용 dictionary 정리만 한다.
+    /// 여기서는 추적용 dictionary 만 정리한다.
     /// </summary>
     private void OnClientDisconnect(ulong clientId)
     {
@@ -277,6 +277,10 @@ public class GameSpawnController : NetworkBehaviour
             DebugTool.Error(
                 $"clientId={clientId} SlotIndex={info.SlotIndex} 가 spawnPoints 범위 외 (배열 길이 {spawnPoints.Length}) - skip",
                 DebugType.Network, this);
+
+            // 진단 컨텍스트 덤프 - SlotIndex=-1 같은 이상치가 왜 발생했는지 한 번에 파악하기 위해
+            // 호스트의 슬롯/매핑/세션 상태를 같이 찍는다. 부작용 없음.
+            DumpDiagnosticsForBadSlot(clientId, info);
             return false;
         }
 
@@ -318,6 +322,64 @@ public class GameSpawnController : NetworkBehaviour
     public bool TryGetSpawnedPlayer(ulong clientId, out NetworkObject playerObject)
     {
         return _spawnedByClient.TryGetValue(clientId, out playerObject);
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Diagnostics (호스트 측 SlotIndex 이상 감지 시 호출)
+    // ─────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// SlotIndex 가 범위 외(특히 -1) 로 감지됐을 때 호스트 측 컨텍스트를 한 번에 덤프.
+    /// - PlayerSessionBridge 의 clientId↔playerId 매핑
+    /// - LobbyManager 의 _slotCache + SessionProperty["Slots"] 원본 JSON + session.Players 요약
+    /// - NetworkManager.ConnectedClientsIds 전체
+    /// Phase 1 진단용. 호출 자체에 부작용 없음.
+    /// </summary>
+    private void DumpDiagnosticsForBadSlot(ulong clientId, PlayerInfo info)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"[GameSpawnController] === SlotIndex 진단 (clientId={clientId}, class={info.PlayerClass}, slot={info.SlotIndex}) ===");
+
+        // 1) Bridge 매핑
+        if (PlayerSessionBridge.Instance != null)
+        {
+            sb.Append(PlayerSessionBridge.Instance.DumpClientIdMapping(clientId));
+        }
+        else
+        {
+            sb.AppendLine("  PlayerSessionBridge.Instance == null");
+        }
+
+        // 2) LobbyManager 슬롯 상태
+        if (LobbyManager.Instance != null)
+        {
+            sb.Append(LobbyManager.Instance.DumpSlotState());
+        }
+        else
+        {
+            sb.AppendLine("  LobbyManager.Instance == null");
+        }
+
+        // 3) NGO ConnectedClientsIds
+        NetworkManager nm = NetworkManager.Singleton;
+        if (nm != null)
+        {
+            sb.Append($"  NetworkManager.ConnectedClientsIds = [");
+            bool first = true;
+            foreach (ulong cid in nm.ConnectedClientsIds)
+            {
+                if (!first) sb.Append(", ");
+                sb.Append(cid);
+                first = false;
+            }
+            sb.AppendLine("]");
+        }
+        else
+        {
+            sb.AppendLine("  NetworkManager.Singleton == null");
+        }
+
+        DebugTool.Error(sb.ToString(), DebugType.Network, this);
     }
 
     // ─────────────────────────────────────────────────────────────────

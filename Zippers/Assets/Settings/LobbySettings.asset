@@ -16,4 +16,4 @@ MonoBehaviour:
   MinPlayersToStart: 2
   GameRestartCooldownSec: 5
   RelayRegion: asia-northeast3
-  DefaultDifficulty: 4
+  DefaultDifficulty: -1

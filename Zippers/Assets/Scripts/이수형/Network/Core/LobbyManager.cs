@@ -921,6 +921,55 @@ public class LobbyManager : MonoBehaviour
     }
 
     // ─────────────────────────────────────────────────────────────────
+    // 진단 헬퍼 (Diagnostics)
+    // ─────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// 현재 슬롯 상태 스냅샷을 사람이 읽을 수 있는 문자열로 반환.
+    /// _slotCache (lookup 캐시) 와 SessionProperty["Slots"] (권위 원본 JSON) 을 같이 덤프.
+    /// GameSpawnController 등 SlotIndex=-1 같은 비정상을 감지한 호출자가 한 번에 컨텍스트를 찍을 때 사용.
+    /// 부작용 없음 (read-only).
+    /// </summary>
+    public string DumpSlotState()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"[LobbyManager] DumpSlotState (session={(_session != null ? "alive" : "null")}, IsHost={_session?.IsHost ?? false})");
+
+        // 1) _slotCache (lookup 사본)
+        sb.AppendLine($"  _slotCache count={_slotCache.Count}");
+        foreach (KeyValuePair<int, string> kv in _slotCache)
+        {
+            sb.AppendLine($"    slot[{kv.Key}] = playerId={kv.Value}");
+        }
+
+        // 2) SessionProperty["Slots"] 원본 JSON (권위)
+        string raw = null;
+        if (_session != null && _session.Properties != null
+            && _session.Properties.TryGetValue(LobbyConstants.KEY_SESSION_SLOTS, out SessionProperty prop)
+            && prop != null)
+        {
+            raw = prop.Value;
+        }
+        sb.AppendLine($"  SessionProperty[\"{LobbyConstants.KEY_SESSION_SLOTS}\"] raw = {(string.IsNullOrEmpty(raw) ? "(empty/null)" : raw)}");
+
+        // 3) session.Players 의 (Id, Class, Ready) 요약 — Class=None / Ready=false 인 채로 게임 진입했는지 확인용
+        if (_session != null && _session.Players != null)
+        {
+            sb.AppendLine($"  session.Players count={_session.Players.Count}");
+            for (int i = 0; i < _session.Players.Count; i++)
+            {
+                IReadOnlyPlayer p = _session.Players[i];
+                string classStr = GetPlayerProperty(p, LobbyConstants.KEY_PLAYER_CLASS) ?? "(null)";
+                string readyStr = GetPlayerProperty(p, LobbyConstants.KEY_PLAYER_READY) ?? "(null)";
+                int slot = FindSlotByPlayerId(p.Id);
+                sb.AppendLine($"    [{i}] playerId={p.Id} class={classStr} ready={readyStr} resolvedSlot={slot}");
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    // ─────────────────────────────────────────────────────────────────
     // Session property: Difficulty
     // ─────────────────────────────────────────────────────────────────
 

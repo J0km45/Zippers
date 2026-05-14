@@ -234,6 +234,42 @@ public class PlayerSessionBridge : MonoBehaviour
     /// <summary>현재 등록된 매핑 수. 디버깅용.</summary>
     public int MappingCount => _clientToPlayer.Count;
 
+    /// <summary>
+    /// 특정 clientId 의 매핑 상태를 사람이 읽을 수 있는 문자열로 반환.
+    /// - 해당 clientId 의 정방향 (clientId → playerId) 매핑 존재 여부
+    /// - 그 playerId 의 역방향 (playerId → clientId) 일치 여부
+    /// - 전체 매핑 개수 / 전 항목 dump
+    /// GameSpawnController 등이 SlotIndex=-1 같은 비정상 시점에 한 번에 컨텍스트를 찍을 때 사용.
+    /// 부작용 없음 (read-only).
+    /// </summary>
+    public string DumpClientIdMapping(ulong clientId)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"[PlayerSessionBridge] DumpClientIdMapping(clientId={clientId}) count={_clientToPlayer.Count}");
+
+        if (_clientToPlayer.TryGetValue(clientId, out string playerId))
+        {
+            bool reverseMatch = _playerToClient.TryGetValue(playerId, out ulong reverseClientId) && reverseClientId == clientId;
+            sb.AppendLine($"  forward  : clientId={clientId} → playerId={playerId}");
+            sb.AppendLine($"  reverse  : playerId={playerId} → clientId={(reverseMatch ? reverseClientId.ToString() : "(missing or mismatch)")}");
+            if (!reverseMatch)
+            {
+                sb.AppendLine($"  ⚠ 역방향 매핑 불일치 - _playerToClient 동기화 깨짐 의심");
+            }
+        }
+        else
+        {
+            sb.AppendLine($"  ⚠ 정방향 매핑 없음 - ConnectionApproval payload 누락 또는 디코드 실패 가능");
+        }
+
+        sb.AppendLine($"  --- 전체 매핑 ---");
+        foreach (KeyValuePair<ulong, string> kv in _clientToPlayer)
+        {
+            sb.AppendLine($"    clientId={kv.Key} ↔ playerId={kv.Value}");
+        }
+        return sb.ToString();
+    }
+
     // ─────────────────────────────────────────────────────────────────
     // Debug helpers
     // ─────────────────────────────────────────────────────────────────

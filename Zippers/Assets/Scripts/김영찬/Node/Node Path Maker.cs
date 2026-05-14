@@ -12,11 +12,18 @@ public class NodePathMaker
 
     public Queue<MapRow> Path { get; private set; }
 
+    /// <summary>
+    /// MakePath 가 최소 1회 호출되어 Path 큐가 채워졌는지 여부.
+    /// MapController.WaitCoroutine 이 이 플래그를 보고 manual ChangeState 발화를 대기.
+    /// Path 가 모두 dequeue 되어 Count==0 이 되어도 이 플래그는 true 유지.
+    /// </summary>
+    public bool HasMadePath { get; private set; }
+
     private DifficultyDataSO _difficultyData;
-    
+
     private Dictionary<NodeType, int> _weightInfo;
     private int _sumWeight;
-    
+
     public event Action OnPathMakingComplete;
     
     public NodePathMaker(NodeManager nodeManager)
@@ -38,7 +45,9 @@ public class NodePathMaker
         if (curDifficulty == NodeDifficulty.Test)
         {
             TestPathWay();
+            HasMadePath = true;
             DebugTool.Log("PathMaking Complete", DebugType.Node);
+            OnPathMakingComplete?.Invoke();
             return;
         }
         
@@ -73,7 +82,8 @@ public class NodePathMaker
             
             Path.Enqueue(new MapRow(tempLeft, tempUp, tempRight));
         }
-        
+
+        HasMadePath = true;
         DebugTool.Log("PathMaking Complete", DebugType.Node);
         OnPathMakingComplete?.Invoke();
     }
