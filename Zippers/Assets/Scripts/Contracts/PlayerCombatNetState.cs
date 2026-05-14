@@ -39,6 +39,10 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader,IPlaye
 
     public bool IsReloading => throw new NotImplementedException();
 
+    public float MaxStamina => throw new NotImplementedException();
+
+    public float MaxAmmo => throw new NotImplementedException();
+
     public event Action<float, float> OnHealthChanged;
     public event Action OnPlayerDied;
     public event Action OnPlayerRevived;
