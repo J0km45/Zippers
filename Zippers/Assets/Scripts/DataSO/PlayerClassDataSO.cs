@@ -58,8 +58,5 @@ public class PlayerClassDataSO : ScriptableObject, ISheetParsable
         SprintSpeed = float.Parse(datas[17]);
         SightRange = float.Parse(datas[18]);
         CollectRange = float.Parse(datas[19]);
-
-
-
     }
 }
