@@ -236,6 +236,8 @@ GameObject:
   - component: {fileID: 3924908651905105082}
   - component: {fileID: -7077171523443769645}
   - component: {fileID: 723289820514425125}
+  - component: {fileID: 3462459890861248568}
+  - component: {fileID: 874743191093505252}
   m_Layer: 10
   m_Name: Shotgun
   m_TagString: Untagged
@@ -943,6 +945,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59d3db4690768b4b9c0485fe6f4d579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTeleporter
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &3462459890861248568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082915869594634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d222b21ba013c9849b348e8457d22f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.PlayerEconomyNetState
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &874743191093505252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082915869594634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17664e59e9e41db4bafeadae18fee8a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.PlayerCombatNetState
   ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &1103278349565816
 GameObject:
