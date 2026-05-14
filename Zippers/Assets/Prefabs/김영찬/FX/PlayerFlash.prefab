@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4950109699666572834}
   - component: {fileID: 2991579870091913566}
   - component: {fileID: 7276008981294980933}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3601861194873512629}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: PlayerFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}

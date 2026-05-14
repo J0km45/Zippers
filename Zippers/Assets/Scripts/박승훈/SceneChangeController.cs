@@ -34,6 +34,7 @@ public class SceneChangeController : MonoBehaviour
 
     private IEnumerator EnterScene()
     {
+        DebugTool.Log("씬 전환 (Enter)", DebugType.Game);
         float time = 0f;
 
         while (time < _enterDuration)
@@ -54,6 +55,8 @@ public class SceneChangeController : MonoBehaviour
 
     private IEnumerator ExitScene()
     {
+        DebugTool.Log("현재 전환 (Out) ", DebugType.Game);
+        
         _changeSceneImage.gameObject.SetActive(true);
         
         float time = 0f;
