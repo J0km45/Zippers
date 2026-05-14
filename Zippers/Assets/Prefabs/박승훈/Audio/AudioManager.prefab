@@ -69,6 +69,7 @@ MonoBehaviour:
   _titleAudioClip: {fileID: 8300000, guid: a950ca19d88596c4987fc46a36b60e02, type: 3}
   _introTime: 11
   _fadeOutTime: 1
+  BGMOff: 0
 --- !u!82 &4200715271690335414
 AudioSource:
   m_ObjectHideFlags: 0

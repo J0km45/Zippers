@@ -26,6 +26,11 @@ public class SceneChangeController : MonoBehaviour
         color = _changeSceneImage.color;
     }
 
+    private void OnEnable()
+    {
+        LobbyManager.Instance.OnGameStarting += OnEnterScene;
+    }
+
     public void OnEnterScene()
         => StartCoroutine(EnterScene());
 
@@ -34,6 +39,7 @@ public class SceneChangeController : MonoBehaviour
 
     private IEnumerator EnterScene()
     {
+        _changeSceneImage.gameObject.SetActive(true);
         DebugTool.Log("씬 전환 (Enter)", DebugType.Game);
         float time = 0f;
 
