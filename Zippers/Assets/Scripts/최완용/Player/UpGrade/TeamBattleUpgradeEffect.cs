@@ -94,6 +94,10 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
     public void EndBattle()
     {
         _isBattle = false;
+        if(_teamUpgradeData != null)
+        {
+            _teamUpgradeData.ClearOneTimeBattleUpgrades();
+        }
     }
 
     public float ApplyBattleStat(float baseValue, TeamUpgradeStatKey statKey, bool isCooldownStat = false)
@@ -130,7 +134,7 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
                 continue;
             }
 
-            float value = entry.ValuePerLevel * level;
+            float value = entry.ValuePerLevel;
 
             switch (entry.ApplyType)
             {
@@ -144,10 +148,11 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
         }
 
         float result = baseValue + addValue;
+
         if(isCooldownStat)
         {
-            result *= 1f-percentValue;
-            result = Mathf.Max(0.1f, result);
+            result *= 1f - percentValue;
+            return  Mathf.Max(0.1f, result);
         }
         result *= 1f + percentValue;
         return result;
@@ -212,7 +217,7 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
                 continue;
             }
 
-            healPercent += entry.ValuePerLevel * level;
+            healPercent += entry.ValuePerLevel;
         }
 
         return healPercent;
