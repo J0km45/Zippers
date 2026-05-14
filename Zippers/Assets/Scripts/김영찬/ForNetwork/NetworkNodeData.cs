@@ -75,12 +75,14 @@ public class NetworkNodeData : NetworkBehaviour
     }
 
     /// <summary>
-    /// 서버가 명령을 내리면 모든 클라이언트가 동시에 실행하는 맵 생성 로직
+    /// 서버가 명령을 내리면 모든 클라이언트가 동시에 실행하는 맵 생성 로직.
+    /// Phase C: UnityEngine.Random.InitState (전역 상태) 대신 NodeManager.InitRng 로
+    /// 격리된 System.Random 인스턴스 사용. 다른 시스템의 Random 호출에 영향받지 않음.
     /// </summary>
     [ClientRpc]
     private void GenerateMapClientRpc(NodeDifficulty difficulty, int seed)
     {
-        UnityEngine.Random.InitState(seed);
+        _manager.InitRng(seed);
         _manager.NodePathMaker.MakePath(difficulty);
     }
 }

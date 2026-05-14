@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Random = UnityEngine.Random;
+// Phase C: UnityEngine.Random 의존 제거. NodeManager.Rng (System.Random) 로 격리.
+// 'Random' 식별자를 더 이상 사용하지 않으므로 alias 도 제거.
 
 /// <summary>
 /// Tree SO 기반으로 연결 순서 지정
@@ -79,9 +80,11 @@ public class NodePathMaker
     
     private void CulNextPathWay(out bool canMoveUpperSide, out bool canMoveLeftSide, out bool canMoveRightSide)
     {
-        bool tempMoveUpperSide = Random.Range(0f, 1f) <= _difficultyData.UpsideChance;
-        bool tempMoveLeftSide = Random.Range(0f, 1f) <= _difficultyData.LeftSideChance;
-        bool tempMoveRightSide = Random.Range(0f, 1f) <= _difficultyData.RightSideChance;
+        // Phase C: 격리 RNG 사용. 호출 순서 (Upper → Left → Right) 가 모든 클라에서 동일해야 desync 없음.
+        // System.Random.NextDouble() 는 [0.0, 1.0) — 확률 비교용이라 UnityEngine.Random.Range(0f, 1f) 와 사실상 동등.
+        bool tempMoveUpperSide = _nodeManager.Rng.NextDouble() <= _difficultyData.UpsideChance;
+        bool tempMoveLeftSide  = _nodeManager.Rng.NextDouble() <= _difficultyData.LeftSideChance;
+        bool tempMoveRightSide = _nodeManager.Rng.NextDouble() <= _difficultyData.RightSideChance;
         
         canMoveUpperSide = tempMoveUpperSide;
         canMoveLeftSide = tempMoveLeftSide;
@@ -117,8 +120,9 @@ public class NodePathMaker
     private NodeType WeightNodeSelection()
     {
         if(_weightInfo == null || _weightInfo.Count == 0) return NodeType.Battle;
-        
-        int selectedNumber = Random.Range(0, _sumWeight);
+
+        // Phase C: 격리 RNG. System.Random.Next(0, n) == UnityEngine.Random.Range(0, n) (둘 다 max exclusive).
+        int selectedNumber = _nodeManager.Rng.Next(0, _sumWeight);
         
         foreach (var weightInfo in _weightInfo)
         {

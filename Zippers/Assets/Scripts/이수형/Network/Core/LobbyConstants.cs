@@ -25,6 +25,14 @@ public static class LobbyConstants
     /// </summary>
     public const string KEY_SESSION_SLOTS = "Slots";
 
+    /// <summary>
+    /// 이번 게임의 난이도. 값은 (int)NodeDifficulty 의 string (예: "3" = Level3).
+    /// 호스트가 LobbyScene 에서 선택 (LobbyManager.SetDifficultyAsHostAsync),
+    /// GameScene 진입 후 NodeManager.InitializeAsHost 가 LobbyManager.GetCurrentDifficulty 로 읽음.
+    /// 미설정 / 파싱 실패 시 LobbySettings.DefaultDifficulty (기본 Level3 = Normal) 로 폴백.
+    /// </summary>
+    public const string KEY_SESSION_DIFFICULTY = "Difficulty";
+
     // ── 공통 boolean string ────────────────────────────────────────
     public const string VALUE_TRUE  = "1";
     public const string VALUE_FALSE = "0";

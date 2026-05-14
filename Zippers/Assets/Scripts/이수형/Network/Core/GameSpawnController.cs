@@ -82,8 +82,12 @@ public class GameSpawnController : NetworkBehaviour
         }
 
         nm.SceneManager.OnLoadEventCompleted += OnAllClientsSceneLoaded;
+        // Phase D: disconnect → 사망 처리 정리. NGO 가 PlayerObject 자동 destroy →
+        // MapObjectCounter.OnTriggerExit 가 AlivePlayerCount 자동 감소.
+        // 여기서는 _spawnedByClient 추적 dictionary 만 정리.
+        nm.OnClientDisconnectCallback += OnClientDisconnect;
         _subscribed = true;
-        DebugTool.Log("OnLoadEventCompleted 구독 완료 (호스트)", DebugType.Network, this);
+        DebugTool.Log("OnLoadEventCompleted / OnClientDisconnectCallback 구독 완료 (호스트)", DebugType.Network, this);
     }
 
     public override void OnNetworkDespawn()
@@ -91,11 +95,35 @@ public class GameSpawnController : NetworkBehaviour
         if (!_subscribed) return;
 
         NetworkManager nm = NetworkManager.Singleton;
-        if (nm != null && nm.SceneManager != null)
+        if (nm != null)
         {
-            nm.SceneManager.OnLoadEventCompleted -= OnAllClientsSceneLoaded;
+            if (nm.SceneManager != null)
+            {
+                nm.SceneManager.OnLoadEventCompleted -= OnAllClientsSceneLoaded;
+            }
+            nm.OnClientDisconnectCallback -= OnClientDisconnect;
         }
         _subscribed = false;
+    }
+
+    /// <summary>
+    /// 클라이언트 disconnect 시 호스트 콜백.
+    /// PlayerObject 자체는 NGO 가 자동 despawn/destroy (NetworkObject.DontDestroyWithOwner == false 기본).
+    /// destroy 가 발생하면 Unity 가 OnTriggerExit 를 발화 → MapObjectCounter 가 AlivePlayerCount 감소.
+    /// 여기서는 추적용 dictionary 정리만 한다.
+    /// </summary>
+    private void OnClientDisconnect(ulong clientId)
+    {
+        if (_spawnedByClient.TryGetValue(clientId, out NetworkObject obj))
+        {
+            string objName = obj != null ? obj.name : "(이미 destroy 됨)";
+            _spawnedByClient.Remove(clientId);
+            DebugTool.Log($"disconnect 정리: clientId={clientId}, obj={objName}", DebugType.Network, this);
+        }
+        else
+        {
+            DebugTool.Log($"disconnect 무시: clientId={clientId} 미추적 (스폰 전 또는 이미 정리됨)", DebugType.Network, this);
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -124,25 +152,51 @@ public class GameSpawnController : NetworkBehaviour
             DebugTool.Warning($"씬 로드 타임아웃 {clientsTimedOut.Count}명 - 그대로 진행", DebugType.Network, this);
         }
 
-        SpawnAllConnectedClients();
+        // Phase B: NodeManager 1회 조회 - 노드 초기화와 플레이어 스폰 양쪽에서 공유.
+        NodeManager nodeManager = FindFirstObjectByType<NodeManager>();
+        if (nodeManager == null)
+        {
+            DebugTool.Error("NodeManager 를 찾을 수 없음 - 노드 초기화/스폰 중단 (GameScene 에 배치되어야 함)", DebugType.Network, this);
+            return;
+        }
+
+        // 1단계: 노드 시스템 초기화 (호스트가 LobbyManager 의 난이도 읽음 → NodeManager 가 시드 결정 → ClientRpc 로 전파).
+        InitializeNodeSystem(nodeManager);
+
+        // 2단계: 플레이어 PlayerObject 스폰 (Start 맵 좌표 기준).
+        SpawnAllConnectedClients(nodeManager);
         _spawned = true;
+    }
+
+    /// <summary>
+    /// LobbyManager.GetCurrentDifficulty() 로 난이도 읽고 NodeManager.InitializeAsHost 호출.
+    /// LobbyManager 미존재(Test 빌드 / 단독 호스트 부트스트랩 등) 시 Level3=Normal 로 폴백.
+    /// </summary>
+    private void InitializeNodeSystem(NodeManager nodeManager)
+    {
+        NodeDifficulty difficulty;
+        if (LobbyManager.Instance != null)
+        {
+            difficulty = LobbyManager.Instance.GetCurrentDifficulty();
+        }
+        else
+        {
+            difficulty = NodeDifficulty.Level3;
+            DebugTool.Warning("LobbyManager.Instance 가 null - 노드 시스템 기본 난이도(Level3=Normal) 로 폴백", DebugType.Network, this);
+        }
+
+        DebugTool.Log($"노드 시스템 초기화 요청: difficulty={difficulty}", DebugType.Network, this);
+        nodeManager.InitializeAsHost(difficulty);
     }
 
     // ─────────────────────────────────────────────────────────────────
     // Spawning
     // ─────────────────────────────────────────────────────────────────
 
-    private void SpawnAllConnectedClients()
+    private void SpawnAllConnectedClients(NodeManager nodeManager)
     {
-        // NodeManager 조회. GameScene 의 NodeManager 가 Awake/Start 끝나 StartTypeMapController 가 활성 상태여야 함.
-        // OnLoadEventCompleted 시점엔 보통 준비됨 - 그래도 null 가드.
-        NodeManager nodeManager = FindFirstObjectByType<NodeManager>();
-        if (nodeManager == null)
-        {
-            DebugTool.Error("NodeManager 를 찾을 수 없음 - 스폰 중단 (GameScene 에 배치되어야 함)", DebugType.Network, this);
-            return;
-        }
-
+        // NodeManager 는 OnAllClientsSceneLoaded / ForceRespawnAll 에서 null 가드 후 전달됨.
+        // 호출 시점엔 StartTypeMapController.Data.PlayerSpawnPoint_Down 이 채워져 있어야 함.
         Transform[] spawnPoints = nodeManager.GetStartSpawnPoints();
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
@@ -304,7 +358,14 @@ public class GameSpawnController : NetworkBehaviour
         _spawnedByClient.Clear();
         _spawned = false;
 
-        SpawnAllConnectedClients();
+        // 노드 시스템은 재초기화 안 함 (이미 IsInitialized=true). 스폰만 다시.
+        NodeManager nodeManager = FindFirstObjectByType<NodeManager>();
+        if (nodeManager == null)
+        {
+            DebugTool.Error("NodeManager 를 찾을 수 없음 - 강제 리스폰 중단", DebugType.Network, this);
+            return;
+        }
+        SpawnAllConnectedClients(nodeManager);
         _spawned = true;
     }
 }
