@@ -64,7 +64,7 @@ public abstract class MapController : MonoBehaviour
     {
         InitController();
         ReadyForUse();
-        AutoDeactivate();
+        //AutoDeactivate();
     }
 
     protected virtual void Update()

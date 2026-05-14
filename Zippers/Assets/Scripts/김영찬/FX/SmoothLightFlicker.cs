@@ -2,35 +2,94 @@ using UnityEngine;
 
 public class SmoothLightFlicker : MonoBehaviour
 {
+    private enum LightState { On, Off, Flicker }
+    
     [Header("조명 연결")]
-    [SerializeField] private Light _spotLight;  // 스포트라이트 연결
-    [SerializeField] private Light _pointLight; // 포인트라이트 연결
+    [SerializeField] private Light _spotLight;
+    [SerializeField] private Light _pointLight;
 
     [Header("깜빡임 공통 설정")]
-    [SerializeField] private float _flickerSpeed = 10.0f; // 깜빡이는 속도
+    [SerializeField] private float _flickerSpeed;
+    
+    [Header("상태 유지 시간 설정 (초)")]
+    [SerializeField] private float _minStateDuration = 10.0f;
+    [SerializeField] private float _maxStateDuration = 60.0f;
 
-    [Header("SpotLight 밝기 설정")]
-    [SerializeField] private float _spotMinIntensity = 3.0f;
-    [SerializeField] private float _spotMaxIntensity = 28.0f;
+    [Header("SpotLight 밝기 설정")] 
+    [SerializeField] private float _spotNormalIntensity;
+    [SerializeField] private float _spotMinIntensity;
+    [SerializeField] private float _spotMaxIntensity;
 
     [Header("PointLight 밝기 설정")]
-    [SerializeField] private float _pointMinIntensity = 0;
-    [SerializeField] private float _pointMaxIntensity = 6.0f;
+    [SerializeField] private float _pointNormalIntensity;
+    [SerializeField] private float _pointMinIntensity;
+    [SerializeField] private float _pointMaxIntensity;
 
     private float _randomOffset;
+    private LightState _currentState;
+    private float _stateTimer;
+    private System.Random _sysRandom;
 
     private void Awake()
     {
-        // 맵에 여러 전등이 있을 때 서로 다르게 깜빡이도록 고유 오프셋 생성
-        _randomOffset = transform.position.x + transform.position.y; 
+        Init();
     }
 
     private void Update()
     {
-        // 1. 이번 프레임의 깜빡임 정도(0.0 ~ 1.0)를 딱 한 번만 계산합니다!
+        _stateTimer -= Time.deltaTime;
+        
+        if (_stateTimer <= 0)
+        {
+            ChangeToRandomState();
+        }
+        
+        switch (_currentState)
+        {
+            case LightState.On:
+                TurnOn();
+                break;
+            case LightState.Off:
+                TurnOff();
+                break;
+            case LightState.Flicker:
+                Flicker();
+                break;
+        }
+    }
+
+    private void Init()
+    {
+        _randomOffset = transform.position.x + transform.position.y;
+        _sysRandom = new System.Random(); 
+        ChangeToRandomState();
+    }
+    
+    private void ChangeToRandomState()
+    {
+        int randomStateIndex = _sysRandom.Next(0, 3);
+        _currentState = (LightState)randomStateIndex;
+        
+        float randomDuration = (float)_sysRandom.NextDouble();
+        _stateTimer = Mathf.Lerp(_minStateDuration, _maxStateDuration, randomDuration);
+    }
+
+    private void TurnOn()
+    {
+        if (_spotLight != null) _spotLight.intensity = _spotNormalIntensity;
+        if (_pointLight != null) _pointLight.intensity = _pointNormalIntensity;
+    }
+
+    private void TurnOff()
+    {
+        if (_spotLight != null) _spotLight.intensity = 0f;
+        if (_pointLight != null) _pointLight.intensity = 0f;
+    }
+    
+    private void Flicker()
+    {
         float noise = Mathf.PerlinNoise(Time.time * _flickerSpeed, _randomOffset);
         
-        // 2. 계산된 똑같은 노이즈 값을 두 조명에 동시에 적용합니다.
         if (_spotLight != null)
         {
             _spotLight.intensity = Mathf.Lerp(_spotMinIntensity, _spotMaxIntensity, noise);

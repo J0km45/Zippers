@@ -303,7 +303,11 @@ MonoBehaviour:
   _spotLight: {fileID: 5208530943499516639}
   _pointLight: {fileID: 3226516270652347778}
   _flickerSpeed: 25
+  _minStateDuration: 0.1
+  _maxStateDuration: 1.5
+  _spotNormalIntensity: 35
   _spotMinIntensity: 0
   _spotMaxIntensity: 50
+  _pointNormalIntensity: 5
   _pointMinIntensity: 0
   _pointMaxIntensity: 10

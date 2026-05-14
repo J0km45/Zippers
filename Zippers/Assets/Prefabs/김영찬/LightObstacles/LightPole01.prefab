@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3779837764441991360}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LightPole01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,6 +41,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3779837764441991360}
     m_Modifications:
+    - target: {fileID: 266142092829884984, guid: 5b9b619f709eef04dbd436a89fe3cd80, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 2499054539829375055, guid: 5b9b619f709eef04dbd436a89fe3cd80, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -81,9 +85,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4490148967981135480, guid: 5b9b619f709eef04dbd436a89fe3cd80, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 6008733798565592213, guid: 5b9b619f709eef04dbd436a89fe3cd80, type: 3}
       propertyPath: m_Name
       value: LightPoint_LightPole
+      objectReference: {fileID: 0}
+    - target: {fileID: 6008733798565592213, guid: 5b9b619f709eef04dbd436a89fe3cd80, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -106,6 +118,10 @@ PrefabInstance:
     - target: {fileID: 1778623379932398, guid: 4697b39c37e780e4aaf80be9374b774b, type: 3}
       propertyPath: m_Name
       value: SM_Prop_LightPole_Base_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1778623379932398, guid: 4697b39c37e780e4aaf80be9374b774b, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4021541561950962, guid: 4697b39c37e780e4aaf80be9374b774b, type: 3}
       propertyPath: m_LocalPosition.x
