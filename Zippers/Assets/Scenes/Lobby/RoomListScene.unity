@@ -3230,7 +3230,7 @@ GameObject:
   - component: {fileID: 4690601227268142310}
   - component: {fileID: 5849267452058499500}
   m_Layer: 5
-  m_Name: RoodeCodeEnter
+  m_Name: RoomCodeEnter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23413,7 +23413,7 @@ GameObject:
   - component: {fileID: 6903192352906374931}
   - component: {fileID: 3533491249395324883}
   m_Layer: 5
-  m_Name: Main Button
+  m_Name: CodeEnterButton
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: 334450e98a5cf444a9f758ab16f567aa, type: 3}
   m_NavMeshLayer: 0

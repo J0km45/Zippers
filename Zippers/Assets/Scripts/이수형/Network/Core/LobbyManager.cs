@@ -58,6 +58,8 @@ public class LobbyManager : MonoBehaviour
     /// <summary>현재 참가 중인 세션 (없으면 null).</summary>
     public ISession CurrentSession => _session;
 
+    public string CurrentInviteCode => _session != null ? _session.Code : string.Empty;
+
     /// <summary>현재 로컬 플레이어가 호스트인지.</summary>
     public bool IsHost => _session != null && _session.IsHost;
 
@@ -167,7 +169,13 @@ public class LobbyManager : MonoBehaviour
     }
 
     /// <summary>세션 생성 후 자동 진입. Relay + NGO Host 동시 시작.</summary>
-    public async Task<bool> CreateSessionAsync(string sessionName)
+    public Task<bool> CreateSessionAsync(string sessionName)
+    {
+        int maxPlayers = _settings != null ? _settings.MaxPlayers : 4;
+        return CreateSessionAsync(sessionName, maxPlayers);
+    }
+
+    public async Task<bool> CreateSessionAsync(string sessionName, int maxPlayers)
     {
         for (int attempt = 0; attempt <= JOIN_MAX_RETRY; attempt++)
         {
@@ -181,7 +189,7 @@ public class LobbyManager : MonoBehaviour
                 SessionOptions options = new SessionOptions
                 {
                     Name = sessionName,
-                    MaxPlayers = _settings.MaxPlayers,
+                    MaxPlayers = maxPlayers,
                     IsPrivate = false,
                     PlayerProperties = BuildLocalPlayerProperties()
                 }.WithRelayNetwork(region);
@@ -199,6 +207,7 @@ public class LobbyManager : MonoBehaviour
                 // LobbySettings.DefaultDifficulty (기본 Level3 = Normal) 를 SessionProperty 에 1회 기록.
                 // UI 호스트가 변경하기 전까지 유효. 슬롯 쓰기와 별개 키이므로 SDK 가 병합 처리.
                 _ = SetDifficultyAsHostAsync(_settings.DefaultDifficulty);
+                DebugTool.Log($"초대 코드 생성: {_session.Code}", DebugType.Network, this);
                 OnSessionUpdated?.Invoke(_session);
                 return true;
             }
@@ -226,6 +235,7 @@ public class LobbyManager : MonoBehaviour
     /// <summary>조인 코드 기반 참여.</summary>
     public async Task<bool> JoinSessionByCodeAsync(string sessionCode)
     {
+        sessionCode = sessionCode?.Trim().ToUpperInvariant();
         return await JoinInternalAsync(opts => MultiplayerService.Instance.JoinSessionByCodeAsync(sessionCode, opts), "코드 참여");
     }
 
@@ -274,6 +284,7 @@ public class LobbyManager : MonoBehaviour
                 BindSessionEvents(_session);
                 // 진입 직후 SessionProperty 초기 상태로 캐시 1회 채움 (이후엔 이벤트로 갱신).
                 RebuildSlotCacheFromSession();
+                DebugTool.Log($"{opLabel} 성공: session={_session.Name}, code={_session.Code}, players={_session.PlayerCount}/{_session.MaxPlayers}", DebugType.Network);
                 OnSessionUpdated?.Invoke(_session);
                 return true;
             }
@@ -285,6 +296,7 @@ public class LobbyManager : MonoBehaviour
             catch (Exception e)
             {
                 DebugTool.Error($"{opLabel} 실패: {e.Message}", DebugType.Network);
+                DebugTool.Error($"{opLabel} 실패 상세: {e}", DebugType.Network);
                 RaiseError($"{opLabel}에 실패했습니다.");
                 return false;
             }

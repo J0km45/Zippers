@@ -95,7 +95,7 @@ public class CreateRoomDialogController : MonoBehaviour
 
         if (!TryGetMaxPlayers(out int maxPlayers))
         {
-            // LobbyManager는 기본 생성 API를 유지하므로 여기서는 입력값 검증만 수행
+            // 입력한 최대 인원 수를 세션 생성 옵션으로 전달하기 전에 검증
             SetWarning($"인원 수는 {_minMaxPlayers}~{_maxMaxPlayers} 사이 숫자로 입력해 주세요.");
             return;
         }
@@ -111,7 +111,7 @@ public class CreateRoomDialogController : MonoBehaviour
         if (_confirmButton != null) _confirmButton.interactable = false;
         SetWarning("방을 생성하는 중입니다...");
 
-        bool success = await LobbyManager.Instance.CreateSessionAsync(roomName);
+        bool success = await LobbyManager.Instance.CreateSessionAsync(roomName, maxPlayers);
 
         _isProcessing = false;
         if (success)

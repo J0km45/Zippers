@@ -93,6 +93,15 @@ public class RoomListController : MonoBehaviour
         if (_joinByCodeButton == null)
         {
             _joinByCodeButton = FindButtonByTextOrName("초대 코드", "Invite Code", "Code");
+            if (_joinByCodeButton != null && _joinByCodeButton.gameObject.name == "CodeEnterButton")
+            {
+                _joinByCodeButton = null;
+            }
+        }
+
+        if (_joinByCodeDialog == null)
+        {
+            _joinByCodeDialog = JoinByCodeDialogController.EnsureInScene();
         }
 
         if (_refreshButton == null)
@@ -388,8 +397,13 @@ public class RoomListController : MonoBehaviour
 
         if (LobbyManager.Instance != null && LobbyManager.Instance.IsHost)
         {
+            LogStatus("호스트 로비 씬 전환");
             SceneLoader.LoadNetworked(SceneId.Lobby);
+            return;
         }
+
+        LogStatus("클라이언트 로비 씬 전환");
+        SceneLoader.LoadLocal(SceneId.Lobby);
     }
 
     private void SetBusy(bool busy)
