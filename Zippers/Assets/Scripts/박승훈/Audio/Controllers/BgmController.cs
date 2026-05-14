@@ -45,11 +45,6 @@ public class BgmController : AudioController
         ApplyVolume();
     }
 
-    private void OnEnable()
-    {
-        
-    }
-
     private void Start()
     {
         _audioSource.clip = _titleAudioClip;
