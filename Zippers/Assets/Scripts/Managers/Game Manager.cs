@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private NetworkManager _networkManager;
     [SerializeField] private LobbyManager _lobbyManager;
+    [SerializeField] private SceneChangeController _sceneChangeController;
     
     private void Awake()
     {
@@ -32,10 +33,14 @@ public class GameManager : MonoBehaviour
         GenerateManager(_networkManager);
         GenerateManager(_lobbyManager);
         GenerateManager<PlayerSessionBridge>();
+        GenerateManager(_sceneChangeController);
     }
 
     private void Start()
-        => DebugTool.Log("게임 시작", DebugType.Game, this);
+    {
+        DebugTool.Log("게임 시작", DebugType.Game, this);
+        SceneChangeController.Instance.SetActivateImage(false);
+    }
 
     private void GenerateManager<T>() where T : Component
     {

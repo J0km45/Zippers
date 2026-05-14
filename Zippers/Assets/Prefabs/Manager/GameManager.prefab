@@ -47,3 +47,4 @@ MonoBehaviour:
   _audioManager: {fileID: 9216081327656357128, guid: 62faac799ce58bf43b68a6965702728a, type: 3}
   _networkManager: {fileID: 6854382151281232354, guid: a8df2b642674935458578e103b8fa4d4, type: 3}
   _lobbyManager: {fileID: 7252737495766264045, guid: d98961af95caffa47b37c82c7d593a76, type: 3}
+  _sceneChangeController: {fileID: 6719140920494603110, guid: aaefc97a18fde644db6865ffda80fcc7, type: 3}
