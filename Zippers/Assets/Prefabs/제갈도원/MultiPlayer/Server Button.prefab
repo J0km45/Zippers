@@ -648,6 +648,7 @@ GameObject:
   - component: {fileID: 7346381977267013348}
   - component: {fileID: 7346381977267013349}
   - component: {fileID: 7346381977267013354}
+  - component: {fileID: 1300013000130001300}
   m_Layer: 5
   m_Name: Server Button
   m_TagString: Untagged
@@ -786,11 +787,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e278c8580a77fee42a4a3ec74cf9143d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIManagerAsset: {fileID: 11400000, guid: 939e9d3371fe40641b465d9b6357ec32, type: 2}
+  UIManagerAsset: {fileID: 0}
   imageObject: {fileID: 7346381977267013351}
   keepAlphaValue: 1
   useCustomColor: 0
   colorType: 0
+--- !u!114 &1300013000130001300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7346381977267013352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13ebb5f69fa0dff40aa76c9e3d58509f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomEntryUI
+  _nameText: {fileID: 3353493537954515436}
+  _playerCountText: {fileID: 4219945687264369168}
+  _statusText: {fileID: 4014085173092827776}
+  _joinButton: {fileID: 7346381977267013348}
+  _selectButtonText: {fileID: 0}
+  _backgroundImage: {fileID: 7346381977267013351}
 --- !u!1 &8035522429176273574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,6 +1072,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6613871043174612135}
     m_Modifications:
+    - target: {fileID: 8314491804526232095, guid: bc83308b2b910e54999e3ddd280ec778, type: 3}
+      propertyPath: UIManagerAsset
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8314491804526232096, guid: bc83308b2b910e54999e3ddd280ec778, type: 3}
       propertyPath: m_text
       value: "\uC120\uD0DD"
@@ -1080,6 +1103,10 @@ PrefabInstance:
     - target: {fileID: 8314491804526232099, guid: bc83308b2b910e54999e3ddd280ec778, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314491805132427155, guid: bc83308b2b910e54999e3ddd280ec778, type: 3}
+      propertyPath: UIManagerAsset
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8314491805132427157, guid: bc83308b2b910e54999e3ddd280ec778, type: 3}
       propertyPath: m_text
@@ -1196,6 +1223,10 @@ PrefabInstance:
     - target: {fileID: 8314491806171894869, guid: bc83308b2b910e54999e3ddd280ec778, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8314491806612277711, guid: bc83308b2b910e54999e3ddd280ec778, type: 3}
+      propertyPath: UIManagerAsset
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
