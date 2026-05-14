@@ -25,12 +25,11 @@ public class SceneChangeController : MonoBehaviour
         SingletonInit();
         if (_changeSceneImage == null)
             DebugTool.Log("이미지 컴포넌트를 등록해야 합니다.", DebugType.Missing);
-
-        _changeSceneImage.color = new Color(color.r, color.g, color.b, 1f);
     }
 
     private void OnEnable()
     {
+        _changeSceneImage.color = new Color(color.r, color.g, color.b, 1f);
         LobbyManager.Instance.OnGameStarting += OnEnterScene;
     }
 
