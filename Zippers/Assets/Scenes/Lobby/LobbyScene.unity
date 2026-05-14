@@ -9024,7 +9024,7 @@ MonoBehaviour:
   _classPrefabs:
   - {fileID: 6415996371149065030, guid: 4310708e5f6f717478b87de4054e222a, type: 3}
   - {fileID: 7287247240734866001, guid: a084ed9d90ff02441ab4846026e7b192, type: 3}
-  - {fileID: -5697153619093868588, guid: d4d3188571c622a4ca63caf4c00ffe5f, type: 3}
+  - {fileID: 1096124974819352265, guid: d4d3188571c622a4ca63caf4c00ffe5f, type: 3}
   - {fileID: 5202209765412013565, guid: 59b31d7e98cf8bb47b6a34aa7a65816e, type: 3}
   _spawnPoints:
   - {fileID: 4035876160696822029}
