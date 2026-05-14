@@ -170,6 +170,8 @@ public static class DebugTool
             DebugType.Data => "#00D1B2",
             DebugType.Audio => "#4F6BFF",
             DebugType.Missing => "#FFFF00",
+            DebugType.CombatNet => "#FF6B35",   // 전투 라인 네트워크 (B)
+            DebugType.EconomyNet => "#00B894",  // 자원·성장 라인 네트워크 (F)
             _ => "#D0D0D0"
         };
     }
@@ -191,5 +193,7 @@ public enum DebugType
     UI,
     Audio,
     Missing,
-    Default
+    Default,
+    CombatNet,    // 전투 라인 네트워크 로그 (B 소유 NetworkBehaviour 들)
+    EconomyNet,   // 자원·성장 라인 네트워크 로그 (F 소유 NetworkBehaviour 들)
 }
