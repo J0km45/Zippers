@@ -44,9 +44,20 @@ public class TeamUpgradeProvider : MonoBehaviour
                 continue;
             }
 
-            if (teamUpgradeData != null && teamUpgradeData.GetLevel(entry) >= entry.MaxLevel)
+            if (teamUpgradeData != null)
             {
-                continue;
+                int level = teamUpgradeData.GetLevel(entry);
+
+                // 영구 업그레이드만 MaxLevel 도달 시 목록에서 제외
+                // 일회성 업그레이드는 다음 상점에서 다시 구매 가능해야 하므로 제외하지 않는다.
+                if (entry.StatKey != TeamUpgradeStatKey.ClearHeal &&
+                    entry.StatKey != TeamUpgradeStatKey.BattleDamage &&
+                    entry.StatKey != TeamUpgradeStatKey.BattleMoveSpeed &&
+                    entry.StatKey != TeamUpgradeStatKey.BattleAttackSpeed &&
+                    level >= entry.MaxLevel)
+                {
+                    continue;
+                }
             }
 
             result.Add(entry);

@@ -165,6 +165,7 @@ public class PlayerAnimation : NetworkBehaviour
     {
         PlayDie();
     }
+
     public void PlayerHit()
     {
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening && !IsServer)
@@ -177,6 +178,7 @@ public class PlayerAnimation : NetworkBehaviour
         {
             _networkAnimator.SetTrigger(HitTrigger);
         }
+
         else
         {
             _animator.SetTrigger(Hit);
