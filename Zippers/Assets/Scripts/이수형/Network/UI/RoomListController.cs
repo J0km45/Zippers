@@ -12,7 +12,7 @@ using UnityEngine.UI;
 /// 샘플 LobbyListUI 와 차이:
 /// - 패널 토글(LobbyListPanel ↔ RoomPanel) 없음. 세션 진입 성공 = 씬 전환.
 /// - 호스트는 SceneLoader.LoadNetworked(SceneId.Lobby) 로 NGO sync, 클라는 NGO auto-sync 의존.
-/// - LobbyManager.OnError 구독해서 사용자 가시 에러를 _statusText 에 표시.
+/// - LobbyManager.OnError logs user-visible errors through DebugTool.
 /// - DebugTool 통합.
 /// </summary>
 public class RoomListController : MonoBehaviour
@@ -25,24 +25,46 @@ public class RoomListController : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] private Button _createRoomButton;
     [SerializeField] private Button _quickJoinButton;
+    [SerializeField] private Button _joinSelectedRoomButton;
     [SerializeField] private Button _joinByCodeButton;
     [SerializeField] private Button _refreshButton;
-
-    [Header("Status")]
-    [SerializeField] private TMP_Text _statusText;
 
     [Header("Dialogs")]
     [SerializeField] private CreateRoomDialogController _createRoomDialog;
     [SerializeField] private JoinByCodeDialogController _joinByCodeDialog;
 
     private readonly List<RoomEntryUI> _spawnedEntries = new List<RoomEntryUI>();
+
     private bool _isBusy;
     private bool _hasTransitioned;
+    private string _selectedSessionId;
 
     private void Awake()
     {
         AutoWireMissingReferences();
+        // 씬에 배치된 목록 템플릿은 런타임 목록과 겹치지 않도록 숨김
+        HideSceneEntryTemplates();
         BindButtonEvents();
+    }
+
+    private void Start()
+    {
+        if (LobbyManager.Instance == null)
+        {
+            LogStatus("로비 매니저를 찾을 수 없습니다.");
+            return;
+        }
+
+        BindLobbyManagerEvents();
+        UpdateJoinSelectedButtonState();
+
+        if (LobbyManager.Instance.CurrentSession != null)
+        {
+            TryTransitionToLobby();
+            return;
+        }
+
+        RefreshRoomList();
     }
 
     private void OnDestroy()
@@ -51,32 +73,39 @@ public class RoomListController : MonoBehaviour
         UnbindLobbyManagerEvents();
     }
 
-    private void Start()
+    private void AutoWireMissingReferences()
     {
-        if (LobbyManager.Instance == null)
+        if (_createRoomButton == null)
         {
-            DebugTool.Error("LobbyManager.Instance 가 null - Title 씬을 거치지 않았거나 Bootstrap 누락", DebugType.Network, this);
-            SetStatus("로비 매니저 미초기화");
-            return;
+            _createRoomButton = FindButtonByTextOrName("새로운 방 생성", "방 생성", "CreateRoom", "Create");
         }
 
-        BindLobbyManagerEvents();
-
-        // 방어용: 이미 세션에 들어와 있는 상태로 RoomList 에 들어왔다면 (예외 흐름) 즉시 LobbyScene 으로
-        if (LobbyManager.Instance.CurrentSession != null)
+        if (_quickJoinButton == null)
         {
-            DebugTool.Warning("RoomList 진입 시 이미 세션 보유 - LobbyScene 으로 즉시 전환", DebugType.Network, this);
-            TryTransitionToLobby();
-            return;
+            _quickJoinButton = FindButtonByTextOrName("빠른 참가", "Quick");
         }
 
-        RefreshRoomList();
+        if (_joinSelectedRoomButton == null)
+        {
+            _joinSelectedRoomButton = FindButtonByTextOrName("선택한 방 참가", "JoinSelected", "Selected Room");
+        }
+
+        if (_joinByCodeButton == null)
+        {
+            _joinByCodeButton = FindButtonByTextOrName("초대 코드", "Invite Code", "Code");
+        }
+
+        if (_refreshButton == null)
+        {
+            _refreshButton = FindButtonByTextOrName("새로 고침", "새로고침", "Refresh");
+        }
     }
 
     private void BindButtonEvents()
     {
         if (_createRoomButton != null) _createRoomButton.onClick.AddListener(OnCreateRoomClicked);
         if (_quickJoinButton != null) _quickJoinButton.onClick.AddListener(OnQuickJoinClicked);
+        if (_joinSelectedRoomButton != null) _joinSelectedRoomButton.onClick.AddListener(OnJoinSelectedRoomClicked);
         if (_joinByCodeButton != null) _joinByCodeButton.onClick.AddListener(OnJoinByCodeClicked);
         if (_refreshButton != null) _refreshButton.onClick.AddListener(RefreshRoomList);
     }
@@ -85,16 +114,307 @@ public class RoomListController : MonoBehaviour
     {
         if (_createRoomButton != null) _createRoomButton.onClick.RemoveListener(OnCreateRoomClicked);
         if (_quickJoinButton != null) _quickJoinButton.onClick.RemoveListener(OnQuickJoinClicked);
+        if (_joinSelectedRoomButton != null) _joinSelectedRoomButton.onClick.RemoveListener(OnJoinSelectedRoomClicked);
         if (_joinByCodeButton != null) _joinByCodeButton.onClick.RemoveListener(OnJoinByCodeClicked);
         if (_refreshButton != null) _refreshButton.onClick.RemoveListener(RefreshRoomList);
     }
 
-    private void AutoWireMissingReferences()
+    private void BindLobbyManagerEvents()
     {
-        if (_quickJoinButton == null)
+        LobbyManager.Instance.OnSessionUpdated += OnSessionUpdated;
+        LobbyManager.Instance.OnSessionLeft += OnSessionLeft;
+        LobbyManager.Instance.OnError += OnLobbyError;
+    }
+
+    private void UnbindLobbyManagerEvents()
+    {
+        if (LobbyManager.Instance == null) return;
+        LobbyManager.Instance.OnSessionUpdated -= OnSessionUpdated;
+        LobbyManager.Instance.OnSessionLeft -= OnSessionLeft;
+        LobbyManager.Instance.OnError -= OnLobbyError;
+    }
+
+    private void HideSceneEntryTemplates()
+    {
+        if (_entryContainer == null) return;
+
+        RoomEntryUI[] sceneEntries = _entryContainer.GetComponentsInChildren<RoomEntryUI>(true);
+        for (int i = 0; i < sceneEntries.Length; i++)
         {
-            _quickJoinButton = FindButtonByTextOrName("빠른", "Quick", "선택한 방 참가");
+            RoomEntryUI entry = sceneEntries[i];
+            if (entry == null) continue;
+
+            entry.gameObject.SetActive(false);
         }
+    }
+
+    public async void RefreshRoomList()
+    {
+        if (_isBusy) return;
+        if (LobbyManager.Instance == null) return;
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            DebugTool.Warning("로그인 상태가 아닙니다", DebugType.UI, this);
+            return;
+        }
+
+        SetBusy(true);
+        DebugTool.Log("방 목록 조회를 시작합니다", DebugType.UI, this);
+
+        try
+        {
+            IList<ISessionInfo> sessions = await LobbyManager.Instance.QuerySessionsAsync();
+            PopulateEntries(sessions);
+            RefreshEmptyLabel(sessions.Count);
+            DebugTool.Log($"방 목록 조회 완료 : {sessions.Count}", DebugType.UI, this);
+        }
+        finally
+        {
+            SetBusy(false);
+        }
+    }
+
+    private void PopulateEntries(IList<ISessionInfo> sessions)
+    {
+        // 새로고침 후에도 기존 선택 방이 목록에 남아 있으면 선택 유지
+        string previouslySelectedId = _selectedSessionId;
+
+        ClearEntries();
+
+        if (_entryPrefab == null || _entryContainer == null)
+        {
+            ClearSelection();
+            return;
+        }
+
+        RoomEntryUI selectedEntry = null;
+        for (int i = 0; i < sessions.Count; i++)
+        {
+            RoomEntryUI entry = Instantiate(_entryPrefab, _entryContainer);
+            // 비활성 템플릿이나 프리팹을 사용해도 생성된 항목은 표시
+            entry.gameObject.SetActive(true);
+            entry.Setup(sessions[i], OnEntrySelected);
+            _spawnedEntries.Add(entry);
+
+            if (!string.IsNullOrEmpty(previouslySelectedId) && sessions[i].Id == previouslySelectedId)
+            {
+                selectedEntry = entry;
+            }
+        }
+
+        if (selectedEntry != null)
+        {
+            ApplySelection(selectedEntry, false);
+        }
+        else
+        {
+            ClearSelection();
+        }
+    }
+
+    private void ClearEntries()
+    {
+        for (int i = 0; i < _spawnedEntries.Count; i++)
+        {
+            if (_spawnedEntries[i] != null) Destroy(_spawnedEntries[i].gameObject);
+        }
+
+        _spawnedEntries.Clear();
+    }
+
+    private void RefreshEmptyLabel(int count)
+    {
+        if (_emptyListText != null)
+        {
+            _emptyListText.gameObject.SetActive(count == 0);
+        }
+    }
+
+    private void OnCreateRoomClicked()
+    {
+        if (_isBusy) return;
+        if (_createRoomDialog != null)
+        {
+            _createRoomDialog.Open();
+        }
+    }
+
+    private void OnJoinByCodeClicked()
+    {
+        if (_isBusy) return;
+        if (_joinByCodeDialog != null)
+        {
+            _joinByCodeDialog.Open();
+        }
+    }
+
+    private async void OnQuickJoinClicked()
+    {
+        if (_isBusy) return;
+        if (LobbyManager.Instance == null) return;
+
+        SetBusy(true);
+        LogStatus("빠른 참가 중입니다...");
+
+        try
+        {
+            bool success = await LobbyManager.Instance.QuickJoinAsync();
+            if (!success)
+            {
+                LogStatus("참가 가능한 방을 찾지 못했습니다.");
+            }
+        }
+        finally
+        {
+            SetBusy(false);
+        }
+    }
+
+    private async void OnJoinSelectedRoomClicked()
+    {
+        if (_isBusy) return;
+        if (LobbyManager.Instance == null) return;
+
+        RoomEntryUI selectedEntry = GetSelectedEntry();
+        if (selectedEntry == null || selectedEntry.SessionInfo == null)
+        {
+            LogStatus("먼저 참가할 방을 선택해 주세요.");
+            UpdateJoinSelectedButtonState();
+            return;
+        }
+
+        ISessionInfo sessionInfo = selectedEntry.SessionInfo;
+
+        SetBusy(true);
+        LogStatus($"'{sessionInfo.Name}' 방에 참가하는 중입니다...");
+
+        try
+        {
+            bool success = await LobbyManager.Instance.JoinSessionByIdAsync(sessionInfo.Id);
+            if (!success)
+            {
+                LogStatus("선택한 방 참가에 실패했습니다.");
+            }
+        }
+        finally
+        {
+            SetBusy(false);
+        }
+    }
+
+    private void OnEntrySelected(RoomEntryUI entry)
+    {
+        ApplySelection(entry, true);
+    }
+
+    private void ApplySelection(RoomEntryUI selectedEntry, bool updateStatus)
+    {
+        // 실제 입장은 선택된 세션 ID를 기준으로 처리
+        _selectedSessionId = selectedEntry != null && selectedEntry.SessionInfo != null
+            ? selectedEntry.SessionInfo.Id
+            : null;
+
+        for (int i = 0; i < _spawnedEntries.Count; i++)
+        {
+            RoomEntryUI entry = _spawnedEntries[i];
+            if (entry != null)
+            {
+                entry.SetSelected(entry == selectedEntry);
+            }
+        }
+
+        UpdateJoinSelectedButtonState();
+
+        if (updateStatus && selectedEntry != null && selectedEntry.SessionInfo != null)
+        {
+            LogStatus($"선택된 방: {selectedEntry.SessionInfo.Name}");
+        }
+    }
+
+    private RoomEntryUI GetSelectedEntry()
+    {
+        if (string.IsNullOrEmpty(_selectedSessionId)) return null;
+
+        for (int i = 0; i < _spawnedEntries.Count; i++)
+        {
+            RoomEntryUI entry = _spawnedEntries[i];
+            if (entry != null && entry.SessionInfo != null && entry.SessionInfo.Id == _selectedSessionId)
+            {
+                return entry;
+            }
+        }
+
+        return null;
+    }
+
+    private void ClearSelection()
+    {
+        _selectedSessionId = null;
+        UpdateJoinSelectedButtonState();
+    }
+
+    private void UpdateJoinSelectedButtonState()
+    {
+        if (_joinSelectedRoomButton != null)
+        {
+            _joinSelectedRoomButton.interactable = !_isBusy && !string.IsNullOrEmpty(_selectedSessionId);
+        }
+    }
+
+    private void OnSessionUpdated(ISession session)
+    {
+        if (session != null && !_hasTransitioned)
+        {
+            TryTransitionToLobby();
+        }
+    }
+
+    private void OnSessionLeft()
+    {
+        _hasTransitioned = false;
+        _selectedSessionId = null;
+        UpdateJoinSelectedButtonState();
+        RefreshRoomList();
+    }
+
+    private void OnLobbyError(string message)
+    {
+        LogStatus(message);
+    }
+
+    private void TryTransitionToLobby()
+    {
+        _hasTransitioned = true;
+
+        if (LobbyManager.Instance != null && LobbyManager.Instance.IsHost)
+        {
+            SceneLoader.LoadNetworked(SceneId.Lobby);
+        }
+    }
+
+    private void SetBusy(bool busy)
+    {
+        _isBusy = busy;
+
+        if (_createRoomButton != null) _createRoomButton.interactable = !busy;
+        if (_quickJoinButton != null) _quickJoinButton.interactable = !busy;
+        if (_joinByCodeButton != null) _joinByCodeButton.interactable = !busy;
+        if (_refreshButton != null) _refreshButton.interactable = !busy;
+
+        UpdateJoinSelectedButtonState();
+
+        for (int i = 0; i < _spawnedEntries.Count; i++)
+        {
+            if (_spawnedEntries[i] != null)
+            {
+                _spawnedEntries[i].SetInteractable(!busy);
+            }
+        }
+    }
+
+    private void LogStatus(string message)
+    {
+        DebugTool.Log(message, DebugType.UI, this);
     }
 
     private Button FindButtonByTextOrName(params string[] keywords)
@@ -135,189 +455,5 @@ public class RoomListController : MonoBehaviour
         }
 
         return false;
-    }
-
-    private void BindLobbyManagerEvents()
-    {
-        LobbyManager.Instance.OnSessionUpdated += OnSessionUpdated;
-        LobbyManager.Instance.OnSessionLeft += OnSessionLeft;
-        LobbyManager.Instance.OnError += OnLobbyError;
-    }
-
-    private void UnbindLobbyManagerEvents()
-    {
-        if (LobbyManager.Instance == null) return;
-        LobbyManager.Instance.OnSessionUpdated -= OnSessionUpdated;
-        LobbyManager.Instance.OnSessionLeft -= OnSessionLeft;
-        LobbyManager.Instance.OnError -= OnLobbyError;
-    }
-
-    // ─────────────────────────────────────────────────────────────────
-    // List refresh
-    // ─────────────────────────────────────────────────────────────────
-
-    public async void RefreshRoomList()
-    {
-        if (_isBusy) return;
-        if (!AuthenticationService.Instance.IsSignedIn)
-        {
-            SetStatus("로그인 상태가 아닙니다.");
-            return;
-        }
-        if (LobbyManager.Instance == null) return;
-
-        SetBusy(true);
-        SetStatus("방 목록 조회 중...");
-        try
-        {
-            IList<ISessionInfo> sessions = await LobbyManager.Instance.QuerySessionsAsync();
-            PopulateEntries(sessions);
-            RefreshEmptyLabel(sessions.Count);
-            SetStatus($"방 {sessions.Count}개 조회됨");
-        }
-        finally
-        {
-            SetBusy(false);
-        }
-    }
-
-    private void PopulateEntries(IList<ISessionInfo> sessions)
-    {
-        ClearEntries();
-        if (_entryPrefab == null || _entryContainer == null) return;
-        for (int i = 0; i < sessions.Count; i++)
-        {
-            RoomEntryUI entry = Instantiate(_entryPrefab, _entryContainer);
-            entry.Setup(sessions[i], OnEntryJoinClicked);
-            _spawnedEntries.Add(entry);
-        }
-    }
-
-    private void ClearEntries()
-    {
-        for (int i = 0; i < _spawnedEntries.Count; i++)
-        {
-            if (_spawnedEntries[i] != null) Destroy(_spawnedEntries[i].gameObject);
-        }
-        _spawnedEntries.Clear();
-    }
-
-    private void RefreshEmptyLabel(int count)
-    {
-        if (_emptyListText != null) _emptyListText.gameObject.SetActive(count == 0);
-    }
-
-    // ─────────────────────────────────────────────────────────────────
-    // Button handlers
-    // ─────────────────────────────────────────────────────────────────
-
-    private void OnCreateRoomClicked()
-    {
-        if (_isBusy) return;
-        if (_createRoomDialog != null) _createRoomDialog.Open();
-    }
-
-    private void OnJoinByCodeClicked()
-    {
-        if (_isBusy) return;
-        if (_joinByCodeDialog != null) _joinByCodeDialog.Open();
-    }
-
-    private async void OnQuickJoinClicked()
-    {
-        if (_isBusy) return;
-        if (LobbyManager.Instance == null) return;
-
-        SetBusy(true);
-        SetStatus("빠른 참여 중...");
-        try
-        {
-            bool success = await LobbyManager.Instance.QuickJoinAsync();
-            if (!success) SetStatus("참여할 방을 찾지 못했습니다.");
-        }
-        finally
-        {
-            SetBusy(false);
-        }
-    }
-
-    private async void OnEntryJoinClicked(ISessionInfo sessionInfo)
-    {
-        if (_isBusy) return;
-        if (LobbyManager.Instance == null) return;
-
-        SetBusy(true);
-        SetStatus($"'{sessionInfo.Name}' 참여 중...");
-        try
-        {
-            bool success = await LobbyManager.Instance.JoinSessionByIdAsync(sessionInfo.Id);
-            if (!success) SetStatus("방 참여 실패");
-        }
-        finally
-        {
-            SetBusy(false);
-        }
-    }
-
-    // ─────────────────────────────────────────────────────────────────
-    // Lobby manager events
-    // ─────────────────────────────────────────────────────────────────
-
-    private void OnSessionUpdated(ISession session)
-    {
-        // 세션 진입 성공 시점 — LobbyScene 으로 전환 (호스트만 NGO LoadScene, 클라는 NGO auto-sync)
-        if (session != null && !_hasTransitioned)
-        {
-            TryTransitionToLobby();
-        }
-    }
-
-    private void OnSessionLeft()
-    {
-        // 게임/Lobby 에서 Leave 후 RoomList 로 돌아온 경우 — 목록 새로고침
-        _hasTransitioned = false;
-        RefreshRoomList();
-    }
-
-    private void OnLobbyError(string message)
-    {
-        SetStatus(message);
-    }
-
-    private void TryTransitionToLobby()
-    {
-        _hasTransitioned = true;
-        if (LobbyManager.Instance != null && LobbyManager.Instance.IsHost)
-        {
-            DebugTool.Log("호스트 - LobbyScene 으로 NGO LoadScene", DebugType.Network, this);
-            SceneLoader.LoadNetworked(SceneId.Lobby);
-        }
-        else
-        {
-            DebugTool.Log("클라이언트 - NGO auto-sync 대기 (LobbyScene)", DebugType.Network, this);
-            // NGO 가 호스트 씬에 맞춰 자동 sync. 별도 LoadLocal 호출 안 함.
-        }
-    }
-
-    // ─────────────────────────────────────────────────────────────────
-    // Busy state / status
-    // ─────────────────────────────────────────────────────────────────
-
-    private void SetBusy(bool busy)
-    {
-        _isBusy = busy;
-        if (_createRoomButton != null) _createRoomButton.interactable = !busy;
-        if (_quickJoinButton != null) _quickJoinButton.interactable = !busy;
-        if (_joinByCodeButton != null) _joinByCodeButton.interactable = !busy;
-        if (_refreshButton != null) _refreshButton.interactable = !busy;
-        for (int i = 0; i < _spawnedEntries.Count; i++)
-        {
-            if (_spawnedEntries[i] != null) _spawnedEntries[i].SetInteractable(!busy);
-        }
-    }
-
-    private void SetStatus(string message)
-    {
-        if (_statusText != null) _statusText.text = message;
     }
 }
