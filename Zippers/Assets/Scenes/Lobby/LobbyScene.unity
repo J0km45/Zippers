@@ -8957,10 +8957,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.LobbyHostAuthority
   ShowTopMostFoldoutHeaderGroup: 1
   _classPrefabs:
-  - {fileID: 2325650914068353150, guid: 1f24f833c4723b54eacbbfa0f24fa107, type: 3}
-  - {fileID: 7287247240734866001, guid: 0cd21804ce5573c4da9350e22d8ba6ef, type: 3}
-  - {fileID: -5697153619093868588, guid: 8d9b1c0130f01b040a7f1cef3596cf3c, type: 3}
-  - {fileID: 5202209765412013565, guid: ac230831fd5021c42b64aa75cf6ea4b9, type: 3}
+  - {fileID: 6415996371149065030, guid: 4310708e5f6f717478b87de4054e222a, type: 3}
+  - {fileID: 7287247240734866001, guid: a084ed9d90ff02441ab4846026e7b192, type: 3}
+  - {fileID: -5697153619093868588, guid: d4d3188571c622a4ca63caf4c00ffe5f, type: 3}
+  - {fileID: 5202209765412013565, guid: 59b31d7e98cf8bb47b6a34aa7a65816e, type: 3}
   _spawnPoints:
   - {fileID: 4035876160696822029}
   - {fileID: 5070578409318192434}
