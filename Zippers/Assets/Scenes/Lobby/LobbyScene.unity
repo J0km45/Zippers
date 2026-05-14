@@ -10620,7 +10620,11 @@ PrefabInstance:
     - target: {fileID: 3787669594380034926, guid: 721325655c52c4040b216fca59c7bcc3, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 60e089a2618003647aca28f4b5376b67, type: 3}
+      objectReference: {fileID: 21300000, guid: 84076f603172161458cccbbce1b7d01d, type: 3}
+    - target: {fileID: 4188861908833021237, guid: 721325655c52c4040b216fca59c7bcc3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 775177507be96a34890a723effee30f2, type: 3}
     - target: {fileID: 4822299107109655698, guid: 721325655c52c4040b216fca59c7bcc3, type: 3}
       propertyPath: m_Name
       value: ClassItem_Rifle
@@ -10681,6 +10685,14 @@ PrefabInstance:
       propertyPath: UIManagerAsset
       value: 
       objectReference: {fileID: 11400000, guid: 4aef5e9643adc744ea0fce7995d3add9, type: 2}
+    - target: {fileID: 7692827777860620515, guid: 721325655c52c4040b216fca59c7bcc3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4483534eee36e284690b573065ab95ca, type: 3}
+    - target: {fileID: 7880205879239728351, guid: 721325655c52c4040b216fca59c7bcc3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2ff686d02238a0d4db4f5ac8255ea17d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11577,7 +11589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7767378637859851755, guid: ac801a65ce242b345a748ec942b5f449, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7767378637859851755, guid: ac801a65ce242b345a748ec942b5f449, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

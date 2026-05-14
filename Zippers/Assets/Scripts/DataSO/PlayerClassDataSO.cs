@@ -9,6 +9,7 @@ public class PlayerClassDataSO : ScriptableObject, ISheetParsable
     [Tooltip("클래스 아이디")] public int ClassId;
     [Tooltip("클래스 타입")] public WeaponType WeaponType;
     [Tooltip("클래스 이름")] public string ClassName;
+    [Tooltip("클래스 아이콘")] public Sprite ClassIcon;
 
     public int Id => ClassId;
 
@@ -58,8 +59,5 @@ public class PlayerClassDataSO : ScriptableObject, ISheetParsable
         SprintSpeed = float.Parse(datas[17]);
         SightRange = float.Parse(datas[18]);
         CollectRange = float.Parse(datas[19]);
-
-
-
     }
 }
