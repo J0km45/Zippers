@@ -23,6 +23,8 @@ public class RoomEntryUI : MonoBehaviour
 
     private void Awake()
     {
+        EnsureTextReferences();
+
         if (_joinButton == null || _joinButton.gameObject == gameObject)
         {
             // 루트 버튼이 아닌 실제 선택 버튼을 우선 사용
@@ -68,9 +70,10 @@ public class RoomEntryUI : MonoBehaviour
     {
         _sessionInfo = sessionInfo;
         _onSelectClicked = onSelectClicked;
+        EnsureTextReferences();
 
         // 세션 정보로 방 제목과 인원 수를 갱신
-        if (_nameText != null) _nameText.text = sessionInfo.Name;
+        if (_nameText != null) _nameText.text = string.IsNullOrWhiteSpace(sessionInfo.Name) ? "Room" : sessionInfo.Name;
         if (_playerCountText != null)
         {
             int currentPlayers = sessionInfo.MaxPlayers - sessionInfo.AvailableSlots;
@@ -113,6 +116,24 @@ public class RoomEntryUI : MonoBehaviour
     {
         if (_sessionInfo == null) return;
         _onSelectClicked?.Invoke(this);
+    }
+
+    private void EnsureTextReferences()
+    {
+        if (_nameText == null)
+        {
+            _nameText = FindChildTextByName("RoomNameText", "NameText", "RoomName");
+        }
+
+        if (_playerCountText == null)
+        {
+            _playerCountText = FindChildTextByName("PlayerCountText", "CountText", "PlayerCount");
+        }
+
+        if (_statusText == null)
+        {
+            _statusText = FindChildTextByName("StatusText", "StateText");
+        }
     }
 
     private TMP_Text FindChildTextByName(params string[] names)

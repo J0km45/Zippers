@@ -93,7 +93,7 @@ public class RoomCreatePanelController : MonoBehaviour
 
         if (!TryGetMaxPlayers(out int maxPlayers))
         {
-            // LobbyManager는 기본 생성 API를 유지하므로 여기서는 입력값 검증만 수행
+            // 입력한 최대 인원 수를 세션 생성 옵션으로 전달하기 전에 검증
             SetStatus($"인원 수는 {_minMaxPlayers}~{_maxMaxPlayers} 사이 숫자로 입력해 주세요.");
             return;
         }
@@ -108,7 +108,7 @@ public class RoomCreatePanelController : MonoBehaviour
         SetBusy(true);
         SetStatus($"'{roomName}' 방을 생성하는 중입니다...");
 
-        bool isRoomSet = await LobbyManager.Instance.CreateSessionAsync(roomName);
+        bool isRoomSet = await LobbyManager.Instance.CreateSessionAsync(roomName, maxPlayers);
 
         SetBusy(false);
 
@@ -148,7 +148,7 @@ public class RoomCreatePanelController : MonoBehaviour
             return Task.FromResult(false);
         }
 
-        return LobbyManager.Instance.CreateSessionAsync(trimmed);
+        return LobbyManager.Instance.CreateSessionAsync(trimmed, maxPlayers);
     }
 
     private void SetBusy(bool busy)

@@ -16,6 +16,31 @@ public class JoinByCodeDialogController : MonoBehaviour
 
     private bool _isProcessing;
 
+    public static JoinByCodeDialogController EnsureInScene()
+    {
+        JoinByCodeDialogController existing = FindObjectOfType<JoinByCodeDialogController>(true);
+        if (existing != null)
+        {
+            existing.AutoWireMissingReferences();
+            return existing;
+        }
+
+        Button confirmButton = FindButtonByName("CodeEnterButton", "EnterCodeButton", "JoinCodeButton");
+        if (confirmButton == null) return null;
+
+        GameObject host = FindDialogRoot(confirmButton.transform);
+        JoinByCodeDialogController controller = host.AddComponent<JoinByCodeDialogController>();
+        controller._panel = host;
+        controller._confirmButton = confirmButton;
+        controller.AutoWireMissingReferences();
+        return controller;
+    }
+
+    private void Awake()
+    {
+        AutoWireMissingReferences();
+    }
+
     private void OnEnable()
     {
         if (_confirmButton != null) _confirmButton.onClick.AddListener(OnConfirmClicked);
@@ -51,7 +76,7 @@ public class JoinByCodeDialogController : MonoBehaviour
     {
         if (_isProcessing) return;
 
-        string code = _codeInput != null ? _codeInput.text?.Trim() : null;
+        string code = _codeInput != null ? _codeInput.text?.Trim().ToUpperInvariant() : null;
         if (string.IsNullOrEmpty(code))
         {
             SetWarning("조인 코드를 입력하세요");
@@ -68,7 +93,11 @@ public class JoinByCodeDialogController : MonoBehaviour
         if (_confirmButton != null) _confirmButton.interactable = false;
         SetWarning("참여 중...");
 
+        DebugTool.Log($"초대 코드 입장 시도: {code}", DebugType.Network);
         bool success = await LobbyManager.Instance.JoinSessionByCodeAsync(code);
+        DebugTool.Log($"초대 코드 입장 결과: {(success ? "성공" : "실패")} / code={code}", DebugType.Network);
+
+        if (this == null) return;
 
         _isProcessing = false;
         if (success)
@@ -85,5 +114,115 @@ public class JoinByCodeDialogController : MonoBehaviour
     private void SetWarning(string message)
     {
         if (_warningText != null) _warningText.text = message;
+    }
+
+    private void AutoWireMissingReferences()
+    {
+        if (_confirmButton == null)
+        {
+            _confirmButton = FindButtonByName("CodeEnterButton", "EnterCodeButton", "JoinCodeButton");
+        }
+
+        Transform searchRoot = _confirmButton != null ? FindDialogRoot(_confirmButton.transform).transform : transform;
+
+        if (_panel == null && searchRoot != null)
+        {
+            _panel = searchRoot.gameObject;
+        }
+
+        if (_codeInput == null && searchRoot != null)
+        {
+            TMP_InputField[] inputs = searchRoot.GetComponentsInChildren<TMP_InputField>(true);
+            if (inputs.Length > 0)
+            {
+                _codeInput = inputs[0];
+            }
+        }
+
+        if (_warningText == null && searchRoot != null)
+        {
+            _warningText = FindTextByName(searchRoot, "WarningText", "StatusText", "MessageText");
+        }
+
+        if (_cancelButton == null && searchRoot != null)
+        {
+            _cancelButton = FindButtonUnder(searchRoot, "CancelButton", "CloseButton", "BackButton");
+        }
+    }
+
+    private static GameObject FindDialogRoot(Transform child)
+    {
+        Transform current = child;
+        while (current != null)
+        {
+            if (current.name.Contains("Code") && (current.name.Contains("Panel") || current.name.Contains("Dialog")))
+            {
+                return current.gameObject;
+            }
+
+            current = current.parent;
+        }
+
+        return child.parent != null ? child.parent.gameObject : child.gameObject;
+    }
+
+    private static Button FindButtonByName(params string[] names)
+    {
+        Button[] buttons = FindObjectsOfType<Button>(true);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            Button button = buttons[i];
+            if (button == null || !button.gameObject.scene.IsValid()) continue;
+
+            for (int j = 0; j < names.Length; j++)
+            {
+                if (button.gameObject.name == names[j])
+                {
+                    return button;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static Button FindButtonUnder(Transform root, params string[] names)
+    {
+        Button[] buttons = root.GetComponentsInChildren<Button>(true);
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            Button button = buttons[i];
+            if (button == null) continue;
+
+            for (int j = 0; j < names.Length; j++)
+            {
+                if (button.gameObject.name == names[j])
+                {
+                    return button;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static TMP_Text FindTextByName(Transform root, params string[] names)
+    {
+        TMP_Text[] texts = root.GetComponentsInChildren<TMP_Text>(true);
+        for (int i = 0; i < texts.Length; i++)
+        {
+            TMP_Text text = texts[i];
+            if (text == null) continue;
+
+            for (int j = 0; j < names.Length; j++)
+            {
+                if (text.gameObject.name == names[j])
+                {
+                    return text;
+                }
+            }
+        }
+
+        return null;
     }
 }
