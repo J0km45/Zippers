@@ -20,17 +20,24 @@ public class BgmController : AudioController
     [Header("인트로 음악 페이드 아웃 타이밍")] [Tooltip("인트로 출력 길이 끝에서 n초")] [Range(0.1f, 12.0f)]
     [SerializeField] private float _fadeOutTime = 1f;
 
-    private float _baseTime = 12f;
-    private float _startVolume = 0f;
+    [Space(5)] [Header("개발 버전 BGM On/Off 설정")] 
+    [SerializeField] private bool bgmOff = true;
 
-    private bool _hasFocus = true;
+    private float _baseTime = 12f;
+    [SerializeField] private float _startVolume;
+    
     private bool _pausedByFocus;
     
+    public event Action<bool> OnBGMChange;
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-        
+
         BgmSourceInit(_audioSource);
+
+        _startVolume = _audioSource.volume;
+        CheckVolumeOff(bgmOff);
     }
 
     private void Start()
@@ -38,10 +45,13 @@ public class BgmController : AudioController
         _audioSource.clip = _titleAudioClip;
         
         DebugTool.Log("인트로 BGM 시작", DebugType.Audio);
-        _startVolume = _audioSource.volume;
-        _audioSource.Play();
+        if(_startVolume != 0f)
+            _audioSource.Play();
         StartCoroutine(TitleBGMChange());
     }
+    
+    private void Update()
+        => CheckVolumeOff(bgmOff);
 
     public void PlayBGM(BGMType type)
     {
@@ -57,8 +67,6 @@ public class BgmController : AudioController
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        _hasFocus = hasFocus;
-
         if (_audioSource == null)
             return;
 
@@ -116,8 +124,7 @@ public class BgmController : AudioController
 
         while (time < duration)
         {
-            if(_hasFocus)
-                time += Time.unscaledDeltaTime;
+            time += Time.unscaledDeltaTime;
             
             yield return null;
         }
@@ -129,15 +136,24 @@ public class BgmController : AudioController
 
         while (time < duration)
         {
-            if (_hasFocus)
-            {
-                time += Time.unscaledDeltaTime;
+            time += Time.unscaledDeltaTime;
 
-                float t = Mathf.Clamp01(time / duration);
-                _audioSource.volume = Mathf.Lerp(startVolume, targetVolume, t);
-            }
+            float t = Mathf.Clamp01(time / duration);
+            _audioSource.volume = Mathf.Lerp(startVolume, targetVolume, t);
+            
             yield return null;
         }
         _audioSource.volume = targetVolume;
+    }
+
+    private void CheckVolumeOff(bool value)
+    {
+        if (!value)
+        {
+            _audioSource.volume = 0f;
+            return;
+        }
+
+        _audioSource.volume = _startVolume;
     }
 }
