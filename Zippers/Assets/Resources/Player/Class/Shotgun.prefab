@@ -234,6 +234,7 @@ GameObject:
   - component: {fileID: -1198867438575760023}
   - component: {fileID: -1582711810641623473}
   - component: {fileID: 3924908651905105082}
+  - component: {fileID: -7077171523443769645}
   m_Layer: 0
   m_Name: Shotgun
   m_TagString: Untagged
@@ -257,6 +258,7 @@ Transform:
   - {fileID: 4069040712685016}
   - {fileID: 4806543125359942}
   - {fileID: 6705458108845963278}
+  - {fileID: 6379032076213317592}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &95331652174006372
@@ -296,6 +298,7 @@ MonoBehaviour:
   _playerClassData: {fileID: 11400000, guid: 8e09d728738ce7c45be426f6d8cf3834, type: 2}
   _playerIngameData: {fileID: 0}
   _teamUpgradeCalculator: {fileID: 0}
+  _teamBattleUpgradeEffect: {fileID: 0}
 --- !u!114 &3307013045222578800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,7 +375,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c70dc22a3290e74489691b59f4e56c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimation
+  ShowTopMostFoldoutHeaderGroup: 1
   _animator: {fileID: 95331652174006372}
+  _networkAnimator: {fileID: 0}
 --- !u!114 &-8277981543732272047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,6 +418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1210971edf591254e909e6597ac79f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!114 &9140983486648026561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -872,6 +878,58 @@ MonoBehaviour:
   _playerLook: {fileID: 0}
   _playerAimMarker: {fileID: 0}
   _playerUpgradeKeyInputTest: {fileID: 0}
+--- !u!114 &-7077171523443769645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082915869594634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkAnimatorExpanded: 0
+  AuthorityMode: 0
+  m_Animator: {fileID: 95331652174006372}
+  TransitionStateInfoList: []
+  AnimatorParameterEntries:
+    ParameterEntries:
+    - name: MoveX
+      NameHash: 675470966
+      Synchronize: 1
+      ParameterType: 1
+    - name: MoveY
+      NameHash: 1598418656
+      Synchronize: 1
+      ParameterType: 1
+    - name: Speed
+      NameHash: -823668238
+      Synchronize: 1
+      ParameterType: 1
+    - name: Attack
+      NameHash: 1080829965
+      Synchronize: 1
+      ParameterType: 9
+    - name: Reload
+      NameHash: -1525363869
+      Synchronize: 1
+      ParameterType: 9
+    - name: Die
+      NameHash: 20298039
+      Synchronize: 1
+      ParameterType: 9
+    - name: IsSprint
+      NameHash: -677495493
+      Synchronize: 1
+      ParameterType: 4
+    - name: Hit
+      NameHash: 1654612129
+      Synchronize: 1
+      ParameterType: 9
+  AnimatorParametersExpanded: 0
 --- !u!1 &1103278349565816
 GameObject:
   m_ObjectHideFlags: 0
@@ -2708,4 +2766,66 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6058701904182128168, guid: d82eb6cf51823ea478d62c2fb4823764, type: 3}
   m_PrefabInstance: {fileID: 4148695879403181219}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7600596556566711661
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4417951253574782}
+    m_Modifications:
+    - target: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5999586628212399301, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+      propertyPath: m_Name
+      value: PlayerFlash
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+--- !u!4 &6379032076213317592 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3601861194873512629, guid: 68d1d3083d1107840b2c00f0b0145355, type: 3}
+  m_PrefabInstance: {fileID: 7600596556566711661}
   m_PrefabAsset: {fileID: 0}
