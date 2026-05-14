@@ -24,7 +24,9 @@ namespace Zippers.Network.Contracts
         float MaxHealth { get; }
         bool IsDead { get; }
         float CurrentStamina { get; }
+        float MaxStamina { get; } // 추가
         float CurrentAmmo { get; }
+        float MaxAmmo { get; } // 추가
         bool IsReloading { get; }
 
         event Action<float, float> OnHealthChanged;   // (current, max)
