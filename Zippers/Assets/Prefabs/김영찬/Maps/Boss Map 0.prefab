@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4686758864085443572}
   - component: {fileID: 925666714096194603}
   - component: {fileID: 8137467193740531021}
+  - component: {fileID: 4874009117809920847}
   - component: {fileID: 4825050594778193418}
   - component: {fileID: -4394040394909225940}
   m_Layer: 12
@@ -96,6 +97,31 @@ MonoBehaviour:
   - {fileID: 3737805636890160692}
   - {fileID: 713422676430385999}
   - {fileID: 8655111652310785368}
+--- !u!114 &4874009117809920847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4728121328699623930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3878950731
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 1
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &4825050594778193418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,6 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02782c63188236349abab83d1938ab6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TeleportSupporter
+  ShowTopMostFoldoutHeaderGroup: 1
   _controller: {fileID: 925666714096194603}
   _ballotBox_UP: {fileID: 8386420105384020741}
   _ballotBox_Down: {fileID: 1966132828208478100}
@@ -152,6 +179,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TeleportBeaconBundle
       objectReference: {fileID: 0}
+    - target: {fileID: 3673415057198736151, guid: c2439cf8c16d12b4f8e8773f25200c44, type: 3}
+      propertyPath: _direction
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4010873454602250293, guid: c2439cf8c16d12b4f8e8773f25200c44, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -191,6 +222,14 @@ PrefabInstance:
     - target: {fileID: 4010873454602250293, guid: c2439cf8c16d12b4f8e8773f25200c44, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5067306673295840373, guid: c2439cf8c16d12b4f8e8773f25200c44, type: 3}
+      propertyPath: _direction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8896895586070790987, guid: c2439cf8c16d12b4f8e8773f25200c44, type: 3}
+      propertyPath: _direction
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

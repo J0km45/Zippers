@@ -196,6 +196,9 @@ public class LobbyManager : MonoBehaviour
                 RebuildSlotCacheFromSession();
                 // 호스트 자신을 슬롯 0 으로 초기 등재. PlayerJoined 가 호스트 본인에 대해 발화하지 않을 수 있어 명시적으로 1회 기록.
                 _slotUpdateInFlight = ChainSlotUpdate(_slotUpdateInFlight, InitializeSlotsAsHostAsync);
+                // LobbySettings.DefaultDifficulty (기본 Level3 = Normal) 를 SessionProperty 에 1회 기록.
+                // UI 호스트가 변경하기 전까지 유효. 슬롯 쓰기와 별개 키이므로 SDK 가 병합 처리.
+                _ = SetDifficultyAsHostAsync(_settings.DefaultDifficulty);
                 OnSessionUpdated?.Invoke(_session);
                 return true;
             }
@@ -915,6 +918,138 @@ public class LobbyManager : MonoBehaviour
         try { await previous; }
         catch (Exception e) { DebugTool.Warning($"이전 슬롯 작업 실패 무시: {e.Message}", DebugType.Network); }
         await next();
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // 진단 헬퍼 (Diagnostics)
+    // ─────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// 현재 슬롯 상태 스냅샷을 사람이 읽을 수 있는 문자열로 반환.
+    /// _slotCache (lookup 캐시) 와 SessionProperty["Slots"] (권위 원본 JSON) 을 같이 덤프.
+    /// GameSpawnController 등 SlotIndex=-1 같은 비정상을 감지한 호출자가 한 번에 컨텍스트를 찍을 때 사용.
+    /// 부작용 없음 (read-only).
+    /// </summary>
+    public string DumpSlotState()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"[LobbyManager] DumpSlotState (session={(_session != null ? "alive" : "null")}, IsHost={_session?.IsHost ?? false})");
+
+        // 1) _slotCache (lookup 사본)
+        sb.AppendLine($"  _slotCache count={_slotCache.Count}");
+        foreach (KeyValuePair<int, string> kv in _slotCache)
+        {
+            sb.AppendLine($"    slot[{kv.Key}] = playerId={kv.Value}");
+        }
+
+        // 2) SessionProperty["Slots"] 원본 JSON (권위)
+        string raw = null;
+        if (_session != null && _session.Properties != null
+            && _session.Properties.TryGetValue(LobbyConstants.KEY_SESSION_SLOTS, out SessionProperty prop)
+            && prop != null)
+        {
+            raw = prop.Value;
+        }
+        sb.AppendLine($"  SessionProperty[\"{LobbyConstants.KEY_SESSION_SLOTS}\"] raw = {(string.IsNullOrEmpty(raw) ? "(empty/null)" : raw)}");
+
+        // 3) session.Players 의 (Id, Class, Ready) 요약 — Class=None / Ready=false 인 채로 게임 진입했는지 확인용
+        if (_session != null && _session.Players != null)
+        {
+            sb.AppendLine($"  session.Players count={_session.Players.Count}");
+            for (int i = 0; i < _session.Players.Count; i++)
+            {
+                IReadOnlyPlayer p = _session.Players[i];
+                string classStr = GetPlayerProperty(p, LobbyConstants.KEY_PLAYER_CLASS) ?? "(null)";
+                string readyStr = GetPlayerProperty(p, LobbyConstants.KEY_PLAYER_READY) ?? "(null)";
+                int slot = FindSlotByPlayerId(p.Id);
+                sb.AppendLine($"    [{i}] playerId={p.Id} class={classStr} ready={readyStr} resolvedSlot={slot}");
+            }
+        }
+
+        return sb.ToString();
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Session property: Difficulty
+    // ─────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// 호스트가 SessionProperty["Difficulty"] 에 정수 string 으로 난이도 기록.
+    /// CreateSessionAsync 직후 LobbySettings.DefaultDifficulty 로 1회 초기화되며,
+    /// UI 의 호스트 측 드롭다운에서 변경 시 호출.
+    /// 게임 시작(IsLocked) 이후엔 거부.
+    /// 별도 OnSessionUpdated 발화는 안 함 — SDK 의 SessionPropertiesChanged 이벤트가
+    /// OnSessionPropertiesChanged 핸들러를 통해 RaiseSessionUpdated 를 호출함.
+    /// </summary>
+    public async Task<bool> SetDifficultyAsHostAsync(NodeDifficulty difficulty)
+    {
+        if (_session == null)
+        {
+            DebugTool.Error("난이도 변경 실패: 세션 없음", DebugType.Network, this);
+            return false;
+        }
+        if (!IsHost)
+        {
+            DebugTool.Warning("난이도 변경 거부: 비호스트", DebugType.Network, this);
+            RaiseError("호스트만 난이도를 변경할 수 있습니다.");
+            return false;
+        }
+        if (_session.IsLocked)
+        {
+            DebugTool.Warning("난이도 변경 거부: 게임 진행 중(IsLocked)", DebugType.Network, this);
+            RaiseError("게임 진행 중에는 난이도를 변경할 수 없습니다.");
+            return false;
+        }
+        if (!Enum.IsDefined(typeof(NodeDifficulty), difficulty))
+        {
+            DebugTool.Error($"난이도 변경 거부: 정의되지 않은 NodeDifficulty 값 {difficulty}", DebugType.Network, this);
+            return false;
+        }
+
+        try
+        {
+            IHostSession host = _session.AsHost();
+            host.SetProperty(
+                LobbyConstants.KEY_SESSION_DIFFICULTY,
+                new SessionProperty(((int)difficulty).ToString(), VisibilityPropertyOptions.Member));
+            await host.SavePropertiesAsync();
+            DebugTool.Log($"난이도 변경 완료: {difficulty}", DebugType.Network, this);
+            return true;
+        }
+        catch (Exception e)
+        {
+            DebugTool.Error($"난이도 변경 실패: {e.Message}", DebugType.Network, this);
+            RaiseError("난이도를 변경하지 못했습니다.");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 현재 세션의 난이도. SessionProperty 미설정 / 파싱 실패 / 세션 미진입 시
+    /// LobbySettings.DefaultDifficulty 로 폴백. _settings 자체가 null 인 비상 상황은
+    /// NodeDifficulty.Level3 로 하드 폴백 (Normal 매핑 유지).
+    /// GameSpawnController 가 GameScene 진입 후 호출해 NodeManager.InitializeAsHost 에 넘김.
+    /// </summary>
+    public NodeDifficulty GetCurrentDifficulty()
+    {
+        NodeDifficulty fallback = _settings != null ? _settings.DefaultDifficulty : NodeDifficulty.Level3;
+
+        if (_session == null) return fallback;
+        if (_session.Properties == null) return fallback;
+        if (!_session.Properties.TryGetValue(LobbyConstants.KEY_SESSION_DIFFICULTY, out SessionProperty prop)) return fallback;
+        if (prop == null || string.IsNullOrEmpty(prop.Value)) return fallback;
+
+        if (!int.TryParse(prop.Value, out int raw))
+        {
+            DebugTool.Warning($"난이도 파싱 실패: '{prop.Value}' - 기본값({fallback}) 사용", DebugType.Network, this);
+            return fallback;
+        }
+        if (!Enum.IsDefined(typeof(NodeDifficulty), raw))
+        {
+            DebugTool.Warning($"난이도 enum 미정의 값: {raw} - 기본값({fallback}) 사용", DebugType.Network, this);
+            return fallback;
+        }
+        return (NodeDifficulty)raw;
     }
 
     private void SetSingleton()

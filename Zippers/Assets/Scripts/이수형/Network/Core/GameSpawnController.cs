@@ -82,8 +82,12 @@ public class GameSpawnController : NetworkBehaviour
         }
 
         nm.SceneManager.OnLoadEventCompleted += OnAllClientsSceneLoaded;
+        // Phase D: disconnect → 사망 처리 정리. NGO 가 PlayerObject 자동 destroy →
+        // MapObjectCounter.OnTriggerExit 가 AlivePlayerCount 자동 감소.
+        // 여기서는 _spawnedByClient 추적 dictionary 만 정리.
+        nm.OnClientDisconnectCallback += OnClientDisconnect;
         _subscribed = true;
-        DebugTool.Log("OnLoadEventCompleted 구독 완료 (호스트)", DebugType.Network, this);
+        DebugTool.Log("OnLoadEventCompleted / OnClientDisconnectCallback 구독 완료 (호스트)", DebugType.Network, this);
     }
 
     public override void OnNetworkDespawn()
@@ -91,11 +95,47 @@ public class GameSpawnController : NetworkBehaviour
         if (!_subscribed) return;
 
         NetworkManager nm = NetworkManager.Singleton;
-        if (nm != null && nm.SceneManager != null)
+        if (nm != null)
         {
-            nm.SceneManager.OnLoadEventCompleted -= OnAllClientsSceneLoaded;
+            if (nm.SceneManager != null)
+            {
+                nm.SceneManager.OnLoadEventCompleted -= OnAllClientsSceneLoaded;
+            }
+            nm.OnClientDisconnectCallback -= OnClientDisconnect;
         }
         _subscribed = false;
+    }
+
+    /// <summary>
+    /// 클라이언트 disconnect 시 호스트 콜백.
+    /// PlayerObject 자체는 NGO 가 자동 despawn/destroy (NetworkObject.DontDestroyWithOwner == false 기본).
+    /// destroy 가 발생하면 Unity 가 OnTriggerExit 를 발화 → MapObjectCounter 가 AlivePlayerCount 감소.
+    /// 여기서는 추적용 dictionary 정리 + SessionPlayerStateController 에 disconnect 통보.
+    /// </summary>
+    private void OnClientDisconnect(ulong clientId)
+    {
+        if (_spawnedByClient.TryGetValue(clientId, out NetworkObject obj))
+        {
+            string objName = obj != null ? obj.name : "(이미 destroy 됨)";
+            _spawnedByClient.Remove(clientId);
+            DebugTool.Log($"disconnect 정리: clientId={clientId}, obj={objName}", DebugType.Network, this);
+        }
+        else
+        {
+            DebugTool.Log($"disconnect 무시: clientId={clientId} 미추적 (스폰 전 또는 이미 정리됨)", DebugType.Network, this);
+        }
+
+        // 세션 카운트 갱신. SessionPlayerStateController 는 미추적 clientId 도 자체적으로 무시 처리.
+        if (SessionPlayerStateController.Instance != null)
+        {
+            SessionPlayerStateController.Instance.NotifyClientDisconnected(clientId);
+        }
+        else
+        {
+            DebugTool.Warning(
+                $"SessionPlayerStateController.Instance 가 null - disconnect 통보 누락 (clientId={clientId}). GameScene 에 컴포넌트 배치 확인.",
+                DebugType.Network, this);
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -124,25 +164,51 @@ public class GameSpawnController : NetworkBehaviour
             DebugTool.Warning($"씬 로드 타임아웃 {clientsTimedOut.Count}명 - 그대로 진행", DebugType.Network, this);
         }
 
-        SpawnAllConnectedClients();
+        // Phase B: NodeManager 1회 조회 - 노드 초기화와 플레이어 스폰 양쪽에서 공유.
+        NodeManager nodeManager = FindFirstObjectByType<NodeManager>();
+        if (nodeManager == null)
+        {
+            DebugTool.Error("NodeManager 를 찾을 수 없음 - 노드 초기화/스폰 중단 (GameScene 에 배치되어야 함)", DebugType.Network, this);
+            return;
+        }
+
+        // 1단계: 노드 시스템 초기화 (호스트가 LobbyManager 의 난이도 읽음 → NodeManager 가 시드 결정 → ClientRpc 로 전파).
+        InitializeNodeSystem(nodeManager);
+
+        // 2단계: 플레이어 PlayerObject 스폰 (Start 맵 좌표 기준).
+        SpawnAllConnectedClients(nodeManager);
         _spawned = true;
+    }
+
+    /// <summary>
+    /// LobbyManager.GetCurrentDifficulty() 로 난이도 읽고 NodeManager.InitializeAsHost 호출.
+    /// LobbyManager 미존재(Test 빌드 / 단독 호스트 부트스트랩 등) 시 Level3=Normal 로 폴백.
+    /// </summary>
+    private void InitializeNodeSystem(NodeManager nodeManager)
+    {
+        NodeDifficulty difficulty;
+        if (LobbyManager.Instance != null)
+        {
+            difficulty = LobbyManager.Instance.GetCurrentDifficulty();
+        }
+        else
+        {
+            difficulty = NodeDifficulty.Level3;
+            DebugTool.Warning("LobbyManager.Instance 가 null - 노드 시스템 기본 난이도(Level3=Normal) 로 폴백", DebugType.Network, this);
+        }
+
+        DebugTool.Log($"노드 시스템 초기화 요청: difficulty={difficulty}", DebugType.Network, this);
+        nodeManager.InitializeAsHost(difficulty);
     }
 
     // ─────────────────────────────────────────────────────────────────
     // Spawning
     // ─────────────────────────────────────────────────────────────────
 
-    private void SpawnAllConnectedClients()
+    private void SpawnAllConnectedClients(NodeManager nodeManager)
     {
-        // NodeManager 조회. GameScene 의 NodeManager 가 Awake/Start 끝나 StartTypeMapController 가 활성 상태여야 함.
-        // OnLoadEventCompleted 시점엔 보통 준비됨 - 그래도 null 가드.
-        NodeManager nodeManager = FindFirstObjectByType<NodeManager>();
-        if (nodeManager == null)
-        {
-            DebugTool.Error("NodeManager 를 찾을 수 없음 - 스폰 중단 (GameScene 에 배치되어야 함)", DebugType.Network, this);
-            return;
-        }
-
+        // NodeManager 는 OnAllClientsSceneLoaded / ForceRespawnAll 에서 null 가드 후 전달됨.
+        // 호출 시점엔 StartTypeMapController.Data.PlayerSpawnPoint_Down 이 채워져 있어야 함.
         Transform[] spawnPoints = nodeManager.GetStartSpawnPoints();
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
@@ -223,6 +289,10 @@ public class GameSpawnController : NetworkBehaviour
             DebugTool.Error(
                 $"clientId={clientId} SlotIndex={info.SlotIndex} 가 spawnPoints 범위 외 (배열 길이 {spawnPoints.Length}) - skip",
                 DebugType.Network, this);
+
+            // 진단 컨텍스트 덤프 - SlotIndex=-1 같은 이상치가 왜 발생했는지 한 번에 파악하기 위해
+            // 호스트의 슬롯/매핑/세션 상태를 같이 찍는다. 부작용 없음.
+            DumpDiagnosticsForBadSlot(clientId, info);
             return false;
         }
 
@@ -243,6 +313,20 @@ public class GameSpawnController : NetworkBehaviour
             DebugTool.Log(
                 $"spawn 성공: clientId={clientId}, class={info.PlayerClass}, slot={info.SlotIndex}, pos={spawnPoint.position}",
                 DebugType.Network, this);
+
+            // 세션 카운트 갱신 (Connected/Alive 양쪽 +1, idempotent).
+            // ForceRespawnAll 처럼 같은 clientId 로 재호출되어도 SessionPlayerStateController 가
+            // HashSet 으로 중복 처리하므로 안전.
+            if (SessionPlayerStateController.Instance != null)
+            {
+                SessionPlayerStateController.Instance.NotifyPlayerSpawned(clientId);
+            }
+            else
+            {
+                DebugTool.Warning(
+                    $"SessionPlayerStateController.Instance 가 null - spawn 통보 누락 (clientId={clientId}). GameScene 에 컴포넌트 배치 확인.",
+                    DebugType.Network, this);
+            }
             return true;
         }
         catch (Exception e)
@@ -264,6 +348,64 @@ public class GameSpawnController : NetworkBehaviour
     public bool TryGetSpawnedPlayer(ulong clientId, out NetworkObject playerObject)
     {
         return _spawnedByClient.TryGetValue(clientId, out playerObject);
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Diagnostics (호스트 측 SlotIndex 이상 감지 시 호출)
+    // ─────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// SlotIndex 가 범위 외(특히 -1) 로 감지됐을 때 호스트 측 컨텍스트를 한 번에 덤프.
+    /// - PlayerSessionBridge 의 clientId↔playerId 매핑
+    /// - LobbyManager 의 _slotCache + SessionProperty["Slots"] 원본 JSON + session.Players 요약
+    /// - NetworkManager.ConnectedClientsIds 전체
+    /// Phase 1 진단용. 호출 자체에 부작용 없음.
+    /// </summary>
+    private void DumpDiagnosticsForBadSlot(ulong clientId, PlayerInfo info)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"[GameSpawnController] === SlotIndex 진단 (clientId={clientId}, class={info.PlayerClass}, slot={info.SlotIndex}) ===");
+
+        // 1) Bridge 매핑
+        if (PlayerSessionBridge.Instance != null)
+        {
+            sb.Append(PlayerSessionBridge.Instance.DumpClientIdMapping(clientId));
+        }
+        else
+        {
+            sb.AppendLine("  PlayerSessionBridge.Instance == null");
+        }
+
+        // 2) LobbyManager 슬롯 상태
+        if (LobbyManager.Instance != null)
+        {
+            sb.Append(LobbyManager.Instance.DumpSlotState());
+        }
+        else
+        {
+            sb.AppendLine("  LobbyManager.Instance == null");
+        }
+
+        // 3) NGO ConnectedClientsIds
+        NetworkManager nm = NetworkManager.Singleton;
+        if (nm != null)
+        {
+            sb.Append($"  NetworkManager.ConnectedClientsIds = [");
+            bool first = true;
+            foreach (ulong cid in nm.ConnectedClientsIds)
+            {
+                if (!first) sb.Append(", ");
+                sb.Append(cid);
+                first = false;
+            }
+            sb.AppendLine("]");
+        }
+        else
+        {
+            sb.AppendLine("  NetworkManager.Singleton == null");
+        }
+
+        DebugTool.Error(sb.ToString(), DebugType.Network, this);
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -304,7 +446,14 @@ public class GameSpawnController : NetworkBehaviour
         _spawnedByClient.Clear();
         _spawned = false;
 
-        SpawnAllConnectedClients();
+        // 노드 시스템은 재초기화 안 함 (이미 IsInitialized=true). 스폰만 다시.
+        NodeManager nodeManager = FindFirstObjectByType<NodeManager>();
+        if (nodeManager == null)
+        {
+            DebugTool.Error("NodeManager 를 찾을 수 없음 - 강제 리스폰 중단", DebugType.Network, this);
+            return;
+        }
+        SpawnAllConnectedClients(nodeManager);
         _spawned = true;
     }
 }
