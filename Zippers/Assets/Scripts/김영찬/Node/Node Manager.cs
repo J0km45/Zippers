@@ -38,7 +38,7 @@ public class NodeManager : MonoBehaviour
     {
         // ToDo : 테스트 코드임으로 나중에 GameManager 등에서 다음 코드를 실행 하도록 할 것
 
-        if (NetworkManager.Singleton.IsServer)
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer)
         {
             NetworkNodeData.SetDifficultyAndGenerateMap(NodeDifficulty.Test);
         }
