@@ -110,7 +110,7 @@ public class GameSpawnController : NetworkBehaviour
     /// 클라이언트 disconnect 시 호스트 콜백.
     /// PlayerObject 자체는 NGO 가 자동 despawn/destroy (NetworkObject.DontDestroyWithOwner == false 기본).
     /// destroy 가 발생하면 Unity 가 OnTriggerExit 를 발화 → MapObjectCounter 가 AlivePlayerCount 감소.
-    /// 여기서는 추적용 dictionary 만 정리한다.
+    /// 여기서는 추적용 dictionary 정리 + SessionPlayerStateController 에 disconnect 통보.
     /// </summary>
     private void OnClientDisconnect(ulong clientId)
     {
@@ -123,6 +123,18 @@ public class GameSpawnController : NetworkBehaviour
         else
         {
             DebugTool.Log($"disconnect 무시: clientId={clientId} 미추적 (스폰 전 또는 이미 정리됨)", DebugType.Network, this);
+        }
+
+        // 세션 카운트 갱신. SessionPlayerStateController 는 미추적 clientId 도 자체적으로 무시 처리.
+        if (SessionPlayerStateController.Instance != null)
+        {
+            SessionPlayerStateController.Instance.NotifyClientDisconnected(clientId);
+        }
+        else
+        {
+            DebugTool.Warning(
+                $"SessionPlayerStateController.Instance 가 null - disconnect 통보 누락 (clientId={clientId}). GameScene 에 컴포넌트 배치 확인.",
+                DebugType.Network, this);
         }
     }
 
@@ -301,6 +313,20 @@ public class GameSpawnController : NetworkBehaviour
             DebugTool.Log(
                 $"spawn 성공: clientId={clientId}, class={info.PlayerClass}, slot={info.SlotIndex}, pos={spawnPoint.position}",
                 DebugType.Network, this);
+
+            // 세션 카운트 갱신 (Connected/Alive 양쪽 +1, idempotent).
+            // ForceRespawnAll 처럼 같은 clientId 로 재호출되어도 SessionPlayerStateController 가
+            // HashSet 으로 중복 처리하므로 안전.
+            if (SessionPlayerStateController.Instance != null)
+            {
+                SessionPlayerStateController.Instance.NotifyPlayerSpawned(clientId);
+            }
+            else
+            {
+                DebugTool.Warning(
+                    $"SessionPlayerStateController.Instance 가 null - spawn 통보 누락 (clientId={clientId}). GameScene 에 컴포넌트 배치 확인.",
+                    DebugType.Network, this);
+            }
             return true;
         }
         catch (Exception e)

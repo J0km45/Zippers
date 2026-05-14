@@ -43,7 +43,10 @@ public class TeleportSupporter : NetworkBehaviour
     public NetworkVariable<int> VoteLeft  => _voteLeft;
     public NetworkVariable<int> VoteRight => _voteRight;
 
-    /// <summary>과반수 임계값. AlivePlayerCount / 2f. NetworkVariable OnValueChanged 로 동기화.</summary>
+    /// <summary>과반수 임계값. SessionAlivePlayerCount / 2f. NetworkVariable OnValueChanged 로 동기화.
+    /// (2026-05-14 변경) 기존엔 NetworkMapData.AlivePlayerCount(맵 박스 안 인원) 였으나,
+    /// 맵 박스 카운트는 텔레포트 직후 0 → N 으로 점진 증가하는 값이라 vote 임계값으로 부적합.
+    /// SessionAlivePlayerCount(세션 전체 HP-생존 인원) 로 source 교체 — "투표 가능한 인원의 과반" 의 의도와 일치.</summary>
     public float MinVoteWin { get; private set; }
 
     // ─────────────────────────────────────────────────────────────────
@@ -131,7 +134,28 @@ public class TeleportSupporter : NetworkBehaviour
     public void EnableEvent()
     {
         _controller.Data.OnChangeNextMaps += SetBeaconLocation;
-        _controller.Data.NetworkMapData.AlivePlayerCount.OnValueChanged += SetMinVoteWin;
+
+        // (2026-05-14) MinVoteWin 의 source 를 SessionPlayerStateController.SessionAlivePlayerCount 로 교체.
+        // 맵 활성화/EnableEvent 시점엔 이미 spawn 이 끝나서 SessionAlivePlayerCount 가 N 으로 셋팅되어 있을 가능성 높음.
+        // OnValueChanged 는 변동 시에만 발화하므로 초기 sync 를 명시적으로 한 번 수행 필수.
+        SessionPlayerStateController session = SessionPlayerStateController.Instance;
+        if (session != null)
+        {
+            session.SessionAlivePlayerCount.OnValueChanged += SetMinVoteWin;
+            // 현재 값 즉시 반영 (subscribe 이전에 이미 설정된 값이라 OnValueChanged 가 안 옴).
+            SetMinVoteWin(0, session.SessionAlivePlayerCount.Value);
+            DebugTool.Log(
+                $"{(_controller != null ? _controller.gameObject.name : "?")} MinVoteWin source = SessionAlivePlayerCount " +
+                $"(현재 {session.SessionAlivePlayerCount.Value} → MinVoteWin={MinVoteWin})",
+                DebugType.Node, this);
+        }
+        else
+        {
+            DebugTool.Error(
+                $"{(_controller != null ? _controller.gameObject.name : "?")} SessionPlayerStateController.Instance 가 null - " +
+                "MinVoteWin 동기화 불가. GameScene 에 컴포넌트 배치 확인.",
+                DebugType.Node, this);
+        }
     }
 
     private void DisableEvent()
@@ -140,10 +164,13 @@ public class TeleportSupporter : NetworkBehaviour
         if (_controller.Data != null)
         {
             _controller.Data.OnChangeNextMaps -= SetBeaconLocation;
-            if (_controller.Data.NetworkMapData != null)
-            {
-                _controller.Data.NetworkMapData.AlivePlayerCount.OnValueChanged -= SetMinVoteWin;
-            }
+        }
+
+        // SessionPlayerStateController 는 게임 씬 단위 싱글턴이라 Instance 가 살아있을 때 정리.
+        SessionPlayerStateController session = SessionPlayerStateController.Instance;
+        if (session != null)
+        {
+            session.SessionAlivePlayerCount.OnValueChanged -= SetMinVoteWin;
         }
     }
 
