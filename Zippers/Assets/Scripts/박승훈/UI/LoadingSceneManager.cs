@@ -5,7 +5,6 @@ public class LoadingSceneManager : MonoBehaviour
     [Header("컴포넌트 연결")]
     [Space(3)] [Header("UI 컴포넌트")]
     [SerializeField] private LoadingPanel _loadingPanel;
-    [SerializeField] private SceneChangeController sceneChangeController;
     [Space(3)] [Header("데이터 컴포넌트")]
     [SerializeField] private DataManager _dataManager;
     [SerializeField] private DataLoadController _dataLoadController;
@@ -15,18 +14,18 @@ public class LoadingSceneManager : MonoBehaviour
         
     private void OnEnable()
     {
-        sceneChangeController.OnChangeScene += _dataManager.DataLoad;
+        SceneChangeController.Instance.OnChangeScene += _dataManager.DataLoad;
     }
 
     private void Start()
     {
-        LocalDataAccess.Instance.Game.OnReady += sceneChangeController.OnExitScene;
+        LocalDataAccess.Instance.Game.OnReady += SceneChangeController.Instance.OnExitScene;
         LocalDataAccess.Instance.Game.OnReady += _loadingPanel.OnProceedLoading;
 
         _loadingPanel.TotalProgrss = _dataManager.PendingSHeetCount;
         
         _loadingPanel.PrintImage();
-        sceneChangeController.OnEnterScene();
+        SceneChangeController.Instance.OnEnterScene();
         
     }
 
@@ -34,10 +33,10 @@ public class LoadingSceneManager : MonoBehaviour
     {
         if (LocalDataAccess.Instance != null)
         {
-            LocalDataAccess.Instance.Game.OnReady -= sceneChangeController.OnExitScene;
+            LocalDataAccess.Instance.Game.OnReady -= SceneChangeController.Instance.OnExitScene;
             LocalDataAccess.Instance.Game.OnReady -= _loadingPanel.OnProceedLoading;
         }
-        sceneChangeController.OnChangeScene -= _dataManager.DataLoad;
+        SceneChangeController.Instance.OnChangeScene -= _dataManager.DataLoad;
     }
 
     private void Init()
@@ -45,10 +44,6 @@ public class LoadingSceneManager : MonoBehaviour
         _loadingPanel = GetComponentInChildren<LoadingPanel>();
         if(_loadingPanel == null)
             DebugTool.Warning("로딩 판넬 컴포넌트가 없습니다.", DebugType.Missing);
-        
-        sceneChangeController = GetComponentInChildren<SceneChangeController>();
-        if (sceneChangeController == null)
-            DebugTool.Warning("씬 전환 컨트롤러 컴포넌트가 없습니다.", DebugType.Missing);
         
         if (_dataLoadController == null)
             DebugTool.Warning("데이터 로드 컨트롤러 컴포넌트가 없습니다.", DebugType.Missing);

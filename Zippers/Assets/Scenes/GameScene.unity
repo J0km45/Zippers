@@ -119,6 +119,219 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &233656412
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 233656413}
+  - component: {fileID: 233656414}
+  - component: {fileID: 233656415}
+  m_Layer: 0
+  m_Name: TeamBattleNetState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &233656413
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233656412}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.24975, y: -26.92337, z: -204.21388}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &233656414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233656412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 58266592
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 0
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &233656415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233656412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262717afcae7b6948ad5c5bac198b0a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.TeamBattleNetState
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!1 &433421743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 433421746}
+  - component: {fileID: 433421744}
+  - component: {fileID: 433421745}
+  m_Layer: 0
+  m_Name: SessionPlayerStateController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &433421744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433421743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 760277776
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &433421745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433421743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fc5ed4a7204cc8458d6be5698066cf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SessionPlayerStateController
+  ShowTopMostFoldoutHeaderGroup: 1
+--- !u!4 &433421746
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433421743}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 728.03076, y: 0.00001, z: 21.79443}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &451001146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 451001147}
+  - component: {fileID: 451001148}
+  - component: {fileID: 451001149}
+  m_Layer: 0
+  m_Name: TeamEconomyNetState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &451001147
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451001146}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.24975, y: -26.92337, z: -204.21388}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &451001148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451001146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 853220031
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 0
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &451001149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451001146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d42df66305b333c4895072c70e462df5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.TeamEconomyNetState
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &1087265187
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,6 +723,18 @@ PrefabInstance:
       propertyPath: m_BoundingSphereOverride.z
       value: 0.083333254
       objectReference: {fileID: 0}
+    - target: {fileID: 40612343479710922, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3489169955
+      objectReference: {fileID: 0}
+    - target: {fileID: 40612343479710922, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 40612343479710922, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
+      objectReference: {fileID: 0}
     - target: {fileID: 227667148658816963, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 36.625343
@@ -525,6 +750,30 @@ PrefabInstance:
     - target: {fileID: 227667148658816963, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.z
       value: 0.083333254
+      objectReference: {fileID: 0}
+    - target: {fileID: 404947605466868186, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3252299422
+      objectReference: {fileID: 0}
+    - target: {fileID: 404947605466868186, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 404947605466868186, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
+      objectReference: {fileID: 0}
+    - target: {fileID: 934854613232408653, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 192664093
+      objectReference: {fileID: 0}
+    - target: {fileID: 934854613232408653, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 934854613232408653, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
       objectReference: {fileID: 0}
     - target: {fileID: 1298139077088377971, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -573,6 +822,18 @@ PrefabInstance:
     - target: {fileID: 1730284530242260791, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.z
       value: 0.083333254
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073972509695503669, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2865353280
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073972509695503669, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073972509695503669, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
       objectReference: {fileID: 0}
     - target: {fileID: 2284536090607913309, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -637,6 +898,30 @@ PrefabInstance:
     - target: {fileID: 2779270206431730688, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.z
       value: 0.083333254
+      objectReference: {fileID: 0}
+    - target: {fileID: 3252421993387168073, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3181078035
+      objectReference: {fileID: 0}
+    - target: {fileID: 3252421993387168073, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3252421993387168073, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611051838665013675, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 4273513489
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611051838665013675, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611051838665013675, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
       objectReference: {fileID: 0}
     - target: {fileID: 3795115797265703102, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -758,6 +1043,18 @@ PrefabInstance:
       propertyPath: m_BoundingSphereOverride.z
       value: 0.5296649
       objectReference: {fileID: 0}
+    - target: {fileID: 5018321194204164790, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3227811295
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018321194204164790, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5018321194204164790, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
+      objectReference: {fileID: 0}
     - target: {fileID: 5312668953610477713, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 63.655148
@@ -810,6 +1107,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Map
       objectReference: {fileID: 0}
+    - target: {fileID: 7618675430244403347, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 4292310599
+      objectReference: {fileID: 0}
+    - target: {fileID: 7618675430244403347, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7618675430244403347, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686123733538052605, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 69391869
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686123733538052605, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686123733538052605, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
+      objectReference: {fileID: 0}
     - target: {fileID: 7718160830882889279, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 53.740128
@@ -841,6 +1162,18 @@ PrefabInstance:
     - target: {fileID: 7783136960668224338, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.z
       value: 0.083333254
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166390239411328624, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2554335760
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166390239411328624, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8166390239411328624, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
       objectReference: {fileID: 0}
     - target: {fileID: 8399437281073346479, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -874,6 +1207,30 @@ PrefabInstance:
       propertyPath: m_BoundingSphereOverride.z
       value: 0.083333254
       objectReference: {fileID: 0}
+    - target: {fileID: 8932161457902203078, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2516865053
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932161457902203078, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932161457902203078, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947901441790080984, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3322857886
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947901441790080984, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8947901441790080984, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1359077077
+      objectReference: {fileID: 0}
     - target: {fileID: 8950718898117414863, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 61.25711
@@ -906,7 +1263,9 @@ PrefabInstance:
       propertyPath: m_BoundingSphereOverride.z
       value: 0.083333254
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3611051838665013675, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
+    - {fileID: 8932161457902203078, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -977,3 +1336,6 @@ SceneRoots:
   - {fileID: 1660688308}
   - {fileID: 1926810616}
   - {fileID: 1087265190}
+  - {fileID: 433421746}
+  - {fileID: 451001147}
+  - {fileID: 233656413}

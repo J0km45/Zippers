@@ -52,6 +52,23 @@ public class NetworkMapData : NetworkBehaviour
         _alivePlayerCount.Value = 0;
         DebugTool.Log($"{gameObject.name} Player Count Reset", DebugType.Node, this);
     }
+
+    /// <summary>
+    /// 현재 맵에서 살아남은 플레이어 숫자를 직접 지정 (호스트 권위).
+    /// MapObjectCounter 가 HashSet 기반으로 추적한 set.Count 를 한 번에 반영하는 용도.
+    /// Plus/Minus 가 누락/중복 시에도 set.Count 가 정답이므로 이쪽으로 동기화하면 정합성 보장.
+    /// [0, 4] 클램프 (4 = MaxPlayers 컨벤션, 기존 Plus 의 4 캡과 일관).
+    /// 동일 값이면 OnValueChanged 노이즈 방지 위해 skip.
+    /// </summary>
+    /// <param name="count">반영할 인원 수. 음수/4 초과 시 클램프됨.</param>
+    public void SetAlivePlayerCount(int count)
+    {
+        if(!IsServer) return;
+        int clamped = Mathf.Clamp(count, 0, 4);
+        if (_alivePlayerCount.Value == clamped) return;
+        _alivePlayerCount.Value = clamped;
+        DebugTool.Log($"{gameObject.name} Set Player Count : {clamped} (input={count})", DebugType.Node, this);
+    }
     
     /// <summary>
     /// 현재 맵의 Node State를 지정

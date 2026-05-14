@@ -1,23 +1,32 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
+// Phase C: UnityEngine.Random 의존 제거. NodeManager.Rng (System.Random) 사용.
 
 public class NodeDataContainer : MonoBehaviour
 {
     [SerializeField] private NodeSO[] _nodeData;
     [SerializeField] private EventContainerSO[] _eventDataContainers;
     [SerializeField] private DifficultyDataSO[] _difficultyData;
-    
+
     private Dictionary<NodeType, List<MapController>> _nodeDict = new();
     private Dictionary<NodeEventType, EventContainerSO> _eventDict = new();
     private Dictionary<NodeDifficulty, List<DifficultyDataSO>> _difficultyDict = new();
-    
+
     int _postBattleNodeIndex;
 
     public bool IsDictReady { get; private set; }
 
+    // Phase C: NodeManager 의 격리 RNG 사용을 위한 참조. Awake 에서 1회 lookup 후 캐시.
+    // NodeManager / NodeDataContainer 가 같은 씬에 있어 Awake 시점에 양쪽 다 살아있음.
+    private NodeManager _manager;
+
     private void Awake()
     {
+        _manager = FindFirstObjectByType<NodeManager>();
+        if (_manager == null)
+        {
+            DebugTool.Error("NodeManager 를 찾을 수 없음 - RNG 사용 메서드 호출 시 폴백 적용", DebugType.Node, this);
+        }
         InitDict();
         SetDict();
     }
@@ -135,13 +144,30 @@ public class NodeDataContainer : MonoBehaviour
         return data;
     }
 
+    /// <summary>
+    /// 0 ~ count-1 범위의 인덱스 무작위 반환. Phase C: NodeManager.Rng (System.Random) 사용.
+    /// _manager 또는 Rng 가 준비되지 않은 비정상 상황엔 0 반환 + 에러 로그.
+    /// </summary>
     private int GetIndex(int count)
     {
         if (count <= 0) return 0;
-        
-        return Random.Range(0, count);;
+
+        if (_manager == null || _manager.Rng == null)
+        {
+            DebugTool.Error($"GetIndex: Node RNG 미초기화 (NodeManager.InitRng 가 호출되지 않음) - 0 반환", DebugType.Node, this);
+            return 0;
+        }
+
+        return _manager.Rng.Next(0, count);
     }
 
+    /// <summary>
+    /// 직전 Battle 노드 인덱스와 다른 인덱스를 반환 (Battle 맵 연속 등장 방지).
+    /// Phase C 에서 수정된 버그:
+    ///   기존: while 루프 안에서 GetIndex(count) 호출만 하고 반환값을 temp 에 재대입 안 함
+    ///         → temp 가 _postBattleNodeIndex 와 같으면 무한 루프
+    ///   수정: temp = GetIndex(count) 로 반환값 받음
+    /// </summary>
     private int GetIndexBattleNode(int count)
     {
         if (count <= 0) return 0;
@@ -150,16 +176,16 @@ public class NodeDataContainer : MonoBehaviour
             _postBattleNodeIndex = 0;
             return 0;
         }
-        
+
         int temp = GetIndex(count);
-        
+
         while (temp == _postBattleNodeIndex)
         {
-            GetIndex(count);
+            temp = GetIndex(count);   // Phase C: 반환값 받음 (이전엔 무한 루프 가능 버그)
         }
-        
+
         _postBattleNodeIndex = temp;
-        
+
         return _postBattleNodeIndex;
     }
 }

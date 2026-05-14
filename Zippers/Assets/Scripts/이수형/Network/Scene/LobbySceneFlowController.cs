@@ -17,8 +17,6 @@ public class LobbySceneFlowController : MonoBehaviour
     private const float SESSION_WAIT_TIMEOUT_SEC = 5f;
 
     private bool _hasNavigated;
-    
-    [SerializeField] private SceneChangeController _SceneChangeController;
 
     private IEnumerator Start()
     {
@@ -47,8 +45,7 @@ public class LobbySceneFlowController : MonoBehaviour
         
         yield return null;
         
-        if(_SceneChangeController != null)
-            _SceneChangeController.OnEnterScene();
+        SceneChangeController.Instance.OnEnterScene();
     }
 
     private void OnDestroy()
