@@ -12,16 +12,8 @@ public class TitleController : MonoBehaviour
 {
     [SerializeField] private Button _enterLobbyButton;
     [SerializeField] private TMP_Text _statusText;
-    
-    [Header("씬 전환 컴포넌트")]
-    [SerializeField] private SceneChangeController _sceneChangeController;
 
     private bool _isProcessing;
-
-    private void Awake()
-    {
-        _sceneChangeController = GetComponent<SceneChangeController>();
-    }
 
     private void OnEnable()
     {
@@ -46,7 +38,7 @@ public class TitleController : MonoBehaviour
             await AuthService.InitializeAsync();
             SetStatus("데이터 로드로 이동...");
             
-            _sceneChangeController?.OnExitScene();
+            SceneChangeController.Instance?.OnExitScene();
         }
         catch (Exception e)
         {
