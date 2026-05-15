@@ -423,6 +423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535b745380deffc439dd053bac05061f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTransformList
+  _playerPosition: []
 --- !u!4 &551051303
 Transform:
   m_ObjectHideFlags: 0
@@ -1469,7 +1470,6 @@ PrefabInstance:
       value: 0.083333254
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 3611051838665013675, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
     - {fileID: 8932161457902203078, guid: e94d1e81f1dcc014194c48f05e848c6d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
