@@ -665,6 +665,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Loading Screen
       objectReference: {fileID: 0}
+    - target: {fileID: 3425920292847304141, guid: 4a86e72d46436054d8cae8d7ea232bcb, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 6c329ce62c7343d45b295df4e866deb2, type: 2}
+    - target: {fileID: 3425920292847304141, guid: 4a86e72d46436054d8cae8d7ea232bcb, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -5674310011409328741, guid: 6c329ce62c7343d45b295df4e866deb2, type: 2}
+    - target: {fileID: 3425920292847304141, guid: 4a86e72d46436054d8cae8d7ea232bcb, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4229263507880372230, guid: 4a86e72d46436054d8cae8d7ea232bcb, type: 3}
       propertyPath: m_Pivot.x
       value: 0
