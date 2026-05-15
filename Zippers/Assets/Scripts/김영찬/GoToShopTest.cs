@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
 public class GoToShopTest : MonoBehaviour
 {
+    [SerializeField] float _waitTime = 3f;
     private ShopTypeMapController _shop;
 
     private void Awake()
@@ -14,10 +16,16 @@ public class GoToShopTest : MonoBehaviour
 
     public void OnClickGoToShopButton()
     {
+        StartCoroutine(TestTeleportRoutine());
+    }
+    
+    private IEnumerator TestTeleportRoutine()
+    {
         _shop.gameObject.SetActive(true);
         
-        Transform[] nextMapStartPos = _shop.Data.PlayerSpawnPoint_Down;
+        yield return YieldContainer.Seconds(_waitTime); 
         
+        Transform[] nextMapStartPos = _shop.Data.PlayerSpawnPoint_Down;
         TeleportAllPlayersAsHost(nextMapStartPos);
     }
     
