@@ -43,7 +43,7 @@ public class PlayerAnimation : NetworkBehaviour
         _animator.SetFloat(MoveY, normalizedInput.y);
         _animator.SetFloat(Speed, normalizedInput.sqrMagnitude);
 
-        DebugTool.Log($"{normalizedInput}", DebugType.Character, this);
+        //DebugTool.Log($"{normalizedInput}", DebugType.Character, this);
     }
 
     [ServerRpc]
