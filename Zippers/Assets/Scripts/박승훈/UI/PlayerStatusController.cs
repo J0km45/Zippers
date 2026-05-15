@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerStatusController : MonoBehaviour
 {
     [Header("클래스 아이콘")]
-    [SerializeField] private int _classId;
+    [SerializeField] private WeaponType _weaponType;
 
     [SerializeField] private Sprite[] _classSprites = new Sprite[4];
 
@@ -56,7 +56,7 @@ public class PlayerStatusController : MonoBehaviour
     private void Start()
     {
         StatusInit();
-        GetClassSprite(_classId);
+        GetClassSprite(_weaponType);
     }
 
     private void OnDisable()
@@ -113,9 +113,9 @@ public class PlayerStatusController : MonoBehaviour
         _staminaBar.fillAmount = currentStamina / maxStamina;
     }
 
-    private void GetClassSprite(int classId)
+    private void GetClassSprite(WeaponType type)
     {
-        int index = classId - 10001;
+        int index = (int)type;
         _classIcon.sprite = _classSprites[index];
     }
 
