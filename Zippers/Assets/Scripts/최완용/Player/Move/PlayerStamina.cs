@@ -1,38 +1,65 @@
 using UnityEngine;
+using Unity.Netcode;
 using System;
+using Zippers.Network.Contracts;
 
-public class PlayerStamina : MonoBehaviour
+public class PlayerStamina : NetworkBehaviour
 {
     public event Action<float, float> OnStaminaChanged;
     public event Action OnStaminaEmpty;
 
     private PlayerStats _playerStats;
+    private IPlayerStatProvider _statProvider;
     private PlayerMovement _playerMovement;
+    private PlayerCombatNetState _combatNetState;
 
     private float _regenDelayTimer;
     private float _consumePeriodTimer;
     private float _regenPeriodTimer;
 
     [Header("플레이어 스테미나 정보")]
-    [field:SerializeField] public float CurrentStamina { get; private set; }
-    [field:SerializeField] public float MaxStamina { get; private set; }
+    [field: SerializeField] public float CurrentStamina { get; private set; }
+    [field: SerializeField] public float MaxStamina { get; private set; }
 
     public bool CanSprint => CurrentStamina > 0f;
 
     private void Awake()
     {
         _playerStats = GetComponent<PlayerStats>();
+        _statProvider = GetComponent<IPlayerStatProvider>();
         _playerMovement = GetComponent<PlayerMovement>();
+        _combatNetState = GetComponent<PlayerCombatNetState>();
     }
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        Init();
+        base.OnNetworkSpawn();
+
+        SubscribeCombatNetState();
+
+        if (IsServer)
+        {
+            Init();
+        }
+
+        SyncFromCombatNetState();
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        UnsubscribeCombatNetState();
+
+        base.OnNetworkDespawn();
     }
 
     private void Update()
     {
-        if (_playerStats == null || _playerMovement == null)
+        if (!IsOwner)
+        {
+            return;
+        }
+
+        if (_playerMovement == null)
         {
             return;
         }
@@ -51,38 +78,50 @@ public class PlayerStamina : MonoBehaviour
 
     private void Init()
     {
-        if (_playerStats == null)
+        if (!TryGetMaxStamina(out float totalStamina))
         {
-            DebugTool.Error("PlayerStats가 없습니다.", DebugType.Character, this);
+            DebugTool.Error("[PlayerStamina] 스테미나 스탯 정보를 찾을 수 없습니다.", DebugType.Character, this);
             return;
         }
 
-        MaxStamina = _playerStats.TotalStamina;
-        CurrentStamina = MaxStamina;
+        if (_combatNetState == null)
+        {
+            DebugTool.Error("[PlayerStamina] PlayerCombatNetState가 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        _combatNetState.ServerInitializeStamina(totalStamina);
 
         _regenDelayTimer = 0f;
         _consumePeriodTimer = 0f;
         _regenPeriodTimer = 0f;
 
-        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
+        SyncFromCombatNetState();
 
-        DebugTool.Log($"스테미나 초기화: {CurrentStamina}/{MaxStamina}", DebugType.Character, this);
+        DebugTool.Log($"[PlayerStamina] 네트워크 스테미나 초기화: {CurrentStamina}/{MaxStamina}", DebugType.CombatNet, this);
     }
 
-    //업그레이드 UI에서 연결
+    // 업그레이드 UI에서 연결
     public void RefreshMaxStamina()
     {
-        float beforeMaxStamina = MaxStamina;
-        MaxStamina = _playerStats.TotalStamina;
-
-        float increaseStamina = MaxStamina - beforeMaxStamina;
-
-        if (increaseStamina > 0f)
+        if (!TryGetMaxStamina(out float totalStamina))
         {
-            CurrentStamina += increaseStamina;
+            DebugTool.Error("[PlayerStamina] 스테미나 스탯 정보를 찾을 수 없습니다.", DebugType.Character, this);
+            return;
         }
-        CurrentStamina = MathF.Min(CurrentStamina, MaxStamina);
-        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
+
+        if (_combatNetState == null)
+        {
+            return;
+        }
+
+        if (!IsServer)
+        {
+            DebugTool.Log("[PlayerStamina] 서버가 아니므로 최대 스테미나 갱신을 무시합니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        _combatNetState.ServerSetMaxStamina(totalStamina);
     }
 
     public bool TryStartSprint()
@@ -98,7 +137,6 @@ public class PlayerStamina : MonoBehaviour
 
     private void UseStamina()
     {
-        //TODO : 스테미나 소모/ 회복은 서버 검증후 동기화 필요
         if (CurrentStamina <= 0f)
         {
             StopSprintNoStamina();
@@ -107,26 +145,25 @@ public class PlayerStamina : MonoBehaviour
 
         _consumePeriodTimer += Time.deltaTime;
 
-        if (_consumePeriodTimer < _playerStats.StaminaPeriod)
+        if (_consumePeriodTimer < GetStaminaPeriod())
         {
             return;
         }
 
         _consumePeriodTimer = 0f;
 
-        CurrentStamina -= _playerStats.StaminaConsume;
-        CurrentStamina = Mathf.Max(CurrentStamina, 0f);
+        float consumeAmount = GetStaminaConsume();
+
+        if (IsServer)
+        {
+            _combatNetState.ServerTryUseStamina(consumeAmount);
+        }
+        else
+        {
+            RequestUseStaminaServerRpc(consumeAmount);
+        }
 
         ResetRegenDelay();
-
-        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
-
-        DebugTool.Log($"스테미나 소모: {CurrentStamina}/{MaxStamina}", DebugType.Character, this);
-
-        if (CurrentStamina <= 0f)
-        {
-            StopSprintNoStamina();
-        }
     }
 
     private void RecoverStamina()
@@ -146,31 +183,32 @@ public class PlayerStamina : MonoBehaviour
 
         _regenPeriodTimer += Time.deltaTime;
 
-        if (_regenPeriodTimer < _playerStats.StaminaPeriod)
+        if (_regenPeriodTimer < GetStaminaPeriod())
         {
             return;
         }
 
         _regenPeriodTimer = 0f;
 
-        CurrentStamina += _playerStats.TotalStamina * (_playerStats.TotalStaminaRegen / 100f);
-        CurrentStamina = Mathf.Min(CurrentStamina, MaxStamina);
+        float recoverAmount = MaxStamina * (GetStaminaRegen() / 100f);
 
-        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
-
-        DebugTool.Log($"스테미나 회복: {CurrentStamina}/{MaxStamina}", DebugType.Character, this);
+        if (IsServer)
+        {
+            _combatNetState.ServerRecoverStamina(recoverAmount);
+        }
+        else
+        {
+            RequestRecoverStaminaServerRpc(recoverAmount);
+        }
     }
 
     private void StopSprintNoStamina()
     {
-        CurrentStamina = 0f;
-
         if (_playerMovement != null)
         {
             _playerMovement.SetSprint(false);
         }
 
-        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
         OnStaminaEmpty?.Invoke();
 
         DebugTool.Log("스테미나 소진 - 달리기 중단", DebugType.Character, this);
@@ -178,7 +216,180 @@ public class PlayerStamina : MonoBehaviour
 
     private void ResetRegenDelay()
     {
-        _regenDelayTimer = _playerStats.StaminaDelay;
+        _regenDelayTimer = GetStaminaDelay();
         _regenPeriodTimer = 0f;
     }
+
+    [ServerRpc]
+    private void RequestUseStaminaServerRpc(float amount)
+    {
+        if (_combatNetState == null)
+        {
+            return;
+        }
+
+        _combatNetState.ServerTryUseStamina(amount);
+    }
+
+    [ServerRpc]
+    private void RequestRecoverStaminaServerRpc(float amount)
+    {
+        if (_combatNetState == null)
+        {
+            return;
+        }
+
+        _combatNetState.ServerRecoverStamina(amount);
+    }
+
+    private void SubscribeCombatNetState()
+    {
+        if (_combatNetState == null)
+        {
+            return;
+        }
+
+        _combatNetState.OnStaminaChanged += HandleNetStaminaChanged;
+    }
+
+    private void UnsubscribeCombatNetState()
+    {
+        if (_combatNetState == null)
+        {
+            return;
+        }
+
+        _combatNetState.OnStaminaChanged -= HandleNetStaminaChanged;
+    }
+
+    private void HandleNetStaminaChanged(float currentStamina, float maxStamina)
+    {
+        if (!CanReadCombatStaminaState())
+        {
+            return;
+        }
+
+        CurrentStamina = currentStamina;
+        MaxStamina = maxStamina;
+
+        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
+
+        if (IsOwner && CurrentStamina <= 0f)
+        {
+            StopSprintNoStamina();
+        }
+
+        DebugTool.Log(
+            $"[PlayerStamina] 네트워크 스테미나 반영: {CurrentStamina}/{MaxStamina}",
+            DebugType.CombatNet,
+            this
+        );
+    }
+
+    private void SyncFromCombatNetState()
+    {
+        if (CanReadCombatStaminaState())
+        {
+            return;
+        }
+
+        CurrentStamina = _combatNetState.CurrentStamina;
+        MaxStamina = _combatNetState.MaxStamina;
+
+        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
+    }
+    private bool CanReadCombatStaminaState()
+    {
+        return _combatNetState != null &&
+               _combatNetState.IsSpawned &&
+               (_combatNetState.IsServer || _combatNetState.IsOwner);
+    }
+
+    private bool TryGetMaxStamina(out float totalStamina)
+    {
+        if (_statProvider != null)
+        {
+            totalStamina = _statProvider.TotalMaxStamina;
+            return true;
+        }
+
+        if (_playerStats != null)
+        {
+            totalStamina = _playerStats.TotalStamina;
+            return true;
+        }
+
+        totalStamina = 0f;
+        return false;
+    }
+
+    private float GetStaminaPeriod()
+    {
+        if (_statProvider != null)
+        {
+            return _statProvider.StaminaPeriod;
+        }
+
+        if (_playerStats != null)
+        {
+            return _playerStats.StaminaPeriod;
+        }
+
+        return 0.1f;
+    }
+
+    private float GetStaminaConsume()
+    {
+        if (_statProvider != null)
+        {
+            return _statProvider.StaminaConsume;
+        }
+
+        if (_playerStats != null)
+        {
+            return _playerStats.StaminaConsume;
+        }
+
+        return 0f;
+    }
+
+    private float GetStaminaRegen()
+    {
+        if (_statProvider != null)
+        {
+            return _statProvider.TotalStaminaRegen;
+        }
+
+        if (_playerStats != null)
+        {
+            return _playerStats.TotalStaminaRegen;
+        }
+
+        return 0f;
+    }
+
+    private float GetStaminaDelay()
+    {
+        if (_statProvider != null)
+        {
+            return _statProvider.StaminaDelay;
+        }
+
+        if (_playerStats != null)
+        {
+            return _playerStats.StaminaDelay;
+        }
+
+        return 0f;
+    }
 }
+
+/*
+Unity 적용 방법
+1. 기존 PlayerStamina.cs 전체를 이 코드로 교체한다.
+2. 플레이어 프리팹에 PlayerCombatNetState가 붙어 있는지 확인한다.
+4. PlayerCombatNetState에 ServerInitializeStamina(), ServerSetMaxStamina(),
+   ServerTryUseStamina(), ServerRecoverStamina(), OnStaminaChanged가 있는지 확인한다.
+5. 스테미나 UI는 기존 PlayerStamina.OnStaminaChanged를 그대로 구독하면 된다.
+6. 스테미나 값은 서버가 PlayerCombatNetState에서 변경하고, Owner 클라이언트 UI에 동기화된다.
+*/

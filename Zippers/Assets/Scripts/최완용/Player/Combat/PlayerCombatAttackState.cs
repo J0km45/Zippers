@@ -1,23 +1,24 @@
 using Audio;
 using UnityEngine;
+using Zippers.Network.Contracts;
 
 public class PlayerCombatAttackState : IState
 {
     private PlayerCombatStateMachine _combatStateMachine;
     private PlayerAnimation _playerAnimation;
     private WeaponSFXController _weaponSFXController;
-    private PlayerStats _playerStats;
+    private IPlayerStatProvider _statProvider;
     private float _attackStateTime;
 
     private float _elapsedTime;
 
-    public PlayerCombatAttackState(PlayerCombatStateMachine combatStateMachine, PlayerAnimation playerAnimation, float attackStateTime, WeaponSFXController weaponSFXController, PlayerStats playerStats)
+    public PlayerCombatAttackState(PlayerCombatStateMachine combatStateMachine, PlayerAnimation playerAnimation, float attackStateTime, WeaponSFXController weaponSFXController, IPlayerStatProvider statProvider)
     {
         _combatStateMachine = combatStateMachine;
         _playerAnimation = playerAnimation;
         _attackStateTime = attackStateTime;
         _weaponSFXController = weaponSFXController;
-        _playerStats = playerStats;
+        _statProvider = statProvider;
     }
 
     public void Enter()
@@ -70,11 +71,11 @@ public class PlayerCombatAttackState : IState
             return;
         }
 
-        if (_playerStats == null)
+        if (_statProvider == null)
         {
             return;
         }
 
-        _weaponSFXController.PlayWeaponSfx(_playerStats.WeaponType);
+        _weaponSFXController.PlayWeaponSfx(_statProvider.WeaponType);
     }
 }

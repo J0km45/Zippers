@@ -1,5 +1,6 @@
 using Audio;
 using UnityEngine;
+using Zippers.Network.Contracts;
 
 public class PlayerCombatStateMachine : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
     private StateMachine _stateMachine;
 
     private WeaponSFXController _weaponSfxController;
-    private PlayerStats _playerStats;
+    private IPlayerStatProvider _statProvider;
 
     private PlayerAim _playerAim;
     private PlayerAnimation _playerAnimation;
@@ -35,12 +36,12 @@ public class PlayerCombatStateMachine : MonoBehaviour
         _playerAnimation = GetComponent<PlayerAnimation>();
         _playerReload = GetComponent<PlayerReload>();
         _weaponSfxController = GetComponentInChildren<WeaponSFXController>();
-        _playerStats = GetComponent<PlayerStats>();
+        _statProvider = GetComponent<IPlayerStatProvider>();
 
         _noneState = new PlayerCombatNoneState(this);
         _aimState = new PlayerCombatAimState(this);
-        _attackState = new PlayerCombatAttackState(this, _playerAnimation, _attackStateTime, _weaponSfxController, _playerStats);
-        _reloadState = new PlayerCombatReloadState(this, _playerAnimation, _playerReload, _weaponSfxController,_playerStats);
+        _attackState = new PlayerCombatAttackState(this, _playerAnimation, _attackStateTime, _weaponSfxController, _statProvider);
+        _reloadState = new PlayerCombatReloadState(this, _playerAnimation, _playerReload, _weaponSfxController,_statProvider);
     }
 
     private void OnEnable()
