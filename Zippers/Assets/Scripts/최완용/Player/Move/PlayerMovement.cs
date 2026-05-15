@@ -1,15 +1,15 @@
 using UnityEngine;
-
+using Zippers.Network.Contracts;
 public class PlayerMovement : MonoBehaviour
 {
-    private PlayerStats _playerStats;
+    private IPlayerStatProvider _statProvider;
     private Rigidbody _rb;
     public bool IsSprinting { get; private set; }
     public Vector3 MoveDir{ get; private set; }
 
     public void Awake()
     {
-        _playerStats = GetComponent<PlayerStats>();
+        _statProvider = GetComponent<IPlayerStatProvider>();
         _rb = GetComponent<Rigidbody>();
     }
 
@@ -42,9 +42,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if(!IsSprinting)
         {
-            return _playerStats.TotalMoveSpeed;
+            return _statProvider.TotalMoveSpeed;
         }
-        return _playerStats.TotalSprintMoveSpeed;
+        return _statProvider.TotalSprintMoveSpeed;
     }
     public void StopMove()
     {
