@@ -11,6 +11,7 @@ public class RoomCreatePanelController : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TMP_InputField _roomNameInput;
     [SerializeField] private TMP_InputField _maxPlayersInput;
+    [SerializeField] private TMP_Dropdown _maxPlayersDropdown;
     [SerializeField] private Button _createButton;
     [SerializeField] private TMP_Text _statusText;
     [SerializeField] private int _defaultMaxPlayers = 4;
@@ -36,6 +37,7 @@ public class RoomCreatePanelController : MonoBehaviour
         if (_createButton != null) _createButton.onClick.AddListener(OnCreateClicked);
         if (_roomNameInput != null) _roomNameInput.onValueChanged.AddListener(OnRoomNameChanged);
         if (_maxPlayersInput != null) _maxPlayersInput.onValueChanged.AddListener(OnMaxPlayersChanged);
+        if (_maxPlayersDropdown != null) _maxPlayersDropdown.onValueChanged.AddListener(OnMaxPlayersDropdownChanged);
         RefreshCreateButtonState();
     }
 
@@ -44,6 +46,7 @@ public class RoomCreatePanelController : MonoBehaviour
         if (_createButton != null) _createButton.onClick.RemoveListener(OnCreateClicked);
         if (_roomNameInput != null) _roomNameInput.onValueChanged.RemoveListener(OnRoomNameChanged);
         if (_maxPlayersInput != null) _maxPlayersInput.onValueChanged.RemoveListener(OnMaxPlayersChanged);
+        if (_maxPlayersDropdown != null) _maxPlayersDropdown.onValueChanged.RemoveListener(OnMaxPlayersDropdownChanged);
     }
 
     public void ResetPanel()
@@ -51,6 +54,7 @@ public class RoomCreatePanelController : MonoBehaviour
         _busy = false;
         if (_roomNameInput != null) _roomNameInput.text = string.Empty;
         if (_maxPlayersInput != null) _maxPlayersInput.text = _defaultMaxPlayers.ToString();
+        SelectMaxPlayersDropdownValue(_defaultMaxPlayers);
         SetStatus(string.Empty);
         RefreshCreateButtonState();
     }
@@ -71,6 +75,12 @@ public class RoomCreatePanelController : MonoBehaviour
         {
             _maxPlayersInput.SetTextWithoutNotify(digitsOnly);
         }
+    }
+
+    private void OnMaxPlayersDropdownChanged(int _)
+    {
+        if (_busy) return;
+        RefreshCreateButtonState();
     }
 
     private void RefreshCreateButtonState()
@@ -185,7 +195,7 @@ public class RoomCreatePanelController : MonoBehaviour
 
     private void AutoWireOptionalReferences()
     {
-        if (_maxPlayersInput != null) return;
+        if (_maxPlayersInput != null || _maxPlayersDropdown != null) return;
 
         TMP_InputField[] inputs = GetComponentsInChildren<TMP_InputField>(true);
         for (int i = 0; i < inputs.Length; i++)
@@ -199,10 +209,54 @@ public class RoomCreatePanelController : MonoBehaviour
                 return;
             }
         }
+
+        TMP_Dropdown[] dropdowns = GetComponentsInChildren<TMP_Dropdown>(true);
+        for (int i = 0; i < dropdowns.Length; i++)
+        {
+            TMP_Dropdown dropdown = dropdowns[i];
+            if (dropdown == null) continue;
+
+            if (ContainsAny(dropdown.gameObject.name, "PlayerCount", "MaxPlayers", "MaxPlayer", "인원", "플레이어")
+                || HasNumericPlayerOptions(dropdown))
+            {
+                _maxPlayersDropdown = dropdown;
+                return;
+            }
+        }
+
+        TMP_Dropdown[] sceneDropdowns = FindObjectsByType<TMP_Dropdown>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        for (int i = 0; i < sceneDropdowns.Length; i++)
+        {
+            TMP_Dropdown dropdown = sceneDropdowns[i];
+            if (dropdown == null || !dropdown.gameObject.scene.IsValid()) continue;
+
+            if (ContainsAny(dropdown.gameObject.name, "PlayerCount", "MaxPlayers", "MaxPlayer", "인원", "플레이어")
+                || HasNumericPlayerOptions(dropdown))
+            {
+                _maxPlayersDropdown = dropdown;
+                return;
+            }
+        }
     }
 
     private bool TryGetMaxPlayers(out int maxPlayers)
     {
+        if (_maxPlayersInput != null)
+        {
+            string rawValue = _maxPlayersInput.text?.Trim();
+            if (!int.TryParse(rawValue, out maxPlayers))
+            {
+                return false;
+            }
+
+            return maxPlayers >= _minMaxPlayers && maxPlayers <= _maxMaxPlayers;
+        }
+
+        if (_maxPlayersDropdown != null)
+        {
+            return TryGetDropdownMaxPlayers(_maxPlayersDropdown, out maxPlayers);
+        }
+
         if (_maxPlayersInput == null)
         {
             // 입력칸이 없으면 기본 인원 수 사용
@@ -210,15 +264,47 @@ public class RoomCreatePanelController : MonoBehaviour
             return true;
         }
 
-        string rawValue = _maxPlayersInput.text?.Trim();
-        if (!int.TryParse(rawValue, out maxPlayers))
-        {
-            return false;
-        }
+        maxPlayers = 0;
+        return false;
+    }
 
-        if (maxPlayers < _minMaxPlayers || maxPlayers > _maxMaxPlayers)
+    private bool TryGetDropdownMaxPlayers(TMP_Dropdown dropdown, out int maxPlayers)
+    {
+        maxPlayers = 0;
+        if (dropdown == null || dropdown.options == null || dropdown.options.Count == 0) return false;
+
+        int index = Mathf.Clamp(dropdown.value, 0, dropdown.options.Count - 1);
+        string rawValue = ExtractDigits(dropdown.options[index].text);
+        if (!int.TryParse(rawValue, out maxPlayers)) return false;
+
+        return maxPlayers >= _minMaxPlayers && maxPlayers <= _maxMaxPlayers;
+    }
+
+    private void SelectMaxPlayersDropdownValue(int maxPlayers)
+    {
+        if (_maxPlayersDropdown == null || _maxPlayersDropdown.options == null) return;
+
+        string target = maxPlayers.ToString();
+        for (int i = 0; i < _maxPlayersDropdown.options.Count; i++)
         {
-            return false;
+            if (ExtractDigits(_maxPlayersDropdown.options[i].text) == target)
+            {
+                _maxPlayersDropdown.SetValueWithoutNotify(i);
+                _maxPlayersDropdown.RefreshShownValue();
+                return;
+            }
+        }
+    }
+
+    private bool HasNumericPlayerOptions(TMP_Dropdown dropdown)
+    {
+        if (dropdown == null || dropdown.options == null || dropdown.options.Count == 0) return false;
+
+        for (int i = 0; i < dropdown.options.Count; i++)
+        {
+            string digits = ExtractDigits(dropdown.options[i].text);
+            if (!int.TryParse(digits, out int value)) return false;
+            if (value < _minMaxPlayers || value > _maxMaxPlayers) return false;
         }
 
         return true;

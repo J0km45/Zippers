@@ -80,6 +80,7 @@ public class LobbyManager : MonoBehaviour
         {
             if (!IsHost || _session == null || _isStartingGame) return false;
             if (Time.realtimeSinceStartup - _lastGameEndRealtime < _settings.GameRestartCooldownSec) return false;
+            if (IsSoloHostSession()) return true;
             if (_session.PlayerCount < _settings.MinPlayersToStart) return false;
             return AreNonHostPlayersReady();
         }
@@ -450,9 +451,7 @@ public class LobbyManager : MonoBehaviour
     /// <summary>호스트만 호출. 세션 잠금 후 NGO 게임 씬 동기화 로드.</summary>
     public async Task<bool> TryStartGameAsHostAsync()
     {
-        if (!IsHost || _session == null || _isStartingGame) return false;
-        if (Time.realtimeSinceStartup - _lastGameEndRealtime < _settings.GameRestartCooldownSec) return false;
-        if (_session.PlayerCount < _settings.MinPlayersToStart || !AreNonHostPlayersReady()) return false;
+        if (!CanHostStartGame) return false;
 
         _isStartingGame = true;
         ExpectedPlayerCount = _session.PlayerCount;
@@ -819,6 +818,11 @@ public class LobbyManager : MonoBehaviour
         return hasNonHost;
     }
 
+    private bool IsSoloHostSession()
+    {
+        return _session != null && _session.MaxPlayers == 1 && _session.PlayerCount == 1;
+    }
+
     private Dictionary<string, PlayerProperty> BuildLocalPlayerProperties()
     {
         // _pendingLocalInfo 가 SetLocalPlayerInfo 로 채워져 있으면 그 값을, 아니면 기본값을 직렬화.
@@ -950,9 +954,13 @@ public class LobbyManager : MonoBehaviour
         string hostId = _session.CurrentPlayer?.Id;
         if (string.IsNullOrEmpty(hostId)) return;
 
+        int maxPlayers = GetCurrentSessionMaxPlayers();
         Dictionary<int, string> next = new Dictionary<int, string>();
         // SessionProperty 에 이미 무언가 적혀있을 가능성은 새 세션이라 거의 없지만, 안전하게 병합.
-        foreach (KeyValuePair<int, string> kv in _slotCache) next[kv.Key] = kv.Value;
+        foreach (KeyValuePair<int, string> kv in _slotCache)
+        {
+            if (kv.Key >= 0 && kv.Key < maxPlayers) next[kv.Key] = kv.Value;
+        }
         next[0] = hostId;
 
         await WriteSlotMapAsync(next);
@@ -1049,8 +1057,10 @@ public class LobbyManager : MonoBehaviour
         {
             Dictionary<int, string> parsed = JsonConvert.DeserializeObject<Dictionary<int, string>>(prop.Value);
             if (parsed == null) return;
+            int maxPlayers = GetCurrentSessionMaxPlayers();
             foreach (KeyValuePair<int, string> kv in parsed)
             {
+                if (kv.Key < 0 || kv.Key >= maxPlayers) continue;
                 _slotCache[kv.Key] = kv.Value;
             }
         }
@@ -1061,6 +1071,13 @@ public class LobbyManager : MonoBehaviour
     }
 
     // 호스트의 슬롯 갱신 작업을 직렬화. 이전 작업이 실패해도 체인은 계속 진행되도록 try/catch 로 감쌈.
+    private int GetCurrentSessionMaxPlayers()
+    {
+        if (_session != null && _session.MaxPlayers > 0) return _session.MaxPlayers;
+        if (_settings != null && _settings.MaxPlayers > 0) return _settings.MaxPlayers;
+        return 4;
+    }
+
     private static async Task ChainSlotUpdate(Task previous, Func<Task> next)
     {
         try { await previous; }
