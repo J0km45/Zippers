@@ -71,6 +71,13 @@ public class PlayerCombat : NetworkBehaviour
     [ServerRpc]
     private void RequestReloadServerRpc(ServerRpcParams rpcParams = default)
     {
+        //추가
+        DebugTool.Log(
+        $"[PlayerCombat] 재장전 RPC 도착 / Sender: {rpcParams.Receive.SenderClientId}, Owner: {OwnerClientId}, IsOwner: {IsOwner}, IsServer: {IsServer}",
+        DebugType.CombatNet,
+        this
+        );
+
         if (rpcParams.Receive.SenderClientId != OwnerClientId)
         {
             DebugTool.Log("[PlayerCombat] Owner가 아닌 클라이언트의 재장전 요청 무시", DebugType.CombatNet, this);

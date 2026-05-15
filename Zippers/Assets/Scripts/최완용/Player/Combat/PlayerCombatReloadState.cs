@@ -28,12 +28,15 @@ public class PlayerCombatReloadState : IState
             return;
         }
 
-        bool reloadStarted = _playerReload.StartReload();
-
-        if (!reloadStarted)
+        if (!_playerReload.IsReloading)
         {
-            _combatStateMachine.ReturnCombatState();
-            return;
+            bool reloadStarted = _playerReload.StartReload();
+
+            if (!reloadStarted)
+            {
+                _combatStateMachine.ReturnCombatState();
+                return;
+            }
         }
 
         if (_playerAnimation != null)

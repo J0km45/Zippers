@@ -62,7 +62,6 @@ public class PlayerReload : MonoBehaviour
                 _combatNetState.ServerInitializeAmmo(0f);
             }
 
-            Debug.Log("[PlayerReload] 탄창을 사용하지 않는 클래스입니다.");
             return;
         }
         if (!TryGetMaxBullet(out float totalMaxBullet))
@@ -97,7 +96,6 @@ public class PlayerReload : MonoBehaviour
         IsReloading = false;
 
         OnAmmoChanged?.Invoke(CurrentBullet, MaxBullet);
-        Debug.Log($"[PlayerReload] 탄창 초기화 완료: {CurrentBullet}/{MaxBullet}");
     }
     //업그레이드 UI에서 연결
     public void RefreshMaxBullet()
@@ -109,7 +107,6 @@ public class PlayerReload : MonoBehaviour
 
         if (!TryGetMaxBullet(out float totalMaxBullet))
         {
-            Debug.LogError("[PlayerReload] 최대 탄창 정보를 찾을 수 없습니다.");
             return;
         }
 

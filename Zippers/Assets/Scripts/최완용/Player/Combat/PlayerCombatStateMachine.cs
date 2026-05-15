@@ -48,6 +48,7 @@ public class PlayerCombatStateMachine : MonoBehaviour
     {
         if (_playerReload != null)
         {
+            _playerReload.OnReloadStarted += OnReloadStarted;
             _playerReload.OnReloadCompleted += OnReloadCompleted;
         }
     }
@@ -56,8 +57,13 @@ public class PlayerCombatStateMachine : MonoBehaviour
     {
         if (_playerReload != null)
         {
+            _playerReload.OnReloadStarted -= OnReloadStarted;
             _playerReload.OnReloadCompleted -= OnReloadCompleted;
         }
+    }
+    private void OnReloadStarted()
+    {
+        RequestReload();
     }
 
     private void Start()

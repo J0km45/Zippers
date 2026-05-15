@@ -29,7 +29,6 @@ public class PlayerController : NetworkBehaviour
         if (!IsNetworkGameRunning())
         {
             EnableLocalInput();
-            Debug.Log("[PlayerController] 싱글 테스트 입력 활성화");
         }
     }
 
@@ -38,7 +37,6 @@ public class PlayerController : NetworkBehaviour
         if(IsOwner || IsLocalPlayer)
         {
             EnableLocalInput();
-            Debug.Log("[PlayerController] 네트워크 플레이어 입력 활성화");
             return;
         }
         DisableLocalInput();
