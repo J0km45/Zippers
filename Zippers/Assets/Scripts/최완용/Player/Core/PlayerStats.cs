@@ -360,7 +360,7 @@ public class PlayerStats : MonoBehaviour, IPlayerStatProvider
     }
     public float GetRandomDamage()
     {
-        return Random.Range(TotalMinDamage, TotalMaxDamage);
+        return UnityEngine.Random.Range(TotalMinDamage, TotalMaxDamage);
     }
 }
 

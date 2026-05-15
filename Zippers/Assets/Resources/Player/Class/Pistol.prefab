@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 4325717456152772888}
   - component: {fileID: 3022058943557902329}
   - component: {fileID: 9168189480512593015}
+  - component: {fileID: 1473001660531194009}
   m_Layer: 10
   m_Name: Pistol
   m_TagString: Untagged
@@ -773,6 +774,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.PlayerCombatNetState
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &1473001660531194009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019482250056662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bf9387419da093429ec8ae91e3f40e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTransform
 --- !u!1 &1026896123653936
 GameObject:
   m_ObjectHideFlags: 0
