@@ -1,13 +1,17 @@
 using System;
-using UnityEngine;
 using Unity.Netcode;
+using UnityEngine;
+using Zippers.Network.Contracts;
 
 public class PlayerCombat : NetworkBehaviour
 {
     public event Action OnAttackPerformed;
 
     private PlayerStats _playerStats;
+    private IPlayerStatProvider _statProvider;
+
     private PlayerReload _playerReload;
+    private PlayerCombatNetState _combatNetState;
 
     private PlayerCombatStateMachine _combatStateMachine;
     private PlayerGun _playerGun;
@@ -18,7 +22,11 @@ public class PlayerCombat : NetworkBehaviour
     private void Awake()
     {
         _playerStats = GetComponent<PlayerStats>();
+        _statProvider = GetComponent<IPlayerStatProvider>();
+
         _playerReload = GetComponent<PlayerReload>();
+        _combatNetState = GetComponent<PlayerCombatNetState>();
+
         _combatStateMachine = GetComponent<PlayerCombatStateMachine>();
         _playerGun = GetComponent<PlayerGun>();
         _playerHitScan = GetComponent<PlayerHitScan>();
@@ -26,97 +34,340 @@ public class PlayerCombat : NetworkBehaviour
 
     public void TryAttack()
     {
-        //TODO : 공격 요청은 서버에서 공격 쿨타임 , 탄약, 재장전 ,사망상태를 검증해야됨
-        if (_playerStats == null)
+        bool isAiming = _combatStateMachine != null && _combatStateMachine.IsAiming;
+
+        if (!IsServer)
         {
-            Debug.LogError("[PlayerCombat] PlayerStats가 없습니다.");
+            RequestAttackServerRpc(isAiming);
             return;
         }
 
-        if (_playerReload.IsReloading)
+        TryAttackServer(isAiming);
+    }
+
+    public void TryReload()
+    {
+        if (!IsServer)
         {
-            Debug.Log("[PlayerCombat] 재장전 중이라 공격 불가");
+            RequestReloadServerRpc();
             return;
         }
-        //TODO : 서버 에서 검증해야됨
-        if (Time.time < _lastAttackTime + _playerStats.TotalAttackSpeed)
+
+        TryReloadServer();
+    }
+
+    [ServerRpc]
+    private void RequestAttackServerRpc(bool isAiming, ServerRpcParams rpcParams = default)
+    {
+        if (rpcParams.Receive.SenderClientId != OwnerClientId)
         {
-            DebugTool.Log("[PlayerCombat] 공격 속도 제한 중", DebugType.Data, this);
+            DebugTool.Log("[PlayerCombat] Owner가 아닌 클라이언트의 공격 요청 무시", DebugType.CombatNet, this);
             return;
         }
-        if(IsGunWeapon() && !_combatStateMachine.IsAiming)
+
+        TryAttackServer(isAiming);
+    }
+
+    [ServerRpc]
+    private void RequestReloadServerRpc(ServerRpcParams rpcParams = default)
+    {
+        if (rpcParams.Receive.SenderClientId != OwnerClientId)
+        {
+            DebugTool.Log("[PlayerCombat] Owner가 아닌 클라이언트의 재장전 요청 무시", DebugType.CombatNet, this);
+            return;
+        }
+
+        TryReloadServer();
+    }
+
+    private void TryAttackServer(bool isAiming)
+    {
+        if (!IsServer)
         {
             return;
         }
+
+        if (_playerReload == null)
+        {
+            DebugTool.Log("[PlayerCombat] PlayerReload가 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        if (!TryGetWeaponType(out WeaponType weaponType))
+        {
+            DebugTool.Log("[PlayerCombat] 무기 정보를 찾을 수 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        if (IsDead())
+        {
+            DebugTool.Log("[PlayerCombat] 사망 상태라 공격 불가", DebugType.CombatNet, this);
+            return;
+        }
+
+        if (IsReloading())
+        {
+            DebugTool.Log("[PlayerCombat] 재장전 중이라 공격 불가", DebugType.CombatNet, this);
+            return;
+        }
+
+        if (Time.time < _lastAttackTime + GetAttackSpeed())
+        {
+            DebugTool.Log("[PlayerCombat] 공격 속도 제한 중", DebugType.CombatNet, this);
+            return;
+        }
+
+        if (IsGunWeapon() && !isAiming)
+        {
+            DebugTool.Log("[PlayerCombat] 총기 무기는 조준 중일 때만 공격 가능", DebugType.CombatNet, this);
+            return;
+        }
+
         if (!_playerReload.TryUseAmmo())
         {
-            DebugTool.Log("[PlayerCombat] 탄창 없음 - 자동 재장전 시도", DebugType.Data, this);
-            _combatStateMachine.RequestReload();
+            DebugTool.Log("[PlayerCombat] 탄창 없음 - 서버에서 재장전 시도", DebugType.CombatNet, this);
+            TryReloadServer();
             return;
         }
 
         _lastAttackTime = Time.time;
-        //TODO : 데미지 계산은 모든 업그레이드가 반영된 서버 스텟기준으로 해야됨
-        float damage = _playerStats.GetRandomDamage();
 
-        OnAttackPerformed?.Invoke();
-        _combatStateMachine.RequestAttack();
+        float damage = GetRandomDamage();
 
         ExecuteAttack(damage);
+        PlayAttackClientRpc();
 
-        DebugTool.Log($"[PlayerCombat] 공격 성공 / Damage: {damage}", DebugType.Data, this);
-
-        // TODO: 이후 실제 공격 판정 추가
-        // 원거리: Raycast 또는 Projectile
-        // 근접: 범위 판정
+        DebugTool.Log($"[PlayerCombat] 서버 공격 성공 / Weapon: {weaponType}, Damage: {damage}", DebugType.CombatNet, this);
     }
+
+    private void TryReloadServer()
+    {
+        if (!IsServer)
+        {
+            return;
+        }
+
+        if (_playerReload == null)
+        {
+            DebugTool.Log("[PlayerCombat] PlayerReload가 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        if (IsDead())
+        {
+            DebugTool.Log("[PlayerCombat] 사망 상태라 재장전 불가", DebugType.CombatNet, this);
+            return;
+        }
+
+        bool reloadStarted = _playerReload.StartReload();
+
+        if (!reloadStarted)
+        {
+            DebugTool.Log("[PlayerCombat] 재장전 시작 실패", DebugType.CombatNet, this);
+        }
+    }
+
+    [ClientRpc]
+    private void PlayAttackClientRpc()
+    {
+        OnAttackPerformed?.Invoke();
+
+        if (_combatStateMachine != null)
+        {
+            _combatStateMachine.RequestAttack();
+        }
+    }
+
     private void ExecuteAttack(float damage)
     {
-        //TODO : 실제 공격 실행은 서버 승인 후 클라이언트가 애니매이션/사운드/이펙트를 재생하는 구조로 변경
-        switch (_playerStats.WeaponType)
+        if (!TryGetWeaponType(out WeaponType weaponType))
+        {
+            DebugTool.Log("[PlayerCombat] 무기 정보를 찾을 수 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        switch (weaponType)
         {
             case WeaponType.Rifle:
             case WeaponType.Pistol:
                 Projectile(damage);
                 break;
+
             case WeaponType.Melee:
                 MeleeHitScan(damage);
                 break;
+
             case WeaponType.Shotgun:
-                ShotGunHitScan(damage); 
+                ShotGunHitScan(damage);
                 break;
         }
     }
+
     private void Projectile(float damage)
     {
-        bool canPirece = _playerStats.WeaponType == WeaponType.Pistol || _playerStats.WeaponType == WeaponType.Rifle;
+        if (_playerGun == null)
+        {
+            DebugTool.Log("[PlayerCombat] PlayerGun이 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
 
-        _playerGun.Shoot
-            (
-                damage,
-                _playerStats.TotalBulletSpeed,
-                _playerStats.TotalBulletDistance,
-                canPirece
-            );
+        if (!TryGetWeaponType(out WeaponType weaponType))
+        {
+            DebugTool.Log("[PlayerCombat] 무기 정보를 찾을 수 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        bool canPierce = weaponType == WeaponType.Pistol || weaponType == WeaponType.Rifle;
+
+        _playerGun.Shoot(
+            damage,
+            GetBulletSpeed(),
+            GetBulletDistance(),
+            canPierce
+        );
     }
+
     private void MeleeHitScan(float damage)
     {
+        if (_playerHitScan == null)
+        {
+            DebugTool.Log("[PlayerCombat] PlayerHitScan이 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
         _playerHitScan.MeleeHitScan(damage);
     }
 
     private void ShotGunHitScan(float damage)
     {
-        _playerHitScan.ShotGunHitScan
-            (
-                damage,
-                _playerStats.TotalBulletDistance
-            );
+        if (_playerHitScan == null)
+        {
+            DebugTool.Log("[PlayerCombat] PlayerHitScan이 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        _playerHitScan.ShotGunHitScan(
+            damage,
+            GetBulletDistance()
+        );
     }
+
     private bool IsGunWeapon()
     {
-        return _playerStats.WeaponType == WeaponType.Pistol ||
-            _playerStats.WeaponType == WeaponType.Rifle ||
-            _playerStats.WeaponType == WeaponType.Shotgun;
+        if (!TryGetWeaponType(out WeaponType weaponType))
+        {
+            return false;
+        }
 
+        return weaponType == WeaponType.Pistol ||
+               weaponType == WeaponType.Rifle ||
+               weaponType == WeaponType.Shotgun;
+    }
+
+    private bool TryGetWeaponType(out WeaponType weaponType)
+    {
+        if (_statProvider != null)
+        {
+            weaponType = _statProvider.WeaponType;
+            return true;
+        }
+
+        if (_playerStats != null)
+        {
+            weaponType = _playerStats.WeaponType;
+            return true;
+        }
+
+        weaponType = default;
+        return false;
+    }
+
+    private float GetAttackSpeed()
+    {
+        if (_statProvider != null)
+        {
+            return _statProvider.TotalAttackSpeed;
+        }
+
+        if (_playerStats != null)
+        {
+            return _playerStats.TotalAttackSpeed;
+        }
+
+        return 0.1f;
+    }
+
+    private float GetRandomDamage()
+    {
+        if (_playerStats != null)
+        {
+            return _playerStats.GetRandomDamage();
+        }
+
+        if (_statProvider != null)
+        {
+            return UnityEngine.Random.Range(
+                _statProvider.TotalMinDamage,
+                _statProvider.TotalMaxDamage
+            );
+        }
+
+        return 0f;
+    }
+
+    private float GetBulletSpeed()
+    {
+        if (_statProvider != null)
+        {
+            return _statProvider.TotalBulletSpeed;
+        }
+
+        if (_playerStats != null)
+        {
+            return _playerStats.TotalBulletSpeed;
+        }
+
+        return 0f;
+    }
+
+    private float GetBulletDistance()
+    {
+        if (_statProvider != null)
+        {
+            return _statProvider.TotalBulletDistance;
+        }
+
+        if (_playerStats != null)
+        {
+            return _playerStats.TotalBulletDistance;
+        }
+
+        return 0f;
+    }
+
+    private bool IsDead()
+    {
+        return _combatNetState != null && _combatNetState.IsDead;
+    }
+
+    private bool IsReloading()
+    {
+        if (_combatNetState != null)
+        {
+            return _combatNetState.IsReloading;
+        }
+
+        return _playerReload != null && _playerReload.IsReloading;
     }
 }
+
+/*
+Unity 적용 방법
+1. 기존 PlayerCombat.cs 전체를 이 코드로 교체한다.
+2. 기존 함수명 TryAttack, ExecuteAttack, Projectile, MeleeHitScan, ShotGunHitScan, IsGunWeapon은 유지된다.
+3. 플레이어 프리팹에 PlayerCombatNetState가 붙어 있는지 확인한다.
+4. PlayerReload가 PlayerCombatNetState와 연결되어 있는지 확인한다.
+5. 공격 입력은 기존처럼 PlayerCombat.TryAttack()을 호출하면 된다.
+6. 수동 재장전 입력은 PlayerCombat.TryReload()를 호출하도록 PlayerController.OnReload를 수정한다.
+7. 이 코드는 네트워크 전용 구조라서 오프라인 싱글 분기는 없다.
+*/

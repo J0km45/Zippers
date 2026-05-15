@@ -1,240 +1,259 @@
-using UnityEngine;
 using System;
+using Unity.Netcode;
+using UnityEngine;
+using Zippers.Network;
 
+/// <summary>
+/// [MIGRATION · Step 2] 호환 래퍼.
+///
+/// 원래 이 컴포넌트가 자체적으로 _scrap / _infectionSample 을 들고 있었지만,
+/// 멀티 전환을 위해 데이터를 다음 NetworkBehaviour 로 옮겼다:
+///   - Scrap / InfectionSample → PlayerEconomyNetState (같은 GameObject)
+///   - Supplies → TeamEconomyNetState (씬 singleton, TeamResourceManager 래퍼 경유)
+///
+/// 이 파일은 IResourceCollectable 인터페이스 시그니처와 외부 이벤트를 보존하기 위해 유지.
+/// 외부 호출(아이템 픽업 / 몬스터 보상 / 업그레이드 비용 검증)은 변경 없이 동작.
+///
+/// 외부 시그니처 (호출 코드 변경 불필요):
+///   - Scrap / Supplies / InfectionSample 프로퍼티
+///   - CollectResource(type, amount)         — IResourceCollectable
+///   - HasEnoughResource(type, amount)
+///   - UseResource(type, amount)
+///   - OnResourceCollected / OnResourceUsed 이벤트
+/// </summary>
 public class PlayerResourceCollector : MonoBehaviour, IResourceCollectable
 {
     public Action<ResourcesType, float> OnResourceCollected;
     public Action<ResourcesType, float> OnResourceUsed;
 
-    private float _scrap;
-    private float _infectionSample;
-
+    private PlayerEconomyNetState _economyNetState;
     private TeamResourceManager _teamResourceManager;
 
-    public float Scrap => _scrap;
-    public float Supplies => _teamResourceManager != null ? _teamResourceManager.Supplies : 0f;
-    public float InfectionSample => _infectionSample;
+    private bool _economyEventBound;
+    private bool _teamEventBound;
+
+    // ── 프로퍼티 ─────────────────────────────────────────────────────
+    public float Scrap =>
+        _economyNetState != null ? _economyNetState.CurrentScrap : 0f;
+
+    public float InfectionSample =>
+        _economyNetState != null ? _economyNetState.CurrentInfectionSample : 0f;
+
+    public float Supplies =>
+        _teamResourceManager != null ? _teamResourceManager.Supplies : 0f;
+
+    // ── Lifecycle ───────────────────────────────────────────────────
 
     private void Awake()
     {
-        TryConnectTeamResourceManager();
-    }
-
-    private void OnEnable()
-    {
-        TryConnectTeamResourceManager();
-
-        if (_teamResourceManager != null)
+        _economyNetState = GetComponent<PlayerEconomyNetState>();
+        if (_economyNetState == null)
         {
-            _teamResourceManager.TeamResourceChanged += HandleTeamResourceChanged;
+            DebugTool.Log("[PlayerResourceCollector] PlayerEconomyNetState 가 같은 GameObject 에 없습니다.", DebugType.Data, this);
         }
+
+        TryConnectTeamResourceManager();
     }
 
     private void OnDisable()
     {
-        if (_teamResourceManager != null)
+        UnbindEvents();
+    }
+
+    private void OnDestroy()
+    {
+        UnbindEvents();
+    }
+
+    /// <summary>
+    /// PlayerEconomyNetState 의 NetworkVariable 콜백은 OnNetworkSpawn 이후에 안정적으로 등록 가능.
+    /// TeamResourceManager 의 이벤트도 마찬가지로 늦게 준비될 수 있어서 매 프레임 lazy bind.
+    /// </summary>
+    private void Update()
+    {
+        TryBindEvents();
+    }
+
+    private void TryBindEvents()
+    {
+        // PlayerEconomyNetState 이벤트
+        if (!_economyEventBound && _economyNetState != null)
+        {
+            _economyNetState.OnResourceChanged += HandleEconomyResourceChanged;
+            _economyEventBound = true;
+        }
+
+        // TeamResourceManager 이벤트
+        if (!_teamEventBound)
+        {
+            TryConnectTeamResourceManager();
+            if (_teamResourceManager != null)
+            {
+                _teamResourceManager.TeamResourceChanged += HandleTeamResourceChanged;
+                _teamEventBound = true;
+            }
+        }
+    }
+
+    private void UnbindEvents()
+    {
+        if (_economyEventBound && _economyNetState != null)
+        {
+            _economyNetState.OnResourceChanged -= HandleEconomyResourceChanged;
+            _economyEventBound = false;
+        }
+        if (_teamEventBound && _teamResourceManager != null)
         {
             _teamResourceManager.TeamResourceChanged -= HandleTeamResourceChanged;
+            _teamEventBound = false;
         }
     }
 
-    public void CollectResource(ResourcesType type, float amount)
-    {
-        //TODO : 재화 획득은 클라이언트가 직접 증가시키지 않고 서버에 획득 요청 후 승인결과를 반영해야됨
-        if (type == ResourcesType.Supplies)
-        {
-            AddTeamSupplies(amount);
-            return;
-        }
-
-        bool isAdded = AddResource(type, amount);
-
-        if (!isAdded)
-        {
-            return;
-        }
-
-        OnResourceCollected?.Invoke(type, amount);
-    }
-
-    // 재화 보유량 확인
-    public bool HasEnoughResource(ResourcesType type, float amount)
-    {
-        //TODO : 멀티 전환 시 재화 보유량 검사는 클라이언트 값이 아니라 서버 값을 기준으로 해야 됨
-        if (amount <= 0f)
-        {
-            return false;
-        }
-
-        if (type == ResourcesType.Supplies)
-        {
-            TryConnectTeamResourceManager();
-
-            if (_teamResourceManager == null)
-            {
-                return false;
-            }
-
-            return _teamResourceManager.HasEnoughResource(type, amount);
-        }
-
-        return GetResourceAmount(type) >= amount;
-    }
-
-    // 재화 사용
-    public bool UseResource(ResourcesType type, float amount)
-    {
-        //TODO : 재화 사용 차감은 서버거 보유량을 검증한 뒤 처리해야 됨
-        if (amount <= 0f)
-        {
-            return false;
-        }
-
-        if (type == ResourcesType.Supplies)
-        {
-            TryConnectTeamResourceManager();
-
-            if (_teamResourceManager == null)
-            {
-                DebugTool.Log("[PlayerResourceCollector] TeamResourceManager가 없어 Supplies를 사용할 수 없습니다.", DebugType.Data, this);
-                return false;
-            }
-
-            return _teamResourceManager.UseResource(type, amount);
-        }
-
-        if (!HasEnoughResource(type, amount))
-        {
-            DebugTool.Log($"{type} 부족 / 필요: {amount}, 보유: {GetResourceAmount(type)}", DebugType.Data, this);
-            return false;
-        }
-
-        switch (type)
-        {
-            case ResourcesType.Scrap:
-                _scrap -= amount;
-                break;
-
-            case ResourcesType.InfectionSample:
-                _infectionSample -= amount;
-                break;
-
-            case ResourcesType.None:
-                return false;
-
-            default:
-                return false;
-        }
-
-        OnResourceUsed?.Invoke(type, amount);
-        DebugTool.Log($"{type} 사용 : -{amount} / 남은 수량 : {GetResourceAmount(type)}", DebugType.Data, this);
-
-        return true;
-    }
-
-    private bool AddResource(ResourcesType type, float amount)
-    {
-        //TODO : 재화 증가 값은 서버 PlayerRunTimeData의 기준으로 동기화 해야됨
-        switch (type)
-        {
-            case ResourcesType.Scrap:
-                _scrap += amount;
-                DebugTool.Log($"Scrap 획득 : +{amount} / 현재 Scrap : {_scrap}", DebugType.Data, this);
-                return true;
-
-            case ResourcesType.Supplies:
-                DebugTool.Log("[PlayerResourceCollector] Supplies는 TeamResourceManager에서 관리합니다.", DebugType.Data, this);
-                return false;
-
-            case ResourcesType.InfectionSample:
-                _infectionSample += amount;
-                DebugTool.Log($"InfectionSample 획득 : +{amount} / 현재 InfectionSample : {_infectionSample}", DebugType.Data, this);
-                return true;
-
-            case ResourcesType.None:
-                return false;
-
-            default:
-                return false;
-        }
-    }
-
-    private float GetResourceAmount(ResourcesType type)
-    {
-        switch (type)
-        {
-            case ResourcesType.Scrap:
-                return _scrap;
-
-            case ResourcesType.Supplies:
-                TryConnectTeamResourceManager();
-
-                if (_teamResourceManager != null)
-                {
-                    return _teamResourceManager.Supplies;
-                }
-
-                return 0f;
-
-            case ResourcesType.InfectionSample:
-                return _infectionSample;
-
-            case ResourcesType.None:
-                return 0f;
-
-            default:
-                return 0f;
-        }
-    }
-
-    // TeamResourceManager 참조 연결
     private void TryConnectTeamResourceManager()
     {
-        if (_teamResourceManager != null)
-        {
-            return;
-        }
+        if (_teamResourceManager != null) return;
 
         _teamResourceManager = TeamResourceManager.Instance;
-
         if (_teamResourceManager == null)
         {
             _teamResourceManager = FindFirstObjectByType<TeamResourceManager>();
         }
     }
 
-    // Supplies는 개인 재화가 아니라 팀 공용 재화로 추가
+    // ── IResourceCollectable 구현 ───────────────────────────────────
+
+    public void CollectResource(ResourcesType type, float amount)
+    {
+        // Supplies 는 팀 공용 → TeamResourceManager 경유 (내부적으로 TeamEconomyNetState 로 위임)
+        if (type == ResourcesType.Supplies)
+        {
+            AddTeamSupplies(amount);
+            return;
+        }
+
+        // Scrap / InfectionSample 은 본인 PlayerEconomyNetState 로 위임
+        if (_economyNetState == null)
+        {
+            DebugTool.Log("[PlayerResourceCollector] PlayerEconomyNetState 미준비 - 무시", DebugType.Data, this);
+            return;
+        }
+
+        ulong ownerId = _economyNetState.OwnerClientId;
+
+        if (IsServer())
+        {
+            _economyNetState.ServerGrantResource(ownerId, type, amount, "PlayerResourceCollector.CollectResource");
+        }
+        else
+        {
+            // 본인 자원이 아니면 RPC 보낼 권한이 없음 (RequireOwnership=true)
+            // CollectResource 는 보통 본인 행위(아이템 픽업 등)라 IsOwner 가정 가능.
+            if (_economyNetState.IsOwner)
+            {
+                _economyNetState.RequestGrantResourceServerRpc((int)type, amount);
+            }
+            else
+            {
+                DebugTool.Log(
+                    $"[PlayerResourceCollector] CollectResource 클라 호출 무시 (IsOwner=false, type={type})",
+                    DebugType.Data, this);
+            }
+        }
+    }
+
+    public bool HasEnoughResource(ResourcesType type, float amount)
+    {
+        if (amount <= 0f) return false;
+
+        if (type == ResourcesType.Supplies)
+        {
+            TryConnectTeamResourceManager();
+            return _teamResourceManager != null && _teamResourceManager.HasEnoughResource(type, amount);
+        }
+
+        if (_economyNetState == null) return false;
+        return _economyNetState.HasEnoughResource(type, amount);
+    }
+
+    public bool UseResource(ResourcesType type, float amount)
+    {
+        if (amount <= 0f) return false;
+
+        if (type == ResourcesType.Supplies)
+        {
+            TryConnectTeamResourceManager();
+            if (_teamResourceManager == null)
+            {
+                DebugTool.Log("[PlayerResourceCollector] TeamResourceManager 없음 - Supplies 사용 불가", DebugType.Data, this);
+                return false;
+            }
+            return _teamResourceManager.UseResource(type, amount);
+        }
+
+        if (_economyNetState == null) return false;
+
+        ulong ownerId = _economyNetState.OwnerClientId;
+
+        if (IsServer())
+        {
+            return _economyNetState.ServerSpendResource(ownerId, type, amount, "PlayerResourceCollector.UseResource");
+        }
+
+        if (_economyNetState.IsOwner)
+        {
+            _economyNetState.RequestSpendResourceServerRpc((int)type, amount);
+            return true; // 요청 송신 — 실제 차감 결과는 NetworkVariable 동기화 후 확인
+        }
+
+        DebugTool.Log(
+            $"[PlayerResourceCollector] UseResource 클라 호출 무시 (IsOwner=false, type={type})",
+            DebugType.Data, this);
+        return false;
+    }
+
+    // ── 내부 헬퍼 ──────────────────────────────────────────────────
+
     private void AddTeamSupplies(float amount)
     {
         TryConnectTeamResourceManager();
-
         if (_teamResourceManager == null)
         {
-            DebugTool.Log("[PlayerResourceCollector] TeamResourceManager가 없어 Supplies를 추가할 수 없습니다.", DebugType.Data, this);
+            DebugTool.Log("[PlayerResourceCollector] TeamResourceManager 없음 - Supplies 획득 불가", DebugType.Data, this);
             return;
         }
-
         _teamResourceManager.AddResource(ResourcesType.Supplies, amount);
     }
 
-    // 팀 Supplies 변경 이벤트를 받아 UI 갱신용 이벤트만 전달
-    private void HandleTeamResourceChanged(ResourcesType type, float currentAmount, float changedAmount)
+    // PlayerEconomyNetState 의 자원 변경 → 기존 OnResourceCollected/OnResourceUsed 로 재방출
+    private void HandleEconomyResourceChanged(ResourcesType type, float current, float delta)
     {
-        //TODO : 재화 변경 이벤트는 서버가 확정한 결과를 받은 뒤 UI 갱신용으로 호출해야됨
-        if (type != ResourcesType.Supplies)
+        if (delta > 0f)
         {
-            return;
+            OnResourceCollected?.Invoke(type, delta);
         }
+        else if (delta < 0f)
+        {
+            OnResourceUsed?.Invoke(type, Mathf.Abs(delta));
+        }
+    }
 
-        if (changedAmount > 0f)
-        {
-            OnResourceCollected?.Invoke(type, changedAmount);
-        }
-        else if (changedAmount < 0f)
-        {
-            OnResourceUsed?.Invoke(type, Mathf.Abs(changedAmount));
-        }
+    // TeamResourceManager 의 Supplies 변경 → 기존 OnResourceCollected/OnResourceUsed 로 재방출
+    private void HandleTeamResourceChanged(ResourcesType type, float current, float delta)
+    {
+        if (type != ResourcesType.Supplies) return;
 
-        DebugTool.Log($"[PlayerResourceCollector] 팀 Supplies 변경 감지 / 현재 Supplies : {currentAmount}", DebugType.Data, this);
+        if (delta > 0f)
+        {
+            OnResourceCollected?.Invoke(type, delta);
+        }
+        else if (delta < 0f)
+        {
+            OnResourceUsed?.Invoke(type, Mathf.Abs(delta));
+        }
+    }
+
+    private static bool IsServer()
+    {
+        return NetworkManager.Singleton != null && NetworkManager.Singleton.IsServer;
     }
 }

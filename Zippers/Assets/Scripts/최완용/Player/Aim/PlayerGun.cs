@@ -45,7 +45,7 @@ public class PlayerGun : MonoBehaviour
             Quaternion.LookRotation(shootDirection, Vector3.up)
         );
 
-        bullet.Initialize(
+        bullet.Init(
             shootDirection,
             damage,
             bulletSpeed,

@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 723289820514425125}
   - component: {fileID: 3462459890861248568}
   - component: {fileID: 874743191093505252}
+  - component: {fileID: 6630219233687765812}
   m_Layer: 10
   m_Name: Shotgun
   m_TagString: Untagged
@@ -968,10 +969,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1082915869594634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17664e59e9e41db4bafeadae18fee8a0, type: 3}
+  m_Script: {fileID: 11500000, guid: b0e2a825b1518b640a9bc7aacc6d462d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.PlayerCombatNetState
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &6630219233687765812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082915869594634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bf9387419da093429ec8ae91e3f40e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTransform
 --- !u!1 &1103278349565816
 GameObject:
   m_ObjectHideFlags: 0
