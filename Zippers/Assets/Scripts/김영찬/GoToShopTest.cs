@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class GoToShopTest : MonoBehaviour
+public class GoToShopTest : NetworkBehaviour
 {
     [SerializeField] float _waitTime = 3f;
     private ShopTypeMapController _shop;
@@ -16,17 +16,28 @@ public class GoToShopTest : MonoBehaviour
 
     public void OnClickGoToShopButton()
     {
+        if(!IsServer) return;
         StartCoroutine(TestTeleportRoutine());
     }
     
     private IEnumerator TestTeleportRoutine()
     {
-        _shop.gameObject.SetActive(true);
+        ActivateShopMapClientRpc();
         
         yield return YieldContainer.Seconds(_waitTime); 
         
         Transform[] nextMapStartPos = _shop.Data.PlayerSpawnPoint_Down;
         TeleportAllPlayersAsHost(nextMapStartPos);
+    }
+    
+    [ClientRpc]
+    private void ActivateShopMapClientRpc()
+    {
+        if (_shop != null)
+        {
+            _shop.gameObject.SetActive(true);
+            DebugTool.Log($"디버그 상점맵 진입 시도. {_waitTime}초후 이동", DebugType.Node, this);
+        }
     }
     
     private void TeleportAllPlayersAsHost(Transform[] spawnPoints)
