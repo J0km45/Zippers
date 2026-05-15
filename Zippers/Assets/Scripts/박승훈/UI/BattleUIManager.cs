@@ -34,6 +34,7 @@ public class BattleUIManager : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(AddListenerEvent());
+        StartCoroutine(PlayerUiInit());
     }
 
     private void OnDisable()
@@ -75,12 +76,41 @@ public class BattleUIManager : MonoBehaviour
         economyNetState.OnResourceChanged += OnResourcesChanged;
     }
 
+    private IEnumerator PlayerUiInit()
+    {
+        while (_playerStatusReader == null ||
+               _playerStatProvider == null ||
+               economyNetState == null)
+        {
+            yield return null;
+        }
+
+        _statusUiController?.OnHealthValueChanged(
+            _playerStatusReader.CurrentHealth,
+            _playerStatProvider.TotalMaxHealth);
+        DebugTool.Log($"{_playerStatusReader.CurrentHealth} / {_playerStatProvider.TotalMaxHealth}", DebugType.UI, this);
+        
+        _statusUiController?.OnStaminaValueChanged(
+            _playerStatusReader.CurrentStamina, 
+            _playerStatProvider.TotalMaxStamina);
+        
+        _weaponUiController?.SetAmmoText(
+            _playerStatusReader.CurrentAmmo,
+            _playerStatProvider.TotalMagazineCapacity);
+        
+        _resourcesUiController?.ResourcesInit();
+    }
+
     private void RemoveListenerEvent()
     {
-        _playerStatusReader.OnHealthChanged -= OnPlayerHealthChanged;
-        _playerStatusReader.OnStaminaChanged -= OnPlayerStaminaChanged;
-        _playerStatusReader.OnAmmoChanged -= OnPlayerAmmoChanged;
-        economyNetState.OnResourceChanged -= OnResourcesChanged;
+        if(_playerStatusReader != null)
+        {
+            _playerStatusReader.OnHealthChanged -= OnPlayerHealthChanged;
+            _playerStatusReader.OnStaminaChanged -= OnPlayerStaminaChanged;
+            _playerStatusReader.OnAmmoChanged -= OnPlayerAmmoChanged;
+        }
+        if(economyNetState != null)
+            economyNetState.OnResourceChanged -= OnResourcesChanged;
     }
     
     /*private void OnPlayerHealthChanged()
@@ -99,20 +129,16 @@ public class BattleUIManager : MonoBehaviour
             _playerStatusReader.CurrentStamina);
     }*/
     
-    private void OnPlayerHealthChanged(float value1, float value2)
+    private void OnPlayerHealthChanged(float current, float max)
     {
         // 체력 변경
-        _statusUiController?.OnHealthValueChanged(
-            _playerStatProvider.TotalMaxHealth,
-            _playerStatusReader.CurrentHealth);
+        _statusUiController?.OnHealthValueChanged(current, max);
     }
 
-    private void OnPlayerStaminaChanged(float value1, float value2)
+    private void OnPlayerStaminaChanged(float current, float max)
     {
         // 스테미나 변경
-        _statusUiController?.OnStaminaValueChanged(
-            _playerStatProvider.TotalMaxStamina,
-            _playerStatusReader.CurrentStamina);
+        _statusUiController?.OnStaminaValueChanged(current, max);
     }
 
     private void OnPlayerAmmoChanged(float current, float max)
