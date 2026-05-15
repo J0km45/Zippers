@@ -320,5 +320,6 @@ public class TeleportSupporter : NetworkBehaviour
     public void SetMinVoteWin(int preCount, int curCount)
     {
         MinVoteWin = curCount / 2f;
+        CulVoteResult();
     }
 }
