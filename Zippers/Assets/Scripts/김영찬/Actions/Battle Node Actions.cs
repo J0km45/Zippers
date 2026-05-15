@@ -51,7 +51,7 @@ public class BattleNodeBattleAction : INodeAction
     public void EnterState()
     {
         _controller.Controller.EventController.SetCurrentEvent(NodeEventType.MonsterSpawn,0);
-        _controller.Controller.Data.NetworkMapData.AlivePlayerCount.OnValueChanged += GameOver;
+        SessionPlayerStateController.Instance.SessionAlivePlayerCount.OnValueChanged += GameOver;
     }
 
     public void RunningState()
@@ -61,7 +61,7 @@ public class BattleNodeBattleAction : INodeAction
 
     public void ExitState()
     {
-        _controller.Controller.Data.NetworkMapData.AlivePlayerCount.OnValueChanged -= GameOver;
+        SessionPlayerStateController.Instance.SessionAlivePlayerCount.OnValueChanged -= GameOver;
     }
     
     private void GameOver(int preCount ,int curCount)
