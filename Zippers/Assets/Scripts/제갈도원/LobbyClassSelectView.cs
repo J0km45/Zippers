@@ -27,7 +27,8 @@ public class LobbyClassSelectView : MonoBehaviour
     {
         EnsureClassItems();
         AutoWireMissingItems();
-        LobbyPlayerSlotsView.EnsureInScene();
+        // 중앙 고정 슬롯 UI 대신 캐릭터 머리 위 nameplate UI를 사용한다.
+        LobbyAvatarNameplateManager.EnsureInScene();
         LobbyLeaveButtonController.EnsureInScene();
         LobbyReadyButtonController.EnsureInScene();
         LobbyStartGameButtonController.EnsureInScene();
