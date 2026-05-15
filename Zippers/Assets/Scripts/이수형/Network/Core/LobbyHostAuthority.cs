@@ -244,6 +244,11 @@ public class LobbyHostAuthority : NetworkBehaviour
             {
                 if (existing.Class == info.PlayerClass && existing.Slot == info.SlotIndex)
                 {
+                    // 늦게 들어온 클라이언트도 이미 스폰된 로비 아바타의 머리 위 UI를 받을 수 있게 재전송한다.
+                    if (existing.NetworkObject != null && existing.NetworkObject.IsSpawned)
+                    {
+                        AttachNameplateClientRpc(existing.NetworkObject.NetworkObjectId, new FixedString64Bytes(playerId));
+                    }
                     continue;
                 }
                 // 클래스 또는 슬롯이 바뀜 → 기존 despawn 후 재spawn
@@ -295,12 +300,13 @@ public class LobbyHostAuthority : NetworkBehaviour
             return;
         }
 
-        if (_spawnPoints == null || slot < 0 || slot >= _spawnPoints.Length)
+        int spawnPointIndex = ResolveLobbySpawnPointIndex(slot);
+        if (_spawnPoints == null || spawnPointIndex < 0 || spawnPointIndex >= _spawnPoints.Length)
         {
             DebugTool.Warning($"슬롯 {slot} 의 spawn point 범위 초과 (배열 길이 {_spawnPoints?.Length ?? 0})", DebugType.Network, this);
             return;
         }
-        Transform spawnPoint = _spawnPoints[slot];
+        Transform spawnPoint = _spawnPoints[spawnPointIndex];
         if (spawnPoint == null)
         {
             DebugTool.Warning($"슬롯 {slot} 의 spawn point 미할당", DebugType.Network, this);
@@ -317,6 +323,8 @@ public class LobbyHostAuthority : NetworkBehaviour
                 Class = cls,
                 Slot = slot
             };
+            // 아바타가 스폰되면 모든 클라이언트가 화면 Canvas 위에 nameplate를 붙인다.
+            AttachNameplateClientRpc(instance.NetworkObjectId, new FixedString64Bytes(playerId));
             DebugTool.Log($"avatar spawn: player={playerId}, class={cls}, slot={slot}", DebugType.Network, this);
         }
         catch (Exception e)
@@ -325,9 +333,30 @@ public class LobbyHostAuthority : NetworkBehaviour
         }
     }
 
+    private int ResolveLobbySpawnPointIndex(int slot)
+    {
+        // LobbyScene의 _spawnPoints 배열 자체가 화면 기준 3,1,2,4 배치라 SlotIndex를 그대로 사용한다.
+        return slot;
+    }
+
+    [ClientRpc]
+    private void AttachNameplateClientRpc(ulong networkObjectId, FixedString64Bytes playerId)
+    {
+        // 각 클라이언트에서 로컬로 Screen Space nameplate를 생성한다.
+        StartCoroutine(LobbyAvatarNameplateManager.WaitAndAttachNameplate(networkObjectId, playerId.ToString()));
+    }
+
+    [ClientRpc]
+    private void DetachNameplateClientRpc(FixedString64Bytes playerId)
+    {
+        LobbyAvatarNameplateManager.DetachNameplate(playerId.ToString());
+    }
+
     private void DespawnAvatar(string playerId)
     {
         if (!_spawnedAvatars.TryGetValue(playerId, out AvatarRecord record)) return;
+        // 아바타 제거 전에 머리 위 UI도 같이 제거한다.
+        DetachNameplateClientRpc(new FixedString64Bytes(playerId));
         if (record.NetworkObject != null && record.NetworkObject.IsSpawned)
         {
             try

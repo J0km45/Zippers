@@ -1,9 +1,23 @@
+using System;
 using UnityEngine;
+using Zippers.Network;
+using Zippers.Network.Contracts;
 
-public class PlayerStats : MonoBehaviour
+/// <summary>
+/// 플레이어의 최종 스탯을 합산해 제공한다.
+/// 입력: PlayerClassDataSO(기본 스탯) + PlayerIngameData(개인 업그레이드) +
+///       TeamUpgradeCalculator(영구 팀 업그레이드) + TeamBattleUpgradeEffect(전투 한정 효과)
+/// 출력: IPlayerStatProvider 의 Total* 프로퍼티들 — 전투 라인(B) 이 인터페이스로 read.
+///
+/// OnStatsRecalculated 는 다음 시점에 발화:
+///   - 개인 업그레이드 변경 (PlayerIngameData.UpgradeChange)
+///   - 팀 업그레이드 변경 (TeamEconomyNetState.OnTeamUpgradeChanged)
+///   - 전투 상태 변경 (TeamBattleNetState.OnBattleStarted/Cleared/Ended) — Battle* 일회성 효과 토글
+/// </summary>
+public class PlayerStats : MonoBehaviour, IPlayerStatProvider
 {
-    // TODO(Network): PlayerStats는 클라이언트 표시용으로 유지하되,
-    // 체력/데미지/공격속도/탄약/이동속도 등 전투 핵심 스탯은 서버에서도 동일한 기준으로 계산해야 함.
+    public event Action OnStatsRecalculated;
+
     [Header("클래스 데이터")]
     [SerializeField] private PlayerClassDataSO _playerClassData;
 
@@ -16,6 +30,7 @@ public class PlayerStats : MonoBehaviour
     public PlayerClassDataSO PlayerClassData => _playerClassData;
 
     public int ClassID => _playerClassData.ClassId;
+    public int ClassId => _playerClassData.ClassId;    // IPlayerStatProvider 시그니처 별칭
     public WeaponType WeaponType => _playerClassData.WeaponType;
     public string ClassName => _playerClassData.ClassName;
     //-------------------------------------ㅅ--------------------
@@ -75,6 +90,7 @@ public class PlayerStats : MonoBehaviour
 
     public float TotalMaxHealth => ApplyTeamUpgrade(MaxHealth + AddMaxHealth, TeamUpgradeStatKey.MaxHealth);
     public float TotalStamina => ApplyTeamUpgrade(Stamina + AddStamina, TeamUpgradeStatKey.Stamina);
+    public float TotalMaxStamina => TotalStamina;    // IPlayerStatProvider 시그니처 별칭
     public float TotalStaminaRegen => StaminaRegen + AddStaminaRegen;
 
     public float TotalMinDamage => ApplyBattleUpgrade(ApplyTeamUpgrade(MinDamage + AddDamage, TeamUpgradeStatKey.Damage), TeamUpgradeStatKey.BattleDamage);
@@ -129,6 +145,10 @@ public class PlayerStats : MonoBehaviour
     {
         LoadUpgradeData();
     }
+    private bool _netEventsBound;
+    private TeamEconomyNetState _boundTeamEconomy;
+    private TeamBattleNetState _boundTeamBattle;
+
     private void OnEnable()
     {
         if(_playerIngameData != null)
@@ -143,6 +163,62 @@ public class PlayerStats : MonoBehaviour
         {
             _playerIngameData.UpgradeChange -= OnUpgradeChange;
         }
+        UnbindNetEvents();
+    }
+
+    private void Update()
+    {
+        // NetworkBehaviour spawn 시점이 늦을 수 있어 매 프레임 idempotent 시도. 한 번 연결되면 skip.
+        TryBindNetEvents();
+    }
+
+    private void TryBindNetEvents()
+    {
+        if (_netEventsBound) return;
+
+        TeamEconomyNetState te = TeamEconomyNetState.Instance;
+        TeamBattleNetState tb = TeamBattleNetState.Instance;
+        if (te == null || tb == null) return;
+
+        te.OnTeamUpgradeChanged += OnTeamUpgradeChanged;
+        tb.OnBattleStarted += OnBattleStateChangedAny;
+        tb.OnBattleCleared += OnBattleStateChangedAny;
+        tb.OnBattleEnded += OnBattleStateChangedAny;
+
+        _boundTeamEconomy = te;
+        _boundTeamBattle = tb;
+        _netEventsBound = true;
+    }
+
+    private void UnbindNetEvents()
+    {
+        if (!_netEventsBound) return;
+        if (_boundTeamEconomy != null)
+        {
+            _boundTeamEconomy.OnTeamUpgradeChanged -= OnTeamUpgradeChanged;
+        }
+        if (_boundTeamBattle != null)
+        {
+            _boundTeamBattle.OnBattleStarted -= OnBattleStateChangedAny;
+            _boundTeamBattle.OnBattleCleared -= OnBattleStateChangedAny;
+            _boundTeamBattle.OnBattleEnded -= OnBattleStateChangedAny;
+        }
+        _boundTeamEconomy = null;
+        _boundTeamBattle = null;
+        _netEventsBound = false;
+    }
+
+    private void OnTeamUpgradeChanged(int upgradeId, int level)
+    {
+        OnStatsRecalculated?.Invoke();
+        DebugTool.Log($"OnStatsRecalculated (teamUpgrade id={upgradeId}, level={level})", DebugType.Data, this);
+    }
+
+    private void OnBattleStateChangedAny()
+    {
+        // Battle* 일회성 효과(BattleDamage/BattleMoveSpeed/BattleAttackSpeed/ClearHeal) 토글 → 재계산
+        OnStatsRecalculated?.Invoke();
+        DebugTool.Log("OnStatsRecalculated (battleState 변경)", DebugType.Data, this);
     }
 
     private void LoadUpgradeData()
@@ -167,7 +243,8 @@ public class PlayerStats : MonoBehaviour
 
     private void OnUpgradeChange(UpgradeEntry entry, int level)
     {
-        DebugTool.Log("업그레이드 적용", DebugType.Data, this);
+        OnStatsRecalculated?.Invoke();
+        DebugTool.Log($"OnStatsRecalculated (personalUpgrade id={entry?.Id}, level={level})", DebugType.Data, this);
     }
 
     private void CheckUpgradeData()
@@ -283,7 +360,7 @@ public class PlayerStats : MonoBehaviour
     }
     public float GetRandomDamage()
     {
-        return Random.Range(TotalMinDamage, TotalMaxDamage);
+        return UnityEngine.Random.Range(TotalMinDamage, TotalMaxDamage);
     }
 }
 

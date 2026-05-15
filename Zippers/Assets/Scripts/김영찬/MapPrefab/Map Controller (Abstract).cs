@@ -147,28 +147,28 @@ public abstract class MapController : MonoBehaviour
         {
             case NodeStartDir.Up:
                 nextMapData = Data.NextMap_Up.GetComponent<MapData>();
-                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Up;
+                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Down;
                 if(Data.NextMap_Down != null) Data.NextMap_Down.gameObject.SetActive(false);
                 if(Data.NextMap_Left != null) Data.NextMap_Left.gameObject.SetActive(false);
                 if(Data.NextMap_Right != null) Data.NextMap_Right.gameObject.SetActive(false);
                 break;
             case NodeStartDir.Down:
                 nextMapData = Data.NextMap_Down.GetComponent<MapData>();
-                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Down;
+                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Up;
                 if(Data.NextMap_Up != null) Data.NextMap_Up.gameObject.SetActive(false);
                 if(Data.NextMap_Left != null) Data.NextMap_Left.gameObject.SetActive(false);
                 if(Data.NextMap_Right != null) Data.NextMap_Right.gameObject.SetActive(false);
                 break;
             case NodeStartDir.Left:
                 nextMapData = Data.NextMap_Left.GetComponent<MapData>();
-                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Left;
+                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Right;
                 if(Data.NextMap_Down != null) Data.NextMap_Down.gameObject.SetActive(false);
                 if(Data.NextMap_Up != null) Data.NextMap_Up.gameObject.SetActive(false);
                 if(Data.NextMap_Right != null) Data.NextMap_Right.gameObject.SetActive(false);
                 break;
             case NodeStartDir.Right:
                 nextMapData = Data.NextMap_Right.GetComponent<MapData>();
-                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Right;
+                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Left;
                 if(Data.NextMap_Down != null) Data.NextMap_Down.gameObject.SetActive(false);
                 if(Data.NextMap_Left != null) Data.NextMap_Left.gameObject.SetActive(false);
                 if(Data.NextMap_Up != null) Data.NextMap_Up.gameObject.SetActive(false);
@@ -187,8 +187,39 @@ public abstract class MapController : MonoBehaviour
 
         nextMapData.SetNodeStartDir(dir);
 
+        // (2026-05-15) 다음 맵의 MapObjectCounter 에게 ForceSweep 요청.
+        // 이유: 다음 맵의 OnEnable 은 Start 노드의 Clear→VoteSetting 시점(비콘 활성화)에 이미 실행되어
+        // 그 시점 InitialSweep 은 플레이어가 아직 도착 안 한 상태라 0명을 잡고 종료됨.
+        // 텔레포트로 플레이어가 박스 collider 안에 직접 생성되면 OnTriggerEnter 가 안 와서
+        // AlivePlayerCount 가 0 에 머무름 → PlayerCheckEventSO 가 영원히 대기.
+        // 텔레포트 직후 명시적으로 sweep 을 재트리거해 NetworkTransform 동기화 RTT 동안 N프레임 재시도.
+        // 호스트만 의미 있는 호출이지만, ForceSweep 내부에 IsServer 가드가 있어 클라에서 호출돼도 안전.
+        TriggerNextMapSweep(nextMapData);
+
         DebugTool.Log($"{gameObject.name} Teleport Complete. Next Map : {nextMapData.gameObject.name}", DebugType.Node, nextMapData);
         gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// 다음 맵의 MapObjectCounter 를 찾아 ForceSweep 호출.
+    /// MapObjectCounter 가 같은 GameObject / 자식 어디에 붙어있든 잡히도록 GetComponentInChildren 사용 (includeInactive=true).
+    /// 컴포넌트 미배치 시 Warning 만 찍고 진행 — 텔레포트 자체는 막지 않음.
+    /// </summary>
+    private void TriggerNextMapSweep(MapData nextMapData)
+    {
+        if (nextMapData == null) return;
+
+        MapObjectCounter nextCounter = nextMapData.GetComponentInChildren<MapObjectCounter>(true);
+        if (nextCounter == null)
+        {
+            DebugTool.Warning(
+                $"{nextMapData.gameObject.name} 에 MapObjectCounter 가 없음 - 텔레포트 후 sweep 누락. " +
+                "맵 프리팹 인스펙터 확인.",
+                DebugType.Node, nextMapData);
+            return;
+        }
+
+        nextCounter.ForceSweep();
     }
 
     /// <summary>

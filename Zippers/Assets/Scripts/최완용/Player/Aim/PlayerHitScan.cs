@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class PlayerHitScan : MonoBehaviour
 {
@@ -100,7 +101,12 @@ public class PlayerHitScan : MonoBehaviour
     {
         IDamagable damagable = targetCollider.GetComponentInParent<IDamagable>();
 
-        if(_hitTarget.Contains(damagable))
+        if(damagable == null)
+        {
+            return;
+        }
+
+        if (_hitTarget.Contains(damagable))
         {
             return;
         }

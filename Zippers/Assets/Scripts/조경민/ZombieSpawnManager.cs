@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ZombieSpawnManager : MonoBehaviour
 {
@@ -84,6 +85,17 @@ public class ZombieSpawnManager : MonoBehaviour
 
         Vector2 randomPos = Random.insideUnitCircle * group.SpawnRadius;
         Vector3 spawnPos = spawnPoint.position + new Vector3(randomPos.x, 0f, randomPos.y);
+
+        if (NavMesh.SamplePosition(spawnPos, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+        {
+            spawnPos = hit.position;
+            DebugTool.Log($"NavMesh 위치 지정{spawnPos}", DebugType.Zombie, this);
+        }
+        else
+        {
+            DebugTool.Log("NavMesh 위치 탐색 실패", DebugType.Zombie, this);
+            return;
+        }
 
         ZombieStatSO stat = LocalDataAccess.Instance.Game.GetZombieStat(group.ZombieId);
 

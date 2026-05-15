@@ -1,5 +1,6 @@
 using Audio;
 using UnityEngine;
+using Zippers.Network.Contracts;
 
 public class PlayerCombatReloadState : IState
 {
@@ -7,15 +8,15 @@ public class PlayerCombatReloadState : IState
     private PlayerAnimation _playerAnimation;
     private PlayerReload _playerReload;
     private WeaponSFXController _weaponSFXController;
-    private PlayerStats _playerStats;
+    private IPlayerStatProvider _statProvider;
 
-    public PlayerCombatReloadState(PlayerCombatStateMachine combatStateMachine,PlayerAnimation playerAnimation,PlayerReload playerReload, WeaponSFXController weaponSFXController, PlayerStats playerStats)
+    public PlayerCombatReloadState(PlayerCombatStateMachine combatStateMachine,PlayerAnimation playerAnimation,PlayerReload playerReload, WeaponSFXController weaponSFXController, IPlayerStatProvider statProvider)
     {
         _combatStateMachine = combatStateMachine;
         _playerAnimation = playerAnimation;
         _playerReload = playerReload;
         _weaponSFXController = weaponSFXController;
-        _playerStats = playerStats;
+        _statProvider = statProvider;
 
     }
 
@@ -39,7 +40,7 @@ public class PlayerCombatReloadState : IState
         {
             _playerAnimation.PlayReload();
         }
-        _weaponSFXController.PlayReloadSfx(_playerStats.WeaponType);
+        _weaponSFXController.PlayReloadSfx(_statProvider.WeaponType);
 
     }
 

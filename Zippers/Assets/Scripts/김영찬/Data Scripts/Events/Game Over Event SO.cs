@@ -9,7 +9,7 @@ public class GameOverEventSO : EventSO
 
     public override void EventEnter()
     {
-        
+        _controller.Controller.Manager.GameOverCanvas.gameObject.SetActive(true);
     }
 
     public override void EventUpdate()

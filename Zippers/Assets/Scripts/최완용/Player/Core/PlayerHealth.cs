@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zippers.Network.Contracts;
 
 public class PlayerHealth : MonoBehaviour, IDamagable
 {
@@ -9,26 +10,41 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         DebugTool.Log($"디버그 데미지 적용: {_debugDamageAmount}", DebugType.Character, this);
         TakeDamage(_debugDamageAmount);
     }
-    
+
     public event Action<float, float> OnHealthChanged;
     public event Action OnDamage;
     public event Action PlayerDied;
 
     private PlayerStats _playerStats;
+    private IPlayerStatProvider _statProvider;
+    private PlayerCombatNetState _combatNetState;
 
     [Header("플레이어 체력 정보")]
-    [field:SerializeField] public float CurrentHealth { get; private set; }
-    [field:SerializeField] public float MaxHealth { get; private set; }
-    [field:SerializeField] public bool IsDead { get; private set; }
+    [field: SerializeField] public float CurrentHealth { get; private set; }
+    [field: SerializeField] public float MaxHealth { get; private set; }
+    [field: SerializeField] public bool IsDead { get; private set; }
 
-    [Space(10)] [Header("디버그 테스트")]
+    [Space(10)]
+    [Header("디버그 테스트")]
     [SerializeField] private float _debugDamageAmount = 10f;
-    
-    public void Awake()
+
+    private void Awake()
     {
-        //TODO : 멀티 전환시 MaxHealth와 CurrentHealth 초기값을 PlayerRuntimeData에서 가져오도록 수정
         _playerStats = GetComponent<PlayerStats>();
+        _statProvider = GetComponent<IPlayerStatProvider>();
+        _combatNetState = GetComponent<PlayerCombatNetState>();
     }
+
+    private void OnEnable()
+    {
+        SubscribeCombatNetState();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeCombatNetState();
+    }
+
     private void Start()
     {
         Init();
@@ -36,66 +52,135 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
     private void Init()
     {
-        MaxHealth = _playerStats.TotalMaxHealth;
+        if (!TryGetMaxHealth(out float totalHealth))
+        {
+            DebugTool.Error("[PlayerHealth] 체력 스탯 정보를 찾을 수 없습니다.", DebugType.Character, this);
+            return;
+        }
+
+        if (_combatNetState != null)
+        {
+            if (_combatNetState.IsServer)
+            {
+                _combatNetState.ServerInitializeHealth(totalHealth);
+            }
+
+            SyncFromCombatNetState();
+
+            DebugTool.Log(
+                $"[PlayerHealth] 네트워크 체력 초기화 연결: {CurrentHealth}/{MaxHealth}",
+                DebugType.CombatNet,
+                this
+            );
+
+            return;
+        }
+
+        MaxHealth = totalHealth;
         CurrentHealth = MaxHealth;
         IsDead = false;
+
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
 
         DebugTool.Log($"PlayerHealth 초기화: {CurrentHealth}/{MaxHealth}", DebugType.Character, this);
     }
-    //업그레이드 UI에서 연결
+
+    // 업그레이드 UI에서 연결
     public void RefreshHealth()
     {
-        float beforeHealth = MaxHealth;
-        MaxHealth = _playerStats.TotalMaxHealth;
-
-        float incresaseHealth = MaxHealth - beforeHealth;
-
-        if (incresaseHealth > 0f)
+        if (!TryGetMaxHealth(out float totalHealth))
         {
-            CurrentHealth += incresaseHealth;
+            DebugTool.Error("[PlayerHealth] 체력 스탯 정보를 찾을 수 없습니다.", DebugType.Character, this);
+            return;
         }
-        CurrentHealth = MathF.Min(CurrentHealth, MaxHealth);
+
+        if (_combatNetState != null)
+        {
+            if (!_combatNetState.IsServer)
+            {
+                DebugTool.Log("[PlayerHealth] 서버가 아니므로 최대 체력 갱신을 무시합니다.", DebugType.CombatNet, this);
+                return;
+            }
+
+            // 기존 기획 유지:
+            // MaxHealth 증가 시 증가분만큼 CurrentHealth도 증가.
+            _combatNetState.ServerSetMaxHealth(totalHealth);
+            return;
+        }
+
+        // PlayerCombatNetState가 없는 싱글/테스트 환경에서는 기존 방식 유지
+        float beforeHealth = MaxHealth;
+        MaxHealth = totalHealth;
+
+        float increaseHealth = MaxHealth - beforeHealth;
+
+        if (increaseHealth > 0f)
+        {
+            CurrentHealth += increaseHealth;
+        }
+
+        CurrentHealth = Mathf.Min(CurrentHealth, MaxHealth);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
     }
 
-    public void Heal(float amont)
+    public void Heal(float amount)
     {
-        //TODO : OnHealthChanged는 서버가 확정한 체력값을 받은 뒤 UI생신용으로 호출해야됨
-        //TODO : 회복 요청을 클라이언트가 직접 하지않고 서버에 회복 요청후 결과를 받아서 해야됨
+        if (_combatNetState != null)
+        {
+            if (!_combatNetState.IsServer)
+            {
+                DebugTool.Log("[PlayerHealth] 서버가 아니므로 회복 요청을 무시합니다.", DebugType.CombatNet, this);
+                return;
+            }
+
+            _combatNetState.ServerApplyHeal(amount, "PlayerHealth.Heal");
+            return;
+        }
+
         if (IsDead)
         {
             DebugTool.Log("죽음 상태입니다. 치료할 수 없습니다.", DebugType.Character, this);
             return;
         }
-        if (amont <= 0f)
+
+        if (amount <= 0f)
         {
             DebugTool.Log("음수 치료량은 적용되지 않습니다.", DebugType.Character, this);
             return;
         }
 
-        float beforeHealth = CurrentHealth;
-
-        CurrentHealth = Mathf.Min(CurrentHealth + amont, MaxHealth);
+        CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
-        DebugTool.Log($"치료 적용: {amont}, 현재 체력: {CurrentHealth}/{MaxHealth}", DebugType.Character, this);
+
+        DebugTool.Log($"치료 적용: {amount}, 현재 체력: {CurrentHealth}/{MaxHealth}", DebugType.Character, this);
     }
 
-    //인터페이스 참조
+    // IDamagable 인터페이스에서 호출
     public void TakeDamage(float damage)
     {
-        //TODO : 체력 감소 요청을 클라이언트가 직접 하지않고 서버에 데미지 요청후 결과를 받아서 해야됨 
+        if (_combatNetState != null)
+        {
+            if (!_combatNetState.IsServer)
+            {
+                DebugTool.Log("[PlayerHealth] 서버가 아니므로 데미지 요청을 무시합니다.", DebugType.CombatNet, this);
+                return;
+            }
+
+            _combatNetState.ServerApplyDamage(damage, 0, "PlayerHealth.TakeDamage");
+            return;
+        }
+
         ApplyDamage(damage);
     }
 
     private void ApplyDamage(float damage)
     {
-        //TODO : 실제 CurrentHealth 감소는 서버에서 처리후 결과를 클라이언트에 전달해서 해야됨
         if (IsDead)
         {
             DebugTool.Log("죽음 상태입니다.", DebugType.Character, this);
             return;
         }
+
         if (damage <= 0f)
         {
             DebugTool.Log("음수 데미지는 적용되지 않습니다.", DebugType.Character, this);
@@ -104,19 +189,27 @@ public class PlayerHealth : MonoBehaviour, IDamagable
 
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0f);
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+
         DebugTool.Log($"데미지 적용: {damage}, 현재 체력: {CurrentHealth}/{MaxHealth}", DebugType.Character, this);
-        if(CurrentHealth <= 0f)
+
+        if (CurrentHealth <= 0f)
         {
             Die();
         }
+
         OnDamage?.Invoke();
     }
 
     private void Die()
     {
-        //TODO : 사망 판정은 서버에서 확정하고 모든 클라이언트에  사망상태를 동기화 해야됨
+        if (IsDead)
+        {
+            return;
+        }
+
         IsDead = true;
         CurrentHealth = 0f;
+
         PlayerTransform playerTransform = GetComponent<PlayerTransform>();
 
         if (playerTransform != null)
@@ -124,7 +217,160 @@ public class PlayerHealth : MonoBehaviour, IDamagable
             playerTransform.Unregister();
         }
 
+        NotifySessionPlayerDeath();
+
         PlayerDied?.Invoke();
         DebugTool.Log("플레이어 사망", DebugType.Character, this);
     }
+
+    private void SubscribeCombatNetState()
+    {
+        if (_combatNetState == null)
+        {
+            return;
+        }
+
+        _combatNetState.OnHealthChanged += HandleNetHealthChanged;
+        _combatNetState.OnDamageReceived += HandleNetDamageReceived;
+        _combatNetState.OnPlayerDied += HandleNetPlayerDied;
+        _combatNetState.OnPlayerRevived += HandleNetPlayerRevived;
+    }
+
+    private void UnsubscribeCombatNetState()
+    {
+        if (_combatNetState == null)
+        {
+            return;
+        }
+
+        _combatNetState.OnHealthChanged -= HandleNetHealthChanged;
+        _combatNetState.OnDamageReceived -= HandleNetDamageReceived;
+        _combatNetState.OnPlayerDied -= HandleNetPlayerDied;
+        _combatNetState.OnPlayerRevived -= HandleNetPlayerRevived;
+    }
+
+    private void HandleNetHealthChanged(float currentHealth, float maxHealth)
+    {
+        CurrentHealth = currentHealth;
+        MaxHealth = maxHealth;
+
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+
+        DebugTool.Log(
+            $"[PlayerHealth] 네트워크 체력 반영: {CurrentHealth}/{MaxHealth}",
+            DebugType.CombatNet,
+            this
+        );
+    }
+
+    private void HandleNetPlayerDied()
+    {
+        Die();
+    }
+
+    private void HandleNetPlayerRevived()
+    {
+        IsDead = false;
+
+        SyncFromCombatNetState();
+        NotifySessionPlayerRevive();
+        DebugTool.Log("[PlayerHealth] 네트워크 부활 상태 반영", DebugType.CombatNet, this);
+    }
+    private void HandleNetDamageReceived()
+    {
+        OnDamage?.Invoke();
+
+        DebugTool.Log(
+            "[PlayerHealth] 네트워크 피격 이벤트 반영",
+            DebugType.CombatNet,
+            this
+        );
+    }
+
+    private void SyncFromCombatNetState()
+    {
+        if (_combatNetState == null)
+        {
+            return;
+        }
+
+        CurrentHealth = _combatNetState.CurrentHealth;
+        MaxHealth = _combatNetState.MaxHealth;
+        IsDead = _combatNetState.IsDead;
+
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+    }
+
+    private void NotifySessionPlayerDeath()
+    {
+        if (_combatNetState == null || !_combatNetState.IsServer)
+        {
+            return;
+        }
+
+        if (SessionPlayerStateController.Instance == null)
+        {
+            DebugTool.Log("[PlayerHealth] SessionPlayerStateController가 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        SessionPlayerStateController.Instance.NotifyPlayerHPDeath(_combatNetState.OwnerClientId);
+
+        DebugTool.Log(
+            $"[PlayerHealth] 세션 사망 알림 / OwnerClientId: {_combatNetState.OwnerClientId}",
+            DebugType.CombatNet,
+            this
+        );
+    }
+
+    private void NotifySessionPlayerRevive()
+    {
+        if (_combatNetState == null || !_combatNetState.IsServer)
+        {
+            return;
+        }
+
+        if (SessionPlayerStateController.Instance == null)
+        {
+            DebugTool.Log("[PlayerHealth] SessionPlayerStateController가 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        SessionPlayerStateController.Instance.NotifyPlayerRevive(_combatNetState.OwnerClientId);
+
+        DebugTool.Log(
+            $"[PlayerHealth] 세션 부활 알림 / OwnerClientId: {_combatNetState.OwnerClientId}",
+            DebugType.CombatNet,
+            this
+        );
+    }
+
+    private bool TryGetMaxHealth(out float totalHealth)
+    {
+        if (_statProvider != null)
+        {
+            totalHealth = _statProvider.TotalMaxHealth;
+            return true;
+        }
+
+        if (_playerStats != null)
+        {
+            totalHealth = _playerStats.TotalMaxHealth;
+            return true;
+        }
+
+        totalHealth = 0f;
+        return false;
+    }
 }
+
+/*
+Unity 적용 방법
+1. 기존 PlayerHealth.cs 전체를 이 코드로 교체한다.
+2. 플레이어 프리팹에 PlayerCombatNetState가 붙어 있는지 확인한다.
+3. PlayerCombatNetState에 ServerInitializeHealth(), ServerSetMaxHealth(),
+   ServerApplyHeal(), ServerApplyDamage(), ServerRevive()가 있는지 확인한다.
+4. Contracts 폴더 안에 PlayerCombatNetState.cs가 있다면 삭제한다.
+5. 호스트에서 Debug/테스트 데미지 적용을 눌러 체력 감소 로그가 찍히는지 확인한다.
+6. 클라이언트에서 직접 TakeDamage가 호출되면 서버가 아니므로 무시되는 것이 정상이다.
+*/

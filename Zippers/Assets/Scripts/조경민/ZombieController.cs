@@ -126,9 +126,21 @@ public class ZombieController : NetworkBehaviour, IDamagable
             collider.enabled = true;
         }
 
-        Agent.enabled = true;
-        Agent.isStopped = false;
-        Agent.stoppingDistance = AttackRange;
+        if (!Agent.enabled)
+        {
+            Agent.enabled = true;
+        }
+
+        Agent.Warp(transform.position);
+        if (Agent.isOnNavMesh)
+        {
+            Agent.isStopped = false;
+            Agent.stoppingDistance = AttackRange;
+        }
+        else
+        {
+            DebugTool.Log("좀비가 NavMesh 위에 있지 않음", DebugType.Zombie, this);
+        }
 
         RefreshPlayer();
         ChangeState(Chase);
@@ -182,8 +194,8 @@ public class ZombieController : NetworkBehaviour, IDamagable
         _playerDetectTimer = 0f;
         RefreshPlayer();
     }
-    
-    private void RefreshPlayer() 
+
+    private void RefreshPlayer()
         => Player = PlayerTransformList.instance.GetClosestPlayer(transform.position);
 
     private void RegenHealth()
@@ -193,7 +205,7 @@ public class ZombieController : NetworkBehaviour, IDamagable
 
         _healthRegenTimer += Time.deltaTime;
 
-        if(_healthRegenTimer >= HealthPeriod)
+        if (_healthRegenTimer >= HealthPeriod)
         {
             _healthRegenTimer = 0f;
             float helathRegenAmount = MaxHp * (HealthRegen / 100f);

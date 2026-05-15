@@ -8,7 +8,7 @@ public class GameClearEventSO : EventSO
 {
     public override void EventEnter()
     {
-        
+        _controller.Controller.Manager.GameClearCanvas.gameObject.SetActive(true);
     }
 
     public override void EventUpdate()

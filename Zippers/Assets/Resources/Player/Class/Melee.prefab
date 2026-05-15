@@ -516,6 +516,7 @@ GameObject:
   - component: {fileID: -153929720508378990}
   - component: {fileID: 5597649344339534440}
   - component: {fileID: 1924258011418537966}
+  - component: {fileID: 8562220353008977401}
   m_Layer: 10
   m_Name: Melee
   m_TagString: Untagged
@@ -1241,7 +1242,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1274019000965958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17664e59e9e41db4bafeadae18fee8a0, type: 3}
+  m_Script: {fileID: 11500000, guid: b0e2a825b1518b640a9bc7aacc6d462d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.PlayerCombatNetState
   ShowTopMostFoldoutHeaderGroup: 1
@@ -1258,6 +1259,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.PlayerEconomyNetState
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &8562220353008977401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274019000965958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bf9387419da093429ec8ae91e3f40e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTransform
 --- !u!1 &1288505126190028
 GameObject:
   m_ObjectHideFlags: 0

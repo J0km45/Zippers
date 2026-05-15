@@ -6,7 +6,7 @@ public class PlayerTransformList : MonoBehaviour
 {
     public static PlayerTransformList instance = null;
 
-    public readonly List<Transform> _playerPosition = new List<Transform>();
+    public List<Transform> _playerPosition = new List<Transform>();
 
     public event Action OnAllPlayerDead;
 

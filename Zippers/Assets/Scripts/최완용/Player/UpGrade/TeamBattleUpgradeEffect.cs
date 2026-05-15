@@ -1,15 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zippers.Network;
+using Zippers.Network.Contracts;
 
 public class TeamBattleUpgradeEffect : MonoBehaviour
 {
     [SerializeField] private TeamUpgradeData _teamUpgradeData;
     [SerializeField] private TeamUpgradeProvider _teamUpgradeProvider;
-    [SerializeField] private MapData _mapData;
 
     [SerializeField] private bool _isBattle;
 
     public bool IsBattle => _isBattle;
+
+    // ── IBattleStateBus 구독 캐시 ─────────────────────────────────
+    // Step 7 변경: 옛 MapData.NetworkMapData.NodeState 직접 구독 제거.
+    //   - TeamBattleNetState (IBattleStateBus 구현체) 의 이벤트를 통해 정규화된 신호 수신.
+    //   - 호스트/클라 모두 같은 이벤트 발화 시점에 받음.
+    private IBattleStateBus _battleBus;
+    private bool _busBound;
 
     private void Awake()
     {
@@ -21,59 +29,65 @@ public class TeamBattleUpgradeEffect : MonoBehaviour
         {
             _teamUpgradeProvider = GetComponent<TeamUpgradeProvider>();
         }
-        if (_mapData == null)
-        {
-            _mapData = FindFirstObjectByType<MapData>();
-        }
     }
 
-    private void OnEnable()
-    {
-        if(_mapData == null)
-        {
-            _mapData = FindFirstObjectByType<MapData>();
-            return;
-        }
-        //TODO 실제 전투시작 클리어 종료 이벤트 구독하기
-        _mapData.NetworkMapData.NodeState.OnValueChanged += NodeStateChange;
-
-        //예시
-        //BattleManager.Instance.OnBattleStarted += StartBattle;
-        //BattleManager.Instance.OnBattleCleared += ClearBattle;
-        //BattleManager.Instance.OnBattleEnded += EndBattle;
-    }
     private void OnDisable()
     {
-        if(_mapData ==null)
-        {
-            return;
-        }
-        //TODO 실제 전투시작 클리어 종료 이벤트 구독 해제하기
-        _mapData.NetworkMapData.NodeState.OnValueChanged -= NodeStateChange;
-        //예시
-        //BattleManager.Instance.OnBattleStarted -= StartBattle;
-        //BattleManager.Instance.OnBattleCleared -= ClearBattle;
-        //BattleManager.Instance.OnBattleEnded -= EndBattle;
+        UnbindBus();
     }
-    private void NodeStateChange(NodeState temp, NodeState state)
+
+    private void OnDestroy()
     {
-        switch (state)
+        UnbindBus();
+    }
+
+    private void Update()
+    {
+        // TeamBattleNetState 가 NGO 로 늦게 spawn 될 수 있어 매 프레임 idempotent 시도.
+        // 한 번 연결되면 skip.
+        TryBindBus();
+    }
+
+    private void TryBindBus()
+    {
+        if (_busBound) return;
+
+        // Singleton 직접 사용 (인터페이스 캐스팅으로 의존성은 IBattleStateBus 만)
+        TeamBattleNetState net = TeamBattleNetState.Instance;
+        if (net == null) return;
+
+        _battleBus = net;
+        _battleBus.OnBattleStarted += StartBattle;
+        _battleBus.OnBattleCleared += ClearBattle;
+        _battleBus.OnBattleEnded += EndBattle;
+        _busBound = true;
+
+        // 초기 상태 1회 반영 — 이미 Battle 상태에서 시작했을 수 있음
+        if (_battleBus.IsBattle && !_isBattle)
         {
-            case NodeState.Ready:
-                EndBattle();
-                break;
-
-            case NodeState.Battle:
-                StartBattle();
-                break;
-
-            case NodeState.Clear:
-                ClearBattle();
-                break;
+            StartBattle();
         }
 
-        DebugTool.Log($"[TeamBattleUpgradeEffect] NodeState 이벤트 수신: {state}", DebugType.Data, this);
+        DebugTool.Log(
+            $"[TeamBattleUpgradeEffect] IBattleStateBus 구독 시작 (초기 IsBattle={_battleBus.IsBattle})",
+            DebugType.Data, this);
     }
+
+    private void UnbindBus()
+    {
+        if (!_busBound) return;
+        if (_battleBus != null)
+        {
+            _battleBus.OnBattleStarted -= StartBattle;
+            _battleBus.OnBattleCleared -= ClearBattle;
+            _battleBus.OnBattleEnded -= EndBattle;
+        }
+        _battleBus = null;
+        _busBound = false;
+    }
+
+    // ── 전투 상태 핸들러 (IBattleStateBus 이벤트 또는 디버그 키 입력으로 호출) ──
+    // public 유지: TeamUpgradeDebugTest 가 키보드 입력으로 직접 호출 중.
 
     public void StartBattle()
     {

@@ -41,6 +41,12 @@ public class MapObjectCounter : MonoBehaviour
     [Tooltip("OnEnable 직후 OverlapBox 스윕을 몇 프레임 동안 (재)시도할지. spawn/텔레포트가 한 두 프레임 늦을 수 있어 1~3 권장.")]
     [SerializeField] private int _initialSweepFrames = 3;
 
+    [Header("Force Sweep (텔레포트 후 외부 트리거)")]
+    [Tooltip("ForceSweep() 외부 호출 시 몇 프레임 동안 sweep 재시도할지. " +
+             "텔레포트는 owner 권위 NetworkTransform 동기화 RTT 만큼 호스트 측 위치 도착이 지연될 수 있어 넉넉하게. " +
+             "기본 30 ≈ 0.5초.")]
+    [SerializeField] private int _forceSweepFrames = 30;
+
     // 호스트 측에서만 채워지는 추적 set. 키는 Collider 의 instanceID.
     private readonly HashSet<int> _trackedColliderIds = new HashSet<int>();
 
@@ -54,7 +60,7 @@ public class MapObjectCounter : MonoBehaviour
         // 호스트만 카운트 책임. 비호스트는 트리거 이벤트도 IsServer 가드로 무시되므로 sweep 도 불필요.
         if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
-        _sweepRoutine = StartCoroutine(InitialSweepCoroutine());
+        StartSweep(_initialSweepFrames, "OnEnable");
     }
 
     private void OnDisable()
@@ -101,13 +107,50 @@ public class MapObjectCounter : MonoBehaviour
     }
 
     /// <summary>
-    /// OnEnable 직후 N 프레임 동안 OverlapBox 로 안에 있는 플레이어를 강제로 잡는다.
-    /// spawn/텔레포트가 OnEnable 보다 한 두 프레임 늦게 끝날 수 있어 여러 프레임 재시도.
+    /// 외부에서 강제 sweep 트리거. 텔레포트 직후 OnTriggerEnter 가 발화 안 하는 케이스 보정용.
+    /// (Battle Node 진입 시 플레이어가 박스 collider 안에 텔레포트로 직접 생성되어
+    ///  "들어오는 모션" 이 없는 케이스 — Unity 트리거의 한계.)
+    ///
+    /// 동작:
+    /// - 호스트가 아니면 무시 (트리거 이벤트도 호스트만 처리하므로 sweep 도 호스트만 의미).
+    /// - 이미 sweep 코루틴이 돌고 있으면 중지하고 새 sweep 시작 (_forceSweepFrames 만큼).
+    /// - NetworkTransform 동기화 RTT 만큼 호스트 측 위치 도착이 지연될 수 있어 프레임 수가 넉넉함.
+    ///
+    /// 호출처: MapController.TeleportNextMap — 텔레포트 직후 다음 맵 카운터에 호출.
+    /// </summary>
+    public void ForceSweep()
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
+
+        DebugTool.Log(
+            $"{gameObject.name} ObjectCounter ForceSweep 요청 ({_forceSweepFrames} 프레임)",
+            DebugType.Node, this);
+        StartSweep(_forceSweepFrames, "ForceSweep");
+    }
+
+    /// <summary>
+    /// 기존 sweep 코루틴이 돌고 있으면 중지하고 새 sweep 시작.
+    /// frames 가 0 이하면 1 로 클램프.
+    /// source 는 로그 식별용 (예: "OnEnable" / "ForceSweep").
+    /// </summary>
+    private void StartSweep(int frames, string source)
+    {
+        if (_sweepRoutine != null)
+        {
+            StopCoroutine(_sweepRoutine);
+            _sweepRoutine = null;
+        }
+        _sweepRoutine = StartCoroutine(SweepCoroutine(frames, source));
+    }
+
+    /// <summary>
+    /// N 프레임 동안 OverlapBox 로 안에 있는 플레이어를 강제로 잡는다.
+    /// spawn/텔레포트가 호출 시점보다 한 두 프레임 늦게 끝날 수 있어 여러 프레임 재시도.
     /// 이미 추적 중이면 HashSet 으로 중복 무시.
     /// </summary>
-    private IEnumerator InitialSweepCoroutine()
+    private IEnumerator SweepCoroutine(int frames, string source)
     {
-        int totalFrames = Mathf.Max(1, _initialSweepFrames);
+        int totalFrames = Mathf.Max(1, frames);
         for (int i = 0; i < totalFrames; i++)
         {
             // 한 프레임 대기 후 sweep — 같은 프레임의 spawn 도 잡고 물리 갱신 후 OverlapBox 정확도 확보.
@@ -117,7 +160,7 @@ public class MapObjectCounter : MonoBehaviour
             if (added > 0)
             {
                 DebugTool.Log(
-                    $"{gameObject.name} ObjectCounter Sweep[{i}] - {added}명 추가 (total {_trackedColliderIds.Count})",
+                    $"{gameObject.name} ObjectCounter Sweep[{source}/{i}] - {added}명 추가 (total {_trackedColliderIds.Count})",
                     DebugType.Node, this);
             }
         }
