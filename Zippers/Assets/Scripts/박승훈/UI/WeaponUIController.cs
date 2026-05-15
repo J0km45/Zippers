@@ -14,6 +14,8 @@ public class WeaponUIController : MonoBehaviour
     private TMP_Text _maxAmmoText;
     [Header("현재 탄환 수")] [SerializeField]
     private TMP_Text _currentAmmoText;
+    [Header("근접 전환 텍스트")] [SerializeField]
+    private TMP_Text _meleeText;
     
     public event Action<int> OnMaxAmmoChange;
     public event Action<int> OnCurrentAmmoChange;
@@ -50,6 +52,16 @@ public class WeaponUIController : MonoBehaviour
 
     private void SetCurrentAmmoText(int currentAmmo)
         => _currentAmmoText.text = currentAmmo.ToString();
+
+    public void CheckClass(WeaponType type)
+    {
+        if (type == WeaponType.Melee)
+        {
+            _maxAmmoText.text = "";
+            _currentAmmoText.text = "";
+            _meleeText.text = "근접 무기";
+        }
+    }
 
     private void AmmoInit()
     {
