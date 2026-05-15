@@ -46,6 +46,7 @@ public class LobbySceneFlowController : MonoBehaviour
         yield return null;
 
         LobbyTopInfoBarController.EnsureInScene();
+        LobbyPlayerSlotsView.EnsureInScene();
         // LobbyScene 진입 시 기존 슬롯 UI 템플릿을 숨기고 nameplate 관리자만 준비한다.
         LobbyAvatarNameplateManager.EnsureInScene();
         SceneChangeController.Instance.OnEnterScene();
