@@ -147,28 +147,28 @@ public abstract class MapController : MonoBehaviour
         {
             case NodeStartDir.Up:
                 nextMapData = Data.NextMap_Up.GetComponent<MapData>();
-                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Up;
+                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Down;
                 if(Data.NextMap_Down != null) Data.NextMap_Down.gameObject.SetActive(false);
                 if(Data.NextMap_Left != null) Data.NextMap_Left.gameObject.SetActive(false);
                 if(Data.NextMap_Right != null) Data.NextMap_Right.gameObject.SetActive(false);
                 break;
             case NodeStartDir.Down:
                 nextMapData = Data.NextMap_Down.GetComponent<MapData>();
-                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Down;
+                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Up;
                 if(Data.NextMap_Up != null) Data.NextMap_Up.gameObject.SetActive(false);
                 if(Data.NextMap_Left != null) Data.NextMap_Left.gameObject.SetActive(false);
                 if(Data.NextMap_Right != null) Data.NextMap_Right.gameObject.SetActive(false);
                 break;
             case NodeStartDir.Left:
                 nextMapData = Data.NextMap_Left.GetComponent<MapData>();
-                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Left;
+                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Right;
                 if(Data.NextMap_Down != null) Data.NextMap_Down.gameObject.SetActive(false);
                 if(Data.NextMap_Up != null) Data.NextMap_Up.gameObject.SetActive(false);
                 if(Data.NextMap_Right != null) Data.NextMap_Right.gameObject.SetActive(false);
                 break;
             case NodeStartDir.Right:
                 nextMapData = Data.NextMap_Right.GetComponent<MapData>();
-                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Right;
+                if (nextMapData != null) nextMapStartPos = nextMapData.PlayerSpawnPoint_Left;
                 if(Data.NextMap_Down != null) Data.NextMap_Down.gameObject.SetActive(false);
                 if(Data.NextMap_Left != null) Data.NextMap_Left.gameObject.SetActive(false);
                 if(Data.NextMap_Up != null) Data.NextMap_Up.gameObject.SetActive(false);
