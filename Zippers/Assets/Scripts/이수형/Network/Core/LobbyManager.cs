@@ -63,6 +63,13 @@ public class LobbyManager : MonoBehaviour
     /// <summary>현재 로컬 플레이어가 호스트인지.</summary>
     public bool IsHost => _session != null && _session.IsHost;
 
+    /// <summary>
+    /// [Phase 1] 호스트 입장에서 방이 안정화(슬롯/난이도/LobbyHostAuthority 준비)되어
+    /// 외부에 검색/조인 허용된 상태인지. CreateSessionAsync 직후 false, MarkRoomStableAsHostAsync 호출 시 true.
+    /// 비호스트 입장에서는 의미가 없어 항상 false 로 유지.
+    /// </summary>
+    public bool IsRoomStable { get; private set; }
+
     /// <summary>게임 시작 시점에 확정된 세션 인원수. 게임 씬 합류 판정용.</summary>
     public int ExpectedPlayerCount { get; private set; }
 
@@ -190,7 +197,11 @@ public class LobbyManager : MonoBehaviour
                 {
                     Name = sessionName,
                     MaxPlayers = maxPlayers,
-                    IsPrivate = false,
+                    // [Phase 4] IsPrivate=true 로 원자적으로 가린 채 생성.
+                    // 사후 IsLocked=true 적용은 SaveProperties RTT 가 한 번 더 필요해서 race 윈도우가 남지만,
+                    // IsPrivate=true 는 세션 생성과 동시에 적용되어 QuerySessions 결과에서 즉시 제외된다.
+                    // MarkRoomStableAsHostAsync 에서 IsLocked / IsPrivate 둘 다 false 로 풀어준다.
+                    IsPrivate = true,
                     PlayerProperties = BuildLocalPlayerProperties()
                 }.WithRelayNetwork(region);
                 _session = await MultiplayerService.Instance.CreateSessionAsync(options);
@@ -202,23 +213,40 @@ public class LobbyManager : MonoBehaviour
                 BindSessionEvents(_session);
                 // 진입 직후 SessionProperty 초기 상태로 캐시 1회 채움 (이후엔 이벤트로 갱신).
                 RebuildSlotCacheFromSession();
+
+                // ── [Phase 1] 안정화 게이트 시작: IsLocked=true 즉시 적용 ──
+                // 이 시점부터 다른 클라이언트의 QuerySessions / QuickJoin / JoinById / JoinByCode 가
+                // SDK 차원에서 차단된다. 안정화(LobbyHostAuthority.OnNetworkSpawn) 완료 시
+                // MarkRoomStableAsHostAsync 로 해제됨.
+                IsRoomStable = false;
+                await LockSessionForStabilizationAsync();
+
                 // 호스트 자신을 슬롯 0 으로 초기 등재. PlayerJoined 가 호스트 본인에 대해 발화하지 않을 수 있어 명시적으로 1회 기록.
+                // Phase 1: 기존 fire-and-forget 을 await 로 변경 - 잠금 윈도우 내에서 슬롯/난이도 SessionProperty 가
+                // 확정된 뒤에야 LobbyScene 전환을 시작하도록 동기화.
                 _slotUpdateInFlight = ChainSlotUpdate(_slotUpdateInFlight, InitializeSlotsAsHostAsync);
+                await _slotUpdateInFlight;
+
                 // LobbySettings.DefaultDifficulty (기본 Level3 = Normal) 를 SessionProperty 에 1회 기록.
                 // UI 호스트가 변경하기 전까지 유효. 슬롯 쓰기와 별개 키이므로 SDK 가 병합 처리.
-                _ = SetDifficultyAsHostAsync(_settings.DefaultDifficulty);
-                DebugTool.Log($"초대 코드 생성: {_session.Code}", DebugType.Network, this);
+                await SetDifficultyAsHostAsync(_settings.DefaultDifficulty);
+
+                DebugTool.Log($"초대 코드 생성: {_session.Code} (잠금 상태로 안정화 대기 중)", DebugType.Network, this);
                 OnSessionUpdated?.Invoke(_session);
                 return true;
             }
             catch (Exception e) when (attempt < JOIN_MAX_RETRY && IsTransientNgoError(e))
             {
                 DebugTool.Warning($"생성 일시 실패 - 자동 재시도: {e.Message}", DebugType.Network);
+                // 부분 생성 상태가 남아 있을 수 있으니 재시도 전 정리.
+                await CleanupPartialSessionAsync();
                 await Task.Delay(JOIN_RETRY_DELAY_MS);
             }
             catch (Exception e)
             {
                 DebugTool.Error($"생성 실패: {e.Message}", DebugType.Network);
+                // 잠금/슬롯/난이도 단계에서 예외 발생 시 매달려 있는 세션 정리.
+                await CleanupPartialSessionAsync();
                 RaiseError("방을 만들지 못했습니다.");
                 return false;
             }
@@ -509,6 +537,7 @@ public class LobbyManager : MonoBehaviour
         UnbindSessionEvents(session);
         _session = null;
         _slotCache.Clear();
+        IsRoomStable = false; // Phase 1: 다음 세션을 위해 게이트 상태 리셋
         try
         {
             await session.LeaveAsync();
@@ -608,6 +637,97 @@ public class LobbyManager : MonoBehaviour
             catch (Exception e) { DebugTool.Warning($"비정상 정리 중 예외: {e.Message}", DebugType.Network); }
         }
         return false;
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // [Phase 1] Stabilization gate (방 생성 직후 검색/조인 차단 / 해제)
+    // ─────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// 세션 생성 직후 호출. IsLocked=true 로 잠가서 외부의 QuerySessions /
+    /// QuickJoin / JoinById / JoinByCode 가 SDK 차원에서 차단되게 한다.
+    /// 안정화 완료(LobbyHostAuthority.OnNetworkSpawn)에서 MarkRoomStableAsHostAsync 로 해제됨.
+    /// </summary>
+    private async Task LockSessionForStabilizationAsync()
+    {
+        if (_session == null || !_session.IsHost) return;
+        try
+        {
+            IHostSession host = _session.AsHost();
+            host.IsLocked = true;
+            await host.SavePropertiesAsync();
+            DebugTool.Log("[Stabilize] IsLocked=true 적용 - 외부 검색/조인 차단", DebugType.Network, this);
+        }
+        catch (Exception e)
+        {
+            DebugTool.Error($"안정화 잠금 실패: {e.Message}", DebugType.Network, this);
+            throw; // 상위 catch 에서 CleanupPartialSessionAsync 가 호출되도록 전파.
+        }
+    }
+
+    /// <summary>
+    /// LobbyHostAuthority.OnNetworkSpawn (호스트 측) 에서 호출.
+    /// 잠금을 해제해 외부에서 다시 검색/조인 가능하도록 만든다.
+    /// 중복 호출 안전 (이미 stable 이면 no-op).
+    /// </summary>
+    public async Task<bool> MarkRoomStableAsHostAsync()
+    {
+        if (_session == null)
+        {
+            DebugTool.Warning("MarkRoomStable: 세션 없음 - 무시", DebugType.Network, this);
+            return false;
+        }
+        if (!IsHost)
+        {
+            DebugTool.Warning("MarkRoomStable: 비호스트 호출 - 무시", DebugType.Network, this);
+            return false;
+        }
+        if (IsRoomStable)
+        {
+            DebugTool.Log("MarkRoomStable: 이미 안정화 상태 - no-op", DebugType.Network, this);
+            return true;
+        }
+
+        try
+        {
+            IHostSession host = _session.AsHost();
+            // [Phase 4] 잠금/가림 둘 다 한 번에 해제. SavePropertiesAsync 한 번으로 묶어서 처리.
+            host.IsLocked = false;
+            host.IsPrivate = false;
+            await host.SavePropertiesAsync();
+            IsRoomStable = true;
+            DebugTool.Log("[Stabilize] IsLocked=false / IsPrivate=false 해제 - 외부 검색/조인 허용", DebugType.Network, this);
+            OnSessionUpdated?.Invoke(_session);
+            return true;
+        }
+        catch (Exception e)
+        {
+            DebugTool.Error($"안정화 해제 실패: {e.Message}", DebugType.Network, this);
+            RaiseError("방 준비를 마무리하지 못했습니다.");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// CreateSessionAsync 중간 단계(잠금/슬롯/난이도) 에서 예외가 났을 때
+    /// 매달려 있는 _session 을 안전하게 폐기. 재시도/실패 경로 양쪽에서 호출.
+    /// </summary>
+    private async Task CleanupPartialSessionAsync()
+    {
+        if (_session == null) return;
+        ISession failed = _session;
+        UnbindSessionEvents(failed);
+        _session = null;
+        _slotCache.Clear();
+        IsRoomStable = false;
+        try
+        {
+            await failed.LeaveAsync();
+        }
+        catch (Exception e)
+        {
+            DebugTool.Warning($"부분 생성 정리 중 예외: {e.Message}", DebugType.Network, this);
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────
@@ -793,6 +913,7 @@ public class LobbyManager : MonoBehaviour
         UnbindSessionEvents(_session);
         _session = null;
         _slotCache.Clear();
+        IsRoomStable = false; // Phase 1: 호스트 사라짐/세션 삭제 시 게이트 상태도 리셋
         OnSessionLeft?.Invoke();
     }
 
@@ -872,7 +993,11 @@ public class LobbyManager : MonoBehaviour
         await WriteSlotMapAsync(next);
     }
 
-    // 호스트 측 SessionProperty["Slots"] 갱신. 캐시는 SessionPropertiesChanged 이벤트가 다시 채움(권위는 SessionProperty).
+    // 호스트 측 SessionProperty["Slots"] 갱신.
+    // [Phase 3] SavePropertiesAsync 성공 직후 _slotCache 를 로컬에서 즉시 동기화.
+    // SDK 의 SessionPropertiesChanged 이벤트가 늦게 와서 다음 ChainSlotUpdate 단계가
+    // stale 한 _slotCache 로 같은 슬롯을 재배정·덮어쓰는 race 를 차단한다.
+    // 이벤트가 뒤늦게 와서 RebuildSlotCacheFromSession 이 또 호출돼도 결과가 동일해 멱등.
     private async Task WriteSlotMapAsync(Dictionary<int, string> slots)
     {
         if (_session == null) return;
@@ -881,7 +1006,18 @@ public class LobbyManager : MonoBehaviour
             string json = JsonConvert.SerializeObject(slots);
             IHostSession host = _session.AsHost();
             host.SetProperty(LobbyConstants.KEY_SESSION_SLOTS, new SessionProperty(json, VisibilityPropertyOptions.Member));
+
+            // 진단 로그: 어떤 맵을 쓰는 중인지 한 줄.
+            DebugTool.Log($"[Slot] WriteSlotMap → {json}", DebugType.Network, this);
+
             await host.SavePropertiesAsync();
+
+            // ★ 로컬 캐시 즉시 동기화. 다음 ChainSlotUpdate 가 정확한 상태에서 FindLowestEmptySlot 호출 가능.
+            _slotCache.Clear();
+            foreach (KeyValuePair<int, string> kv in slots)
+            {
+                _slotCache[kv.Key] = kv.Value;
+            }
         }
         catch (Exception e)
         {

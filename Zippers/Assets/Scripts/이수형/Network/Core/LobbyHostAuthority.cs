@@ -77,6 +77,15 @@ public class LobbyHostAuthority : NetworkBehaviour
             LobbyManager.Instance.OnSessionUpdated += HostHandleSessionUpdate;
             // 초기 상태 1회 처리 (이미 있을 수 있는 PlayerProperty 반영)
             HostHandleSessionUpdate(LobbyManager.Instance.CurrentSession);
+
+            // [Phase 2] 안정화 신호.
+            // 이 시점이 정확히 "호스트의 ServerRpc 라우팅이 가능해진 순간" = 클라이언트가
+            // 들어와서 RequestClassChangeAsync 를 호출해도 LobbyHostAuthority.Instance != null
+            // 이 보장된다. 따라서 여기서 LobbyManager 의 IsLocked=true 잠금을 해제하여
+            // 외부 검색/조인을 허용한다. fire-and-forget OK — MarkRoomStableAsHostAsync 가
+            // 내부에서 예외를 catch 하고 bool 로 반환하기 때문에 await 누락이 문제되지 않음.
+            DebugTool.Log("[Stabilize] LobbyHostAuthority spawned - MarkRoomStable 호출", DebugType.Network, this);
+            _ = LobbyManager.Instance.MarkRoomStableAsHostAsync();
         }
     }
 
@@ -225,6 +234,10 @@ public class LobbyHostAuthority : NetworkBehaviour
             activeIds.Add(playerId);
 
             PlayerInfo info = LobbyManager.Instance.GetPlayerInfo(player);
+
+            // [Phase 4] 진단 로그: 호스트가 각 플레이어에 대해 어떤 상태로 판단했는지 1회당 1줄.
+            // race 발생 시 slot=-1 또는 class=None 으로 찍히는지 확인용.
+            DebugTool.Log($"[HostUpdate] player={playerId} class={info.PlayerClass} slot={info.SlotIndex}", DebugType.Network, this);
 
             // 본인 PlayerProperty 가 reservation 과 일치하면 reservation 해제
             if (_pendingReservations.TryGetValue(playerId, out PlayerClass reserved) && reserved == info.PlayerClass)
