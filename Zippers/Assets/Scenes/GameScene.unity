@@ -1671,6 +1671,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5636911147059658597, guid: 6d3aa486032a58d4bb22dee7dc677ea0, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3056610245
+      objectReference: {fileID: 0}
+    - target: {fileID: 5636911147059658597, guid: 6d3aa486032a58d4bb22dee7dc677ea0, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1088410200
+      objectReference: {fileID: 0}
     - target: {fileID: 5770286860968266568, guid: 6d3aa486032a58d4bb22dee7dc677ea0, type: 3}
       propertyPath: m_Name
       value: TempUI
