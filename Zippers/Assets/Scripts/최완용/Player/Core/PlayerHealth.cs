@@ -167,7 +167,6 @@ public class PlayerHealth : MonoBehaviour, IDamagable
             }
 
             _combatNetState.ServerApplyDamage(damage, 0, "PlayerHealth.TakeDamage");
-            OnDamage?.Invoke();
             return;
         }
 
@@ -218,6 +217,8 @@ public class PlayerHealth : MonoBehaviour, IDamagable
             playerTransform.Unregister();
         }
 
+        NotifySessionPlayerDeath();
+
         PlayerDied?.Invoke();
         DebugTool.Log("플레이어 사망", DebugType.Character, this);
     }
@@ -230,6 +231,7 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         }
 
         _combatNetState.OnHealthChanged += HandleNetHealthChanged;
+        _combatNetState.OnDamageReceived += HandleNetDamageReceived;
         _combatNetState.OnPlayerDied += HandleNetPlayerDied;
         _combatNetState.OnPlayerRevived += HandleNetPlayerRevived;
     }
@@ -242,6 +244,7 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         }
 
         _combatNetState.OnHealthChanged -= HandleNetHealthChanged;
+        _combatNetState.OnDamageReceived -= HandleNetDamageReceived;
         _combatNetState.OnPlayerDied -= HandleNetPlayerDied;
         _combatNetState.OnPlayerRevived -= HandleNetPlayerRevived;
     }
@@ -268,9 +271,20 @@ public class PlayerHealth : MonoBehaviour, IDamagable
     private void HandleNetPlayerRevived()
     {
         IsDead = false;
-        SyncFromCombatNetState();
 
+        SyncFromCombatNetState();
+        NotifySessionPlayerRevive();
         DebugTool.Log("[PlayerHealth] 네트워크 부활 상태 반영", DebugType.CombatNet, this);
+    }
+    private void HandleNetDamageReceived()
+    {
+        OnDamage?.Invoke();
+
+        DebugTool.Log(
+            "[PlayerHealth] 네트워크 피격 이벤트 반영",
+            DebugType.CombatNet,
+            this
+        );
     }
 
     private void SyncFromCombatNetState()
@@ -285,6 +299,50 @@ public class PlayerHealth : MonoBehaviour, IDamagable
         IsDead = _combatNetState.IsDead;
 
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+    }
+
+    private void NotifySessionPlayerDeath()
+    {
+        if (_combatNetState == null || !_combatNetState.IsServer)
+        {
+            return;
+        }
+
+        if (SessionPlayerStateController.Instance == null)
+        {
+            DebugTool.Log("[PlayerHealth] SessionPlayerStateController가 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        SessionPlayerStateController.Instance.NotifyPlayerHPDeath(_combatNetState.OwnerClientId);
+
+        DebugTool.Log(
+            $"[PlayerHealth] 세션 사망 알림 / OwnerClientId: {_combatNetState.OwnerClientId}",
+            DebugType.CombatNet,
+            this
+        );
+    }
+
+    private void NotifySessionPlayerRevive()
+    {
+        if (_combatNetState == null || !_combatNetState.IsServer)
+        {
+            return;
+        }
+
+        if (SessionPlayerStateController.Instance == null)
+        {
+            DebugTool.Log("[PlayerHealth] SessionPlayerStateController가 없습니다.", DebugType.CombatNet, this);
+            return;
+        }
+
+        SessionPlayerStateController.Instance.NotifyPlayerRevive(_combatNetState.OwnerClientId);
+
+        DebugTool.Log(
+            $"[PlayerHealth] 세션 부활 알림 / OwnerClientId: {_combatNetState.OwnerClientId}",
+            DebugType.CombatNet,
+            this
+        );
     }
 
     private bool TryGetMaxHealth(out float totalHealth)

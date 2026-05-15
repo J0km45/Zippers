@@ -83,6 +83,7 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
     public event Action<float, float> OnStaminaChanged;
     public event Action<bool> OnReloadStateChanged;
 
+    public event Action OnDamageReceived;
     public event Action OnPlayerDied;
     public event Action OnPlayerRevived;
 
@@ -354,6 +355,8 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
 
         _currentHealth.Value = Mathf.Max(MinHealth, _currentHealth.Value - damage);
 
+        PlayDamageClientRpc();
+
         DebugTool.Log(
             $"[CombatNet] 데미지 적용 / OwnerClientId: {OwnerClientId}, Attacker: {attackerClientId}, Damage: {damage}, Source: {source}, HP: {_currentHealth.Value}/{_maxHealth.Value}",
             DebugType.CombatNet,
@@ -364,6 +367,18 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
         {
             ServerKill(source);
         }
+    }
+
+    [ClientRpc]
+    private void PlayDamageClientRpc()
+    {
+        OnDamageReceived?.Invoke();
+
+        DebugTool.Log(
+            $"[CombatNet] 피격 연출 동기화 / OwnerClientId: {OwnerClientId}",
+            DebugType.CombatNet,
+            this
+        );
     }
 
     /// 서버에서 플레이어를 사망 처리한다.
@@ -523,7 +538,7 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
             return false;
         }
 
-        if (_currentStamina.Value < amount)
+        if (_currentStamina.Value <= amount)
         {
             DebugTool.Log("[CombatNet] 스테미나 부족", DebugType.CombatNet, this);
             return false;
