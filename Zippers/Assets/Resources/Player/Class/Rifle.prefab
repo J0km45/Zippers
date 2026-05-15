@@ -1626,7 +1626,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1399122269168980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17664e59e9e41db4bafeadae18fee8a0, type: 3}
+  m_Script: {fileID: 11500000, guid: b0e2a825b1518b640a9bc7aacc6d462d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zippers.Network.PlayerCombatNetState
   ShowTopMostFoldoutHeaderGroup: 1

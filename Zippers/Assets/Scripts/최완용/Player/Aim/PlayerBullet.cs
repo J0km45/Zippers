@@ -17,12 +17,12 @@ public class PlayerBullet : NetworkBehaviour
     private float _maxDistance; // 총알 최대 이동 거리, PlayerClassDataSO의 BulletDistance 사용
     private bool _canPierce; // 관통 가능 여부, Rifle/Pistol은 true
 
-    private bool _isInitialized; // 초기화 완료 여부
+    private bool _isInit; // 초기화 완료 여부
 
     /// <summary>
     /// 투사체 초기화
     /// </summary>
-    public void Initialize(Vector3 direction, float damage, float speed, float maxDistance, bool canPierce)
+    public void Init(Vector3 direction, float damage, float speed, float maxDistance, bool canPierce)
     {
         _moveDirection = direction.normalized;
         _damage = damage;
@@ -32,14 +32,14 @@ public class PlayerBullet : NetworkBehaviour
 
         _startPosition = transform.position;
         _hitTargets.Clear();
-        _isInitialized = true;
+        _isInit = true;
 
         DebugTool.Log($"[PlayerProjectile] 초기화 완료 / Damage: {_damage}, Speed: {_speed}, Distance: {_maxDistance}, Pierce: {_canPierce}", DebugType.Data, this);
     }
 
     private void Update()
     {
-        if (!_isInitialized)
+        if (!_isInit)
         {
             return;
         }
@@ -74,16 +74,27 @@ public class PlayerBullet : NetworkBehaviour
         }
 
         DebugTool.Log("최대 사거리 도달", DebugType.Data, this);
-        if(NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening && !IsServer)
+
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
         {
-            NetworkObject.Despawn(true);
+            if (IsServer && NetworkObject != null && NetworkObject.IsSpawned)
+            {
+                NetworkObject.Despawn(true);
+            }
+
             return;
         }
+
         Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if(!_isInit)
+        {
+            return;
+        }
+
         if (!IsTargetLayer(other.gameObject))
         {
             return;
@@ -109,11 +120,16 @@ public class PlayerBullet : NetworkBehaviour
 
         if (!_canPierce)
         {
-            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening && !IsServer)
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
             {
-                NetworkObject.Despawn(true);
+                if (IsServer && NetworkObject != null && NetworkObject.IsSpawned)
+                {
+                    NetworkObject.Despawn(true);
+                }
+
                 return;
             }
+
             Destroy(gameObject);
         }
     }

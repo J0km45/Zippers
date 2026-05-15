@@ -175,12 +175,12 @@ public class PlayerController : NetworkBehaviour
             return;
         }
 
-        if (_combatStateMachine == null)
+        if (_playerCombat == null)
         {
             return;
         }
 
-        _combatStateMachine.RequestReload();
+        _playerCombat.TryReload();
     }
     private void OnSprint(InputAction.CallbackContext ctx)
     {

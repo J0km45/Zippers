@@ -30,6 +30,12 @@ namespace Zippers.Network.Contracts
         bool IsReloading { get; }
 
         event Action<float, float> OnHealthChanged;   // (current, max)
+
+        //추가
+        event Action<float, float> OnStaminaChanged;  // (current, max)
+        event Action<float, float> OnAmmoChanged;     // (current, max)
+        event Action<bool> OnReloadStateChanged;      // isReloading
+        //
         event Action OnPlayerDied;
         event Action OnPlayerRevived;
     }
