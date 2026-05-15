@@ -150,7 +150,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TitleController
   _enterLobbyButton: {fileID: 2055950015}
   _statusText: {fileID: 999805533}
-  _sceneChangeController: {fileID: 0}
 --- !u!4 &75116079
 Transform:
   m_ObjectHideFlags: 0
