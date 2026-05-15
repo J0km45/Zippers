@@ -150,8 +150,16 @@ public class LobbyPlayerSlotsView : MonoBehaviour
         AutoWirePlayerSlots();
         if (_playerSlots == null) return;
 
+        int visibleSlotCount = session != null && session.MaxPlayers > 0
+            ? Mathf.Min(session.MaxPlayers, _playerSlots.Length)
+            : _playerSlots.Length;
+
         for (int slotIndex = 0; slotIndex < _playerSlots.Length; slotIndex++)
         {
+            bool isVisibleSlot = slotIndex < visibleSlotCount;
+            SetPlayerSlotVisible(slotIndex, isVisibleSlot);
+            if (!isVisibleSlot) continue;
+
             IReadOnlyPlayer player = FindPlayerInSlot(session, slotIndex);
             if (player == null)
             {
@@ -169,6 +177,17 @@ public class LobbyPlayerSlotsView : MonoBehaviour
             bool isHost = player.Id == session.Host;
             string stateText = isHost || info.IsReady ? "준비 완료" : "미준비";
             SetPlayerSlot(slotIndex, GetClassDisplayName(info.PlayerClass), stateText);
+        }
+    }
+
+    private void SetPlayerSlotVisible(int slotIndex, bool isVisible)
+    {
+        if (_playerSlots == null || slotIndex < 0 || slotIndex >= _playerSlots.Length) return;
+
+        LobbyPlayerSlotBinding slot = _playerSlots[slotIndex];
+        if (slot?.Root != null)
+        {
+            slot.Root.gameObject.SetActive(isVisible);
         }
     }
 

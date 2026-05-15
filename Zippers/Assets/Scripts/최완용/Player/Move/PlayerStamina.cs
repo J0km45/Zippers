@@ -126,9 +126,12 @@ public class PlayerStamina : NetworkBehaviour
 
     public bool TryStartSprint()
     {
+        //추가
+        SyncFromCombatNetState();
+
         if (!CanSprint)
         {
-            DebugTool.Log("스테미나가 부족해서 달리기 불가", DebugType.Character, this);
+            DebugTool.Log($"스테미나가 부족해서 달리기 불가 / Current: {CurrentStamina}, Max: {MaxStamina}", DebugType.Character, this);
             return false;
         }
 
@@ -288,7 +291,7 @@ public class PlayerStamina : NetworkBehaviour
 
     private void SyncFromCombatNetState()
     {
-        if (CanReadCombatStaminaState())
+        if (!CanReadCombatStaminaState())
         {
             return;
         }
