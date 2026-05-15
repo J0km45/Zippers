@@ -250,8 +250,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4724751045106037904}
   - component: {fileID: 43630683837932111}
-  - component: {fileID: 3432403583188315936}
+  - component: {fileID: -4352798743810785972}
   - component: {fileID: 2003683179179068232}
+  - component: {fileID: 5715999334749647838}
   m_Layer: 12
   m_Name: ExchangeArea
   m_TagString: Untagged
@@ -297,7 +298,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 15, y: 2, z: 15}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &3432403583188315936
+--- !u!114 &-4352798743810785972
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -325,3 +326,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExchangeAreaGizmo
   isGizmoActive: 1
+--- !u!114 &5715999334749647838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7362377486847857997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98b9aa3bc6bd59b439720fd3189f1981, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShopExchangeAreaWatcher
+  _unitLayer:
+    serializedVersion: 2
+    m_Bits: 1024
