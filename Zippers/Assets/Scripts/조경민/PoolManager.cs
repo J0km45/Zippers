@@ -92,7 +92,6 @@ public class PoolManager : MonoBehaviour
         }
 
         obj.SetActive(false);
-        obj.transform.SetParent(transform);
 
         _pools[prefab].Enqueue(obj); // 큐에 다시 넣기
     }
