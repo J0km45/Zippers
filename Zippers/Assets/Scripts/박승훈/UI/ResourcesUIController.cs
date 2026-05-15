@@ -63,13 +63,13 @@ public class ResourcesUIController : MonoBehaviour
     }
     
 
-    public void SetScrapText(int value)
+    private void SetScrapText(int value)
         => _scrapText.text = $"{value}";
 
-    public void SetSuppliesText(int value)
+    private void SetSuppliesText(int value)
         => _suppliesText.text = $"{value}";
 
-    public void SetInfectionSampleText(int value)
+    private void SetInfectionSampleText(int value)
         => _infectionSampleText.text = $"{value}";
 
     private void ResourcesInit()
