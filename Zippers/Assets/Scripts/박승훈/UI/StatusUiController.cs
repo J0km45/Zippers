@@ -37,35 +37,32 @@ public class StatusUiController : MonoBehaviour
     [SerializeField] private Image _staminaBar;
     [Header("스테미나 텍스트")]
     [SerializeField] private TMP_Text _staminaText;
-    
-    private void Start()
-    {
-        StatusInit();
-    }
 
-    public void OnHealthValueChanged(float maxHealth, float currentHealth)
+    public void OnHealthValueChanged( float currentHealth,float maxHealth)
     {
-        string text = $"{currentHealth} / {maxHealth}";
+        _currentHeatlh = currentHealth;
+        _maxHeatlh = maxHealth;
+        
+        string text = $"{(int)_currentHeatlh} / {(int)_maxHeatlh}";
         _healthText.text = text;
-        _hpBar.fillAmount = currentHealth / maxHealth;
+        
+        _hpBar.fillAmount = _currentHeatlh / _maxHeatlh;
     }
 
-    public void OnStaminaValueChanged(float maxStamina, float currentStamina)
+    public void OnStaminaValueChanged(float currentStamina, float maxStamina)
     {
-        string text = $"{currentStamina} / {maxStamina}";
+        _currentStamina = currentStamina;
+        _maxStamina= maxStamina;
+        
+        string text = $"{(int)_currentStamina} / {(int)_maxStamina}";
         _staminaText.text = text;
-        _staminaBar.fillAmount = currentStamina / maxStamina;
+        
+        _staminaBar.fillAmount = _currentStamina / _maxStamina;
     }
 
     public void SetClassSprite(WeaponType type)
     {
         int index = (int)type;
         _classIcon.sprite = _classSprites[index];
-    }
-
-    private void StatusInit()
-    {
-        _currentHeatlh = _maxHeatlh;
-        _currentStamina = _maxStamina;
     }
 }

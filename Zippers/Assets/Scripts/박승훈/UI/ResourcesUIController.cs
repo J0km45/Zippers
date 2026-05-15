@@ -18,4 +18,11 @@ public class ResourcesUIController : MonoBehaviour
    
     public void SetResourceText(ResourcesType resourceType, float current, float delta)
         => Text[(int)resourceType].text = $"{current}";
+
+    public void ResourcesInit()
+    {
+        SetResourceText(ResourcesType.Scrap, 0, 0);
+        SetResourceText(ResourcesType.Supplies, 0, 0);
+        SetResourceText(ResourcesType.InfectionSample, 0, 0);
+    }
 }

@@ -14,15 +14,12 @@ public class WeaponUIController : MonoBehaviour
     private TMP_Text _currentAmmoText;
     [Header("근접 전환 텍스트")] [SerializeField]
     private TMP_Text _meleeText;
-    
-
-    private void Start()
-        => AmmoInit();
-    
 
     public void SetAmmoText(float currentAmmo, float maxAmmo)
     {
-        _maxAmmoText.text = currentAmmo.ToString();
+        _maxAmmo = (int)maxAmmo;
+        _currentAmmo = (int)currentAmmo;
+        _maxAmmoText.text = maxAmmo.ToString();
         _currentAmmoText.text = currentAmmo.ToString();
     }
 
@@ -34,10 +31,5 @@ public class WeaponUIController : MonoBehaviour
             _currentAmmoText.text = "";
             _meleeText.text = "근접 무기";
         }
-    }
-
-    private void AmmoInit()
-    {
-        _currentAmmo = _maxAmmo;
     }
 }
