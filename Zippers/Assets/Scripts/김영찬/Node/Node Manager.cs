@@ -7,8 +7,13 @@ using UnityEngine;
 /// </summary>
 public class NodeManager : MonoBehaviour
 {
+    [Header("노드 데이터 연결")]
     [SerializeField] private NodeDataContainer _dataContainer;
     [SerializeField] private NetworkNodeData _networkNodeData;
+    
+    [Header("게임오버 & 클리어 UI연결")]
+    [SerializeField] private Canvas _gameOverCanvas;
+    [SerializeField] private Canvas _gameClearCanvas;
 
     /// <summary>
     /// NetworkNodeData에서 사용하는 BattleCount를 밖으로 연결
@@ -24,6 +29,18 @@ public class NodeManager : MonoBehaviour
     /// NodeManager에서 사용하는 NodeDataContainer변수
     /// </summary>
     public NodeDataContainer DataContainer => _dataContainer;
+    
+    /// <summary>
+    /// NodeManager에서 사용하는 GameOverCanvas변수<br/>
+    /// GameOver 시 연출 되는 UI
+    /// </summary>
+    public Canvas GameOverCanvas => _gameOverCanvas;
+    
+    /// <summary>
+    /// NodeManager에서 사용하는 GameOverCanvas변수<br/>
+    /// GameClear 시 연출 되는 UI
+    /// </summary>
+    public Canvas GameClearCanvas => _gameClearCanvas;
 
     /// <summary>
     /// NodeManager에서 사용하는 NodePathMaker변수
