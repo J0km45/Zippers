@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public class WeaponUIController : MonoBehaviour
@@ -13,23 +12,35 @@ public class WeaponUIController : MonoBehaviour
     [Header("현재 탄환 수")] [SerializeField]
     private TMP_Text _currentAmmoText;
     [Header("근접 전환 텍스트")] [SerializeField]
-    private TMP_Text _meleeText;
+    private TMP_Text _weaponStatusText;
+    
+    [SerializeField] private bool _isRanged;
 
     public void SetAmmoText(float currentAmmo, float maxAmmo)
     {
-        _maxAmmo = (int)maxAmmo;
-        _currentAmmo = (int)currentAmmo;
-        _maxAmmoText.text = maxAmmo.ToString();
-        _currentAmmoText.text = currentAmmo.ToString();
+        int safeMaxAmmo = Mathf.Max(0, (int)maxAmmo);
+        int safeCurrentAmmo = Mathf.Clamp((int)currentAmmo, 0, safeMaxAmmo);
+
+        _maxAmmo = safeMaxAmmo;
+        _currentAmmo = safeCurrentAmmo;
+
+        if (_currentAmmoText != null)
+            _currentAmmoText.text = $"{_currentAmmo}";
+
+        if (_maxAmmoText != null)
+            _maxAmmoText.text = $"{_maxAmmo}";
     }
 
-    public void CheckClass(WeaponType type)
+    public void CheckWeaponType(WeaponType type)
     {
-        if (type == WeaponType.Melee)
-        {
-            _maxAmmoText.text = "";
-            _currentAmmoText.text = "";
-            _meleeText.text = "근접 무기";
-        }
+        _isRanged = (type != WeaponType.Melee);
+        
+        _maxAmmoText.gameObject.SetActive(_isRanged);
+        _currentAmmoText.gameObject.SetActive(_isRanged);
+        
+        if(!_isRanged)
+            _weaponStatusText.text = "근접 무기";
+        else
+            _weaponStatusText.text = "/";
     }
 }

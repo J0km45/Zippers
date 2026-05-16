@@ -94,7 +94,7 @@ AudioSource:
   m_GameObject: {fileID: 1583819183417812486}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5294659358839544858, guid: 5e53b81bdd07bab49a7bca031f78b4ea, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -272,8 +272,8 @@ MonoBehaviour:
     m_Bits: 1024
   _leftHand: {fileID: 398411240481754978}
   _rightHand: {fileID: 403286096310528816}
-  _groanSfxInterval: 3
-  _groanSfxChance: 0.3
+  _groanSfxInterval: 7.5
+  _groanSfxChance: 0.1
   _stunDuration: 0.2
   _playerDetectInterval: 0.5
   _resourceSO: {fileID: 11400000, guid: 1029e2828df1523439dc573216007714, type: 2}

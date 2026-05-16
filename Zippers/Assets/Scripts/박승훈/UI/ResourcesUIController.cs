@@ -1,7 +1,5 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ResourcesUIController : MonoBehaviour
 {
@@ -13,16 +11,42 @@ public class ResourcesUIController : MonoBehaviour
     private int _infectionSample;
     
     [Space(6)] [Header("UI 컴포넌트")]
-    [Header("스크랩 텍스트")]
-    [SerializeField] private TMP_Text[] Text;
-   
-    public void SetResourceText(ResourcesType resourceType, float current, float delta)
-        => Text[(int)resourceType].text = $"{current}";
+    [SerializeField] private TMP_Text _scrapText;
+    [SerializeField] private TMP_Text _suppliesText;
+    [SerializeField] private TMP_Text _infectionSampleText;
 
-    public void ResourcesInit()
+    public void SetResourceText(ResourcesType resourceType, float current, float delta)
     {
-        SetResourceText(ResourcesType.Scrap, 0, 0);
-        SetResourceText(ResourcesType.Supplies, 0, 0);
-        SetResourceText(ResourcesType.InfectionSample, 0, 0);
+        switch (resourceType)
+        {
+            case ResourcesType.Scrap:
+                _scrap = (int)current;
+                if (!IsBoundComponent(_scrapText))
+                    return;
+                _scrapText.text = $"{(int)current}";
+                break;
+            case ResourcesType.Supplies:
+                _supplies = (int)current;
+                if (!IsBoundComponent(_suppliesText))
+                    return;
+                _suppliesText.text = $"{(int)current}";
+                break;
+            case ResourcesType.InfectionSample:
+                _infectionSample = (int)current;
+                if (!IsBoundComponent(_infectionSampleText))
+                    return;
+                _infectionSampleText.text = $"{(int)current}";
+                break;
+            default: return;
+        }
+    }
+
+    private bool IsBoundComponent(TMP_Text text)
+    {
+        if (text != null)
+            return true;
+        
+        DebugTool.Error("자원 텍스트 컴포넌트가 업습니다.", DebugType.UI, this);
+        return false;
     }
 }

@@ -123,9 +123,11 @@ MonoBehaviour:
   _weaponUiController: {fileID: 0}
   _waveUiController: {fileID: 0}
   localPlayerObject: {fileID: 0}
-  IReader: 0
-  IProvider: 0
+  _hasStatusReader: 0
+  _hasStatProvider: 0
   economyNetState: {fileID: 0}
+  _hasPlayerEconomy: 0
+  _hasTeamEconomy: 0
 --- !u!1001 &2197539102220513367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -403,6 +405,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weapon Panel
       objectReference: {fileID: 0}
+    - target: {fileID: 4256079407532274296, guid: bf8755450f27dcf40a25af3582118770, type: 3}
+      propertyPath: m_Name
+      value: Status
+      objectReference: {fileID: 0}
     - target: {fileID: 7162468163187017270, guid: bf8755450f27dcf40a25af3582118770, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -489,6 +495,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9113486201734784653, guid: bf8755450f27dcf40a25af3582118770, type: 3}
       propertyPath: _meleeText
+      value: 
+      objectReference: {fileID: 8880490828009368064}
+    - target: {fileID: 9113486201734784653, guid: bf8755450f27dcf40a25af3582118770, type: 3}
+      propertyPath: _weaponStatusText
       value: 
       objectReference: {fileID: 8880490828009368064}
     m_RemovedComponents: []
