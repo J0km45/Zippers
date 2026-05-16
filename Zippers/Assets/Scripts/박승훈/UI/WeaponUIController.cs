@@ -19,16 +19,17 @@ public class WeaponUIController : MonoBehaviour
     {
         _maxAmmo = (int)maxAmmo;
         _currentAmmo = (int)currentAmmo;
-        _maxAmmoText.text = maxAmmo.ToString();
-        _currentAmmoText.text = currentAmmo.ToString();
+        _maxAmmoText.text = _maxAmmo.ToString();
+        _currentAmmoText.text = _currentAmmo.ToString();
     }
 
     public void CheckClass(WeaponType type)
     {
         if (type == WeaponType.Melee)
         {
-            _maxAmmoText.text = "";
-            _currentAmmoText.text = "";
+            _maxAmmoText.gameObject.SetActive(false);
+            _currentAmmoText.gameObject.SetActive(false);
+            _meleeText.rectTransform.sizeDelta = new Vector2(300, 50);
             _meleeText.text = "근접 무기";
         }
     }
