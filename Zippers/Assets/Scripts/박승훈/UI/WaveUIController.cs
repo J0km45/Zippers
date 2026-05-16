@@ -17,12 +17,12 @@ public class WaveUIController : MonoBehaviour
     [SerializeField] private TMP_Text _currentWaveText;
     [SerializeField] private TMP_Text _leftZombieCount;
 
-    private void SetMaxWaveText(int maxWave)
+    public void SetMaxWaveText(int maxWave)
         => _maxWaveText.text = maxWave.ToString();
 
-    private void SetCurrentWaveText(int currentWave)
+    public void SetCurrentWaveText(int currentWave)
         => _currentWaveText.text = currentWave.ToString();
 
-    private void SetLeftZombieCount(int leftZombieCount)
+    public void SetLeftZombieCount(int leftZombieCount)
         => _leftZombieCount.text = leftZombieCount.ToString();
 }
