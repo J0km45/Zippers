@@ -56,8 +56,6 @@ public class BattleUIManager : MonoBehaviour
         yield return null;
 
         GetNetworkComponent(localPlayerObject);
-
-        SceneChangeController.Instance.OnEnterScene();
     }
 
     private IEnumerator AddListenerEvent()
@@ -99,6 +97,8 @@ public class BattleUIManager : MonoBehaviour
             _playerStatProvider.TotalMagazineCapacity);
         
         _resourcesUiController?.ResourcesInit();
+        
+        SceneChangeController.Instance.OnEnterScene();
     }
 
     private void RemoveListenerEvent()
