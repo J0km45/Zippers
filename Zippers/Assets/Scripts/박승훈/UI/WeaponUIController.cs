@@ -7,12 +7,13 @@ public class WeaponUIController : MonoBehaviour
     [SerializeField] private int _maxAmmo;
     [SerializeField] private int _currentAmmo;
 
-    [Space(6)] [Header("UI 컴포넌트")] [Header("최대 탄환 수")] [SerializeField]
-    private TMP_Text _maxAmmoText;
-    [Header("현재 탄환 수")] [SerializeField]
-    private TMP_Text _currentAmmoText;
-    [Header("근접 전환 텍스트")] [SerializeField]
-    private TMP_Text _weaponStatusText;
+    [Space(6)] [Header("UI 컴포넌트")]
+    [Header("최대 탄환 수")]
+    [SerializeField] private TMP_Text _maxAmmoText;
+    [Header("현재 탄환 수")]
+    [SerializeField] private TMP_Text _currentAmmoText;
+    [Header("근접 전환 텍스트")]
+    [SerializeField] private TMP_Text _weaponStatusText;
     
     [SerializeField] private bool _isRanged;
 

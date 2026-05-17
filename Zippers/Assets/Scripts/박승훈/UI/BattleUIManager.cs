@@ -89,9 +89,6 @@ public class BattleUIManager : MonoBehaviour
             return;
         }
         
-        _statusUiController?.SetClassSprite(_playerStatProvider.WeaponType);
-        _weaponUiController?.CheckWeaponType(_playerStatProvider.WeaponType);
-        
         _playerStatusReader.OnHealthChanged += OnPlayerHealthChanged;
         _playerStatusReader.OnStaminaChanged += OnPlayerStaminaChanged;
         _playerStatusReader.OnAmmoChanged += OnPlayerAmmoChanged;
@@ -121,6 +118,9 @@ public class BattleUIManager : MonoBehaviour
             _playerStatusReader.CurrentStamina, 
             _playerStatusReader.MaxStamina);
         
+        _statusUiController?.SetClassType(_playerStatProvider.WeaponType);
+        _weaponUiController?.CheckWeaponType(_playerStatProvider.WeaponType);
+        
         _weaponUiController?.SetAmmoText(
             _playerStatusReader.CurrentAmmo,
             _playerStatusReader.MaxAmmo);
@@ -133,6 +133,8 @@ public class BattleUIManager : MonoBehaviour
         
         _resourcesUiController?.SetResourceText(ResourcesType.InfectionSample,
             economyNetState.CurrentInfectionSample, 0f);
+        
+        _waveUiController?.WaveInit();
         
         SceneChangeController.Instance?.OnEnterScene();
     }

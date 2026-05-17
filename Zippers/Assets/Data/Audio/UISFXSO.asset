@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca1f93b9d2f441c47a65af507de25340, type: 3}
   m_Name: UISFXSO
   m_EditorClassIdentifier: Assembly-CSharp::UISFXSO
+  _StageStart: {fileID: 8300000, guid: f86be9d82d5077044b6e9c626c823d0a, type: 3}
+  _nextWave: {fileID: 8300000, guid: 5ef22fcb12502cd42bd7b4cd384807e8, type: 3}
+  _StageClear: {fileID: 8300000, guid: f2eefe03dd6bd0842a1db56190e23b7d, type: 3}
