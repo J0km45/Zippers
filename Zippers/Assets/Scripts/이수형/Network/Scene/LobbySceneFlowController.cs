@@ -20,6 +20,7 @@ public class LobbySceneFlowController : MonoBehaviour
 
     private IEnumerator Start()
     {
+        SceneChangeController.Instance.OnEnterScene();
         if (LobbyManager.Instance == null)
         {
             DebugTool.Error("LobbyManager.Instance 가 null - Title 씬 거치지 않음", DebugType.Network, this);
@@ -49,7 +50,6 @@ public class LobbySceneFlowController : MonoBehaviour
         LobbyPlayerSlotsView.EnsureInScene();
         // LobbyScene 진입 시 기존 슬롯 UI 템플릿을 숨기고 nameplate 관리자만 준비한다.
         LobbyAvatarNameplateManager.EnsureInScene();
-        SceneChangeController.Instance.OnEnterScene();
     }
 
     private void OnDestroy()

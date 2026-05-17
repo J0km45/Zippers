@@ -19,7 +19,7 @@ public class LoadingSceneManager : MonoBehaviour
 
     private void Start()
     {
-        LocalDataAccess.Instance.Game.OnReady += SceneChangeController.Instance.OnExitScene;
+        LocalDataAccess.Instance.Game.OnReady += ExitScene;
         LocalDataAccess.Instance.Game.OnReady += _loadingPanel.OnProceedLoading;
 
         _loadingPanel.TotalProgrss = _dataManager.PendingSHeetCount;
@@ -33,7 +33,7 @@ public class LoadingSceneManager : MonoBehaviour
     {
         if (LocalDataAccess.Instance != null)
         {
-            LocalDataAccess.Instance.Game.OnReady -= SceneChangeController.Instance.OnExitScene;
+            LocalDataAccess.Instance.Game.OnReady -= ExitScene;
             LocalDataAccess.Instance.Game.OnReady -= _loadingPanel.OnProceedLoading;
         }
         SceneChangeController.Instance.OnChangeScene -= _dataManager.DataLoad;
@@ -51,4 +51,7 @@ public class LoadingSceneManager : MonoBehaviour
         if(_dataManager == null)
             DebugTool.Warning("데이터 로드 매니저 컴포넌트가 없습니다.", DebugType.Missing);
     }
+
+    private void ExitScene()
+        => SceneChangeController.Instance.OnExitScene(true);
 }

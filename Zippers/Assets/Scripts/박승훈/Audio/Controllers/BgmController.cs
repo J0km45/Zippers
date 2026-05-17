@@ -52,7 +52,7 @@ public class BgmController : AudioController
         DebugTool.Log("인트로 BGM 시작", DebugType.Audio);
         if(_startVolume != 0f)
             _audioSource.Play();
-        StartCoroutine(TitleBGMChange());
+        ChangeBGM(BGMType.Title);
     }
     
     private void Update()
@@ -63,7 +63,6 @@ public class BgmController : AudioController
         _prevBgmOff = bgmOff;
         
         ApplyVolume();
-        
     }
 
     public void PlayBGM(BGMType type)
@@ -84,16 +83,19 @@ public class BgmController : AudioController
         ApplyVolume();
     }
 
-    private IEnumerator TitleBGMChange()
+    public void ChangeBGM(BGMType type, bool exact = false)
     {
-        if (_fadeOutTime > _introTime)
+        StartCoroutine(FadeBGM(type, exact));
+    }
+
+    private IEnumerator FadeBGM(BGMType type, bool exact = false)
+    {
+        if (_fadeOutTime > _introTime || exact)
         {
             DebugTool.Warning("페이드 아웃 시간은 인트로 출력 길이보다 짧아야 합니다.", DebugType.Audio);
-
-            yield return WaitWhileFocused(_baseTime);
             
             DebugTool.Log("타이틀 BGM 시작", DebugType.Audio);
-            PlayBGM(BGMType.Title);
+            PlayBGM(type);
 
             yield break;
         }
@@ -105,7 +107,7 @@ public class BgmController : AudioController
         yield return FadeVolume(_startVolume, 0f, _fadeOutTime);
         
         DebugTool.Log("타이틀 BGM 시작", DebugType.Audio);
-        PlayBGM(BGMType.Title);
+        PlayBGM(type);
         yield return FadeVolume(0f, _startVolume, _fadeOutTime);
     }
 
