@@ -36,8 +36,8 @@ public class SceneChangeController : MonoBehaviour
     public void OnEnterScene()
         => StartCoroutine(EnterScene());
 
-    public void OnExitScene()
-        => StartCoroutine(ExitScene());
+    public void OnExitScene(bool nextScene = false)
+        => StartCoroutine(ExitScene(nextScene));
 
     private IEnumerator EnterScene()
     {
@@ -58,10 +58,11 @@ public class SceneChangeController : MonoBehaviour
         }
 
         _changeSceneImage.gameObject.SetActive(false);
+        
         OnChangeScene?.Invoke();
     }
 
-    private IEnumerator ExitScene()
+    private IEnumerator ExitScene(bool nextScene)
     {
         DebugTool.Log("현재 전환 (Out) ", DebugType.Game);
         
@@ -81,7 +82,8 @@ public class SceneChangeController : MonoBehaviour
             yield return null;
         }
         
-        GameSceneManager.Instance.LoadNextStage();
+        if(nextScene)
+            GameSceneManager.Instance.LoadNextStage();
     }
 
     public void SetActivateImage(bool value)

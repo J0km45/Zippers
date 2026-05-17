@@ -41,6 +41,11 @@ public class RoomCreatePanelController : MonoBehaviour
         RefreshCreateButtonState();
     }
 
+    private void Start()
+    {
+        SceneChangeController.Instance?.OnEnterScene();
+    }
+
     private void OnDisable()
     {
         if (_createButton != null) _createButton.onClick.RemoveListener(OnCreateClicked);
@@ -129,6 +134,7 @@ public class RoomCreatePanelController : MonoBehaviour
             {
                 TryTransitionHostToLobby();
             }
+            SceneChangeController.Instance?.OnExitScene();
 
             _onSucceeded?.Invoke();
         }

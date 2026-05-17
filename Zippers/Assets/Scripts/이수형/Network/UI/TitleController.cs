@@ -38,7 +38,7 @@ public class TitleController : MonoBehaviour
             await AuthService.InitializeAsync();
             SetStatus("데이터 로드로 이동...");
             
-            SceneChangeController.Instance?.OnExitScene();
+            SceneChangeController.Instance?.OnExitScene(true);
         }
         catch (Exception e)
         {

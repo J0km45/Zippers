@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Audio;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using Zippers.Network;
@@ -73,6 +74,9 @@ public class BattleUIManager : MonoBehaviour
         PlayerUiInit();
 
         _initializeRoutine = null;
+        
+        SceneChangeController.Instance?.OnEnterScene();
+        AudioManager.Instance?.ChangeBGM(BGMType.Battle, true);
     }
 
     private void AddListenerEvent()
@@ -135,8 +139,6 @@ public class BattleUIManager : MonoBehaviour
             economyNetState.CurrentInfectionSample, 0f);
         
         _waveUiController?.WaveInit();
-        
-        SceneChangeController.Instance?.OnEnterScene();
     }
     
     private void RemoveListenerEvent()
