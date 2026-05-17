@@ -8,6 +8,7 @@ public class WaveManager : MonoBehaviour
 {
     [SerializeField] private ZombieSpawnManager _zombieSpawnManager;
     [SerializeField] private ZombieCountManager _zombieCountManager;
+    [SerializeField] private WaveUIController _waveUIController;
 
     // 노드 클리어 이벤트(인자: 클리어한 노드 인덱스)
     public event Action<int> OnBattleNodeCleared;
@@ -23,6 +24,9 @@ public class WaveManager : MonoBehaviour
     {
         if (!NetworkManager.Singleton.IsServer) yield break;
 
+        _waveUIController.SetMaxWaveText(0);
+        _waveUIController.SetCurrentWaveText(0);
+
         // 전체 카운트 초기화
         _zombieCountManager.ResetTotalCount();
 
@@ -34,11 +38,17 @@ public class WaveManager : MonoBehaviour
             yield break;
         }
 
+        // 총 웨이브 UI 설정
+        _waveUIController.SetMaxWaveText(waves.Count);
+
         for (int i = 0; i < waves.Count; i++)
         {
             if (!NetworkManager.Singleton.IsServer) yield break;
 
             WaveInfoSO waveInfo = waves[i];
+
+            // 현재 웨이브 UI 설정
+            _waveUIController.SetCurrentWaveText(i + 1);
 
             // 첫 웨이브 시작 대기
             if (i == 0)
