@@ -695,6 +695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoomCreatePanelController
   _roomNameInput: {fileID: 4355467405139906206}
   _maxPlayersInput: {fileID: 0}
+  _maxPlayersDropdown: {fileID: 0}
   _createButton: {fileID: 4713444610955337767}
   _statusText: {fileID: 4713444612370670335}
   _defaultMaxPlayers: 4
@@ -24433,6 +24434,7 @@ MonoBehaviour:
   _joinSelectedRoomButton: {fileID: 0}
   _joinByCodeButton: {fileID: 0}
   _refreshButton: {fileID: 5680223121825971698}
+  _autoRefreshIntervalSeconds: 3
   _createRoomDialog: {fileID: 0}
   _joinByCodeDialog: {fileID: 0}
 --- !u!114 &7147806231902818844
