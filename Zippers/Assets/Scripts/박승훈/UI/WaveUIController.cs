@@ -11,7 +11,6 @@ public class WaveUIController : MonoBehaviour
     [SerializeField] private UIController _uiController;
 
     [Header("현재 노드 좀비 수")]
-    [SerializeField] private ZombieCountManager _zombieCountManager;
     [SerializeField] private WaveManager _waveManager;
     
     [Header("웨이브 정보")]
@@ -38,7 +37,7 @@ public class WaveUIController : MonoBehaviour
     
     private void OnEnable()
     {
-        _zombieCountManager.OnZombieCountChanged += SetLeftZombieCount;
+        ZombieCountManager.Instance.OnZombieCountChanged += SetLeftZombieCount;
         _waveManager.OnBattleStarted += BattleStart;
         _waveManager.OnBattleNodeCleared += BattleClear;
         _waveManager.OnNextWave += NextWave;
@@ -46,7 +45,7 @@ public class WaveUIController : MonoBehaviour
 
     private void OnDisable()
     {
-        _zombieCountManager.OnZombieCountChanged -= SetLeftZombieCount;
+        ZombieCountManager.Instance.OnZombieCountChanged -= SetLeftZombieCount;
         _waveManager.OnBattleStarted -= BattleStart;
         _waveManager.OnBattleNodeCleared -= BattleClear;
         _waveManager.OnNextWave -= NextWave;
