@@ -73,7 +73,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1ba225074474cdc4aa9cc1dd63c82969, type: 3}
   - {fileID: 8300000, guid: 5d22c87645e20f04f9ba6c364f375cc0, type: 3}
   - {fileID: 8300000, guid: daeb2b8dd04ba8b4fbeb708c2b05acc3, type: 3}
-  femaleHit:
+  femaleHitSfx:
   - {fileID: 8300000, guid: bec4b5c27f39702489b61a3f64b956c8, type: 3}
   - {fileID: 8300000, guid: 2f6fc55c1c120c64fa7036128c494240, type: 3}
   - {fileID: 8300000, guid: e605df15604045d4cac05de7d571a412, type: 3}

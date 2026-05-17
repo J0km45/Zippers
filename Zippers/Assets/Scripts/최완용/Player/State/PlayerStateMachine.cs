@@ -1,6 +1,7 @@
 using Audio;
 using UnityEngine;
 using System;
+using Unity.Netcode;
 
 public class PlayerStateMachine : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerStateMachine : MonoBehaviour
     private PlayerMovement _playerMovement;
     private PlayerAnimation _playerAnimation;
     private PlayerHealth _playerHealth;
+    private PlayerResourceCollector _playerResourceCollector;
+    private NetworkObject _networkObject;
 
     private PlayerIdleState _idleState;
     private PlayerMoveState _moveState;
@@ -43,6 +46,8 @@ public class PlayerStateMachine : MonoBehaviour
         _playerMovement = GetComponent<PlayerMovement>();
         _playerAnimation = GetComponent<PlayerAnimation>();
         _playerHealth = GetComponent<PlayerHealth>();
+        _playerResourceCollector = GetComponent<PlayerResourceCollector>();
+        _networkObject = GetComponent<NetworkObject>();
         _sfxController = GetComponent<PlayerSfxController>();
 
         _idleState = new PlayerIdleState(this, _playerMovement, _playerAnimation);
@@ -52,14 +57,30 @@ public class PlayerStateMachine : MonoBehaviour
     }
     private void OnEnable()
     {
-        _playerHealth.OnDamage += OnPlayerDamaged;
-        _playerHealth.PlayerDied += OnPlayerDied;
+        if (_playerHealth != null)
+        {
+            _playerHealth.OnDamage += OnPlayerDamaged;
+            _playerHealth.PlayerDied += OnPlayerDied;
+        }
+
+        if (_playerResourceCollector != null)
+        {
+            _playerResourceCollector.OnResourceCollected += OnResourceCollected;
+        }
     }
 
     private void OnDisable()
     {
-        _playerHealth.OnDamage -= OnPlayerDamaged;
-        _playerHealth.PlayerDied -= OnPlayerDied;
+        if (_playerHealth != null)
+        {
+            _playerHealth.OnDamage -= OnPlayerDamaged;
+            _playerHealth.PlayerDied -= OnPlayerDied;
+        }
+
+        if (_playerResourceCollector != null)
+        {
+            _playerResourceCollector.OnResourceCollected -= OnResourceCollected;
+        }
     }
 
     private void Start()
@@ -159,10 +180,48 @@ public class PlayerStateMachine : MonoBehaviour
         DebugTool.Log("플레이어가 데미지를 입었습니다.", DebugType.Character, this);
         ChangeState(PlayerStateType.Hit);
     }
+
     private void OnPlayerDied()
     {
         _moveInput = Vector2.zero;
         _combatStateMachine.SetAiming(false);
         ChangeState(PlayerStateType.Retire);
+    }
+
+    private void OnResourceCollected(ResourcesType type, float amount)
+    {
+        if (!CanPlayOwnerOnlySfx())
+        {
+            return;
+        }
+
+        if (_sfxController == null)
+        {
+            DebugTool.Log("[PlayerStateMachine] PlayerSfxController가 없어 아이템 획득 소리 재생 불가", DebugType.Audio, this);
+            return;
+        }
+
+        _sfxController.PlayGrabSfx(type);
+
+        DebugTool.Log(
+            $"[PlayerStateMachine] 아이템 획득 소리 재생 / Type: {type}, Amount: {amount}",
+            DebugType.Audio,
+            this
+        );
+    }
+
+    private bool CanPlayOwnerOnlySfx()
+    {
+        if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+        {
+            return true;
+        }
+
+        if (_networkObject == null)
+        {
+            return true;
+        }
+
+        return _networkObject.IsOwner;
     }
 }
