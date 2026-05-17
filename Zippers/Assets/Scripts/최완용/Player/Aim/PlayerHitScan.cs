@@ -16,6 +16,11 @@ public class PlayerHitScan : MonoBehaviour
     [SerializeField] private Transform _meleePoint;
     [SerializeField] private float _meleeRadius = 1.0f;
 
+    [Header("샷건 시각 효과")]
+    [SerializeField] private float _shotgunTracerWidth = 0.08f;
+    [SerializeField] private float _shotgunTracerDuration = 0.08f;
+    [SerializeField] private Color _shotgunTracerColor = new Color(1f, 0.9f, 0.2f, 1f);
+
     //한번에 공격에 중복 타격 금지
     private HashSet<IDamagable> _hitTarget = new HashSet<IDamagable>();
 
@@ -168,5 +173,77 @@ public class PlayerHitScan : MonoBehaviour
             return;
 
         Gizmos.DrawWireSphere(_meleePoint.position, _meleeRadius);
+    }
+
+    public void ShowShotgunVisual(float shotgunDistance)
+    {
+        if (_shotgunFirePoint == null)
+        {
+            return;
+        }
+
+        if (_shotgunRayCount <= 0)
+        {
+            return;
+        }
+
+        Vector3 origin = _shotgunFirePoint.position;
+        Vector3 centerDirection = GetAttackDirection();
+
+        float halfAngle = _shotgunAngle * 0.5f;
+
+        for (int i = 0; i < _shotgunRayCount; i++)
+        {
+            float angle;
+
+            if (_shotgunRayCount == 1)
+            {
+                angle = 0f;
+            }
+            else
+            {
+                float t = i / (float)(_shotgunRayCount - 1);
+                angle = Mathf.Lerp(-halfAngle, halfAngle, t);
+            }
+
+            Vector3 rayDirection = Quaternion.AngleAxis(angle, Vector3.up) * centerDirection;
+            rayDirection.y = 0f;
+            rayDirection.Normalize();
+
+            Vector3 endPoint = origin + rayDirection * shotgunDistance;
+            StartCoroutine(ShowShotgunTracerRoutine(origin, endPoint));
+        }
+    }
+
+    private System.Collections.IEnumerator ShowShotgunTracerRoutine(Vector3 start, Vector3 end)
+    {
+        GameObject tracerObject = new GameObject("ShotgunTracer");
+        tracerObject.transform.SetParent(null);
+
+        LineRenderer lineRenderer = tracerObject.AddComponent<LineRenderer>();
+
+        lineRenderer.positionCount = 2;
+        lineRenderer.SetPosition(0, start);
+        lineRenderer.SetPosition(1, end);
+
+        lineRenderer.startWidth = _shotgunTracerWidth;
+        lineRenderer.endWidth = 0.01f;
+
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.startColor = _shotgunTracerColor;
+        lineRenderer.endColor = new Color(
+            _shotgunTracerColor.r,
+            _shotgunTracerColor.g,
+            _shotgunTracerColor.b,
+            0f
+        );
+
+        lineRenderer.useWorldSpace = true;
+        lineRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        lineRenderer.receiveShadows = false;
+
+        yield return new WaitForSeconds(_shotgunTracerDuration);
+
+        Destroy(tracerObject);
     }
 }
