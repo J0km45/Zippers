@@ -242,7 +242,8 @@ public class PlayerCombat : NetworkBehaviour
             return;
         }
 
-        bool canPierce = weaponType == WeaponType.Pistol || weaponType == WeaponType.Rifle;
+        bool canPierce = false;
+            //weaponType == WeaponType.Pistol || weaponType == WeaponType.Rifle;
 
         _playerGun.Shoot(
             damage,
