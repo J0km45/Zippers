@@ -153,7 +153,7 @@ public class BgmController : AudioController
         if (_audioSource == null)
             return;
 
-        if (bgmOff || !_hasFocus)
+        if (bgmOff)
         {
             _audioSource.volume = 0f;
             return;

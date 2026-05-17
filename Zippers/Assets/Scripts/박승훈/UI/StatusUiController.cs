@@ -18,15 +18,23 @@ public class StatusUiController : MonoBehaviour
     [Header("UI 컴포넌트")] [Header("클래스 아이콘")] [SerializeField]
     private Image _classIcon;
 
-    [Space(5)] [Header("체력")] [Header("체력 바")] [SerializeField]
-    private Image _hpBar;
+    [Header("클래스 이름")]
+    [SerializeField] private TMP_Text _className;
+    private string[] _classNames = { "야구 배트", "소총", "샷건", "권총"};
 
-    [Header("체력 텍스트")] [SerializeField] private TMP_Text _healthText;
+    [Space(5)] [Header("체력")] 
+    [Header("체력 바")]
+    [SerializeField] private Image _hpBar;
 
-    [Space(5)] [Header("스테미나")] [Header("스테미나 바")] [SerializeField]
-    private Image _staminaBar;
+    [Header("체력 텍스트")] 
+    [SerializeField] private TMP_Text _healthText;
 
-    [Header("스테미나 텍스트")] [SerializeField] private TMP_Text _staminaText;
+    [Space(5)] [Header("스테미나")] 
+    [Header("스테미나 바")]
+    [SerializeField] private Image _staminaBar;
+
+    [Header("스테미나 텍스트")] 
+    [SerializeField] private TMP_Text _staminaText;
 
     public void OnHealthValueChanged(float currentHealth, float maxHealth)
     {
@@ -76,7 +84,7 @@ public class StatusUiController : MonoBehaviour
         image.fillAmount = Mathf.Clamp01(safeCurrent / max);
     }
 
-    public void SetClassSprite(WeaponType type)
+    public void SetClassType(WeaponType type)
     {
         if (_classIcon == null)
         {
@@ -93,6 +101,7 @@ public class StatusUiController : MonoBehaviour
                 return;
             }
         }
+        
         int index = (int)type;
         if (index < 0 || index >= _classSprites.Length)
         {
@@ -100,7 +109,14 @@ public class StatusUiController : MonoBehaviour
             _classIcon.sprite = null;
             return;
         }
+
+        if (_className == null)
+        {
+            DebugTool.Warning("클래스 이름 텍스트 오브젝트가 없습니다.", DebugType.UI, this);
+            return;
+        }
         
+        _className.text = _classNames[index]; 
         _classIcon.sprite = _classSprites[index];
     }
 }

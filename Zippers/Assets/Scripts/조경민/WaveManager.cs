@@ -1,3 +1,4 @@
+using Audio;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,11 @@ public class WaveManager : MonoBehaviour
 
     // 노드 클리어 이벤트(인자: 클리어한 노드 인덱스)
     public event Action<int> OnBattleNodeCleared;
+    
+    // 전투, 웨이브 시작 시 연출
+    public event Action OnBattleStarted;
+    public event Action OnNextWave;
+    
 
     public void StartBattleNode(int battleNodeIndex)
     {
@@ -29,6 +35,7 @@ public class WaveManager : MonoBehaviour
 
         // 전체 카운트 초기화
         _zombieCountManager.ResetTotalCount();
+        
 
         List<WaveInfoSO> waves = LocalDataAccess.Instance.Game.GetWaveInfo(battleNodeIndex);
 
@@ -54,9 +61,12 @@ public class WaveManager : MonoBehaviour
             if (i == 0)
             {
                 DebugTool.Log($"첫 웨이브 스폰 시작 대기({waveInfo.StartDelay}초)", DebugType.Zombie, this);
+                OnBattleStarted?.Invoke();
                 yield return new WaitForSeconds(waveInfo.StartDelay);
             }
-
+            else
+                OnNextWave?.Invoke();
+            
             DebugTool.Log($"웨이브 ({waveInfo.WaveIndex}) {waveInfo.WaveId} 스폰 시작", DebugType.Zombie, this);
             // 카운트 초기화
             _zombieCountManager.ResetCount();
