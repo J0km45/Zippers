@@ -14,15 +14,34 @@ public class WaveManager : NetworkBehaviour
     // 노드 클리어 이벤트(인자: 클리어한 노드 인덱스)
     public event Action<int> OnBattleNodeCleared;
     
-    // 전투, 웨이브 시작 시 연출
+    // 전투, 웨이브 시작 시 연출(UI용)
     public event Action OnBattleStarted;
     public event Action OnNextWave;
+    public event Action OnBattleNodeClearUI;
 
     [ClientRpc]
     private void SetWaveUIClientRpc(int currentWave, int maxWave)
     {
         _waveUIController.SetCurrentWaveText(currentWave);
         _waveUIController.SetMaxWaveText(maxWave);
+    }
+
+    [ClientRpc]
+    private void BattleStartedClientRpc()
+    {
+        OnBattleStarted?.Invoke();
+    }
+
+    [ClientRpc]
+    private void NextWaveClientRpc()
+    {
+        OnNextWave?.Invoke();
+    }
+
+    [ClientRpc]
+    private void BattleNodeClearUIClientRpc()
+    {
+        OnBattleNodeClearUI?.Invoke();
     }
 
     public void StartBattleNode(int battleNodeIndex)
@@ -66,11 +85,11 @@ public class WaveManager : NetworkBehaviour
             if (i == 0)
             {
                 DebugTool.Log($"첫 웨이브 스폰 시작 대기({waveInfo.StartDelay}초)", DebugType.Zombie, this);
-                OnBattleStarted?.Invoke();
+                BattleStartedClientRpc();
                 yield return new WaitForSeconds(waveInfo.StartDelay);
             }
             else
-                OnNextWave?.Invoke();
+                NextWaveClientRpc();
             
             DebugTool.Log($"웨이브 ({waveInfo.WaveIndex}) {waveInfo.WaveId} 스폰 시작", DebugType.Zombie, this);
             // 카운트 초기화
@@ -99,7 +118,11 @@ public class WaveManager : NetworkBehaviour
         if (_zombieSpawnManager.IsSpawnStopped) yield break;
 
         DebugTool.Log($"{battleNodeIndex} 노드 클리어", DebugType.Zombie, this);
+        // 서버 처리용
         OnBattleNodeCleared?.Invoke(battleNodeIndex);
+
+        // 모든 클라이언트 UI 연출용
+        BattleNodeClearUIClientRpc();
     }
 
     private IEnumerator CheckWaveEnd(WaveInfoSO waveInfo)
