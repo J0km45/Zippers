@@ -28,6 +28,7 @@ public class RoomListController : MonoBehaviour
     [SerializeField] private Button _joinSelectedRoomButton;
     [SerializeField] private Button _joinByCodeButton;
     [SerializeField] private Button _refreshButton;
+    [SerializeField] private float _autoRefreshIntervalSeconds = 3f;
 
     [Header("Dialogs")]
     [SerializeField] private CreateRoomDialogController _createRoomDialog;
@@ -37,7 +38,9 @@ public class RoomListController : MonoBehaviour
 
     private bool _isBusy;
     private bool _hasTransitioned;
+    private bool _isInitialized;
     private string _selectedSessionId;
+    private Coroutine _autoRefreshCoroutine;
 
     private void Awake()
     {
@@ -65,12 +68,52 @@ public class RoomListController : MonoBehaviour
         }
 
         RefreshRoomList();
+        _isInitialized = true;
+        StartAutoRefresh();
+    }
+
+    private void OnEnable()
+    {
+        if (_isInitialized)
+        {
+            StartAutoRefresh();
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopAutoRefresh();
     }
 
     private void OnDestroy()
     {
+        StopAutoRefresh();
         UnbindButtonEvents();
         UnbindLobbyManagerEvents();
+    }
+
+    private void StartAutoRefresh()
+    {
+        if (_autoRefreshCoroutine != null) return;
+
+        _autoRefreshCoroutine = StartCoroutine(AutoRefreshRoutine());
+    }
+
+    private void StopAutoRefresh()
+    {
+        if (_autoRefreshCoroutine == null) return;
+
+        StopCoroutine(_autoRefreshCoroutine);
+        _autoRefreshCoroutine = null;
+    }
+
+    private System.Collections.IEnumerator AutoRefreshRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Mathf.Max(0.1f, _autoRefreshIntervalSeconds));
+            RefreshRoomList();
+        }
     }
 
     private void AutoWireMissingReferences()
