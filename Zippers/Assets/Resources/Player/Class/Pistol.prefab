@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3327158331
+  GlobalObjectIdHash: 2448165940
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -644,13 +644,14 @@ MonoBehaviour:
   - {fileID: 6509427077163361804}
   - {fileID: 2732274805415630605}
   - {fileID: 2105440119385356546}
-  - {fileID: 8934415458346507177}
-  - {fileID: 5908087191396776083}
   - {fileID: 2023525470155363127}
   - {fileID: 8217044795278177908}
   - {fileID: 216109493594011135}
   - {fileID: 8986272881324780800}
   _ownerOnlyGameObjects: []
+  _ownerOrServerBehaviours:
+  - {fileID: 8934415458346507177}
+  - {fileID: 5908087191396776083}
 --- !u!114 &6596716657948944306
 MonoBehaviour:
   m_ObjectHideFlags: 0

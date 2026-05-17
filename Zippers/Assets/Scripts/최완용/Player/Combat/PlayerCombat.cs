@@ -2,7 +2,7 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 using Zippers.Network.Contracts;
-
+using Audio;
 public class PlayerCombat : NetworkBehaviour
 {
     public event Action OnAttackPerformed;
@@ -17,6 +17,9 @@ public class PlayerCombat : NetworkBehaviour
     private PlayerGun _playerGun;
     private PlayerHitScan _playerHitScan;
 
+    private PlayerAnimation _playerAnimation;
+    private WeaponSFXController _weaponSFXController;
+
     private float _lastAttackTime = 0f;
 
     private void Awake()
@@ -30,6 +33,9 @@ public class PlayerCombat : NetworkBehaviour
         _combatStateMachine = GetComponent<PlayerCombatStateMachine>();
         _playerGun = GetComponent<PlayerGun>();
         _playerHitScan = GetComponent<PlayerHitScan>();
+
+        _playerAnimation = GetComponent<PlayerAnimation>();
+        _weaponSFXController = GetComponentInChildren<WeaponSFXController>();
     }
 
     public void TryAttack()
@@ -164,7 +170,12 @@ public class PlayerCombat : NetworkBehaviour
         if (!reloadStarted)
         {
             DebugTool.Log("[PlayerCombat] 재장전 시작 실패", DebugType.CombatNet, this);
+            return;
         }
+
+        PlayReloadClientRpc();
+
+        DebugTool.Log("[PlayerCombat] 서버 재장전 시작 성공", DebugType.CombatNet, this);
     }
 
     [ClientRpc]
@@ -358,6 +369,27 @@ public class PlayerCombat : NetworkBehaviour
         }
 
         return _playerReload != null && _playerReload.IsReloading;
+    }
+    [ClientRpc]
+    private void PlayReloadClientRpc()
+    {
+        // 재장전 애니메이션은 모든 클라이언트에서 보여야 함
+        if (_playerAnimation != null)
+        {
+            _playerAnimation.PlayReloadLocal();
+        }
+
+        // 장전 소리는 재장전한 본인 화면에서만 실행
+        if (IsOwner && _weaponSFXController != null && TryGetWeaponType(out WeaponType weaponType))
+        {
+            _weaponSFXController.PlayReloadSfx(weaponType);
+        }
+
+        DebugTool.Log(
+            $"[PlayerCombat] 재장전 RPC 실행 / IsOwner: {IsOwner}",
+            DebugType.CombatNet,
+            this
+        );
     }
 }
 

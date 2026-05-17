@@ -159,7 +159,13 @@ namespace Zippers.Network
         [ServerRpc(RequireOwnership = true)]
         public void RequestGrantResourceServerRpc(int typeInt, float amount, ServerRpcParams rpcParams = default)
         {
-            ServerGrantResource(rpcParams.Receive.SenderClientId, (ResourcesType)typeInt, amount, "client_rpc");
+            ResourcesType type = (ResourcesType)typeInt;
+
+            ServerGrantResourceToAllPlayers(
+                type,
+                amount,
+                $"client_rpc:{rpcParams.Receive.SenderClientId}"
+            );
         }
 
         [ServerRpc(RequireOwnership = true)]
@@ -382,6 +388,62 @@ namespace Zippers.Network
                     // RemoveAt / Clear 는 사용 안 함
                     break;
             }
+        }
+        public static bool ServerGrantResourceToAllPlayers(ResourcesType type, float amount, string source)
+        {
+            if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
+            {
+                DebugTool.Warning(
+                    $"전체 플레이어 자원 지급은 서버에서만 가능 (type={type})",
+                    DebugType.EconomyNet
+                );
+                return false;
+            }
+
+            if (amount <= 0f)
+            {
+                return false;
+            }
+
+            if (type == ResourcesType.Supplies)
+            {
+                DebugTool.Warning(
+                    "Supplies는 TeamEconomyNetState에서 처리해야 합니다.",
+                    DebugType.EconomyNet
+                );
+                return false;
+            }
+
+            int appliedCount = 0;
+
+            foreach (NetworkObject networkObject in NetworkManager.Singleton.SpawnManager.SpawnedObjectsList)
+            {
+                if (networkObject == null)
+                {
+                    continue;
+                }
+
+                if (!networkObject.TryGetComponent(out PlayerEconomyNetState economyNetState))
+                {
+                    continue;
+                }
+
+                economyNetState.ServerGrantResource(
+                    economyNetState.OwnerClientId,
+                    type,
+                    amount,
+                    source
+                );
+
+                appliedCount++;
+            }
+
+            DebugTool.Log(
+                $"전체 플레이어 자원 지급 완료 / Type: {type}, Amount: {amount}, Count: {appliedCount}, Source: {source}",
+                DebugType.EconomyNet
+            );
+
+            return appliedCount > 0;
         }
     }
 }

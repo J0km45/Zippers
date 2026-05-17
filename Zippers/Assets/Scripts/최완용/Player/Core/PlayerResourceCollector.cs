@@ -110,18 +110,20 @@ public class PlayerResourceCollector : MonoBehaviour, IResourceCollectable
             return;
         }
 
-        // Scrap / InfectionSample — 본인 PlayerEconomyNetState
+        // Scrap / InfectionSample — 획득은 모든 플레이어에게 지급
         if (_economyNetState == null)
         {
             DebugTool.Log("[PlayerResourceCollector] PlayerEconomyNetState 미준비 - 무시", DebugType.Data, this);
             return;
         }
 
-        ulong ownerId = _economyNetState.OwnerClientId;
-
         if (IsServer())
         {
-            _economyNetState.ServerGrantResource(ownerId, type, amount, "PlayerResourceCollector.CollectResource");
+            PlayerEconomyNetState.ServerGrantResourceToAllPlayers(
+                type,
+                amount,
+                "PlayerResourceCollector.CollectResource"
+            );
         }
         else if (_economyNetState.IsOwner)
         {
@@ -131,7 +133,9 @@ public class PlayerResourceCollector : MonoBehaviour, IResourceCollectable
         {
             DebugTool.Log(
                 $"[PlayerResourceCollector] CollectResource 클라 호출 무시 (IsOwner=false, type={type})",
-                DebugType.Data, this);
+                DebugType.Data,
+                this
+            );
         }
     }
 
