@@ -196,4 +196,28 @@ public class PlayerAnimation : NetworkBehaviour
 
         DebugTool.Log("Reload 애니메이션 로컬 실행", DebugType.Character, this);
     }
+    // ClientRpc/NetworkVariable 이벤트를 받은 각 클라이언트에서 연출만 재생한다.
+    public void PlayHitByNetwork()
+    {
+        _animator.SetTrigger(Hit);
+
+        DebugTool.Log("Hit 애니메이션 네트워크 연출 실행", DebugType.Character, this);
+    }
+    // ClientRpc/NetworkVariable 이벤트를 받은 각 클라이언트에서 연출만 재생한다.
+    public void PlayDieByNetwork()
+    {
+        _animator.SetTrigger(Die);
+
+        DebugTool.Log("Die 애니메이션 네트워크 연출 실행", DebugType.Character, this);
+    }
+    // 사망 연출 직전 이동 파라미터만 정리한다.
+    public void SetIdleByNetwork()
+    {
+        _animator.SetFloat(MoveX, 0f);
+        _animator.SetFloat(MoveY, 0f);
+        _animator.SetFloat(Speed, 0f);
+        _animator.SetBool(IsSprint, false);
+
+        DebugTool.Log("Idle 애니메이션 네트워크 연출 실행", DebugType.Character, this);
+    }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using Zippers.Network.Contracts;
@@ -19,9 +20,13 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
     private const float MinAmmo = 0f;
     private const float DefaultMaxAmmo = 0f;
 
+    [Header("사망 처리")]
+    [SerializeField] private float _deathDisableDelay = 8f;
+
     private IPlayerStatProvider _statProvider;
     private PlayerSfxController _playerSfxController;
     private PlayerAnimation _playerAnimation;
+    private Coroutine _deathDisableCoroutine;
 
     private readonly NetworkVariable<float> _currentHealth = new NetworkVariable<float>(
         DefaultMaxHealth,
@@ -278,9 +283,9 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
             this
         );
     }
-     // 서버에서 최대 탄약을 갱신한다.
-     // 최대 탄약이 증가하면 증가분만큼 현재 탄약도 올린다.
-     // 최대 탄약이 감소하면 현재 탄약은 새 최대값을 넘지 않도록 보정한다.
+    // 서버에서 최대 탄약을 갱신한다.
+    // 최대 탄약이 증가하면 증가분만큼 현재 탄약도 올린다.
+    // 최대 탄약이 감소하면 현재 탄약은 새 최대값을 넘지 않도록 보정한다.
     public void ServerSetMaxAmmo(float maxAmmo)
     {
         if (!IsServer)
@@ -386,16 +391,15 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
         if (_playerSfxController == null)
         {
             DebugTool.Log("[CombatNet] PlayerSfxController가 없어 피격 소리 재생 불가", DebugType.Audio, this);
-            return;
         }
-
-        if (IsFemaleCharacter())
+        else if (IsFemaleCharacter())
         {
             _playerSfxController.PlayFemaleHitSfx();
-            return;
         }
-
-        _playerSfxController.PlayMaleHitSfx();
+        else
+        {
+            _playerSfxController.PlayMaleHitSfx();
+        }
 
         OnDamageReceived?.Invoke();
 
@@ -498,7 +502,7 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
         return true;
     }
 
-     // 서버에서 재장전 상태를 설정한다.
+    // 서버에서 재장전 상태를 설정한다.
     public void ServerSetReloading(bool isReloading)
     {
         if (!IsServer)
@@ -635,10 +639,11 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
 
         if (newValue)
         {
-            PlayDeathAnimation();
             PlayDeathSfx();
 
             OnPlayerDied?.Invoke();
+            PlayDeathAnimationByNetwork();
+            StartDisableAfterDeath();
 
             DebugTool.Log(
                 $"[CombatNet] 사망 상태 동기화 / OwnerClientId: {OwnerClientId}, IsOwner: {IsOwner}",
@@ -722,19 +727,6 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
         return _statProvider.WeaponType == WeaponType.Pistol ||
                _statProvider.WeaponType == WeaponType.Shotgun;
     }
-    private void PlayDeathAnimation()
-    {
-        if (_playerAnimation == null)
-        {
-            DebugTool.Log("[CombatNet] PlayerAnimation이 없어 죽음 애니메이션 재생 불가", DebugType.Character, this);
-            return;
-        }
-
-        _playerAnimation.SetIdle();
-        _playerAnimation.PlayDie();
-
-        DebugTool.Log("[CombatNet] 죽음 애니메이션 재생", DebugType.Character, this);
-    }
 
     private void PlayDeathSfx()
     {
@@ -751,6 +743,42 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
         }
 
         _playerSfxController.PlayMaleDeathSfx();
+    }
+    private void StartDisableAfterDeath()
+    {
+        if (_deathDisableCoroutine != null)
+        {
+            StopCoroutine(_deathDisableCoroutine);
+        }
+
+        _deathDisableCoroutine = StartCoroutine(DisableAfterDeathRoutine());
+    }
+
+    private IEnumerator DisableAfterDeathRoutine()
+    {
+        float delay = Mathf.Max(0f, _deathDisableDelay);
+        yield return new WaitForSeconds(delay);
+
+        gameObject.SetActive(false);
+
+        DebugTool.Log(
+            $"[CombatNet] 사망 애니메이션 후 플레이어 비활성화 / OwnerClientId: {OwnerClientId}",
+            DebugType.CombatNet,
+            this
+        );
+    }
+    private void PlayDeathAnimationByNetwork()
+    {
+        if (_playerAnimation == null)
+        {
+            DebugTool.Log("[CombatNet] PlayerAnimation이 없어 죽음 애니메이션 재생 불가", DebugType.Character, this);
+            return;
+        }
+
+        _playerAnimation.SetIdleByNetwork();
+        _playerAnimation.PlayDieByNetwork();
+
+        DebugTool.Log("[CombatNet] 죽음 애니메이션 네트워크 연출 실행", DebugType.Character, this);
     }
 }
 

@@ -26,18 +26,15 @@ public class PlayerRetireState : IState
 
         if (_playerAnimation != null)
         {
-            _playerAnimation.SetIdle();
+            _playerAnimation.SetIdleByNetwork();
+            _playerAnimation.PlayDieByNetwork();
         }
-
-        if (_playerCollider != null)
-        {
-            _playerCollider.enabled = false;
-        }
-
         else
         {
-            DebugTool.Log("[PlayerRetireState] PlayerSfxController가 없어 죽음 소리 재생 불가", DebugType.Audio, null);
+            DebugTool.Log("[PlayerRetireState] PlayerAnimation이 없어 죽음 애니메이션 재생 불가", DebugType.Character, null);
         }
+
+        // 죽은 뒤에도 바닥을 뚫지 않도록 Collider는 끄지 않는다.
 
         DebugTool.Log("[PlayerRetireState] Retire 상태 진입", DebugType.Character, null);
     }

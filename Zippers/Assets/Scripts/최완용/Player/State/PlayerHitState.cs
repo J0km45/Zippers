@@ -25,7 +25,7 @@ public class PlayerHitState : IState
 
         if (_animation != null)
         {
-            _animation.PlayerHit();
+            _animation.PlayHitByNetwork();
         }
 
         else
