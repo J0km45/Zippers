@@ -1,4 +1,4 @@
-﻿using Audio;
+using Audio;
 using System;
 using System.Collections;
 using TMPro;
@@ -40,15 +40,17 @@ public class WaveUIController : MonoBehaviour
     {
         _zombieCountManager.OnZombieCountChanged += SetLeftZombieCount;
         _waveManager.OnBattleStarted += BattleStart;
-        _waveManager.OnBattleNodeCleared += BattleClear;
+        _waveManager.OnBattleNodeClearUI += BattleClear;
         _waveManager.OnNextWave += NextWave;
+
+        SetLeftZombieCount(_zombieCountManager.TotalAliveCount.Value);
     }
 
     private void OnDisable()
     {
         _zombieCountManager.OnZombieCountChanged -= SetLeftZombieCount;
         _waveManager.OnBattleStarted -= BattleStart;
-        _waveManager.OnBattleNodeCleared -= BattleClear;
+        _waveManager.OnBattleNodeClearUI -= BattleClear;
         _waveManager.OnNextWave -= NextWave;
     }
 
@@ -79,7 +81,7 @@ public class WaveUIController : MonoBehaviour
         _uiController.PlayBattleStart();
     }
 
-    private void BattleClear(int a)
+    private void BattleClear()
     {
         _battleNoticeImage.sprite = _battleClearSprite;
         _battleNoticeImage.SetNativeSize();
