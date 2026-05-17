@@ -21,6 +21,7 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
 
     private IPlayerStatProvider _statProvider;
     private PlayerSfxController _playerSfxController;
+    private PlayerAnimation _playerAnimation;
 
     private readonly NetworkVariable<float> _currentHealth = new NetworkVariable<float>(
         DefaultMaxHealth,
@@ -94,6 +95,7 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
     {
         _statProvider = GetComponent<IPlayerStatProvider>();
         _playerSfxController = GetComponent<PlayerSfxController>();
+        _playerAnimation = GetComponent<PlayerAnimation>();
     }
 
     public override void OnNetworkSpawn()
@@ -633,24 +635,13 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
 
         if (newValue)
         {
-            if (_playerSfxController == null)
-            {
-                DebugTool.Log("[CombatNet] PlayerSfxController가 없어 죽음 소리 재생 불가", DebugType.Audio, this);
-                return;
-            }
-
-            if (IsFemaleCharacter())
-            {
-                _playerSfxController.PlayFemaleDeathSfx();
-                return;
-            }
-
-            _playerSfxController.PlayMaleDeathSfx();
+            PlayDeathAnimation();
+            PlayDeathSfx();
 
             OnPlayerDied?.Invoke();
 
             DebugTool.Log(
-                $"[CombatNet] 사망 상태 동기화 / OwnerClientId: {OwnerClientId}",
+                $"[CombatNet] 사망 상태 동기화 / OwnerClientId: {OwnerClientId}, IsOwner: {IsOwner}",
                 DebugType.CombatNet,
                 this
             );
@@ -730,6 +721,36 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
 
         return _statProvider.WeaponType == WeaponType.Pistol ||
                _statProvider.WeaponType == WeaponType.Shotgun;
+    }
+    private void PlayDeathAnimation()
+    {
+        if (_playerAnimation == null)
+        {
+            DebugTool.Log("[CombatNet] PlayerAnimation이 없어 죽음 애니메이션 재생 불가", DebugType.Character, this);
+            return;
+        }
+
+        _playerAnimation.SetIdle();
+        _playerAnimation.PlayDie();
+
+        DebugTool.Log("[CombatNet] 죽음 애니메이션 재생", DebugType.Character, this);
+    }
+
+    private void PlayDeathSfx()
+    {
+        if (_playerSfxController == null)
+        {
+            DebugTool.Log("[CombatNet] PlayerSfxController가 없어 죽음 소리 재생 불가", DebugType.Audio, this);
+            return;
+        }
+
+        if (IsFemaleCharacter())
+        {
+            _playerSfxController.PlayFemaleDeathSfx();
+            return;
+        }
+
+        _playerSfxController.PlayMaleDeathSfx();
     }
 }
 

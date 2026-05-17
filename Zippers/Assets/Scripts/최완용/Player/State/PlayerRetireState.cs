@@ -27,7 +27,6 @@ public class PlayerRetireState : IState
         if (_playerAnimation != null)
         {
             _playerAnimation.SetIdle();
-            _playerAnimation.PlayDie();
         }
 
         if (_playerCollider != null)
