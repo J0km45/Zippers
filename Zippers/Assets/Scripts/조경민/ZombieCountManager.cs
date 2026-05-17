@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ZombieCountManager : MonoBehaviour
@@ -12,6 +13,8 @@ public class ZombieCountManager : MonoBehaviour
     public int TotalSpawnCount { get; private set; } // 전체 웨이브에서 스폰된 좀비 수
 
     public bool IsNodeCleared => TotalSpawnCount > 0 && TotalAliveCount <= 0; // 노드 클리어 여부
+    
+    public event Action<int> OnZombieCountChanged;
 
     public void ResetCount()
     {
@@ -32,6 +35,8 @@ public class ZombieCountManager : MonoBehaviour
 
         TotalSpawnCount++;
         TotalAliveCount++;
+        
+        OnZombieCountChanged?.Invoke(TotalAliveCount);
     }
 
     public void RemoveCount()
