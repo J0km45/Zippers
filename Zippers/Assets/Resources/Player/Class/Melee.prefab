@@ -915,6 +915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02fbb797478fc8f45939c660257715ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStamina
+  ShowTopMostFoldoutHeaderGroup: 1
   <CurrentStamina>k__BackingField: 0
   <MaxStamina>k__BackingField: 0
 --- !u!114 &238093600285782063
@@ -1121,13 +1122,14 @@ MonoBehaviour:
   - {fileID: 6792306487914795734}
   - {fileID: 1053686039666722831}
   - {fileID: 8795098328721232065}
-  - {fileID: 7878355291678046614}
-  - {fileID: 2919367550906155214}
   - {fileID: 1103848870472195409}
   - {fileID: 438206128735748743}
   - {fileID: 238093600285782063}
   - {fileID: 8543937339311557116}
   _ownerOnlyGameObjects: []
+  _ownerOrServerBehaviours:
+  - {fileID: 7878355291678046614}
+  - {fileID: 2919367550906155214}
 --- !u!114 &-573557078281724137
 MonoBehaviour:
   m_ObjectHideFlags: 0

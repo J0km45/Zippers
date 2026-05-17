@@ -45,6 +45,10 @@ public class PlayerOwnershipGate : NetworkBehaviour
              "예: 카메라 GameObject(QuarterViewCamera 가 붙어있는 오브젝트)")]
     [SerializeField] private GameObject[] _ownerOnlyGameObjects;
 
+    [Header("Owner Or Server Components")]
+    [Tooltip("소유자 클라이언트 또는 서버에서 켜져야 하는 컴포넌트입니다. 예: PlayerCombat, PlayerReload")]
+    [SerializeField] private Behaviour[] _ownerOrServerBehaviours;
+
     // ─────────────────────────────────────────────────────────────────
     // Lifecycle
     // ─────────────────────────────────────────────────────────────────
@@ -55,12 +59,14 @@ public class PlayerOwnershipGate : NetworkBehaviour
         // 이렇게 안 하면 한 프레임 동안 원격 플레이어의 입력 컴포넌트가 살아있어
         // 내 입력이 남의 캐릭터로 새는 1-frame leak 가능.
         ApplyOwnership(false);
+        ApplyOwnerOrServer(false);
     }
 
     public override void OnNetworkSpawn()
     {
         // IsOwner == true 면 다시 켜고, false 면 Awake 에서 끈 상태 유지.
         ApplyOwnership(IsOwner);
+        ApplyOwnerOrServer(IsOwner || IsServer);
 
         DebugTool.Log(
             $"OwnershipGate 적용: IsOwner={IsOwner}, OwnerClientId={OwnerClientId}",
@@ -185,5 +191,24 @@ public class PlayerOwnershipGate : NetworkBehaviour
         }
 
         DebugTool.Log(sb.ToString(), DebugType.Network, this);
+    }
+    private void ApplyOwnerOrServer(bool isEnabled)
+    {
+        if (_ownerOrServerBehaviours == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < _ownerOrServerBehaviours.Length; i++)
+        {
+            Behaviour behaviour = _ownerOrServerBehaviours[i];
+
+            if (behaviour == null)
+            {
+                continue;
+            }
+
+            behaviour.enabled = isEnabled;
+        }
     }
 }

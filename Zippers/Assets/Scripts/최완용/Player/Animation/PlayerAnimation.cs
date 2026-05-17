@@ -123,16 +123,7 @@ public class PlayerAnimation : NetworkBehaviour
             return;
         }
 
-        if (_networkAnimator != null)
-        {
-            _networkAnimator.SetTrigger(ReloadTrigger);
-        }
-        else
-        {
-            _animator.SetTrigger(Reload);
-        }
-
-        DebugTool.Log("Reload 애니메이션 실행", DebugType.Character, this);
+        PlayReloadLocal();
     }
 
     [ServerRpc]
@@ -191,5 +182,18 @@ public class PlayerAnimation : NetworkBehaviour
     private void PlayerHitServerRpc()
     {
         PlayerHit();
+    }
+    public void PlayReloadLocal()
+    {
+        if (_networkAnimator != null)
+        {
+            _networkAnimator.SetTrigger(ReloadTrigger);
+        }
+        else
+        {
+            _animator.SetTrigger(Reload);
+        }
+
+        DebugTool.Log("Reload 애니메이션 로컬 실행", DebugType.Character, this);
     }
 }
