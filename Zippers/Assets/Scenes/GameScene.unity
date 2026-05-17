@@ -531,6 +531,14 @@ PrefabInstance:
       propertyPath: _nodeManager
       value: 
       objectReference: {fileID: 1926810619}
+    - target: {fileID: 2067248240011655716, guid: fe5fe5f4d6e9f1541af649cc05c3aba0, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2327814463
+      objectReference: {fileID: 0}
+    - target: {fileID: 2067248240011655716, guid: fe5fe5f4d6e9f1541af649cc05c3aba0, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3000983303
+      objectReference: {fileID: 0}
     - target: {fileID: 3331151474639206889, guid: fe5fe5f4d6e9f1541af649cc05c3aba0, type: 3}
       propertyPath: m_Name
       value: ZombieSpawnManager

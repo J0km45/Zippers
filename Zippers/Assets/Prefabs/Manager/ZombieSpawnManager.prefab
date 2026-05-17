@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4151160775966583465}
   - component: {fileID: 1891670572392615628}
+  - component: {fileID: 2067248240011655716}
   - component: {fileID: 1579958890231223435}
   - component: {fileID: 4985324093881677918}
   m_Layer: 0
@@ -47,12 +48,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieSpawnManager
   _zombieCount: {fileID: 4985324093881677918}
+  _nodeManager: {fileID: 0}
   _zombiePrefabsSO: {fileID: 11400000, guid: b78cf863eb1272343af773e30d0c61e7, type: 2}
   _spawnPoints:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &2067248240011655716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3331151474639206889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3031539577
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &1579958890231223435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,8 +92,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a94ff8f28bce1a4469cda9741e29aeab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
+  ShowTopMostFoldoutHeaderGroup: 1
   _zombieSpawnManager: {fileID: 1891670572392615628}
   _zombieCountManager: {fileID: 4985324093881677918}
+  _waveUIController: {fileID: 0}
 --- !u!114 &4985324093881677918
 MonoBehaviour:
   m_ObjectHideFlags: 0

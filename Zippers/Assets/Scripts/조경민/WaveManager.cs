@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class WaveManager : MonoBehaviour
+public class WaveManager : NetworkBehaviour
 {
     [SerializeField] private ZombieSpawnManager _zombieSpawnManager;
     [SerializeField] private ZombieCountManager _zombieCountManager;
@@ -17,21 +17,26 @@ public class WaveManager : MonoBehaviour
     // 전투, 웨이브 시작 시 연출
     public event Action OnBattleStarted;
     public event Action OnNextWave;
-    
+
+    [ClientRpc]
+    private void SetWaveUIClientRpc(int currentWave, int maxWave)
+    {
+        _waveUIController.SetCurrentWaveText(currentWave);
+        _waveUIController.SetMaxWaveText(maxWave);
+    }
 
     public void StartBattleNode(int battleNodeIndex)
     {
-        if (!NetworkManager.Singleton.IsServer) return;
+        if (!IsServer) return;
 
         StartCoroutine(RunBattleNode(battleNodeIndex));
     }
 
     private IEnumerator RunBattleNode(int battleNodeIndex)
     {
-        if (!NetworkManager.Singleton.IsServer) yield break;
+        if (!IsServer) yield break;
 
-        _waveUIController.SetMaxWaveText(0);
-        _waveUIController.SetCurrentWaveText(0);
+        SetWaveUIClientRpc(0, 0);
 
         // 전체 카운트 초기화
         _zombieCountManager.ResetTotalCount();
@@ -46,16 +51,16 @@ public class WaveManager : MonoBehaviour
         }
 
         // 총 웨이브 UI 설정
-        _waveUIController.SetMaxWaveText(waves.Count);
+        SetWaveUIClientRpc(0, waves.Count);
 
         for (int i = 0; i < waves.Count; i++)
         {
-            if (!NetworkManager.Singleton.IsServer) yield break;
+            if (!IsServer) yield break;
 
             WaveInfoSO waveInfo = waves[i];
 
             // 현재 웨이브 UI 설정
-            _waveUIController.SetCurrentWaveText(i + 1);
+            SetWaveUIClientRpc(i + 1, waves.Count);
 
             // 첫 웨이브 시작 대기
             if (i == 0)
@@ -103,7 +108,7 @@ public class WaveManager : MonoBehaviour
 
         while (timer < waveInfo.TimeLimit)
         {
-            if (!NetworkManager.Singleton.IsServer) yield break;
+            if (!IsServer) yield break;
             if (_zombieSpawnManager.IsSpawnStopped) yield break;
 
             // 웨이브 클리어 조건 체크
@@ -122,7 +127,7 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator WaitAllZombiesDead()
     {
-        while (NetworkManager.Singleton.IsServer && !_zombieSpawnManager.IsSpawnStopped && !_zombieCountManager.IsNodeCleared)
+        while (IsServer && !_zombieSpawnManager.IsSpawnStopped && !_zombieCountManager.IsNodeCleared)
         {
             yield return null;
         }
