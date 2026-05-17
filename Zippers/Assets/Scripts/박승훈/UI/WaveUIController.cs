@@ -42,6 +42,8 @@ public class WaveUIController : MonoBehaviour
         _waveManager.OnBattleStarted += BattleStart;
         _waveManager.OnBattleNodeClearUI += BattleClear;
         _waveManager.OnNextWave += NextWave;
+
+        SetLeftZombieCount(_zombieCountManager.TotalAliveCount.Value);
     }
 
     private void OnDisable()
