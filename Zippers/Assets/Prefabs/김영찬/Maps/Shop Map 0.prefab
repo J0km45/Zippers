@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 69391869
+  GlobalObjectIdHash: 3494787234
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -287,8 +287,92 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3777807131778399189, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7463343583472927947}
+    - targetCorrespondingSourceObject: {fileID: 1949415589882317947, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7460978992075170282}
+    - targetCorrespondingSourceObject: {fileID: 4668698404599058526, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8961325975656246050}
   m_SourcePrefab: {fileID: 100100000, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}
+--- !u!1 &806925868236232593 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1949415589882317947, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}
+  m_PrefabInstance: {fileID: 1170779685538241514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7460978992075170282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806925868236232593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1dc9879d8e41a941b5d649bcaf19489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleFadeTarget
+  _fadeRenderers:
+  - {fileID: 821262203609474787}
+  _showDebugLog: 0
+--- !u!23 &821262203609474787 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1971103792566435081, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}
+  m_PrefabInstance: {fileID: 1170779685538241514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2595383754313417267 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3763837405739342297, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}
+  m_PrefabInstance: {fileID: 1170779685538241514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2617161453795713087 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3777807131778399189, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}
+  m_PrefabInstance: {fileID: 1170779685538241514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7463343583472927947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2617161453795713087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1dc9879d8e41a941b5d649bcaf19489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleFadeTarget
+  _fadeRenderers:
+  - {fileID: 2595383754313417267}
+  _showDebugLog: 0
+--- !u!23 &5810143637355722202 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4656360486035877424, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}
+  m_PrefabInstance: {fileID: 1170779685538241514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5833847744477744052 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4668698404599058526, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}
+  m_PrefabInstance: {fileID: 1170779685538241514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8961325975656246050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5833847744477744052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1dc9879d8e41a941b5d649bcaf19489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleFadeTarget
+  _fadeRenderers:
+  - {fileID: 5810143637355722202}
+  _showDebugLog: 0
 --- !u!4 &6184054605911127256 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5038785870832037682, guid: 53db899006401c54d89e8f3e83b0efed, type: 3}

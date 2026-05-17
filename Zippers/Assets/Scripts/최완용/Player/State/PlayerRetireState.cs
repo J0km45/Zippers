@@ -19,19 +19,24 @@ public class PlayerRetireState : IState
     }
     public void Enter()
     {
-        if(_playerMovement != null)
+        if (_playerMovement != null)
         {
             _playerMovement.StopMove();
         }
-        if(_playerAnimation != null)
+
+        if (_playerAnimation != null)
         {
-            _playerAnimation.SetIdle();
-            _playerAnimation.PlayDie();
-            _playerCollider.enabled = false;
-            _playerSfxController.PlayMaleDeathSfx();
+            _playerAnimation.SetIdleByNetwork();
+            _playerAnimation.PlayDieByNetwork();
+        }
+        else
+        {
+            DebugTool.Log("[PlayerRetireState] PlayerAnimation이 없어 죽음 애니메이션 재생 불가", DebugType.Character, null);
         }
 
-        DebugTool.Log("[PlayerRetireState] Retire 상태 진입",DebugType.Character,null);
+        // 죽은 뒤에도 바닥을 뚫지 않도록 Collider는 끄지 않는다.
+
+        DebugTool.Log("[PlayerRetireState] Retire 상태 진입", DebugType.Character, null);
     }
 
     public void Exit()
