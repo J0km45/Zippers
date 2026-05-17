@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using Audio;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -43,10 +41,13 @@ public class AudioManager : MonoBehaviour
     public float SfxVolume => PlayerPrefs.GetFloat(SfxVolumeKey, DefaultVolume);
     public float UIVolume => PlayerPrefs.GetFloat(UIVolumeKey, DefaultVolume);
     
+    [SerializeField] private BgmController _bgmController;
+    
     private void Awake()
     {
         SingletonInit();
         VolumeInit();
+        _bgmController = GetComponent<BgmController>();
     }
     
     /// <summary>
@@ -105,6 +106,11 @@ public class AudioManager : MonoBehaviour
         
         if(!result)
             DebugTool.Log($"{parameter} Audio mixer를 찾을 수 없습니다.", DebugType.Game, this);
+    }
+
+    public void ChangeBGM(BGMType type, bool exact = false)
+    {
+        _bgmController.ChangeBGM(type, exact);
     }
 
     /// <summary>
