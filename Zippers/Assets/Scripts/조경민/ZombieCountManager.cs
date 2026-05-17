@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ZombieCountManager : MonoBehaviour
 {
-    public static ZombieCountManager Instance {get; private set;}
     // 현재 웨이브
     public int AliveCount { get; private set; } // 현재 살아있는 좀비 수
     public int SpawnedCount { get; private set; } // 현재 웨이브에서 스폰된 좀비 수
@@ -16,11 +15,6 @@ public class ZombieCountManager : MonoBehaviour
     public bool IsNodeCleared => TotalSpawnCount > 0 && TotalAliveCount <= 0; // 노드 클리어 여부
     
     public event Action<int> OnZombieCountChanged;
-    
-    private void Awake()
-    {
-        SingletonInit();
-    }
 
     public void ResetCount()
     {
@@ -49,21 +43,5 @@ public class ZombieCountManager : MonoBehaviour
     {
         AliveCount = Mathf.Max(0, AliveCount - 1);
         TotalAliveCount = Mathf.Max(0, TotalAliveCount - 1);
-    }
-    
-    
-    /// <summary>
-    /// 오디오 매니저 싱글톤 적용
-    /// </summary>
-    private void SingletonInit()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 }
