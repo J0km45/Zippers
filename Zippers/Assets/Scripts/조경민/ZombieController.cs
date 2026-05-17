@@ -91,6 +91,7 @@ public class ZombieController : NetworkBehaviour, IDamagable
 
     public override void OnNetworkDespawn()
     {
+        if (!IsServer) return;
         if (_isCountRemoved) return;
 
         _isCountRemoved = true;
