@@ -22,8 +22,16 @@ public class PlayerHitState : IState
     public void Enter()
     {
         _elapsedTime = 0f;
-        _animation.PlayerHit();
-        _playerSfxController.PlayMaleHitSfx();
+
+        if (_animation != null)
+        {
+            _animation.PlayerHit();
+        }
+
+        else
+        {
+            DebugTool.Log("[PlayerHitState] PlayerSfxController가 없어 피격 소리 재생 불가", DebugType.Audio, null);
+        }
     }
 
     public void Exit()

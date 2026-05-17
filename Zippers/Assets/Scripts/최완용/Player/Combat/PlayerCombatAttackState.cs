@@ -29,7 +29,7 @@ public class PlayerCombatAttackState : IState
         {
             _playerAnimation.PlayAttack();
 
-            PlayAttackSfx();
+            //PlayAttackSfx();
 
             //if (_playerStats.WeaponType == WeaponType.Rifle)
             //{

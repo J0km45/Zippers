@@ -19,19 +19,28 @@ public class PlayerRetireState : IState
     }
     public void Enter()
     {
-        if(_playerMovement != null)
+        if (_playerMovement != null)
         {
             _playerMovement.StopMove();
         }
-        if(_playerAnimation != null)
+
+        if (_playerAnimation != null)
         {
             _playerAnimation.SetIdle();
             _playerAnimation.PlayDie();
-            _playerCollider.enabled = false;
-            _playerSfxController.PlayMaleDeathSfx();
         }
 
-        DebugTool.Log("[PlayerRetireState] Retire 상태 진입",DebugType.Character,null);
+        if (_playerCollider != null)
+        {
+            _playerCollider.enabled = false;
+        }
+
+        else
+        {
+            DebugTool.Log("[PlayerRetireState] PlayerSfxController가 없어 죽음 소리 재생 불가", DebugType.Audio, null);
+        }
+
+        DebugTool.Log("[PlayerRetireState] Retire 상태 진입", DebugType.Character, null);
     }
 
     public void Exit()

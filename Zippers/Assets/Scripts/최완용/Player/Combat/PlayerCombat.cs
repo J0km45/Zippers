@@ -183,6 +183,20 @@ public class PlayerCombat : NetworkBehaviour
     {
         OnAttackPerformed?.Invoke();
 
+        if (_weaponSFXController == null)
+        {
+            DebugTool.Log("[PlayerCombat] WeaponSFXController가 없어 공격 소리 재생 불가", DebugType.Audio, this);
+            return;
+        }
+
+        if (!TryGetWeaponType(out WeaponType weaponType))
+        {
+            DebugTool.Log("[PlayerCombat] 무기 타입을 찾을 수 없어 공격 소리 재생 불가", DebugType.Audio, this);
+            return;
+        }
+
+        _weaponSFXController.PlayWeaponSfx(weaponType);
+
         if (_combatStateMachine != null)
         {
             _combatStateMachine.RequestAttack();
@@ -379,11 +393,19 @@ public class PlayerCombat : NetworkBehaviour
             _playerAnimation.PlayReloadLocal();
         }
 
-        // 장전 소리는 재장전한 본인 화면에서만 실행
-        if (IsOwner && _weaponSFXController != null && TryGetWeaponType(out WeaponType weaponType))
+        if (_weaponSFXController == null)
         {
-            _weaponSFXController.PlayReloadSfx(weaponType);
+            DebugTool.Log("[PlayerCombat] WeaponSFXController가 없어 재장전 소리 재생 불가", DebugType.Audio, this);
+            return;
         }
+
+        if (!TryGetWeaponType(out WeaponType weaponType))
+        {
+            DebugTool.Log("[PlayerCombat] 무기 타입을 찾을 수 없어 재장전 소리 재생 불가", DebugType.Audio, this);
+            return;
+        }
+
+        _weaponSFXController.PlayReloadSfx(weaponType);
 
         DebugTool.Log(
             $"[PlayerCombat] 재장전 RPC 실행 / IsOwner: {IsOwner}",

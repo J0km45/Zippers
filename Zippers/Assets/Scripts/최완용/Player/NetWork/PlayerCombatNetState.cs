@@ -2,6 +2,7 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 using Zippers.Network.Contracts;
+using Audio;
 
 /// <summary>
 /// 플레이어 전투 런타임 상태를 네트워크로 관리하는 클래스.
@@ -17,6 +18,9 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
 
     private const float MinAmmo = 0f;
     private const float DefaultMaxAmmo = 0f;
+
+    private IPlayerStatProvider _statProvider;
+    private PlayerSfxController _playerSfxController;
 
     private readonly NetworkVariable<float> _currentHealth = new NetworkVariable<float>(
         DefaultMaxHealth,
@@ -86,6 +90,11 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
     public event Action OnDamageReceived;
     public event Action OnPlayerDied;
     public event Action OnPlayerRevived;
+    private void Awake()
+    {
+        _statProvider = GetComponent<IPlayerStatProvider>();
+        _playerSfxController = GetComponent<PlayerSfxController>();
+    }
 
     public override void OnNetworkSpawn()
     {
@@ -372,6 +381,20 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
     [ClientRpc]
     private void PlayDamageClientRpc()
     {
+        if (_playerSfxController == null)
+        {
+            DebugTool.Log("[CombatNet] PlayerSfxController가 없어 피격 소리 재생 불가", DebugType.Audio, this);
+            return;
+        }
+
+        if (IsFemaleCharacter())
+        {
+            _playerSfxController.PlayFemaleHitSfx();
+            return;
+        }
+
+        _playerSfxController.PlayMaleHitSfx();
+
         OnDamageReceived?.Invoke();
 
         DebugTool.Log(
@@ -540,6 +563,8 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
 
         if (_currentStamina.Value <= amount)
         {
+            _currentStamina.Value = MinStamina;
+
             DebugTool.Log("[CombatNet] 스테미나 부족", DebugType.CombatNet, this);
             return false;
         }
@@ -608,6 +633,20 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
 
         if (newValue)
         {
+            if (_playerSfxController == null)
+            {
+                DebugTool.Log("[CombatNet] PlayerSfxController가 없어 죽음 소리 재생 불가", DebugType.Audio, this);
+                return;
+            }
+
+            if (IsFemaleCharacter())
+            {
+                _playerSfxController.PlayFemaleDeathSfx();
+                return;
+            }
+
+            _playerSfxController.PlayMaleDeathSfx();
+
             OnPlayerDied?.Invoke();
 
             DebugTool.Log(
@@ -680,6 +719,17 @@ public class PlayerCombatNetState : NetworkBehaviour, IPlayerStatusReader, IPlay
             DebugType.CombatNet,
             this
         );
+    }
+    private bool IsFemaleCharacter()
+    {
+        if (_statProvider == null)
+        {
+            DebugTool.Log("[CombatNet] IPlayerStatProvider가 없어 남자 SFX로 재생", DebugType.Audio, this);
+            return false;
+        }
+
+        return _statProvider.WeaponType == WeaponType.Pistol ||
+               _statProvider.WeaponType == WeaponType.Shotgun;
     }
 }
 
