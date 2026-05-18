@@ -52,6 +52,7 @@ MonoBehaviour:
   _sfxGroup: {fileID: 5294659358839544858, guid: 5e53b81bdd07bab49a7bca031f78b4ea, type: 2}
   _uiGroup: {fileID: 4243254024678934816, guid: 5e53b81bdd07bab49a7bca031f78b4ea, type: 2}
   _maxSliderValue: 1
+  _bgmController: {fileID: 0}
 --- !u!114 &6548216702765997178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +70,7 @@ MonoBehaviour:
   _titleAudioClip: {fileID: 8300000, guid: a950ca19d88596c4987fc46a36b60e02, type: 3}
   _introTime: 9.5
   _fadeOutTime: 1.5
-  bgmOff: 1
+  bgmOff: 0
   _startVolume: 0
   _currentVolume: 0
 --- !u!82 &4200715271690335414
