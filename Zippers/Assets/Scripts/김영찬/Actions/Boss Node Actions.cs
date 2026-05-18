@@ -52,6 +52,7 @@ public class BossNodeBattleAction : INodeAction
     {
         _controller.Controller.EventController.SetCurrentEvent(NodeEventType.MonsterSpawn,0);
         SessionPlayerStateController.Instance.SessionAlivePlayerCount.OnValueChanged += GameOver;
+        _controller.Controller.WaveManager.OnBattleNodeCleared += ToClearState;
     }
 
     public void RunningState()
@@ -62,11 +63,17 @@ public class BossNodeBattleAction : INodeAction
     public void ExitState()
     {
         SessionPlayerStateController.Instance.SessionAlivePlayerCount.OnValueChanged -= GameOver;
+        _controller.Controller.WaveManager.OnBattleNodeCleared -= ToClearState;
     }
     
     private void GameOver(int preCount, int curCount)
     {
         if(curCount <= 0) _controller.Controller.EventController.SetCurrentEvent(NodeEventType.GameOver,0);
+    }
+    
+    private void ToClearState(int number)
+    {
+        _controller.Controller.Data.NetworkMapData.SetNodeState(NodeState.Clear);
     }
 }
 
