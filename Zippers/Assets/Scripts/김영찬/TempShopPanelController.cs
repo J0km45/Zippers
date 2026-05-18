@@ -26,8 +26,8 @@ public class TempShopPanelController : MonoBehaviour
     [SerializeField] private TMP_Text _battleStateLabel;
 
     [Header("Test Upgrade IDs (시트 보고 입력)")]
-    [SerializeField] private int _testPersonalMaxHealthId = 10001;
-    [SerializeField] private int _testPersonalDamageId = 10004;
+    [SerializeField] private int _testPersonalMaxHealthId = 50001;
+    [SerializeField] private int _testPersonalDamageId = 50004;
     [SerializeField] private int _testTeamMaxHealthId = 51005;
     [SerializeField] private int _testTeamBattleDamageId = 51001;
     [SerializeField] private float _suppliesGrantAmount = 50f;

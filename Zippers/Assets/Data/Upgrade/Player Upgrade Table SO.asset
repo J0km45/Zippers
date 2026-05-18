@@ -12,4 +12,372 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 780f9db326ba7a54da78535cd36f5112, type: 3}
   m_Name: Player Upgrade Table SO
   m_EditorClassIdentifier: Assembly-CSharp::PlayerUpgradeTableSO
-  _groups: []
+  _groups:
+  - ClassType: 0
+    Entries:
+    - Id: 50001
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50002
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50003
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50004
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50005
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50006
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50007
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50008
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50009
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50010
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+  - ClassType: 1
+    Entries:
+    - Id: 50011
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50012
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50013
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50014
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50015
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50016
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50017
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50018
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50019
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50020
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+  - ClassType: 2
+    Entries:
+    - Id: 50021
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50022
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50023
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50024
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50025
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50026
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50027
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50028
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50029
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50030
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+  - ClassType: 3
+    Entries:
+    - Id: 50031
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50032
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50033
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50034
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50035
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50036
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50037
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50038
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50039
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
+    - Id: 50040
+      UpgradeName: 
+      MaxLevel: 0
+      StatKey: 
+      ApplyType: 
+      ValuePerLevel: 0
+      BaseCost: 0
+      CostIncrease: 0
+      IsEnabled: 0
