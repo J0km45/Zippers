@@ -272,10 +272,24 @@ public class PlayerCombat : NetworkBehaviour
             return;
         }
 
+        float bulletDistance = GetBulletDistance();
+
         _playerHitScan.ShotGunHitScan(
             damage,
-            GetBulletDistance()
+            bulletDistance
         );
+
+        PlayShotgunVisualClientRpc(bulletDistance);
+    }
+    [ClientRpc]
+    private void PlayShotgunVisualClientRpc(float shotgunDistance)
+    {
+        if (_playerHitScan == null)
+        {
+            return;
+        }
+
+        _playerHitScan.ShowShotgunVisual(shotgunDistance);
     }
 
     private bool IsGunWeapon()
