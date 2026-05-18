@@ -41,6 +41,11 @@ public abstract class MapController : MonoBehaviour
     /// MapController에서 사용하는 TeleportSupporter 변수
     /// </summary>
     public TeleportSupporter TeleportSupporter { get; private set; }
+    
+    /// <summary>
+    /// MapController에서 사용하는 WaveManager 변수
+    /// </summary>
+    public WaveManager WaveManager { get; private set; }
 
     protected virtual void Awake()
     {
@@ -81,6 +86,7 @@ public abstract class MapController : MonoBehaviour
         ActionController = new MapActionController(this);
         EventController = new MapEventController(this);
         Manager = FindFirstObjectByType<NodeManager>();
+        WaveManager = FindFirstObjectByType<WaveManager>();
         Data = GetComponent<MapData>();
         TeleportSupporter = GetComponent<TeleportSupporter>();
         DebugTool.Log($"{gameObject.name} Map Controller Ready", DebugType.Node, this);
